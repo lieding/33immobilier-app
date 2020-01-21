@@ -142,14 +142,14 @@ export default {
       window.location.href = "http://www.milliome.com";
     },
     Onclick(val) {
-      if (val == "fr") {
-        this.fls = 0;
-      } else {
-        this.fls = 1;
-      }
-      localStorage.lan = val;
-      this.$i18n.locale = val;
-      localStorage.lang = val;
+      //   if (val == "fr") {
+      //     this.fls = 0;
+      //   } else {
+      //     this.fls = 1;
+      //   }
+      //   localStorage.lan = val;
+      //   this.$i18n.locale = val;
+      //   localStorage.lang = val;
     }
   }
 };
