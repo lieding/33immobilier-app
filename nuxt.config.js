@@ -26,12 +26,16 @@ export default {
   /*
    ** Global CSS
    */
-  css: [],
+  css: [
+    "element-ui/lib/theme-chalk/reset.css",
+    "element-ui/lib/theme-chalk/index.css"
+  ],
   /*
    ** Plugins to load before mounting the App
    */
   plugins: [
-    { src: "~/plugins/element-ui", ssr: false },
+    { src: "~/plugins/axios" },
+    { src: "~/plugins/element-ui" },
     { src: "~/plugins/vant", ssr: false }
   ],
   /*
