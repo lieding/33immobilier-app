@@ -231,53 +231,55 @@ export default {
         this.prise2 = repayALoanJsInfo.data.M;
 
         setTimeout(() => {
-          var e1 = echarts.init(document.querySelector(".echarts"));
-          ////console.log(e1)
-          var option = {
-            series: [
-              {
-                name: "访问来源",
-                type: "pie",
-                radius: ["50%", "70%"],
-                avoidLabelOverlap: false,
-                label: {
-                  normal: {
-                    show: false,
-                    position: "center"
-                  },
-                  emphasis: {
-                    show: true,
-                    textStyle: {
-                      fontSize: "30",
-                      fontWeight: "bold"
+          if (process.client) {
+            var e1 = echarts.init(document.querySelector(".echarts"));
+            ////console.log(e1)
+            var option = {
+              series: [
+                {
+                  name: "访问来源",
+                  type: "pie",
+                  radius: ["50%", "70%"],
+                  avoidLabelOverlap: false,
+                  label: {
+                    normal: {
+                      show: false,
+                      position: "center"
+                    },
+                    emphasis: {
+                      show: true,
+                      textStyle: {
+                        fontSize: "30",
+                        fontWeight: "bold"
+                      }
                     }
-                  }
-                },
-                labelLine: {
-                  normal: {
-                    show: false
-                  }
-                },
-                data: [
-                  {
-                    value: Number(this.repayALoanList.A),
-                    name: this.$t("message.global.payment"),
-                    itemStyle: { color: "#7ECF34" }
                   },
-                  {
-                    value: Number(this.repayALoanList.L),
-                    name: this.$t("message.global.Interestamount"),
-                    itemStyle: { color: "#1B9AFB" }
+                  labelLine: {
+                    normal: {
+                      show: false
+                    }
                   },
-                  {
-                    value: Number(this.repayALoanList.S),
-                    name: this.$t("message.global.loans"),
-                    itemStyle: { color: "#F4A436" }
-                  }
-                ]
-              }
-            ]
-          };
+                  data: [
+                    {
+                      value: Number(this.repayALoanList.A),
+                      name: this.$t("message.global.payment"),
+                      itemStyle: { color: "#7ECF34" }
+                    },
+                    {
+                      value: Number(this.repayALoanList.L),
+                      name: this.$t("message.global.Interestamount"),
+                      itemStyle: { color: "#1B9AFB" }
+                    },
+                    {
+                      value: Number(this.repayALoanList.S),
+                      name: this.$t("message.global.loans"),
+                      itemStyle: { color: "#F4A436" }
+                    }
+                  ]
+                }
+              ]
+            };
+          }
           e1.setOption(option);
         }, 100);
       }

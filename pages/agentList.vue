@@ -1,0 +1,231 @@
+<template>
+    <div class="style">
+        <Header :title="$t('message.global.Platform')"/>
+          <van-search :placeholder='$t("message.global.qingshuru")' v-model="value" @change="onVal"/>
+          <van-dropdown-menu>
+            <van-dropdown-item v-model="value1" :options='$t("message.index.serving")' :title='$t("message.global.serving")'  @change="onVal"/>
+             <van-dropdown-item v-model="value2" :options="provinceList" :title='$t("message.global.coverage")'  @change="onmenu"/>
+          </van-dropdown-menu>
+                <div class="agentList" v-for="(item,index) in agentList" :key=index>
+                    <div class="agent">
+                        <div class="perpo">
+                            <img :src=item.jobUrl alt="" class="perpo_img">
+                            <div class="introduce">
+                                <p><span class="name">{{item.nickName}}</span></p>
+                                <p class="medal invoice">{{item.personalProfile}}</p>
+                                <!-- <p class="phone invoice">最近一次服务：2019-12-10</p> -->
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="car"><img src="../../assets/image/autonym.png" alt="">{{$t("message.global.authentication")}}</div>
+                            <div class="car"><img src="../../assets/image/licensed.png" alt="">{{$t("message.global.licensed")}}</div>
+                            <div class="car"><img src="../../assets/image/pro.png" alt="">{{$t("message.global.EasyPro")}}</div>
+                        </div>
+                        <div class="contact">
+                            <p class="phone_left">
+                                <img src="../../assets/image/phone1.png" alt="" style="margin-right:0.06rem">{{item.certifiedPhone}}
+                            </p>
+                            <p class="phone_right">
+                                <img src="../../assets/image/emil.png" alt="" class="email">
+                                <img src="../../assets/image/wx.png" alt="" class="email" @click="goRouter('/dialog',item.wxNumber)">
+                            </p>
+                        </div>
+                    </div>
+                    <div class="hr"></div>
+                </div>
+        <Footer/>
+    </div>
+</template>
+<script>
+import Header from '@/components/MIndex/common/head.vue'
+import Footer from '@/components/MIndex/common/footer.vue'
+export default {
+      name: '',
+    components:{
+      Header,
+      Footer,
+    },
+    data(){
+        return{
+            value:'',
+            value1: '',
+            value2: '',
+                 provinceList:[],// 省份 集合
+            agentList: [],
+            maxPage:'',
+            province:'',
+            page:'1',
+            isLoading: false, //下拉刷新
+         }
+    },
+    mounted(){
+        let params ={}
+         this.$api.article.getRegional().then(res => {
+                 res.data.data.spreads.forEach((item,index) => {
+                       let obj ={
+                        text:'',
+                        value:'',
+                     }
+                     obj.text = item,
+                     obj.value = index,
+                     this.provinceList.push(obj)
+                 });
+          })
+         this.OnList()
+    },
+     created() {
+       const that = this
+        window.onscroll = function(){
+            var scrollTop = document.documentElement.scrollTop||document.body.scrollTop;
+            // 页面高度
+       		var windowHeight = document.documentElement.clientHeight || document.body.clientHeight;
+           // 总共的高度   
+       		var scrollHeight = document.documentElement.scrollHeight||document.body.scrollHeight;
+             if(scrollTop+windowHeight==scrollHeight){
+       
+                  if(that.page < that.maxPage){
+                     that.page ++
+                     that.OnList()
+                  }
+         }
+        }
+    },
+    methods: {
+       
+        onmenu(value2){
+      
+          if(value2 != ''){
+             this.provinceList.forEach((item,index) => {
+              if(value2 == item.value){
+                 this.province = item.text
+              }
+            });
+          }else{
+              this.province = '' 
+          }
+          this.page ='1'
+          this.agentList =[]
+         this.OnList()
+        },
+        onVal(){
+          this.page ='1'
+          this.agentList =[]
+          this.OnList()
+        },
+        OnList(){
+             let params = {page:this.page,pageSize:10,userName:this.value,language:this.value1,area: this.province}
+            this.$api.article.getAgentList(params).then(res => {
+               
+                if(res.data.data.agentList.length!=0){
+                    this.agentList.push(...res.data.data.agentList)
+                }else{
+                    this.agentList =res.data.data.agentList;
+                }
+              
+                this.maxPage = res.data.maxPage
+            });
+        },
+          goRouter(smt,val) {
+            //   console.log(val)
+            let list={
+                        type:'经纪人',
+                        wx:val
+                    };
+            this.$router.push({
+                path: smt,
+                query:list
+            });
+            },
+    },
+}
+</script>
+<style lang="less">
+  
+  div{
+      font-size: 16px;
+  }
+   
+  .agentList{
+     
+      .agent{
+        height: 1.85rem;
+        padding: 0.12rem;
+      }
+      .perpo{
+        display: flex;
+        .perpo_img{
+            width: .61rem;
+            height: .61rem;
+            border-radius: 50%;
+            margin: .2rem;
+        }
+        .name{
+            font-size:.16rem;
+            font-weight:600;
+            margin-right: .1rem;
+            color:rgba(0,0,0,0.76);
+            line-height:.22rem;
+        }
+        .invoice{
+            font-size:.12rem;
+            font-weight:400;
+            color:rgba(179,179,179,1);
+            line-height:.2rem;
+        }
+        .medal{
+           color:rgba(68,68,68,1);
+           height: .4rem;
+           overflow: hidden;
+        }
+        .phone{
+            color:rgba(180,180,180,1);
+        }
+        .introduce{
+            margin-top: .2rem;
+        }
+        
+      }
+      .card{
+           display: flex ;
+           .car{
+                width:.96rem;
+                overflow: hidden;
+                height:.31rem;
+                text-align: center;
+                line-height: .31rem;
+                background:rgba(248,248,248,1);
+                margin-right: 0.23rem;
+                border:.01rem solid rgba(237,237,237,1);
+                font-size:.12rem;
+                color:rgba(38,38,38,1);
+           }
+           .car img{
+               margin-right: .05rem;
+               display: inline-block;
+               vertical-align: middle;
+           }
+         
+      }
+     .contact{
+         display: flex;
+         height:.43rem;
+         background:rgba(247,247,247,1);
+         line-height: .43rem;
+         position: relative;
+         margin: .09rem 0;
+          padding: .05rem .1rem .05rem .1rem;
+         .phone_right{
+            position: absolute;
+            right: 0;
+           .email{
+               padding-right: .27rem;
+           }
+         }
+     }
+     .hr{
+         height:.07rem;
+         background:rgba(239,239,239,1);
+         margin-top: .05rem
+     }
+  }
+</style>

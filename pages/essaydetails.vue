@@ -105,12 +105,15 @@ export default {
   },
   methods: {
     ccs(val) {
-      const par = {
-        id: val
-      };
-      this.get(par);
-      document.body.scrollTop = 0;
-      document.documentElement.scrollTop = 0;
+      if (process.client) {
+        const par = {
+          id: val
+        };
+        this.get(par);
+
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+      }
     },
     cas(vas) {
       this.$router.push({

@@ -8,18 +8,11 @@
     <div class="block flex">
       <div class="flex block_1">
         <van-dropdown-menu class="opn">
-          <van-dropdown-item
-            v-model="value1"
-            :options="$t('message.index.option1')"
-          />
+          <van-dropdown-item v-model="value1" :options="$t('message.index.option1')" />
         </van-dropdown-menu>
       </div>
       <div class="flex block_2">
-        <img
-          src="@/assets/image/Search Icon.png"
-          class="Icon"
-          @click="OnsearchGoods"
-        />
+        <img src="@/assets/image/Search Icon.png" class="Icon" @click="OnsearchGoods" />
         <input
           type="serch"
           :placeholder="$t('message.global.Where')"
@@ -31,17 +24,11 @@
     </div>
     <!-- 多分类 -->
     <ul class="list">
-      <router-link
-        :to="{ path: '/newhouse', query: { house: '新房' } }"
-        tag="li"
-      >
+      <router-link :to="{ path: '/newhouse', query: { house: '新房' } }" tag="li">
         <img src="@/assets/image/newhouse.png" class="list_img" />
         <p>{{ $t("message.global.NewHouse") }}</p>
       </router-link>
-      <router-link
-        :to="{ path: '/newhouse', query: { house: '二手房' } }"
-        tag="li"
-      >
+      <router-link :to="{ path: '/newhouse', query: { house: '二手房' } }" tag="li">
         <img src="@/assets/image/ordhouse.png" class="list_img" />
         <p>{{ $t("message.global.second-hand") }}</p>
       </router-link>
@@ -87,8 +74,7 @@
         <router-link
           :to="{ path: '/newhouse', query: { house: '新房' } }"
           class="watch"
-          >{{ $t("message.global.examine") }}</router-link
-        >
+        >{{ $t("message.global.examine") }}</router-link>
       </div>
       <!-- router.push({name: 'applename', query: {color: 'red' }}) -->
 
@@ -111,20 +97,11 @@
 
           <div class="text">
             <p class="text_title">{{ item.estate }}</p>
-            <p class="sort">
-              {{ item.huXing }} {{ $t("message.global.pieces") }}
-            </p>
+            <p class="sort">{{ item.huXing }} {{ $t("message.global.pieces") }}</p>
             <p class="font">
-              <span
-                class="itemize"
-                v-for="(items, index) in item.tags"
-                :key="index"
-                >{{ items }}</span
-              >
+              <span class="itemize" v-for="(items, index) in item.tags" :key="index">{{ items }}</span>
             </p>
-            <p class="money">
-              {{ item.lowPrice }}{{ $t("message.global.rise") }}
-            </p>
+            <p class="money">{{ item.lowPrice }}{{ $t("message.global.rise") }}</p>
           </div>
         </router-link>
       </ul>
@@ -137,8 +114,7 @@
         <router-link
           :to="{ path: '/newhouse', query: { house: '二手房' } }"
           class="watch"
-          >{{ $t("message.global.AllNewHomes") }}</router-link
-        >
+        >{{ $t("message.global.AllNewHomes") }}</router-link>
       </div>
       <ul class="new_list">
         <router-link
@@ -154,23 +130,13 @@
             <p class="text_title">{{ item.title }}</p>
             <p class="sort">{{ item.bigProvince }}/{{ item.province }}</p>
             <p class="font">
-              <span class="itemize"
-                >{{ item.roomNum }}{{ $t("message.global.chamber") }}</span
-              >
-              <span class="itemize"
-                >{{ item.bedRoomNum }}{{ $t("message.global.crouch") }}</span
-              >
-              <span class="itemize"
-                >{{ item.acreage }}{{ $t("message.global.square") }}</span
-              >
+              <span class="itemize">{{ item.roomNum }}{{ $t("message.global.chamber") }}</span>
+              <span class="itemize">{{ item.bedRoomNum }}{{ $t("message.global.crouch") }}</span>
+              <span class="itemize">{{ item.acreage }}{{ $t("message.global.square") }}</span>
             </p>
             <p class="font">
-              <span class="money"
-                >{{ item.total }}{{ $t("message.global.rise") }}</span
-              >
-              <span class="average"
-                >{{ item.unit }}{{ $t("message.global.square€") }}</span
-              >
+              <span class="money">{{ item.total }}{{ $t("message.global.rise") }}</span>
+              <span class="average">{{ item.unit }}{{ $t("message.global.square€") }}</span>
             </p>
           </div>
         </router-link>
@@ -181,9 +147,11 @@
     <div class="newhouse">
       <div class="font width">
         <span class="title">{{ $t("message.global.handpick") }}</span>
-        <router-link :to="{ path: '/rentHouse' }" class="watch">{{
+        <router-link :to="{ path: '/rentHouse' }" class="watch">
+          {{
           $t("message.global.Allhand")
-        }}</router-link>
+          }}
+        </router-link>
       </div>
       <ul class="new_list">
         <router-link
@@ -195,25 +163,31 @@
           <div class="img">
             <img :src="item.showUrl" class="new_img" />
             <span class="num">
-              <span class="city">{{
+              <span class="city">
+                {{
                 item.rentType
-                  ? $t("message.global.sublease")
-                  : $t("message.global.entireTenancy")
-              }}</span>
+                ? $t("message.global.sublease")
+                : $t("message.global.entireTenancy")
+                }}
+              </span>
             </span>
           </div>
           <div class="text">
             <p class="text_title">{{ item.title }}</p>
             <p class="sort">{{ item.province }}/{{ item.city }}</p>
             <p class="font">
-              <span class="itemize">{{
+              <span class="itemize">
+                {{
                 item.source
-                  ? $t("message.global.Personal")
-                  : $t("message.global.Intermediary")
-              }}</span>
-              <span class="itemize" v-show="item.isSchools == '0'">{{
+                ? $t("message.global.Personal")
+                : $t("message.global.Intermediary")
+                }}
+              </span>
+              <span class="itemize" v-show="item.isSchools == '0'">
+                {{
                 $t("message.global.jinxuexiao")
-              }}</span>
+                }}
+              </span>
             </p>
             <p class="money">{{ item.total }}{{ $t("message.global.rise") }}</p>
           </div>
@@ -225,26 +199,19 @@
     <div class="newhouse">
       <div class="font width">
         <span class="title">{{ $t("message.global.property") }}</span>
-        <router-link :to="{ path: '/agentList' }" tag="li" class="watch">{{
+        <router-link :to="{ path: '/agentList' }" tag="li" class="watch">
+          {{
           $t("message.global.economics")
-        }}</router-link>
+          }}
+        </router-link>
       </div>
       <p class="detail" style=" margin-bottom:0.07rem;">
         {{ $t("message.global.counselor") }}&nbsp;&nbsp;&nbsp;{{
-          $t("message.global.ZeroFee")
+        $t("message.global.ZeroFee")
         }}&nbsp;&nbsp; {{ $t("message.global.bilingualism") }}
       </p>
-      <van-swipe
-        :loop="false"
-        :width="180"
-        :height="78"
-        :show-indicators="false"
-      >
-        <van-swipe-item
-          v-for="(item, index) in brokerList"
-          :key="index"
-          class="swipe"
-        >
+      <van-swipe :loop="false" :width="180" :height="78" :show-indicators="false">
+        <van-swipe-item v-for="(item, index) in brokerList" :key="index" class="swipe">
           <div class="swipe_pro">
             <img :src="item.brokerAvatar" class="swipe_img" />
             <p class="swipe_P">PRO</p>
@@ -258,17 +225,16 @@
         </van-swipe-item>
       </van-swipe>
       <div class="swipe_image">
-        <img src="@/assets/image/pcBroker.png" alt="" />
-        <span style="margin-right: .1rem;">{{
+        <img src="@/assets/image/pcBroker.png" alt />
+        <span style="margin-right: .1rem;">
+          {{
           $t("message.global.middleman")
-        }}</span>
+          }}
+        </span>
         <span @click="goRouter('/dialog')" class="text_img">
-          <img
-            src="@/assets/image/pcPerson.png"
-            alt=""
-            style="margin-right: .05rem;"
-          />{{ $t("message.global.jiaru") }}</span
-        >
+          <img src="@/assets/image/pcPerson.png" alt style="margin-right: .05rem;" />
+          {{ $t("message.global.jiaru") }}
+        </span>
       </div>
       <!-- <img  src="@/assets/image/agent.png" class="swipe_image" /> -->
     </div>
@@ -290,12 +256,7 @@
       </div>
       <p class="trend_p">
         <el-select v-model="value" placeholder="请选择">
-          <el-option
-            v-for="(item, index) in returnList"
-            :key="index"
-            :label="item"
-            :value="item"
-          ></el-option>
+          <el-option v-for="(item, index) in returnList" :key="index" :label="item" :value="item"></el-option>
         </el-select>
       </p>
       <!-- <div style="widht:3.46rem;height:4rem;"> -->
@@ -429,54 +390,56 @@ export default {
         });
         this.$nextTick(function() {
           //console.log(document.querySelector(".echart"));
-          var myChart = echarts.init(document.querySelector(".echart"));
-          setTimeout(() => {
-            myChart.setOption({
-              xAxis: {
-                type: "category",
-                data: createTime
-              },
-              yAxis: {
-                type: "value",
-                name: "  € / m² "
-              },
-              dataZoom: [
-                {
-                  show: true,
-                  startValue: 0,
-                  end: 100,
-                  handleIcon:
-                    "M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z",
-                  handleSize: "80%",
-                  handleStyle: {
-                    color: "#fff",
-                    shadowBlur: 3,
-                    shadowColor: "rgba(0, 0, 0, 0.6)",
-                    shadowOffsetX: 2,
-                    shadowOffsetY: 2
-                  }
-                }
-              ],
-              grid: {
-                left: "3%",
-                right: "3%",
-                bottom: "1%",
-                containLabel: true
-              },
-              series: [
-                {
-                  label: {
-                    normal: {
-                      show: true,
-                      position: "top"
+          if (process.client) {
+            var myChart = echarts.init(document.querySelector(".echart"));
+            setTimeout(() => {
+              myChart.setOption({
+                xAxis: {
+                  type: "category",
+                  data: createTime
+                },
+                yAxis: {
+                  type: "value",
+                  name: "  € / m² "
+                },
+                dataZoom: [
+                  {
+                    show: true,
+                    startValue: 0,
+                    end: 100,
+                    handleIcon:
+                      "M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z",
+                    handleSize: "80%",
+                    handleStyle: {
+                      color: "#fff",
+                      shadowBlur: 3,
+                      shadowColor: "rgba(0, 0, 0, 0.6)",
+                      shadowOffsetX: 2,
+                      shadowOffsetY: 2
                     }
-                  },
-                  data: homeTrendPrice,
-                  type: "line"
-                }
-              ]
-            });
-          }, 500);
+                  }
+                ],
+                grid: {
+                  left: "3%",
+                  right: "3%",
+                  bottom: "1%",
+                  containLabel: true
+                },
+                series: [
+                  {
+                    label: {
+                      normal: {
+                        show: true,
+                        position: "top"
+                      }
+                    },
+                    data: homeTrendPrice,
+                    type: "line"
+                  }
+                ]
+              });
+            }, 500);
+          }
         });
       });
       // let data = [{"id":71,"createTime":970329600000,"homeTrendQuarter":"T4 2000","homeTrendRegion":"Paris 1","homeTrendPrice":"3500"},{"id":70,"createTime":978278400000,"homeTrendQuarter":"T1 2001","homeTrendRegion":"Paris 1","homeTrendPrice":"3780"},{"id":69,"createTime":986054400000,"homeTrendQuarter":"T2 2001","homeTrendRegion":"Paris 1","homeTrendPrice":"3930"},{"id":68,"createTime":993916800000,"homeTrendQuarter":"T3 2001","homeTrendRegion":"Paris 1","homeTrendPrice":"4150"},{"id":67,"createTime":1001865600000,"homeTrendQuarter":"T4 2001","homeTrendRegion":"Paris 1","homeTrendPrice":"3940"},{"id":66,"createTime":1009814400000,"homeTrendQuarter":"T1 2002","homeTrendRegion":"Paris 1","homeTrendPrice":"3720"},{"id":65,"createTime":1017590400000,"homeTrendQuarter":"T2 2002","homeTrendRegion":"Paris 1","homeTrendPrice":"4210"},{"id":64,"createTime":1025452800000,"homeTrendQuarter":"T3 2002","homeTrendRegion":"Paris 1","homeTrendPrice":"4710"},{"id":63,"createTime":1033401600000,"homeTrendQuarter":"T4 2002","homeTrendRegion":"Paris 1","homeTrendPrice":"5010"},{"id":62,"createTime":1041350400000,"homeTrendQuarter":"T1 2003","homeTrendRegion":"Paris 1","homeTrendPrice":"4860"},{"id":61,"createTime":1049126400000,"homeTrendQuarter":"T2 2003","homeTrendRegion":"Paris 1","homeTrendPrice":"4750"},{"id":60,"createTime":1056988800000,"homeTrendQuarter":"T3 2003","homeTrendRegion":"Paris 1","homeTrendPrice":"4700"},{"id":59,"createTime":1064937600000,"homeTrendQuarter":"T4 2003","homeTrendRegion":"Paris 1","homeTrendPrice":"5100"},{"id":58,"createTime":1072886400000,"homeTrendQuarter":"T1 2004","homeTrendRegion":"Paris 1","homeTrendPrice":"5610"},{"id":57,"createTime":1080748800000,"homeTrendQuarter":"T2 2004","homeTrendRegion":"Paris 1","homeTrendPrice":"5690"},{"id":56,"createTime":1088611200000,"homeTrendQuarter":"T3 2004","homeTrendRegion":"Paris 1","homeTrendPrice":"6090"},{"id":55,"createTime":1096560000000,"homeTrendQuarter":"T4 2004","homeTrendRegion":"Paris 1","homeTrendPrice":"6510"},{"id":54,"createTime":1104508800000,"homeTrendQuarter":"T1 2005","homeTrendRegion":"Paris 1","homeTrendPrice":"6030"},{"id":53,"createTime":1112284800000,"homeTrendQuarter":"T2 2005","homeTrendRegion":"Paris 1","homeTrendPrice":"6150"},{"id":52,"createTime":1120147200000,"homeTrendQuarter":"T3 2005","homeTrendRegion":"Paris 1","homeTrendPrice":"6170"},{"id":51,"createTime":1128096000000,"homeTrendQuarter":"T4 2005","homeTrendRegion":"Paris 1","homeTrendPrice":"6610"},{"id":50,"createTime":1136044800000,"homeTrendQuarter":"T1 2006","homeTrendRegion":"Paris 1","homeTrendPrice":"6700"},{"id":49,"createTime":1143820800000,"homeTrendQuarter":"T2 2006","homeTrendRegion":"Paris 1","homeTrendPrice":"6960"},{"id":48,"createTime":1151683200000,"homeTrendQuarter":"T3 2006","homeTrendRegion":"Paris 1","homeTrendPrice":"7180"},{"id":47,"createTime":1159632000000,"homeTrendQuarter":"T4 2006","homeTrendRegion":"Paris 1","homeTrendPrice":"6930"},{"id":46,"createTime":1167580800000,"homeTrendQuarter":"T1 2007","homeTrendRegion":"Paris 1","homeTrendPrice":"7090"},{"id":45,"createTime":1175356800000,"homeTrendQuarter":"T2 2007","homeTrendRegion":"Paris 1","homeTrendPrice":"7330"},{"id":44,"createTime":1183219200000,"homeTrendQuarter":"T3 2007","homeTrendRegion":"Paris 1","homeTrendPrice":"7950"},{"id":43,"createTime":1191168000000,"homeTrendQuarter":"T4 2007","homeTrendRegion":"Paris 1","homeTrendPrice":"8310"},{"id":42,"createTime":1199116800000,"homeTrendQuarter":"T1 2008","homeTrendRegion":"Paris 1","homeTrendPrice":"8790"},{"id":41,"createTime":1206979200000,"homeTrendQuarter":"T2 2008","homeTrendRegion":"Paris 1","homeTrendPrice":"8220"},{"id":40,"createTime":1214841600000,"homeTrendQuarter":"T3 2008","homeTrendRegion":"Paris 1","homeTrendPrice":"8860"},{"id":39,"createTime":1222790400000,"homeTrendQuarter":"T4 2008","homeTrendRegion":"Paris 1","homeTrendPrice":"7900"},{"id":38,"createTime":1230739200000,"homeTrendQuarter":"T1 2009","homeTrendRegion":"Paris 1","homeTrendPrice":"8560"},{"id":37,"createTime":1238515200000,"homeTrendQuarter":"T2 2009","homeTrendRegion":"Paris 1","homeTrendPrice":"7980"},{"id":36,"createTime":1246377600000,"homeTrendQuarter":"T3 2009","homeTrendRegion":"Paris 1","homeTrendPrice":"8030"},{"id":35,"createTime":1254326400000,"homeTrendQuarter":"T4 2009","homeTrendRegion":"Paris 1","homeTrendPrice":"8390"},{"id":34,"createTime":1262275200000,"homeTrendQuarter":"T1 2010","homeTrendRegion":"Paris 1","homeTrendPrice":"8540"},{"id":33,"createTime":1270051200000,"homeTrendQuarter":"T2 2010","homeTrendRegion":"Paris 1","homeTrendPrice":"8910"},{"id":32,"createTime":1277913600000,"homeTrendQuarter":"T3 2010","homeTrendRegion":"Paris 1","homeTrendPrice":"9300"},{"id":31,"createTime":1285862400000,"homeTrendQuarter":"T4 2010","homeTrendRegion":"Paris 1","homeTrendPrice":"9510"},{"id":30,"createTime":1293811200000,"homeTrendQuarter":"T1 2011","homeTrendRegion":"Paris 1","homeTrendPrice":"9930"},{"id":29,"createTime":1301587200000,"homeTrendQuarter":"T2 2011","homeTrendRegion":"Paris 1","homeTrendPrice":"10660"},{"id":28,"createTime":1309449600000,"homeTrendQuarter":"T3 2011","homeTrendRegion":"Paris 1","homeTrendPrice":"10860"},{"id":27,"createTime":1317398400000,"homeTrendQuarter":"T4 2011","homeTrendRegion":"Paris 1","homeTrendPrice":"10460"},{"id":26,"createTime":1325347200000,"homeTrendQuarter":"T1 2012","homeTrendRegion":"Paris 1","homeTrendPrice":"10700"},{"id":25,"createTime":1333209600000,"homeTrendQuarter":"T2 2012","homeTrendRegion":"Paris 1","homeTrendPrice":"10920"},{"id":24,"createTime":1341072000000,"homeTrendQuarter":"T3 2012","homeTrendRegion":"Paris 1","homeTrendPrice":"10860"},{"id":23,"createTime":1349020800000,"homeTrendQuarter":"T4 2012","homeTrendRegion":"Paris 1","homeTrendPrice":"10560"},{"id":22,"createTime":1356969600000,"homeTrendQuarter":"T1 2013","homeTrendRegion":"Paris 1","homeTrendPrice":"11130"},{"id":21,"createTime":1364745600000,"homeTrendQuarter":"T2 2013","homeTrendRegion":"Paris 1","homeTrendPrice":"9870"},{"id":20,"createTime":1372608000000,"homeTrendQuarter":"T3 2013","homeTrendRegion":"Paris 1","homeTrendPrice":"10130"},{"id":19,"createTime":1380556800000,"homeTrendQuarter":"T4 2013","homeTrendRegion":"Paris 1","homeTrendPrice":"10280"},{"id":18,"createTime":1388505600000,"homeTrendQuarter":"T1 2014","homeTrendRegion":"Paris 1","homeTrendPrice":"9820"},{"id":17,"createTime":1396281600000,"homeTrendQuarter":"T2 2014","homeTrendRegion":"Paris 1","homeTrendPrice":"10640"},{"id":16,"createTime":1404144000000,"homeTrendQuarter":"T3 2014","homeTrendRegion":"Paris 1","homeTrendPrice":"10060"},{"id":15,"createTime":1412092800000,"homeTrendQuarter":"T4 2014","homeTrendRegion":"Paris 1","homeTrendPrice":"10690"},{"id":14,"createTime":1420041600000,"homeTrendQuarter":"T1 2015","homeTrendRegion":"Paris 1","homeTrendPrice":"9910"},{"id":13,"createTime":1427817600000,"homeTrendQuarter":"T2 2015","homeTrendRegion":"Paris 1","homeTrendPrice":"9870"},{"id":12,"createTime":1435680000000,"homeTrendQuarter":"T3 2015","homeTrendRegion":"Paris 1","homeTrendPrice":"10500"},{"id":11,"createTime":1443628800000,"homeTrendQuarter":"T4 2015","homeTrendRegion":"Paris 1","homeTrendPrice":"11030"},{"id":10,"createTime":1451577600000,"homeTrendQuarter":"T1 2016","homeTrendRegion":"Paris 1","homeTrendPrice":"10390"},{"id":9,"createTime":1459440000000,"homeTrendQuarter":"T2 2016","homeTrendRegion":"Paris 1","homeTrendPrice":"10630"},{"id":8,"createTime":1467302400000,"homeTrendQuarter":"T3 2016","homeTrendRegion":"Paris 1","homeTrendPrice":"10860"},{"id":7,"createTime":1475251200000,"homeTrendQuarter":"T4 2016","homeTrendRegion":"Paris 1","homeTrendPrice":"10250"},{"id":6,"createTime":1483200000000,"homeTrendQuarter":"T1 2017","homeTrendRegion":"Paris 1","homeTrendPrice":"11410"},{"id":5,"createTime":1490976000000,"homeTrendQuarter":"T2 2017","homeTrendRegion":"Paris 1","homeTrendPrice":"11060"},{"id":4,"createTime":1498838400000,"homeTrendQuarter":"T3 2017","homeTrendRegion":"Paris 1","homeTrendPrice":"11380"},{"id":3,"createTime":1506787200000,"homeTrendQuarter":"T4 2017","homeTrendRegion":"Paris 1","homeTrendPrice":"11560"},{"id":2,"createTime":1514736000000,"homeTrendQuarter":"T1 2018","homeTrendRegion":"Paris 1","homeTrendPrice":"12050"},{"id":1,"createTime":1522512000000,"homeTrendQuarter":"T2 2018","homeTrendRegion":"Paris 1","homeTrendPrice":"11990"}]
