@@ -1,18 +1,8 @@
 <template>
   <div class="titles">
     <div class="lefts" @click="RoutingHop('/pc_index', true)">
-      <img
-        class="logs"
-        v-show="vas"
-        src="@/assets/image/white.png"
-        alt="logos"
-      />
-      <img
-        class="logs"
-        v-show="!vas"
-        src="@/assets/image/black.png"
-        alt="logos"
-      />
+      <img class="logs" v-show="vas" src="@/assets/image/white.png" alt="logos" />
+      <img class="logs" v-show="!vas" src="@/assets/image/black.png" alt="logos" />
     </div>
     <div class="rightL">
       <span @click="Onrouter" style="font-size:20px;cursor:pointer;">
@@ -20,13 +10,13 @@
           v-show="vas"
           style="width:16px;vertical-align:middle;cursor:pointer;"
           src="@/assets/image/renwuW.png"
-          alt=""
+          alt
         />
         <img
           v-show="!vas"
           style="width:16px;vertical-align:middle;cursor:pointer;"
           src="@/assets/image/pcPerson.png"
-          alt=""
+          alt
         />
         {{ $t("message.global.login") }}
       </span>
@@ -34,77 +24,75 @@
     <div class="right" style="margin-right:10px;">
       <el-popover width="200" trigger="hover">
         <p
-          v-on:click="Onclick('zh-cn')"
+          v-on:click="changeLocale('zh')"
           style="margin-bottom:6px;font-size:16px;box-sizing:border-box;padding-left:20px;cursor: pointer;"
         >
           <img
             style="vertical-align: middle;margin-right:26px;"
             src="@/assets/image/chinese.png"
-            alt=""
-          />{{ $t("message.global.Chinese") }}
+            alt
+          />
+          {{ $t("message.global.Chinese") }}
         </p>
         <p
-          v-on:click="Onclick('fr')"
+          v-on:click="changeLocale('fr')"
           style="font-size:16px;box-sizing:border-box;padding-left:20px;cursor: pointer;"
         >
           <img
             style="vertical-align: middle;margin-right:21px;"
             src="@/assets/image/french.png"
-            alt=""
-          />{{ $t("message.global.French") }}
+            alt
+          />
+          {{ $t("message.global.French") }}
         </p>
-        <span style="cursor: pointer;font-size:20px;" slot="reference"
-          >{{ fls ? "français" : "中文" }}
+        <span style="cursor: pointer;font-size:20px;" slot="reference">
+          {{ fls ? "français" : "中文" }}
           <img
             v-show="vas"
             style="width:16px;"
             src="@/assets/image/sortW.png"
-            alt=""
+            alt
           />
-          <img
-            v-show="!vas"
-            style="width:16px;"
-            src="@/assets/image/sort.png"
-            alt=""
-          />
+          <img v-show="!vas" style="width:16px;" src="@/assets/image/sort.png" alt />
         </span>
       </el-popover>
     </div>
     <div class="centerL">
-      <span class="divide" @click="RoutingHop('/pc_index', true)"
-        ><span>{{ $t("message.global.home") }}</span></span
-      >
+      <span class="divide" @click="RoutingHop('/pc_index', true)">
+        <span>{{ $t("message.global.home") }}</span>
+      </span>
 
-      <span class="divide" @click="RoutingHop('/newList', true)"
-        ><span>{{ $t("message.global.NewHouse") }}</span></span
-      >
-      <span class="divide" @click="RoutingHop('/anyEs', true)"
-        ><span>{{ $t("message.global.second-hand") }}</span></span
-      >
-      <span class="divide" @click="RoutingHop('/rentHouseList', true)"
-        ><span>{{ $t("message.global.tenement") }}</span></span
-      >
-      <span class="divide" @click="RoutingHop('/broker', true)"
-        ><span>{{ $t("message.global.agent") }}</span></span
-      >
-      <span class="divide" @click="RoutingHop('/encyclopedia', true)"
-        ><span>{{ $t("message.global.encyclopedia") }}</span></span
-      >
-      <span class="divide" @click="RoutingHop('/promoteLists', true)"
-        ><span>{{ $t("message.global.instrument") }}</span></span
-      >
-      <span class="divide" @click="RoutingHop('/serve', true)"
-        ><span>{{ $t("message.global.Saas") }}</span></span
-      >
-      <span class="divide" @click="RoutingHop('/aboutUs', true)"
-        ><span>{{ $t("message.global.regards") }}</span></span
-      >
+      <span class="divide" @click="RoutingHop('/newList', true)">
+        <span>{{ $t("message.global.NewHouse") }}</span>
+      </span>
+      <span class="divide" @click="RoutingHop('/anyEs', true)">
+        <span>{{ $t("message.global.second-hand") }}</span>
+      </span>
+      <span class="divide" @click="RoutingHop('/rentHouseList', true)">
+        <span>{{ $t("message.global.tenement") }}</span>
+      </span>
+      <span class="divide" @click="RoutingHop('/broker', true)">
+        <span>{{ $t("message.global.agent") }}</span>
+      </span>
+      <span class="divide" @click="RoutingHop('/encyclopedia', true)">
+        <span>{{ $t("message.global.encyclopedia") }}</span>
+      </span>
+      <span class="divide" @click="RoutingHop('/promoteLists', true)">
+        <span>{{ $t("message.global.instrument") }}</span>
+      </span>
+      <span class="divide" @click="RoutingHop('/serve', true)">
+        <span>{{ $t("message.global.Saas") }}</span>
+      </span>
+      <span class="divide" @click="RoutingHop('/aboutUs', true)">
+        <span>{{ $t("message.global.regards") }}</span>
+      </span>
       <!-- <span class="Buttons" @click="RoutingHop('/sellers', true)"><img :src="imgs.sellersT" alt=""></span> -->
       <span class="divide backC" @click="RoutingHop('/sellers', true)">
-        <img src="@/assets/image/houseAD.png" alt="" />&nbsp;{{
-          $t("message.global.rental")
-        }}</span
-      >
+        <img src="@/assets/image/houseAD.png" alt />
+        &nbsp;{{
+        $t("message.global.rental")
+        }}
+      </span>
       <!--  -->
     </div>
   </div>
@@ -150,6 +138,10 @@ export default {
       //   localStorage.lan = val;
       //   this.$i18n.locale = val;
       //   localStorage.lang = val;
+    },
+    changeLocale(locale) {
+      this.$i18n.setLocaleCookie(locale);
+      this.$router.push(this.switchLocalePath(locale));
     }
   }
 };

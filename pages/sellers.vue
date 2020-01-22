@@ -775,7 +775,7 @@ export default {
   },
   created() {
     //TODO get the real local instead of localStorage
-    if (process.client && localStorage.lang == "zh-cn") {
+    if (process.client && this.$i18n.locale == "zh") {
       this.options = [
         { value: "东", label: "东" },
         { value: "南", label: "南" },

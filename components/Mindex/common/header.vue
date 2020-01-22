@@ -58,7 +58,7 @@
           }}
         </router-link>
 
-        <li v-on:click="Onclick('zh-cn')">
+        <li v-on:click="changeLocale('zh')">
           <img src="@/assets/image/chinese.png" style="margin-right: 0.1rem;" />
           <span style="display:inline-block;text-align:center;">
             {{
@@ -66,7 +66,7 @@
             }}
           </span>
         </li>
-        <li v-on:click="Onclick('fr')">
+        <li v-on:click="changeLocale('fr')">
           <img src="@/assets/image/french.png" style="margin-right: .05rem;" />
           <span style="display:inline-block;text-align:center;">{{ $t("message.global.French") }}</span>
         </li>
@@ -111,10 +111,9 @@ export default {
     list() {
       this.diaplay = !this.diaplay;
     },
-    Onclick(val) {
-      //  localStorage.lan= val;
-      // this.$i18n.locale = val;
-      // localStorage.lang = val;
+    changeLocale(locale) {
+      this.$i18n.setLocaleCookie(locale);
+      this.$router.push(this.switchLocalePath(locale));
     },
     Onrouter() {
       window.location.href = "http://www.milliome.com";
