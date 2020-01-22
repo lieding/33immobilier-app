@@ -1,15 +1,15 @@
 <template>
   <div class="encyclopedia">
-    <headers :class="{colors:flag}"></headers>
+    <headers :class="{ colors: flag }"></headers>
     <div v-wechat-title="outcome.title"></div>
     <div class="centerS seconBrok">
       <div class="headline">
         <span>主页</span> /
         <span>百科</span>
       </div>
-      <div class="oductions">{{outcome.title}}</div>
+      <div class="oductions">{{ outcome.title }}</div>
       <div class="Maindivmain" style="overflow:hidden">
-        <p>作者：{{outcome.nickName}} 发布时间: {{outcome.createTime}}</p>
+        <p>作者：{{ outcome.nickName }} 发布时间: {{ outcome.createTime }}</p>
 
         <div class="topicofthearticle">
           <div v-html="outcome.content"></div>
@@ -18,7 +18,7 @@
           <div
             style="width:351px;height:auto;padding-bottom:20px;background-color:#fff;box-shadow:0px 2px 26px 0px rgba(0,0,0,0.11);float:right;"
           >
-            <p style="padding: 12px;">{{$t("message.global.category")}}</p>
+            <p style="padding: 12px;">{{ $t("message.global.category") }}</p>
             <p
               v-for="(item, index) in category"
               :key="index"
@@ -34,7 +34,7 @@
                         border-radius:50%;background-color:#234CD3;
                         vertical-align: middle"
               ></span>
-              {{item.typeName}}
+              {{ item.typeName }}
             </p>
           </div>
           <br />
@@ -43,7 +43,9 @@
           <div
             style="width:351px;height:285px;background-color:#fff;box-shadow:0px 2px 26px 0px rgba(0,0,0,0.11);float:right;"
           >
-            <p style="padding: 12px;">{{$t("message.global.zuixinxiaoxi")}}</p>
+            <p style="padding: 12px;">
+              {{ $t("message.global.zuixinxiaoxi") }}
+            </p>
             <p
               v-for="(item, index) in abc"
               :key="index"
@@ -55,7 +57,7 @@
                         border-radius:50%;background-color:#234CD3;
                         vertical-align: middle"
               ></span>
-              {{item.title}}
+              {{ item.title }}
             </p>
           </div>
         </div>

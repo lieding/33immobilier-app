@@ -1,8 +1,14 @@
 <template>
   <div class="house">
-    <Header :title="house == '新房'?$t('message.global.homeList'):$t('message.global.second-hand')" />
+    <Header
+      :title="
+        house == '新房'
+          ? $t('message.global.homeList')
+          : $t('message.global.second-hand')
+      "
+    />
     <!-- '$t('message.global.homeList)':'second-hand' -->
-    <div :class="house == '新房'?'select':'section'">
+    <div :class="house == '新房' ? 'select' : 'section'">
       <!-- 区域 -->
       <!-- <van-dropdown-menu  class="opn" >
                <van-dropdown-item :title='$t("message.global.area")' ref="item">
@@ -34,28 +40,61 @@
       <!-- 价格 -->
 
       <van-dropdown-menu v-if="house == '新房'">
-        <van-dropdown-item class="asd" :title="$t('message.global.price')" ref="item2">
-          <div
-            class="section"
-          >{{$t("message.global.price")}} : {{fmoney(minCost,1)}}€ — {{fmoney(maxCost,1)}}€</div>
-          <el-slider v-model="value" range :max="maxPrice" :min="minPrice" @change="onCost"></el-slider>
-          <van-button type="info" @click="Onprice" class="btn_i">{{$t("message.global.sure")}}</van-button>
+        <van-dropdown-item
+          class="asd"
+          :title="$t('message.global.price')"
+          ref="item2"
+        >
+          <div class="section">
+            {{ $t("message.global.price") }} : {{ fmoney(minCost, 1) }}€ —
+            {{ fmoney(maxCost, 1) }}€
+          </div>
+          <el-slider
+            v-model="value"
+            range
+            :max="maxPrice"
+            :min="minPrice"
+            @change="onCost"
+          ></el-slider>
+          <van-button type="info" @click="Onprice" class="btn_i">{{
+            $t("message.global.sure")
+          }}</van-button>
         </van-dropdown-item>
       </van-dropdown-menu>
 
       <van-dropdown-menu v-if="house == '二手房'">
-        <van-dropdown-item class="asd" :title="$t('message.global.price')" ref="item6">
-          <div
-            class="section"
-          >{{$t("message.global.price")}} : {{fmoney(minCost,1)}}€ — {{fmoney(maxCost,1)}}€</div>
-          <el-slider v-model="value" range :max="maxPrice" :min="minPrice" @change="onCost"></el-slider>
-          <van-button type="info" @click="Onpir" class="btn_i">{{$t("message.global.sure")}}</van-button>
+        <van-dropdown-item
+          class="asd"
+          :title="$t('message.global.price')"
+          ref="item6"
+        >
+          <div class="section">
+            {{ $t("message.global.price") }} : {{ fmoney(minCost, 1) }}€ —
+            {{ fmoney(maxCost, 1) }}€
+          </div>
+          <el-slider
+            v-model="value"
+            range
+            :max="maxPrice"
+            :min="minPrice"
+            @change="onCost"
+          ></el-slider>
+          <van-button type="info" @click="Onpir" class="btn_i">{{
+            $t("message.global.sure")
+          }}</van-button>
         </van-dropdown-item>
       </van-dropdown-menu>
       <!-- 面积 -->
       <van-dropdown-menu v-if="house == '二手房'">
-        <van-dropdown-item class="asd" :title="$t('message.global.proportion')" ref="item5">
-          <div class="section">{{$t("message.global.proportion")}} : {{minArea}}m² — {{maxArea}}m²</div>
+        <van-dropdown-item
+          class="asd"
+          :title="$t('message.global.proportion')"
+          ref="item5"
+        >
+          <div class="section">
+            {{ $t("message.global.proportion") }} : {{ minArea }}m² —
+            {{ maxArea }}m²
+          </div>
           <el-slider
             v-model="Acreage"
             range
@@ -63,7 +102,9 @@
             :min="minAcreage"
             @change="onAcreage"
           ></el-slider>
-          <van-button type="info" @click="Onpir" class="btn_i">{{$t("message.global.sure")}}</van-button>
+          <van-button type="info" @click="Onpir" class="btn_i">{{
+            $t("message.global.sure")
+          }}</van-button>
         </van-dropdown-item>
       </van-dropdown-menu>
       <!-- 交房时间 -->
@@ -81,10 +122,25 @@
       <!-- 居室 -->
 
       <van-dropdown-menu class="opn" v-if="house == '新房'">
-        <van-dropdown-item class="asd" :title="$t('message.global.habitable')" ref="item3">
-          <div class="section">{{$t("message.global.habitable")}} : {{minroom[0]}} — {{minroom[1]}}</div>
-          <el-slider v-model="minroom" range :max="maxHall" :min="minHall" @change="onroom"></el-slider>
-          <van-button type="info" @click="Onprice" class="btn_i">{{$t("message.global.sure")}}</van-button>
+        <van-dropdown-item
+          class="asd"
+          :title="$t('message.global.habitable')"
+          ref="item3"
+        >
+          <div class="section">
+            {{ $t("message.global.habitable") }} : {{ minroom[0] }} —
+            {{ minroom[1] }}
+          </div>
+          <el-slider
+            v-model="minroom"
+            range
+            :max="maxHall"
+            :min="minHall"
+            @change="onroom"
+          ></el-slider>
+          <van-button type="info" @click="Onprice" class="btn_i">{{
+            $t("message.global.sure")
+          }}</van-button>
         </van-dropdown-item>
       </van-dropdown-menu>
       <!-- 居室 -->
@@ -107,12 +163,20 @@
       </van-dropdown-menu>
     </div>
     <div class="map">
-      <iframe src="http://47.254.149.82/latest/map/newMap" frameborder="0" v-if="house == '新房'"></iframe>
-      <iframe src="http://47.254.149.82/latest/map/homesMap" frameborder="0" v-if="house == '二手房'"></iframe>
+      <iframe
+        src="http://47.254.149.82/latest/map/newMap"
+        frameborder="0"
+        v-if="house == '新房'"
+      ></iframe>
+      <iframe
+        src="http://47.254.149.82/latest/map/homesMap"
+        frameborder="0"
+        v-if="house == '二手房'"
+      ></iframe>
       <!-- <mapBox/> -->
     </div>
     <div class="sort_title" v-if="house == '二手房'">
-      <p class="second-hand">{{$t("message.global.ordHouseapartment")}}</p>
+      <p class="second-hand">{{ $t("message.global.ordHouseapartment") }}</p>
 
       <div class="sorting">
         <!-- <el-popover
@@ -123,19 +187,23 @@
                    <p @click="OnRank(2)">{{$t("message.global.highToLow")}}</p>
                 </div>
                   <span slot="reference">
-                     <img src="../../assets/image/sorting.png" alt="" class="sortimage">
+                     <img src="@/assets/image/sorting.png" alt="" class="sortimage">
                         {{$t("message.global.paixu")}}
-                     <img src="../../assets/image/src.png" alt="">
+                     <img src="@/assets/image/src.png" alt="">
                   </span>
         </el-popover>-->
         <el-popover placement="bottom" width="100" v-model="visible">
           <div class="rank">
-            <p @click="OnRank(1),visible = false">{{$t("message.global.lowToHigh")}}</p>
-            <p @click="OnRank(2),visible = false">{{$t("message.global.highToLow")}}</p>
+            <p @click="OnRank(1), (visible = false)">
+              {{ $t("message.global.lowToHigh") }}
+            </p>
+            <p @click="OnRank(2), (visible = false)">
+              {{ $t("message.global.highToLow") }}
+            </p>
           </div>
           <span slot="reference">
             <img src="@/assets/image/sorting.png" alt class="sortimage" />
-            {{$t("message.global.paixu")}}
+            {{ $t("message.global.paixu") }}
             <img src="@/assets/image/src.png" alt />
           </span>
           <!-- <div style="text-align: right; margin: 0">
@@ -150,33 +218,38 @@
     <!-- <van-pull-refresh v-model="isLoading" @refresh="onRefresh"> -->
     <ul class="new_list">
       <router-link
-        :to="{path: '/Details', query: {id:item.id}}"
-        v-for="(item,index) in HousingList"
+        :to="{ path: '/Details', query: { id: item.id } }"
+        v-for="(item, index) in HousingList"
         :key="index"
       >
         <li class="list_li" v-if="house == '新房'">
           <diV class="flex">
             <div class="img">
               <img :src="item.showUrl" class="new_img" v-if="house == '新房'" />
-              <span class="year" v-if="item.expressing">{{item.expressing}}</span>
-              <span class="num" v-if="item.province">{{item.province}}</span>
+              <span class="year" v-if="item.expressing">{{
+                item.expressing
+              }}</span>
+              <span class="num" v-if="item.province">{{ item.province }}</span>
               <!--<div class="image" >
                       <img :src="item.developersPic" alt="" class="list-img"  >
                       <span class="list-font">{{item.developers}}</span>
               </div>-->
             </div>
             <div class="text">
-              <p class="text_title">{{item.estate}}</p>
-              <p class="sort">{{item.province}}/{{item.city}}</p>
-              <p class="sort">{{item.minHall}} pièces - {{item.maxHall}} pièces</p>
+              <p class="text_title">{{ item.estate }}</p>
+              <p class="sort">{{ item.province }}/{{ item.city }}</p>
+              <p class="sort">
+                {{ item.minHall }} pièces - {{ item.maxHall }} pièces
+              </p>
               <!-- <p class="font">
                            <span class="itemize">低TVA</span>
                            <span class="itemize">低TVA</span>
                            <span class="itemize">低TVA</span>
               </p>-->
-              <p
-                class="money"
-              >{{item.lowPrice}}{{$t("message.global.rise")}} - {{item.maxPrice}}{{$t("message.global.rise")}}</p>
+              <p class="money">
+                {{ item.lowPrice }}{{ $t("message.global.rise") }} -
+                {{ item.maxPrice }}{{ $t("message.global.rise") }}
+              </p>
             </div>
           </diV>
           <div>
@@ -187,35 +260,45 @@
         </li>
       </router-link>
       <router-link
-        :to="{path: '/ordDetails', query: {id:item.id}}"
-        v-for="(item,index) in HousList"
+        :to="{ path: '/ordDetails', query: { id: item.id } }"
+        v-for="(item, index) in HousList"
         :key="index"
       >
         <li class="list_li" v-if="house == '二手房'">
           <diV class="flex">
             <div class="img">
               <img :src="item.showUrl" class="new_img" />
-              <span
-                class="year"
-              >{{item.houseOrApartment == 1 ? $t("message.global.apartments") : $t("message.global.cottage") }}</span>
-              <span
-                class="num"
-              >{{item.oneselfOrAgent == 1?$t("message.global.agent"):$t("message.global.Personal")}}</span>
+              <span class="year">{{
+                item.houseOrApartment == 1
+                  ? $t("message.global.apartments")
+                  : $t("message.global.cottage")
+              }}</span>
+              <span class="num">{{
+                item.oneselfOrAgent == 1
+                  ? $t("message.global.agent")
+                  : $t("message.global.Personal")
+              }}</span>
             </div>
             <div class="text">
-              <p class="text_title">{{item.title}}</p>
-              <p class="sort">{{item.bigProvince}}/{{item.province}}</p>
+              <p class="text_title">{{ item.title }}</p>
+              <p class="sort">{{ item.bigProvince }}/{{ item.province }}</p>
               <!-- <p class="sort">{{item.roomsNum}} {{$t("message.global.P")}} - {{item.bedroomNum}}{{$t("message.global.CH")}} </p> -->
               <p class="money">
-                {{item.total}}{{$t("message.global.rise")}}
-                <span
-                  class="unit"
-                >{{item.unit}}€/{{$t("message.global.square")}}</span>
+                {{ item.total }}{{ $t("message.global.rise") }}
+                <span class="unit"
+                  >{{ item.unit }}€/{{ $t("message.global.square") }}</span
+                >
               </p>
               <p class="font">
-                <span class="itemize">{{item.roomsNum}}{{$t("message.global.chamber")}}</span>
-                <span class="itemize">{{item.bedroomNum}}{{$t("message.global.crouch")}}</span>
-                <span class="itemize">{{item.acreage}}{{$t("message.global.square")}}</span>
+                <span class="itemize"
+                  >{{ item.roomsNum }}{{ $t("message.global.chamber") }}</span
+                >
+                <span class="itemize"
+                  >{{ item.bedroomNum }}{{ $t("message.global.crouch") }}</span
+                >
+                <span class="itemize"
+                  >{{ item.acreage }}{{ $t("message.global.square") }}</span
+                >
               </p>
             </div>
           </diV>
@@ -854,7 +937,7 @@ div {
   border-radius: 0.06rem;
 }
 </style>
-<style lang ='less' >
+<style lang="less">
 /* .house{
    .el-popover{
       padding:0,

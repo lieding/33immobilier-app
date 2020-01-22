@@ -1,56 +1,67 @@
 <template>
   <div>
-    <Header :title="$t('message.global.encyclopedia')" />
-    <div class="pedia" style="width: 95%;">
-      <el-input :placeholder="$t('message.global.qingshuru')"
-        v-model="value"
-        prefix-icon="el-icon-search"
-        @change="OnType"
-      >
-        <template slot="append"><img src="@/assets/image/SearchIcon.png" alt=""></template>
-      </el-input>
-      <div class="select_type">
-        <!-- 类型 -->
-        <el-select v-model="select" :placeholder="$t('message.global.category')">
-          <el-option
-            v-for="item in typeList"
-            :key="item.value"
-            :label="item.text"
-            :value="item.value"
-          ></el-option>
-        </el-select>
-      </div>
-    </div>
-    <ul class="new_list">
-      <li class="list_li" @click="onclick(item.id)" v-for="(item,index) in agentList" :key="index">
-        <diV class="flex">
-          <div class="img">
-            <img :src="item.picUrl" class="new_img" />
-            <span class="year">{{item.createTime}}</span>
-          </div>
-          <div class="text">
-            <p class="text_title">{{item.title}}</p>
-            <!-- <p class="conter">{{item.content}}</p> -->
-          </div>
-        </diV>
-        <div class="flex_size">
-          <div class="image">
-            <span>{{$t("message.global.aufaburen")}}:</span>
-            <span style="color:#234CD3">{{item.nickName}}</span>
-          </div>
-          <p class="font">
-            <span>{{$t("message.global.category")}} :</span>
-            <span style="color:#234CD3">{{item.typeName}}</span>
-          </p>
+    <client-only>
+      <Header :title="$t('message.global.encyclopedia')" />
+      <div class="pedia" style="width: 95%;">
+        <el-input
+          :placeholder="$t('message.global.qingshuru')"
+          v-model="value"
+          prefix-icon="el-icon-search"
+          @change="OnType"
+        >
+          <template slot="append">
+            <img src="@/assets/image/SearchIcon.png" alt />
+          </template>
+        </el-input>
+        <div class="select_type">
+          <!-- 类型 -->
+          <el-select v-model="select" :placeholder="$t('message.global.category')">
+            <el-option
+              v-for="item in typeList"
+              :key="item.value"
+              :label="item.text"
+              :value="item.value"
+            ></el-option>
+          </el-select>
         </div>
-      </li>
+      </div>
+      <ul class="new_list">
+        <li
+          class="list_li"
+          @click="onclick(item.id)"
+          v-for="(item, index) in agentList"
+          :key="index"
+        >
+          <diV class="flex">
+            <div class="img">
+              <img :src="item.picUrl" class="new_img" />
+              <span class="year">{{ item.createTime }}</span>
+            </div>
+            <div class="text">
+              <p class="text_title">{{ item.title }}</p>
+              <!-- <p class="conter">{{item.content}}</p> -->
+            </div>
+          </diV>
+          <div class="flex_size">
+            <div class="image">
+              <span>{{ $t("message.global.aufaburen") }}:</span>
+              <span style="color:#234CD3">{{ item.nickName }}</span>
+            </div>
+            <p class="font">
+              <span>{{ $t("message.global.category") }} :</span>
+              <span style="color:#234CD3">{{ item.typeName }}</span>
+            </p>
+          </div>
+        </li>
 
-      <hr class="hr" />
-    </ul>
-    <Footer />
+        <hr class="hr" />
+      </ul>
+      <Footer />
+    </client-only>
   </div>
 </template>
 <script>
+import rem from "@/common/rem.js";
 import Header from "@/components/MIndex/common/head.vue";
 import Footer from "@/components/MIndex/common/footer.vue";
 export default {
@@ -87,6 +98,7 @@ export default {
     };
   },
   mounted() {
+    rem();
     let params = {};
     this.$api.article.WikigetRigth(params).then(res => {
       //console.log(res);
@@ -102,23 +114,25 @@ export default {
   },
   created() {
     const that = this;
-    window.onscroll = function() {
-      var scrollTop =
-        document.documentElement.scrollTop || document.body.scrollTop;
-      // 页面高度
-      var windowHeight =
-        document.documentElement.clientHeight || document.body.clientHeight;
-      // 总共的高度
-      var scrollHeight =
-        document.documentElement.scrollHeight || document.body.scrollHeight;
-      if (scrollTop + windowHeight == scrollHeight) {
-        //console.log(that.page, that.Maxpage);
-        if (that.page < that.maxPage) {
-          that.page++;
-          that.onList();
+    if (process.client) {
+      window.onscroll = function() {
+        var scrollTop =
+          document.documentElement.scrollTop || document.body.scrollTop;
+        // 页面高度
+        var windowHeight =
+          document.documentElement.clientHeight || document.body.clientHeight;
+        // 总共的高度
+        var scrollHeight =
+          document.documentElement.scrollHeight || document.body.scrollHeight;
+        if (scrollTop + windowHeight == scrollHeight) {
+          //console.log(that.page, that.Maxpage);
+          if (that.page < that.maxPage) {
+            that.page++;
+            that.onList();
+          }
         }
-      }
-    };
+      };
+    }
   },
   methods: {
     OnType() {
@@ -175,7 +189,7 @@ export default {
 }
 .select_type {
   .el-input {
-       width: 88%;
+    width: 88%;
   }
   .el-input__inner {
     box-shadow: none;
@@ -291,8 +305,8 @@ div {
   width: 1.44rem;
   margin-right: 0.11rem;
 }
-.new_list{
-  margin-bottom: .2rem;
+.new_list {
+  margin-bottom: 0.2rem;
 }
 // .new_list li>div{
 //    // display: flex;

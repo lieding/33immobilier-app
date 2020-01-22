@@ -1,144 +1,163 @@
 <template>
   <div>
-    <Header :title="$t('message.global.instrument')" />
-    <div class="offer">
-      <P :class="isbtn?'P_btn':'P_onbtn'" @click="Onclick">{{$t("message.global.calculation")}}</P>
-      <p :class="isbtn?'P_onbtn':'P_btn'" @click="Onclick">{{$t("message.global.Calculator")}}</p>
-    </div>
-    <!-- 贷款能力计算器 -->
-    <div class="estates" v-if="isbtn">
-      <span class="consultants">{{$t("message.global.calculation")}}</span>
-      <div class="repay">
-        <p class="repay_p">{{$t("message.global.onnetincome")}}</p>
-        <van-cell-group>
-          <van-field
-            v-model="revenus"
-            label="€"
-            label-width=".15rem"
-            :placeholder="$t('message.global.qingshuru')"
-            type="Number"
-          />
-        </van-cell-group>
-        <p class="repay_p">{{$t("message.global.payment")}}</p>
-        <van-cell-group>
-          <van-field
-            v-model="apport"
-            label="€"
-            label-width=".15rem"
-            :placeholder="$t('message.global.qingshuru')"
-            type="Number"
-          />
-        </van-cell-group>
-        <p class="repay_p">{{$t("message.global.liability")}}{{$t("message.global.Canfill")}}</p>
-        <van-cell-group>
-          <van-field
-            v-model="rate"
-            label="%"
-            label-width=".2rem"
-            :placeholder="$t('message.global.qingshuru')"
-            type="Number"
-          />
-        </van-cell-group>
+    <client-only>
+      <Header :title="$t('message.global.instrument')" />
+      <div class="offer">
+        <P :class="isbtn ? 'P_btn' : 'P_onbtn'" @click="Onclick">
+          {{
+          $t("message.global.calculation")
+          }}
+        </P>
+        <p
+          :class="isbtn ? 'P_onbtn' : 'P_btn'"
+          @click="Onclick"
+        >{{ $t("message.global.Calculator") }}</p>
       </div>
-      <div class="btn">
-        <van-button type="info" class="btn_i" @click="oncapacity">{{$t("message.global.calculate")}}</van-button>
-      </div>
-      <p class="monthly" v-if="M">
-        {{$t("message.global.highest")}}
-        <span class="money">{{M}}€</span>
-      </p>
-      <div class="loans" v-if="M">
-        <p class="loans_p">{{$t("message.global.Youcanloan")}}</p>
-        <table>
-          <tr>
-            <th>{{$t("message.global.loanPeriod")}}</th>
-            <th>{{$t("message.global.annual")}}</th>
-            <th>{{$t("message.global.amount")}}</th>
-          </tr>
-        </table>
-        <table v-for="(item,index) in reckenList" :key="index">
-          <tr>
-            <td>{{item.year}} {{$t("message.global.ans")}}</td>
-            <td>{{item.retes}}%</td>
-            <td>{{item.money}} €</td>
-          </tr>
-        </table>
-      </div>
-    </div>
-    <!-- 还款计算器 -->
-    <div class="estates" v-else>
-      <span class="consultants">{{$t("message.global.loancalculate")}}</span>
-      <div class="repay">
-        <p class="repay_p">{{$t("message.global.Housing")}}</p>
-        <van-cell-group>
-          <van-field
-            v-model="loan"
-            label="€"
-            label-width=".15rem"
-            :placeholder="$t('message.global.qingshuru')"
-            type="Number"
-          />
-        </van-cell-group>
-        <p class="repay_p">{{$t("message.global.payment")}}</p>
-        <van-cell-group>
-          <van-field
-            v-model="downapport"
-            @input="Oninput"
-            label="€"
-            label-width=".15rem"
-            :placeholder="$t('message.global.qingshuru')"
-            type="Number"
-          />
-        </van-cell-group>
-        <p class="repay_p">{{$t("message.global.loaninterest")}}</p>
-        <van-cell-group>
-          <van-field
-            label="%"
-            label-width=".2rem"
-            v-model="interesrate"
-            :placeholder="$t('message.global.qingshuru')"
-            type="Number"
-          />
-        </van-cell-group>
-        <p class="repay_p">{{$t("message.global.particular")}}</p>
-        <!-- <van-cell-group>
-                <van-field v-model="year"  :placeholder='$t("message.global.qingshuru")' type="Number"/>
-        </van-cell-group>-->
-        <el-select v-model="year">
-          <el-option v-for="item in getRate" :key="item" :label="item" :value="item"></el-option>
-        </el-select>
-      </div>
-      <div class="btn">
-        <van-button type="info" class="btn_i" @click="onrepay">{{$t("message.global.calculate")}}</van-button>
-      </div>
-      <p class="monthly" v-if="mothey">
-        {{$t("message.global.highest")}}
-        <span class="money">{{mothey}}€</span>
-      </p>
-      <!-- echarts -->
-      <div v-if="mothey" class="canvas">
-        <div class="echart"></div>
-        <div class="echart_p">
-          <p>
-            <span class="green"></span>
-            {{$t("message.global.payment")}} € {{A}}
-          </p>
-          <p>
-            <span class="blue"></span>
-            {{$t("message.global.Interestamount")}} € {{L}}
-          </p>
-          <p>
-            <span class="orgin"></span>
-            {{$t("message.global.loans")}} € {{S}}
-          </p>
+      <!-- 贷款能力计算器 -->
+      <div class="estates" v-if="isbtn">
+        <span class="consultants">{{ $t("message.global.calculation") }}</span>
+        <div class="repay">
+          <p class="repay_p">{{ $t("message.global.onnetincome") }}</p>
+          <van-cell-group>
+            <van-field
+              v-model="revenus"
+              label="€"
+              label-width=".15rem"
+              :placeholder="$t('message.global.qingshuru')"
+              type="Number"
+            />
+          </van-cell-group>
+          <p class="repay_p">{{ $t("message.global.payment") }}</p>
+          <van-cell-group>
+            <van-field
+              v-model="apport"
+              label="€"
+              label-width=".15rem"
+              :placeholder="$t('message.global.qingshuru')"
+              type="Number"
+            />
+          </van-cell-group>
+          <p class="repay_p">{{ $t("message.global.liability") }}{{ $t("message.global.Canfill") }}</p>
+          <van-cell-group>
+            <van-field
+              v-model="rate"
+              label="%"
+              label-width=".2rem"
+              :placeholder="$t('message.global.qingshuru')"
+              type="Number"
+            />
+          </van-cell-group>
+        </div>
+        <div class="btn">
+          <van-button type="info" class="btn_i" @click="oncapacity">
+            {{
+            $t("message.global.calculate")
+            }}
+          </van-button>
+        </div>
+        <p class="monthly" v-if="M">
+          {{ $t("message.global.highest") }}
+          <span class="money">{{ M }}€</span>
+        </p>
+        <div class="loans" v-if="M">
+          <p class="loans_p">{{ $t("message.global.Youcanloan") }}</p>
+          <table>
+            <tr>
+              <th>{{ $t("message.global.loanPeriod") }}</th>
+              <th>{{ $t("message.global.annual") }}</th>
+              <th>{{ $t("message.global.amount") }}</th>
+            </tr>
+          </table>
+
+          <table v-for="(item, index) in reckenList" :key="index">
+            <tr>
+              <td>{{ item.year }} {{ $t("message.global.ans") }}</td>
+              <td>{{ item.retes }}%</td>
+              <td>{{ item.money }} €</td>
+            </tr>
+          </table>
         </div>
       </div>
-      <div class="loanse" @click="OnPush">{{$t("message.global.minimum")}}</div>
-    </div>
-    <Footer />
+      <!-- 还款计算器 -->
+      <div class="estates" v-else>
+        <span class="consultants">{{ $t("message.global.loancalculate") }}</span>
+        <div class="repay">
+          <p class="repay_p">{{ $t("message.global.Housing") }}</p>
+          <van-cell-group>
+            <van-field
+              v-model="loan"
+              label="€"
+              label-width=".15rem"
+              :placeholder="$t('message.global.qingshuru')"
+              type="Number"
+            />
+          </van-cell-group>
+          <p class="repay_p">{{ $t("message.global.payment") }}</p>
+          <van-cell-group>
+            <van-field
+              v-model="downapport"
+              @input="Oninput"
+              label="€"
+              label-width=".15rem"
+              :placeholder="$t('message.global.qingshuru')"
+              type="Number"
+            />
+          </van-cell-group>
+          <p class="repay_p">{{ $t("message.global.loaninterest") }}</p>
+          <van-cell-group>
+            <van-field
+              label="%"
+              label-width=".2rem"
+              v-model="interesrate"
+              :placeholder="$t('message.global.qingshuru')"
+              type="Number"
+            />
+          </van-cell-group>
+          <p class="repay_p">{{ $t("message.global.particular") }}</p>
+          <!-- <van-cell-group>
+                <van-field v-model="year"  :placeholder='$t("message.global.qingshuru")' type="Number"/>
+          </van-cell-group>-->
+          <el-select v-model="year">
+            <el-option v-for="item in getRate" :key="item" :label="item" :value="item"></el-option>
+          </el-select>
+        </div>
+        <div class="btn">
+          <van-button type="info" class="btn_i" @click="onrepay">
+            {{
+            $t("message.global.calculate")
+            }}
+          </van-button>
+        </div>
+        <p class="monthly" v-if="mothey">
+          {{ $t("message.global.highest") }}
+          <span class="money">{{ mothey }}€</span>
+        </p>
+        <!-- echarts -->
+        <div v-if="mothey" class="canvas">
+          <div class="echart"></div>
+          <div class="echart_p">
+            <p>
+              <span class="green"></span>
+              {{ $t("message.global.payment") }} € {{ A }}
+            </p>
+            <p>
+              <span class="blue"></span>
+              {{ $t("message.global.Interestamount") }} € {{ L }}
+            </p>
+            <p>
+              <span class="orgin"></span>
+              {{ $t("message.global.loans") }} € {{ S }}
+            </p>
+          </div>
+        </div>
+        <div class="loanse" @click="OnPush">{{ $t("message.global.minimum") }}</div>
+      </div>
+      <Footer />
+    </client-only>
   </div>
 </template>
 <script>
+import rem from "@/common/rem.js";
 import Header from "@/components/MIndex/common/head.vue";
 import Footer from "@/components/MIndex/common/footer.vue";
 var echarts = require("echarts");
@@ -174,6 +193,7 @@ export default {
     }
   },
   mounted() {
+    rem();
     this.$api.article.getRate().then(res => {
       if (res.data.code == 0) {
         this.getRateList = res.data.data;
@@ -233,27 +253,29 @@ export default {
           ];
           //console.log(echarts);
           setTimeout(() => {
-            var myChart = echarts.init(document.querySelector(".echart"));
-            myChart.setOption({
-              legend: {
-                orient: "vertical",
-                x: "left",
-                data: ["首付金额", "利息金额", "贷款金额"]
-              },
-              series: [
-                {
-                  type: "pie",
-                  radius: ["50%", "70%"],
-                  center: ["35%", "60%"],
-                  labelLine: {
-                    normal: {
-                      show: false
-                    }
-                  },
-                  data: this.echarts
-                }
-              ]
-            });
+            if (process.client) {
+              var myChart = echarts.init(document.querySelector(".echart"));
+              myChart.setOption({
+                legend: {
+                  orient: "vertical",
+                  x: "left",
+                  data: ["首付金额", "利息金额", "贷款金额"]
+                },
+                series: [
+                  {
+                    type: "pie",
+                    radius: ["50%", "70%"],
+                    center: ["35%", "60%"],
+                    labelLine: {
+                      normal: {
+                        show: false
+                      }
+                    },
+                    data: this.echarts
+                  }
+                ]
+              });
+            }
           }, 100);
         }
       });
@@ -474,7 +496,7 @@ td {
   }
 }
 </style>
-<style lang="less" >
+<style lang="less">
 .repay {
   .el-select:hover .el-input__inner {
     background: #e9e9e9;

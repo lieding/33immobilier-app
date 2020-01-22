@@ -1,8 +1,10 @@
 <template>
   <div class="concentUs">
-    <headers :class="{colors:flag}"></headers>
+    <headers :class="{ colors: flag }"></headers>
     <div class="centerS" style=";height:600px;padding-top:40px;">
-      <div style="font-size:48px;font-weight:600;padding:27px 0;">{{$t("message.global.relation")}}</div>
+      <div style="font-size:48px;font-weight:600;padding:27px 0;">
+        {{ $t("message.global.relation") }}
+      </div>
       <div style="float:left;">
         <div style="margin-bottom:30px">
           <el-input
@@ -48,7 +50,9 @@
                 margin-top:28px;
                 "
           @click="contactUs"
-        >{{$t("message.global.sure")}}</div>
+        >
+          {{ $t("message.global.sure") }}
+        </div>
       </div>
       <!-- <div style="height:60px;font-size:20px;color:#fff;background-color:rgb(36,84,218);margin-top:25px;text-align:center;line-height:60px; cursor: pointer;">发送消息</div> -->
     </div>

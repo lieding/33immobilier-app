@@ -1,12 +1,12 @@
 <template>
   <div class="aboutUs">
-    <headers :class="{colors:flag}"></headers>
+    <headers :class="{ colors: flag }"></headers>
     <div class="centerSsss seconBrok">
       <div class="headline">
-        <span>{{$t("message.global.home")}}</span> /
-        <span>{{$t("message.global.AboutUs")}}</span>
+        <span>{{ $t("message.global.home") }}</span> /
+        <span>{{ $t("message.global.AboutUs") }}</span>
       </div>
-      <div class="oductions">{{$t("message.global.AboutUs")}}</div>
+      <div class="oductions">{{ $t("message.global.AboutUs") }}</div>
       <div class="bodySs">
         <div class="leftSs">
           <img :src="img.title" alt />
@@ -14,9 +14,9 @@
         <div class="rightSs">
           <!-- <div></div> -->
           <!-- <img style="height:104px;margin-bottom:22px;" :src="img.logoT" alt=""> -->
-          <p>{{$t("message.global.AboutUsconten")}}</p>
-          <p>{{$t("message.global.AboutMilliome")}}</p>
-          <p>{{$t("message.global.AboutUsMilliome")}}</p>
+          <p>{{ $t("message.global.AboutUsconten") }}</p>
+          <p>{{ $t("message.global.AboutMilliome") }}</p>
+          <p>{{ $t("message.global.AboutUsMilliome") }}</p>
         </div>
       </div>
     </div>

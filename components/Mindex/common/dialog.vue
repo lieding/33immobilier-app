@@ -5,7 +5,7 @@
         <p v-if="type != '经纪人'" class="title">
           {{ $t("message.global.scan") }}
           <img
-            src="../../../assets/image/go.png"
+            src="@/assets/image/go.png"
             alt=""
             class="go"
             @click="Onclick"
@@ -14,7 +14,7 @@
         <p v-if="type == '经纪人'" class="title_jjr">
           <!-- 扫描二维码联系平台  -->
           <img
-            src="../../../assets/image/go.png"
+            src="@/assets/image/go.png"
             alt=""
             class="go"
             @click="Onclick"
@@ -115,7 +115,7 @@
           <p class="tag-read" @click="Onclick" v-if="type == '经纪人'">
             {{ $t("message.global.sure") }}
           </p>
-          <!-- <img src="../../../assets/image/btn.png" alt="" class="tag-read" :data-clipboard-text="list" @click="copy" ></div>  -->
+          <!-- <img src="@/assets/image/btn.png" alt="" class="tag-read" :data-clipboard-text="list" @click="copy" ></div>  -->
         </div>
       </div>
     </van-dialog>

@@ -1,5 +1,6 @@
 <template>
     <div>
+        <client-only>
       <Header :title="$t('message.global.handpick')"/>
        <div>
           <div class="video">
@@ -9,10 +10,10 @@
                 </van-swipe-item>
               </van-swipe>
           </div>
-          <img src="../../assets/image/VRlogo.gif" alt="" class="AR" @click="onMap(data.vrAddress)" v-show="data.isOpenVr=='1'">
-          <img src="../../assets/image/share.png" alt="" class="share" @click="Onshare('/dialog')">
+          <img src="@/assets/image/VRlogo.gif" alt="" class="AR" @click="onMap(data.vrAddress)" v-show="data.isOpenVr=='1'">
+          <img src="@/assets/image/share.png" alt="" class="share" @click="Onshare('/dialog')">
            <div>
-            <!-- <img src="../../assets/image/shipin.png" alt="" class="video_S" @click="onMap(data.videoUlr)" v-show="data.videoUlr"> -->
+            <!-- <img src="@/assets/image/shipin.png" alt="" class="video_S" @click="onMap(data.videoUlr)" v-show="data.videoUlr"> -->
                 <!-- <p class="video_btn">
                     <span class="VR" @click="onMap(data.vrAddress)">VR</span>
                     <span class="price">图片</span>
@@ -29,19 +30,19 @@
          </p>
          <p class="identifying">
              <span>
-                 <img src="../../assets/image/gongyu.png" alt="">
+                 <img src="@/assets/image/gongyu.png" alt="">
                     {{data.houseOrApartment == 1 ? $t("message.global.apartments") :  $t("message.global.cottage") }}
              </span>
               <span>
-                 <img src="../../assets/image/rooms.png" alt="">
+                 <img src="@/assets/image/rooms.png" alt="">
                   {{data.roomsNum}}{{$t("message.global.P")}}  {{data.bedroomNum}}{{$t("message.global.CH")}}
              </span>
               <span>
-                 <img src="../../assets/image/time.png" alt="">
+                 <img src="@/assets/image/time.png" alt="">
                   {{data.year}}
              </span>
               <span>
-                 <img src="../../assets/image/aram.png" alt="">
+                 <img src="@/assets/image/aram.png" alt="">
                   {{data.acreage}}{{$t("message.global.square")}}
              </span>
          </p>
@@ -52,86 +53,86 @@
           <span class="consultants facilities">{{$t("message.global.supporting")}}</span>
           <div class="assort">
               <div v-if="data.isTV">
-                  <img  src="../../assets/image/download_1.png" alt="">
+                  <img  src="@/assets/image/download_1.png" alt="">
                    <p>{{$t("message.global.television")}}</p>
               </div>
               <div v-else>
-                   <img src="../../assets/image/download1_1.png" alt="">
+                   <img src="@/assets/image/download1_1.png" alt="">
                    <p style="text-decoration: line-through; color: #E5E5E5;">{{$t("message.global.television")}}</p>
               </div>
              <div v-if="data.isFrig">
-                  <img src="../../assets/image/download_10.png" alt="">
+                  <img src="@/assets/image/download_10.png" alt="">
                    <p>{{$t("message.global.refrigerator")}}</p>
               </div>
                <div v-else>
-                  <img src="../../assets/image/picSzg/refrigH.png" alt="">
+                  <img src="@/assets/image/picSzg/refrigH.png" alt="">
                    <p style="text-decoration: line-through; color: #E5E5E5;">{{$t("message.global.refrigerator")}}</p>
               </div>
                <div v-if="data.isWashing">
-                  <img src="../../assets/image/download_7.png" alt="">
+                  <img src="@/assets/image/download_7.png" alt="">
                    <p>{{$t("message.global.washer")}}</p>
               </div>
               <div  v-else>
-                  <img src="../../assets/image/picSzg/washerH.png" alt="">
+                  <img src="@/assets/image/picSzg/washerH.png" alt="">
                    <p style="text-decoration: line-through; color: #E5E5E5;">{{$t("message.global.washer")}}</p>
               </div>
                <div v-if="data.isChair">
-                  <img src="../../assets/image/chair.png" alt="">
+                  <img src="@/assets/image/chair.png" alt="">
                    <p>{{$t("message.global.chairs")}}</p>
               </div>
               <div v-else>
-                  <img src="../../assets/image/chair_1.png" alt="">
+                  <img src="@/assets/image/chair_1.png" alt="">
                    <p style="text-decoration: line-through; color: #E5E5E5;">{{$t("message.global.chairs")}}</p>
               </div>
                <div v-if="data.isHeater">
-                  <img src="../../assets/image/download_3.png" alt="">
+                  <img src="@/assets/image/download_3.png" alt="">
                    <p>{{$t("message.global.calorifier")}}</p>
               </div>
                <div v-else>
-                  <img src="../../assets/image/download3_3.png" alt="">
+                  <img src="@/assets/image/download3_3.png" alt="">
                    <p style="text-decoration: line-through; color: #E5E5E5;">{{$t("message.global.calorifier")}}</p>
               </div>
              
                <div v-if="data.isBed">
-                  <img src="../../assets/image/download_8.png" alt="">
+                  <img src="@/assets/image/download_8.png" alt="">
                    <p>{{$t("message.global.bed")}}</p>
               </div>
                <div v-else>
-                  <img src="../../assets/image/download8_8.png" alt="">
+                  <img src="@/assets/image/download8_8.png" alt="">
                    <p style="text-decoration: line-through; color: #E5E5E5;">{{$t("message.global.bed")}}</p>
               </div>
 
                <div v-if="data.isSteam">
-                  <img src="../../assets/image/download_9.png" alt="">
+                  <img src="@/assets/image/download_9.png" alt="">
                    <p>{{$t("message.global.heating")}}</p>
               </div>
               <div v-else>
-                  <img src="../../assets/image/picSzg/heatH.png" alt="">
+                  <img src="@/assets/image/picSzg/heatH.png" alt="">
                    <p style="text-decoration: line-through; color: #E5E5E5;">{{$t("message.global.heating")}}</p>
               </div>
                <div v-if="data.isBroadband">
-                  <img src="../../assets/image/download_6.png" alt="">
+                  <img src="@/assets/image/download_6.png" alt="">
                    <p>{{$t("message.global.broadband")}}</p>
               </div>
               <div v-else>
-                  <img src="../../assets/image/download6_6.png" alt="">
+                  <img src="@/assets/image/download6_6.png" alt="">
                    <p style="text-decoration: line-through; color: #E5E5E5;">{{$t("message.global.broadband")}}</p>
               </div>
 
                <div v-if="data.isWardrobe">
-                  <img src="../../assets/image/download_5.png" alt="">
+                  <img src="@/assets/image/download_5.png" alt="">
                    <p>{{$t("message.global.wardrobe")}}</p>
               </div>
                <div v-else>
-                  <img src="../../assets/image/download5_5.png" alt="">
+                  <img src="@/assets/image/download5_5.png" alt="">
                    <p style="text-decoration: line-through; color: #E5E5E5;">{{$t("message.global.wardrobe")}}</p>
               </div>
                <div v-if="data.isMicrowave">
-                  <img src="../../assets/image/microwave1.png" alt="">
+                  <img src="@/assets/image/microwave1.png" alt="">
                    <p>{{$t("message.global.microwave")}}</p>
               </div>
               <div v-else>
-                  <img src="../../assets/image/microwave1_1.png" alt="">
+                  <img src="@/assets/image/microwave1_1.png" alt="">
                    <p style="text-decoration: line-through; color: #E5E5E5;">{{$t("message.global.microwave")}}</p>
               </div>
           </div>
@@ -149,22 +150,22 @@
                   </div>
                   <!--<div class="attestation">
                       <p>
-                          <img src="../../assets/image/autonym.png" alt="">
+                          <img src="@/assets/image/autonym.png" alt="">
                           <span>{{$t("message.global.authentication")}}</span>
                       </p>
                        <p>
-                          <img src="../../assets/image/licensed.png" alt="">
+                          <img src="@/assets/image/licensed.png" alt="">
                           <span>{{$t("message.global.licensed")}}</span>
                       </p>
                        <p>
-                          <img src="../../assets/image/pro.png" alt="">
+                          <img src="@/assets/image/pro.png" alt="">
                           <span>{{$t("message.global.EasyPro")}}</span>
                       </p>
                   </div> -->
               </div>
               <hr>
               <div class="num">
-                  <p class="phone"><img src="../../assets/image/phone.png" alt="" class="margin" >{{data.contactPhone}}</p>
+                  <p class="phone"><img src="@/assets/image/phone.png" alt="" class="margin" >{{data.contactPhone}}</p>
                   <p><span class="wx">{{$t("message.global.WXWach")}}:{{data.contactWx}}</span><span class="yx">{{$t("message.global.mail")}}:{{data.contactEmail}}</span></p>
               </div>
               <div class="quiz">
@@ -273,10 +274,12 @@
     </div>
     <van-button type="info" size="large" @click="Onord('/ordIssue')" style="margin-bottom:.2rem">{{$t("message.global.woyaomaifang")}}</van-button>
      <Footer/>
+     </client-only>
     </div>
 
 </template>
 <script>
+import rem from "@/common/rem.js";
 import List from '@/components/MIndex/common/list.vue'
 import Header from '@/components/MIndex/common/head.vue'
 import Footer from '@/components/MIndex/common/footer.vue'
@@ -323,6 +326,7 @@ export default {
         }
     },
     mounted(){
+        rem();
         this.Onlist();
          
   },

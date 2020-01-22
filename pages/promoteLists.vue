@@ -1,9 +1,9 @@
 <template>
   <div>
-    <Header :class="{colors:flag}"></Header>
+    <Header :class="{ colors: flag }"></Header>
     <div class="headline centerS">
-      <span>{{$t("message.global.home")}}</span> /
-      <span>{{$t("message.global.instrument")}}</span>
+      <span>{{ $t("message.global.home") }}</span> /
+      <span>{{ $t("message.global.instrument") }}</span>
       <promoteLists />
     </div>
     <Footer />

@@ -2,9 +2,13 @@
   <div id="map" style="height:3.24rem"></div>
 </template>
 <script>
+import rem from "@/common/rem.js";
+
 export default {
   name: "mapbox_test",
+
   mounted() {
+    rem();
     this.init();
   },
   methods: {

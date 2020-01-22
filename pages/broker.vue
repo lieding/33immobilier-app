@@ -1,19 +1,21 @@
 <template>
   <div class="broker">
-    <headers :class="{colors:flag}"></headers>
+    <headers :class="{ colors: flag }"></headers>
     <div class="centerS seconBrok">
       <div class="headline">
         <span>
-          <span @click="goHome">{{$t("message.global.home")}}</span>
-        </span> /
-        <span>{{$t("message.global.agent")}}</span>
+          <span @click="goHome">{{ $t("message.global.home") }}</span>
+        </span>
+        /
+        <span>{{ $t("message.global.agent") }}</span>
       </div>
-      <div class="oductions">{{$t("message.global.Platform")}}</div>
+      <div class="oductions">{{ $t("message.global.Platform") }}</div>
       <div class="selectSm">
         <div style="margin-bottom:20px;">
           <span
             style="width:193px;display:inline-block;font-size:20px;color:#000;font-weight:600;text-align:left;"
-          >{{$t("message.global.searchAgent")}}</span>
+            >{{ $t("message.global.searchAgent") }}</span
+          >
           <div style="display:inline-block">
             <el-input placeholder v-model="name"></el-input>
             <span
@@ -24,29 +26,50 @@
                         font-size:18px;color:#fff;text-align:center;
                         line-height:36px;vertical-align: top;
                         border:1px solid #214ED4"
-            >{{$t("message.global.seek")}}</span>
+              >{{ $t("message.global.seek") }}</span
+            >
           </div>
         </div>
         <div class="fuwuquyu">
           <span
             style="display:inline-block;width:193px;font-size:20px;color:#000;text-align:left;font-weight:600;vertical-align: top"
-          >{{$t("message.global.serving")}}</span>
+            >{{ $t("message.global.serving") }}</span
+          >
           <el-radio-group v-model="yyLAn" size="mini">
-            <el-radio-button label="0">{{$t("message.global.allLan")}}</el-radio-button>
-            <el-radio-button label="3">{{$t("message.global.english")}}</el-radio-button>
-            <el-radio-button label="2">{{$t("message.global.francLa")}}</el-radio-button>
-            <el-radio-button label="1">{{$t("message.global.chaLa")}}</el-radio-button>
-            <el-radio-button label="4">{{$t("message.global.riyu")}}</el-radio-button>
-            <el-radio-button label="5">{{$t("message.global.hanyu")}}</el-radio-button>
-            <el-radio-button label="6">{{$t("message.global.yuenan")}}</el-radio-button>
-            <el-radio-button label="7">{{$t("message.global.taiyu")}}</el-radio-button>
-            <el-radio-button label="8">{{$t("message.global.jianpu")}}</el-radio-button>
+            <el-radio-button label="0">{{
+              $t("message.global.allLan")
+            }}</el-radio-button>
+            <el-radio-button label="3">{{
+              $t("message.global.english")
+            }}</el-radio-button>
+            <el-radio-button label="2">{{
+              $t("message.global.francLa")
+            }}</el-radio-button>
+            <el-radio-button label="1">{{
+              $t("message.global.chaLa")
+            }}</el-radio-button>
+            <el-radio-button label="4">{{
+              $t("message.global.riyu")
+            }}</el-radio-button>
+            <el-radio-button label="5">{{
+              $t("message.global.hanyu")
+            }}</el-radio-button>
+            <el-radio-button label="6">{{
+              $t("message.global.yuenan")
+            }}</el-radio-button>
+            <el-radio-button label="7">{{
+              $t("message.global.taiyu")
+            }}</el-radio-button>
+            <el-radio-button label="8">{{
+              $t("message.global.jianpu")
+            }}</el-radio-button>
           </el-radio-group>
         </div>
         <div style="margin-top:10px;">
           <span
             style="display:inline-block;font-size:20px;vertical-align: top;text-align:left;width:193px;color:#000;font-weight:600;"
-          >{{$t("message.global.coverage")}}</span>
+            >{{ $t("message.global.coverage") }}</span
+          >
           <div class="fuwuquyu fuq" style="display:inline-block;width:900px">
             <el-radio-group v-model="dif" size="mini">
               <el-radio-button
@@ -54,49 +77,66 @@
                 border="false"
                 :label="city"
                 :key="city"
-              >{{city}}</el-radio-button>
+                >{{ city }}</el-radio-button
+              >
             </el-radio-group>
           </div>
         </div>
-        <div style="margin-top:10px;text-align:center;height:20px;font-size:12px;">
-          <span
-            class="quanbuQY"
-            @click="allCi"
-          >{{qbqy?$t("message.global.allquyu"):$t("message.global.shouqi")}}</span>
+        <div
+          style="margin-top:10px;text-align:center;height:20px;font-size:12px;"
+        >
+          <span class="quanbuQY" @click="allCi">{{
+            qbqy ? $t("message.global.allquyu") : $t("message.global.shouqi")
+          }}</span>
         </div>
       </div>
       <div style="min-height:500px;">
-        <div class="brokerS" v-for="(item,inde) in jjrList" :key="inde">
+        <div class="brokerS" v-for="(item, inde) in jjrList" :key="inde">
           <img class="left" :src="item.jobUrl" alt />
           <div class="Val">
-            <div style="font-size:22px;margin-bottom:4px;font-weight:600;">{{item.surName}}</div>
-            <div style="margin-bottom:8px;">{{item.personalProfile}}</div>
+            <div style="font-size:22px;margin-bottom:4px;font-weight:600;">
+              {{ item.surName }}
+            </div>
+            <div style="margin-bottom:8px;">{{ item.personalProfile }}</div>
             <div style="margin-bottom:10px;">
               <span
                 style="vertical-align: bottom;display:inline-block;padding:1px 15px;background-color:#F7F7F7;height:32px;box-sizing:border-box;line-height:32px;margin-right:10px;"
               >
-                <img style="width:14px;vertical-align: middle" :src="img.phone" alt /> &nbsp;
+                <img
+                  style="width:14px;vertical-align: middle"
+                  :src="img.phone"
+                  alt
+                />
+                &nbsp;
                 <span style>
-                  <span style="font-weight:600;">{{item.certifiedPhone}}</span>
-                  &nbsp; {{item.language}}
+                  <span style="font-weight:600;">{{
+                    item.certifiedPhone
+                  }}</span>
+                  &nbsp; {{ item.language }}
                 </span>
               </span>
               <span
                 style="vertical-align: bottom;display:inline-block;padding:1px 15px;background-color:#F7F7F7;height:32px;box-sizing:border-box;line-height:32px;margin-right:10px;"
               >
-                <img style="width:14px;vertical-align: middle" :src="img.email" alt />
-                <span style>{{$t("message.global.mail")}}</span>
+                <img
+                  style="width:14px;vertical-align: middle"
+                  :src="img.email"
+                  alt
+                />
+                <span style>{{ $t("message.global.mail") }}</span>
               </span>
               <span
                 style="vertical-align: bottom;display:inline-block;padding:1px 15px;background-color:#F7F7F7;height:32px;box-sizing:border-box;line-height:32px;margin-right:10px;"
               >
-                <img style="height:14px;vertical-align: middle" :src="img.wxInd" alt />
-                <span
-                  v-show="item.flags"
-                  @click="showss(item.id)"
-                  style
-                >{{$t("message.global.lishibuluo")}}</span>
-                <span v-show="!item.flags" style>{{item.wxNumber}}</span>
+                <img
+                  style="height:14px;vertical-align: middle"
+                  :src="img.wxInd"
+                  alt
+                />
+                <span v-show="item.flags" @click="showss(item.id)" style>{{
+                  $t("message.global.lishibuluo")
+                }}</span>
+                <span v-show="!item.flags" style>{{ item.wxNumber }}</span>
               </span>
             </div>
             <div style="margin-bottom:10px;">
@@ -108,13 +148,21 @@
                   :src="img.authentication"
                   alt
                 />
-                <span style=" vertical-align: bottom;">{{$t("message.global.authentication")}}</span>
+                <span style=" vertical-align: bottom;">{{
+                  $t("message.global.authentication")
+                }}</span>
               </span>
               <span
                 style="font-size:14px;color:#262626;display:inline-block;margin-right:20px;padding:5px 15px;background-color: #f5f5f5;"
               >
-                <img style="width:22px;height:16px; vertical-align: middle" :src="img.proVip" alt />
-                <span style=" vertical-align: bottom;">{{$t("message.global.EasyPro")}}</span>
+                <img
+                  style="width:22px;height:16px; vertical-align: middle"
+                  :src="img.proVip"
+                  alt
+                />
+                <span style=" vertical-align: bottom;">{{
+                  $t("message.global.EasyPro")
+                }}</span>
               </span>
               <span
                 style="font-size:14px;color:#262626;display:inline-block;margin-right:20px;padding:5px 15px;background-color: #f5f5f5;"
@@ -124,7 +172,9 @@
                   :src="img.visitCard"
                   alt
                 />
-                <span style=" vertical-align: bottom;">{{$t("message.global.licensed")}}</span>
+                <span style=" vertical-align: bottom;">{{
+                  $t("message.global.licensed")
+                }}</span>
               </span>
             </div>
           </div>

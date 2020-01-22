@@ -1,13 +1,13 @@
 <template>
   <div class="encyclopedia">
-    <headers :class="{colors:flag}"></headers>
+    <headers :class="{ colors: flag }"></headers>
     <div class="seconBrok clearfix">
       <div class="headline">
-        <span>{{$t("message.global.home")}}</span> /
-        <span>{{$t("message.global.encyclopedia")}}</span>
+        <span>{{ $t("message.global.home") }}</span> /
+        <span>{{ $t("message.global.encyclopedia") }}</span>
       </div>
       <div class="oductions">
-        {{$t("message.global.encyclopedia")}}
+        {{ $t("message.global.encyclopedia") }}
         <span style="float:right">
           <!-- <el-input v-model="input" style="width:296px;height:45px!important;background-color:#f0f0f0;border:0;"
           placeholder="请输入内容"></el-input>-->
@@ -23,31 +23,44 @@
                     cursor: pointer;vertical-align: bottom;"
             @click="consts"
           >
-            <img style="width:26px;height:26px;" src="@/assets/image/sousuo.png" alt />
+            <img
+              style="width:26px;height:26px;"
+              src="@/assets/image/sousuo.png"
+              alt
+            />
           </span>
         </span>
       </div>
       <div class="leftsS">
-        <div :class="{mars:i%3==2,leftSa:true}" v-for="(item,i) in outcome" :key="i">
+        <div
+          :class="{ mars: i % 3 == 2, leftSa: true }"
+          v-for="(item, i) in outcome"
+          :key="i"
+        >
           <div class="picZs" @click="RoutingHop(item.id)">
             <img :src="item.picUrl" alt />
           </div>
-          <p class="titlesINNew">{{item.title}}</p>
+          <p class="titlesINNew">{{ item.title }}</p>
           <p>
-            {{$t("message.global.author")}}：
-            <span style>{{item.nickName}}</span>
+            {{ $t("message.global.author") }}：
+            <span style>{{ item.nickName }}</span>
             <span style="float:right">
-              {{$t("message.global.category")}}：
-              <span>{{item.typeName}}</span>
+              {{ $t("message.global.category") }}：
+              <span>{{ item.typeName }}</span>
             </span>
           </p>
         </div>
       </div>
       <div class="rightsS">
-        <div class="rightTops" style="box-shadow:0px 2px 26px 0px rgba(0,0,0,0.11);">
-          <p style="padding-left:20px;margin-bottom:15px;">{{$t("message.global.category")}}</p>
+        <div
+          class="rightTops"
+          style="box-shadow:0px 2px 26px 0px rgba(0,0,0,0.11);"
+        >
+          <p style="padding-left:20px;margin-bottom:15px;">
+            {{ $t("message.global.category") }}
+          </p>
           <p
-            v-for="(itea,ind) in category"
+            v-for="(itea, ind) in category"
             :key="ind"
             style="cursor: pointer;width:80%;margin:0 auto;margin-top:2px!important;
                     background-color:#F0F0F0;padding:10px;
@@ -60,7 +73,7 @@
                         border-radius:50%;background-color:#4D6DDA;
                         vertical-align: middle"
             ></span>
-            {{itea.typeName}}
+            {{ itea.typeName }}
           </p>
         </div>
       </div>

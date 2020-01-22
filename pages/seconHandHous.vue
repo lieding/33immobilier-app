@@ -12,7 +12,11 @@
           @click="handleOpen"
           style="float:right;font-size:18px;color:#B9B9B9;font-weight:400;cursor: pointer;"
         >
-          <img style="width:20px;vertical-align: middle;" src="@/assets/image/wxInd.png" alt />
+          <img
+            style="width:20px;vertical-align: middle;"
+            src="@/assets/image/wxInd.png"
+            alt
+          />
           {{ $t("message.global.WeChat") }}
         </span>
       </div>
@@ -20,44 +24,59 @@
         <!-- // 轮播图 -->
         <div class="slideshow">
           <el-carousel :interval="5000" height="400px" arrow="always">
-            <el-carousel-item v-for="(item, i) in getPostListingData.picList" :key="i">
+            <el-carousel-item
+              v-for="(item, i) in getPostListingData.picList"
+              :key="i"
+            >
               <!-- <img :src="item"> -->
-              <div class="lunbotu" v-bind:style="{ 'background-image': 'url(' + item + ')' }"></div>
+              <div
+                class="lunbotu"
+                v-bind:style="{ 'background-image': 'url(' + item + ')' }"
+              ></div>
             </el-carousel-item>
           </el-carousel>
         </div>
         <!-- 地图 -->
         <div class="atlas">
           <div class="atlasTop">
-            <span class="noO">{{ $t("message.global.locationwz") }}&nbsp;&nbsp;</span>
+            <span class="noO"
+              >{{ $t("message.global.locationwz") }}&nbsp;&nbsp;</span
+            >
             <img :src="img.location" alt />&nbsp;
             <span class="noT">
               {{ getPostListingData.bigProvince }}/{{
-              getPostListingData.privince
+                getPostListingData.privince
               }}
             </span>
           </div>
           <div style="border: 1px solid #ccc;">
-            <iframe height="500px" width="700px" :src="address_Map" frameborder="0"></iframe>
+            <iframe
+              height="500px"
+              width="700px"
+              :src="address_Map"
+              frameborder="0"
+            ></iframe>
           </div>
         </div>
         <!-- 房屋简介 -->
         <div class="synopsis">
           <div class="synopsisTop">
-            <span class="synopsisjj">{{ $t("message.global.fwjj") }}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span class="synopsisjj"
+              >{{ $t("message.global.fwjj") }}&nbsp;&nbsp;&nbsp;&nbsp;</span
+            >
             <span class="translate" @click="switchoverS()">
               {{
-              switchover
-              ? $t("message.global.interpret")
-              : $t("message.global.interpret")
+                switchover
+                  ? $t("message.global.interpret")
+                  : $t("message.global.interpret")
               }}
             </span>
           </div>
           <div class="synopsisBod" style="white-space: pre-line;">
             {{
-            switchover
-            ? getPostListingData.introduceFr
-            : getPostListingData.introduceCn
+              switchover
+                ? getPostListingData.introduceFr
+                : getPostListingData.introduceCn
             }}
           </div>
         </div>
@@ -68,7 +87,11 @@
             <img :src="getPostListingData.housePlan" alt />
           </div>
           <div class="introduce">
-            <div class="houseListLa" v-for="(item, i) in apartmentList" :key="i">
+            <div
+              class="houseListLa"
+              v-for="(item, i) in apartmentList"
+              :key="i"
+            >
               <!-- <div></div> -->
               <div class="houseListTop">{{ item.room }}</div>
               <div class="houseProportion">
@@ -85,7 +108,12 @@
         <!-- 虚拟 看房 -->
         <div class="seeApartment" v-if="getPostListingData.isOpenVR">
           <div class="apartmentTop">{{ $t("message.global.theoretical") }}</div>
-          <iframe height="500px" width="710px" :src="getPostListingData.vrAddress" frameborder="0"></iframe>
+          <iframe
+            height="500px"
+            width="710px"
+            :src="getPostListingData.vrAddress"
+            frameborder="0"
+          ></iframe>
         </div>
       </div>
       <div class="rightBody">
@@ -113,19 +141,27 @@
             <span
               style="font-size:14px;color:#262626;vertical-align: middle;display:inline-block;margin-right:20px;"
             >
-              <img style="width:14px;height:15px; vertical-align: middle" :src="img.apartment" alt />
+              <img
+                style="width:14px;height:15px; vertical-align: middle"
+                :src="img.apartment"
+                alt
+              />
               <span style=" vertical-align: middle;">
                 {{
-                getPostListingData.houseOrApartment == 0
-                ? $t("message.global.cottage")
-                : $t("message.global.apartments")
+                  getPostListingData.houseOrApartment == 0
+                    ? $t("message.global.cottage")
+                    : $t("message.global.apartments")
                 }}
               </span>
             </span>
             <span
               style="font-size:14px;color:#262626;vertical-align: middle;display:inline-block;margin-right:20px;"
             >
-              <img style="width:14px;height:15px; vertical-align: middle" :src="img.bed" alt />
+              <img
+                style="width:14px;height:15px; vertical-align: middle"
+                :src="img.bed"
+                alt
+              />
               <span style=" vertical-align: middle;">
                 {{ getPostListingData.roomsNum }}{{ $t("message.global.P") }}
                 {{ getPostListingData.bedroomNum }}{{ $t("message.global.CH") }}
@@ -134,7 +170,11 @@
             <span
               style="font-size:14px;color:#262626;vertical-align: middle;display:inline-block;margin-right:20px;"
             >
-              <img style="width:14px;height:15px; vertical-align: middle" :src="img.time" alt />
+              <img
+                style="width:14px;height:15px; vertical-align: middle"
+                :src="img.time"
+                alt
+              />
               <span style=" vertical-align: middle;">
                 {{ $t("message.global.De") }}
                 {{ getPostListingData.year }}
@@ -143,7 +183,11 @@
             <span
               style="font-size:14px;color:#262626;vertical-align: middle;display:inline-block;margin-right:20px;"
             >
-              <img style="width:14px;height:15px; vertical-align: middle" :src="img.size" alt />
+              <img
+                style="width:14px;height:15px; vertical-align: middle"
+                :src="img.size"
+                alt
+              />
               <span style=" vertical-align: middle;">
                 {{ getPostListingData.acreage
                 }}{{ $t("message.global.square") }}
@@ -171,19 +215,23 @@
                             <img style="width:22px;height:16px; vertical-align: middle" :src="img.proVip" alt=""> <span style=" vertical-align: middle;"> {{$t("message.global.EasyPro")}}</span></span>
           </div>-->
           <div style="text-align: center;padding-top: 16px;">
-            <img style="width:17px;height:17px;vertical-align:middle" :src="img.phone" alt />
+            <img
+              style="width:17px;height:17px;vertical-align:middle"
+              :src="img.phone"
+              alt
+            />
             <span style="vertical-align:middle">
-              {{
-              agent.brokerTelPhone
-              }}
+              {{ agent.brokerTelPhone }}
             </span>
           </div>
-          <div style="text-align: center;padding-top: 10px;font-size:14px;margin-bottom:20px;">
+          <div
+            style="text-align: center;padding-top: 10px;font-size:14px;margin-bottom:20px;"
+          >
             {{ $t("message.global.lishibuluo") }}：{{
-            agent.wxNumber
+              agent.wxNumber
             }}
             &nbsp;&nbsp;&nbsp; {{ $t("message.global.contactEmil") }}：{{
-            agent.brokerEmail
+              agent.brokerEmail
             }}
           </div>
           <div style="margin-bottom:10px">
@@ -218,7 +266,9 @@
             style="height:60px;font-size:20px;color:#fff;background-color:rgb(36,84,218);margin-top:25px;
                     text-align:center;line-height:60px; cursor: pointer;"
             @click="sentEmail"
-          >{{ $t("message.global.fsxx") }}</div>
+          >
+            {{ $t("message.global.fsxx") }}
+          </div>
         </div>
       </div>
     </div>
@@ -226,7 +276,9 @@
       <jisuan />
     </div>
     <div class="centerS" style="margin-top:20px;" v-show="promoteList.length">
-      <div style="font-size:32px;font-weight:600;">{{ $t("message.global.Recommended") }}</div>
+      <div style="font-size:32px;font-weight:600;">
+        {{ $t("message.global.Recommended") }}
+      </div>
       <div class="housingResourceL">
         <div class="houseReq" v-for="(item, index) in promoteList" :key="index">
           <img
@@ -238,16 +290,18 @@
           <p
             style="font-size:18px;color:rgba(80,80,80,1);padding-left:10px;"
             class="voerhuo"
-          >{{ item.promoteTitle }}</p>
+          >
+            {{ item.promoteTitle }}
+          </p>
           <div style="padding-top:5px;">
             <img
               style="width:13px;height:15px;padding-left:10px;vertical-align: middle;"
               :src="img.location"
               alt
             />&nbsp;
-            <span
-              style="font-size:14px;color:#A1A1A1;vertical-align: middle;"
-            >{{ item.promoteBigProvince }}/{{ item.promoteProvince }}</span>
+            <span style="font-size:14px;color:#A1A1A1;vertical-align: middle;"
+              >{{ item.promoteBigProvince }}/{{ item.promoteProvince }}</span
+            >
           </div>
           <div style="padding-top:5px;">
             <img
@@ -267,11 +321,18 @@
           </div>-->
           <div
             style="font-size:16px;color:#FF5E5E;padding-left:10px;padding-top:3px;"
-          >{{ item.promoteTotal }}€</div>
+          >
+            {{ item.promoteTotal }}€
+          </div>
         </div>
       </div>
     </div>
-    <el-dialog title :visible.sync="dialogVisible" width="1148px" :before-close="handleClose">
+    <el-dialog
+      title
+      :visible.sync="dialogVisible"
+      width="1148px"
+      :before-close="handleClose"
+    >
       <!-- <span>这是一段信息</span> -->
       <div style="overflow:hidden">
         <div
@@ -279,7 +340,8 @@
         >
           <span
             style="font-size:30px;color:#000;margin-bottom:30px;display:inline-block;"
-          >{{ $t("message.global.scan") }}</span>
+            >{{ $t("message.global.scan") }}</span
+          >
           <div id="qrcode" ref="qrcode"></div>
         </div>
         <div
@@ -293,9 +355,7 @@
           <p>
             {{ $t("message.global.subject") }}：
             <span>
-              {{
-              getPostListingData.title
-              }}
+              {{ getPostListingData.title }}
             </span>
           </p>
           <p>
@@ -305,15 +365,13 @@
           <p>
             {{ $t("message.global.averagePrice") }}：
             <span>
-              {{ getPostListingData.unit
-              }}{{ $t("message.global.square€") }}
+              {{ getPostListingData.unit }}{{ $t("message.global.square€") }}
             </span>
           </p>
           <p>
             {{ $t("message.global.proportion") }}：
             <span>
-              {{ getPostListingData.acreage
-              }}{{ $t("message.global.square") }}
+              {{ getPostListingData.acreage }}{{ $t("message.global.square") }}
             </span>
           </p>
           <!-- unit -->
@@ -341,8 +399,12 @@
             <span>{{ agent.brokerTelPhone }}</span>
           </p>
         </div>
-        <textarea style="z-index:-10000;font-size:0;border:1px solid #fff;" id="input">
-这是幕后黑手</textarea>
+        <textarea
+          style="z-index:-10000;font-size:0;border:1px solid #fff;"
+          id="input"
+        >
+这是幕后黑手</textarea
+        >
         <div
           :class="{ qianlan: qianlan }"
           style="float:right;
@@ -357,7 +419,9 @@
             cursor: pointer;
             margin-top:10px;border-radius:5px;"
           @click="consf"
-        >{{ $t("message.global.fuzhi") }}</div>
+        >
+          {{ $t("message.global.fuzhi") }}
+        </div>
       </div>
     </el-dialog>
     <foots></foots>
