@@ -92,7 +92,7 @@
           <el-table
             :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
             :data="roomInc"
-            stripe="true"
+            :stripe="true"
             style="width: 100%"
           >
             <el-table-column
@@ -588,6 +588,26 @@ export default {
         }
       ]
     };
+  },
+
+  async asyncData({ route, app }) {
+    try {
+      const as = { id: route.query.flag };
+      const getInFoData = (await app.$api.article.getInFo(as)).data;
+      return {
+        getPostListingData: getInFoData.data,
+        address_Map:
+          "http://47.254.149.82/" +
+          "/app/map/jumpMap?lat=" +
+          getInFoData.data.latitude +
+          "&lng=" +
+          getInFoData.data.longitude,
+        roomInc: getInFoData.data.RentingApartmentList,
+        promoteList: getInFoData.data.promoteList
+      };
+    } catch {
+      return {};
+    }
   },
   data() {
     return {

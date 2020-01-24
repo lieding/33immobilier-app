@@ -115,6 +115,17 @@ export default {
       abc: ""
     };
   },
+  async asyncData({ route, app }) {
+    try {
+      const options = { id: route.query.flag };
+      const getInfoInfo = (await app.$api.article.getInfoLis(options)).data;
+      return {
+        outcome: getInfoInfo.data
+      };
+    } catch {
+      return {};
+    }
+  },
   created() {
     this.get(this.options);
     this.getRight();

@@ -508,9 +508,49 @@ export default {
       galleryIndex: null
     };
   },
+  async asyncData({ route, app }) {
+    const as = { id: route.query.flag };
+    try {
+      const getPostListingData = (await app.$api.article.getPostListingData(as))
+        .data;
+      const apartmentList = [];
+      getPostListingData.data.bedRoomList.forEach(item => {
+        item["room"] = app.i18n.t("message.global.bedroom");
+        apartmentList.push(item);
+      });
+      getPostListingData.data.parlorList.forEach(item => {
+        item["room"] = app.i18n.t("message.global.drawingRoom");
+        apartmentList.push(item);
+      });
+      getPostListingData.data.bathRoomList.forEach(item => {
+        item["room"] = app.i18n.t("message.global.showerRoom");
+        apartmentList.push(item);
+      });
+      getPostListingData.data.kitChenList.forEach(item => {
+        item["room"] = app.i18n.t("message.global.kitchen");
+        // item['room'] = '餐厅'
+        apartmentList.push(item);
+      });
+
+      return {
+        address_Map:
+          "http://47.254.149.82/" +
+          "/app/map/jumpMap?lat=" +
+          getPostListingData.data.latitude +
+          "&lng=" +
+          getPostListingData.data.longitude,
+        promoteList: getPostListingData.data.promoteList,
+        getPostListingData: getPostListingData.data,
+        apartmentList: apartmentList,
+        agent: getPostListingData.data.agent
+      };
+    } catch (err) {
+      console.log(err);
+      return {};
+    }
+  },
   created() {
     this.get(this.$route.query.flag);
-    //console.log(this.$route.query.flag)
   },
   methods: {
     consf() {

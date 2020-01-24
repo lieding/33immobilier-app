@@ -538,6 +538,26 @@ export default {
       ]
     };
   },
+  async asyncData({ route, app }) {
+    try {
+      const as = { id: route.query.flag };
+      const getInfoNewHousInfo = (await app.$api.article.getInfoNewHous(as))
+        .data;
+      return {
+        getPostListingData: getInfoNewHousInfo.data,
+        tableData: getInfoNewHousInfo.data.aparementList,
+        promoteList: getInfoNewHousInfo.data.promoteList,
+        address_Map:
+          "http://47.254.149.82" +
+          "/app/map/jumpMap?lat=" +
+          getInfoNewHousInfo.data.latitude +
+          "&lng=" +
+          getInfoNewHousInfo.data.longitude
+      };
+    } catch {
+      return {};
+    }
+  },
   data() {
     return {
       input2: "",
@@ -594,7 +614,6 @@ export default {
   },
   created() {
     this.get(this.$route.query.flag);
-    console.log(this.$route.query.flag);
   },
   methods: {
     routerGos(val) {
@@ -660,7 +679,6 @@ export default {
     },
     routerGo(flags) {
       if (process.client) {
-        console.log(flags);
         this.get(flags);
         document.body.scrollTop = 0;
         document.documentElement.scrollTop = 0;
