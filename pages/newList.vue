@@ -182,6 +182,7 @@ import homeS from "@/assets/image/homeS.png";
 import baseUrl from "@/api/base.js";
 export default {
   name: "newList",
+  middleware: "responsive",
   components: {
     headers,
     foots,

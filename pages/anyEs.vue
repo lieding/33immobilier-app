@@ -263,6 +263,7 @@ import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
 export default {
   name: "anyEs",
+  middleware: "responsive",
   components: {
     headers,
     foots,

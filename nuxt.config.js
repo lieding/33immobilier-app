@@ -49,7 +49,7 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: [["nuxt-i18n", I18N], "@nuxtjs/sitemap"],
+  modules: [["nuxt-i18n", I18N], "@nuxtjs/sitemap", "@nuxtjs/device"],
 
   /*
    ** Build configuration

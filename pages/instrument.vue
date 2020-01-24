@@ -168,6 +168,7 @@ import Footer from "@/components/MIndex/common/footer.vue";
 var echarts = require("echarts");
 export default {
   name: "",
+  middleware: "responsive",
   components: {
     Header,
     Footer

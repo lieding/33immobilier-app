@@ -177,6 +177,7 @@ var echarts = require("echarts");
 
 export default {
   name: "promoteList",
+  middleware: "responsive",
   components: {
     headers,
     foots

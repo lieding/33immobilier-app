@@ -560,11 +560,11 @@ import baseurl from "@/api/base.js";
 
 export default {
   name: "seconHandHous",
+  middleware: "responsive",
   components: {
     headers,
     foots
   },
-
   head() {
     return {
       title: `${this.getPostListingData.title} | ${this.getPostListingData.city}`,

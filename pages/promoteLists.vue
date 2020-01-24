@@ -16,6 +16,7 @@ import promoteLists from "@/components/PcIndex/promoteList.vue";
 // import Footer from "@/components/MIndex/common/footer.vue";
 // var echarts = require("echarts");
 export default {
+  middleware: "responsive",
   components: {
     Header,
     Footer,

@@ -697,6 +697,7 @@ import wifiG from "@/assets/image/picSzg/wifiG.png";
 import wifiH from "@/assets/image/picSzg/wifiH.png";
 export default {
   name: "sellers",
+  middleware: "responsive",
   components: {
     headers,
     foots

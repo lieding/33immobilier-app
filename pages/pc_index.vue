@@ -294,6 +294,7 @@ export default {
     foots,
     headers
   },
+  middleware: "responsive",
   head() {
     return {
       title: "33找房, 法国第一华人找房平台",

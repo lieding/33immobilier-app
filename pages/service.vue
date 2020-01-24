@@ -91,6 +91,7 @@ import rem from "@/common/rem.js";
 import Header from "@/components/MIndex/common/head.vue";
 import Footer from "@/components/MIndex/common/footer.vue";
 export default {
+  middleware: "responsive",
   components: {
     Header,
     Footer

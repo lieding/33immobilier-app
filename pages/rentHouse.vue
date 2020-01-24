@@ -134,6 +134,7 @@ import Footer from "@/components/MIndex/common/footer.vue";
 import mapBox from "@/components/MIndex/common/mapBox.vue";
 export default {
   name: "",
+  middleware: "responsive",
   components: {
     Header,
     Footer,

@@ -509,6 +509,7 @@ import baseurl from "@/api/base.js";
 
 export default {
   name: "seconHandHous",
+  middleware: "responsive",
   components: {
     headers,
     foots,

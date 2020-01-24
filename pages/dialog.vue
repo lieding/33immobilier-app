@@ -3,74 +3,95 @@
     <van-dialog v-model="show">
       <div class="box">
         <p v-if="type != '经纪人'" class="title">
-          {{$t("message.global.scan")}}
-          <img
-            src="@/assets/image/go.png"
-            alt
-            class="go"
-            @click="Onclick"
-          />
+          {{ $t("message.global.scan") }}
+          <img src="@/assets/image/go.png" alt class="go" @click="Onclick" />
         </p>
-        <p v-if="type == '经纪人' " class="title_jjr">
+        <p v-if="type == '经纪人'" class="title_jjr">
           <!-- 扫描二维码联系平台  -->
           <img src="@/assets/image/go.png" alt class="go" @click="Onclick" />
         </p>
-        <div class="img" id="qrCode" ref="qrCodeDiv" v-if="type != '经纪人'"></div>
+        <div
+          class="img"
+          id="qrCode"
+          ref="qrCodeDiv"
+          v-if="type != '经纪人'"
+        ></div>
         <!-- 经纪人 -->
         <!-- <div class="center">
                 <p v-if="wx">{{$t("message.global.lishibuluo")}}{{listList.wx}}</p>
         </div>-->
 
         <div class="center">
-          <p
-            v-if="listList.type && type != '经纪人'"
-          >{{$t("message.global.PropertyType")}}：{{listList.type}}</p>
+          <p v-if="listList.type && type != '经纪人'">
+            {{ $t("message.global.PropertyType") }}：{{ listList.type }}
+          </p>
           <!-- 标题 -->
-          <p v-if="listList.estate">{{$t("message.global.subject")}} ：{{listList.estate}}</p>
-          <p v-if="listList.city">{{$t("message.global.city")}} ：{{listList.city}}</p>
+          <p v-if="listList.estate">
+            {{ $t("message.global.subject") }} ：{{ listList.estate }}
+          </p>
+          <p v-if="listList.city">
+            {{ $t("message.global.city") }} ：{{ listList.city }}
+          </p>
           <!-- 价格 -->
-          <p v-if="listList.total">{{$t("message.global.price")}} ：{{listList.total}}€</p>
-          <p
-            v-if="listList.lowprice"
-          >{{$t("message.global.priceRange")}} ：{{listList.lowprice}}€ - {{listList.maxPrice}}€</p>
+          <p v-if="listList.total">
+            {{ $t("message.global.price") }} ：{{ listList.total }}€
+          </p>
+          <p v-if="listList.lowprice">
+            {{ $t("message.global.priceRange") }} ：{{ listList.lowprice }}€ -
+            {{ listList.maxPrice }}€
+          </p>
           <!-- 均价 -->
-          <p
-            v-if="listList.unit"
-          >{{$t("message.global.averagePrice")}} ：{{listList.unit}}{{$t("message.global.square€")}}</p>
-          <p v-if="listList.phone">{{$t("message.global.connection")}} ：{{listList.phone}}</p>
-          <p v-if="listList.wx">{{$t("message.global.lishibuluo")}} : {{listList.wx}}</p>
-          <p
-            v-if="listList.estateAddress"
-          >{{$t("message.global.position")}} ：{{listList.estateAddress}}</p>
-          <p
-            v-if="listList.roomsNum"
-          >{{$t("message.global.range")}} ：{{listList.roomsNum}}{{$t("message.global.P")}} - {{listList.bedroomNum}}{{$t("message.global.CH")}}</p>
+          <p v-if="listList.unit">
+            {{ $t("message.global.averagePrice") }} ：{{ listList.unit
+            }}{{ $t("message.global.square€") }}
+          </p>
+          <p v-if="listList.phone">
+            {{ $t("message.global.connection") }} ：{{ listList.phone }}
+          </p>
+          <p v-if="listList.wx">
+            {{ $t("message.global.lishibuluo") }} : {{ listList.wx }}
+          </p>
+          <p v-if="listList.estateAddress">
+            {{ $t("message.global.position") }} ：{{ listList.estateAddress }}
+          </p>
+          <p v-if="listList.roomsNum">
+            {{ $t("message.global.range") }} ：{{ listList.roomsNum
+            }}{{ $t("message.global.P") }} - {{ listList.bedroomNum
+            }}{{ $t("message.global.CH") }}
+          </p>
           <!-- 面积 -->
 
-          <p
-            v-if="listList.acreage"
-          >{{$t("message.global.proportion")}} ：{{listList.acreage}}{{$t("message.global.square")}}</p>
-          <p
-            v-if="listList.minHall"
-          >{{$t("message.global.range")}} ：{{listList.minHall}} - {{listList.maxHall}}</p>
+          <p v-if="listList.acreage">
+            {{ $t("message.global.proportion") }} ：{{ listList.acreage
+            }}{{ $t("message.global.square") }}
+          </p>
+          <p v-if="listList.minHall">
+            {{ $t("message.global.range") }} ：{{ listList.minHall }} -
+            {{ listList.maxHall }}
+          </p>
 
           <!-- <p v-if="listList.expressing">{{$t("message.global.annual")}}：{{listList.year}}</p> -->
-          <p
-            v-if="listList.expressing"
-          >{{$t("message.global.completionDate")}} ：{{listList.expressing}}</p>
-          <p v-if="type != '经纪人'">{{$t("message.global.Housinglink")}} ：{{href}}</p>
-          <p
-            v-if="listList.introduceFr"
-            class="FR"
-          >{{$t("message.global.introduce")}} ：{{listList.introduceFr}}</p>
-          <p
-            v-if="listList.brokerName"
-          >{{$t("message.global.contactName")}} ：{{listList.brokerName}}</p>
-          <p v-if="listList.brokerEmail">{{$t("message.global.post")}} ：{{listList.brokerEmail}}</p>
+          <p v-if="listList.expressing">
+            {{ $t("message.global.completionDate") }} ：{{
+              listList.expressing
+            }}
+          </p>
+          <p v-if="type != '经纪人'">
+            {{ $t("message.global.Housinglink") }} ：{{ href }}
+          </p>
+          <p v-if="listList.introduceFr" class="FR">
+            {{ $t("message.global.introduce") }} ：{{ listList.introduceFr }}
+          </p>
+          <p v-if="listList.brokerName">
+            {{ $t("message.global.contactName") }} ：{{ listList.brokerName }}
+          </p>
+          <p v-if="listList.brokerEmail">
+            {{ $t("message.global.post") }} ：{{ listList.brokerEmail }}
+          </p>
 
-          <p
-            v-if="listList.brokerPhone"
-          >{{$t("message.global.contactPhone")}} ：{{listList.brokerPhone}}</p>
+          <p v-if="listList.brokerPhone">
+            {{ $t("message.global.contactPhone") }} ：{{ listList.brokerPhone }}
+          </p>
         </div>
         <div class="btn">
           <p
@@ -78,8 +99,12 @@
             :data-clipboard-text="list"
             @click="copy"
             v-if="type != '经纪人'"
-          >{{$t("message.global.fuzhi")}}</p>
-          <p class="tag-read" @click="Onclick" v-if="type == '经纪人'">{{$t("message.global.sure")}}</p>
+          >
+            {{ $t("message.global.fuzhi") }}
+          </p>
+          <p class="tag-read" @click="Onclick" v-if="type == '经纪人'">
+            {{ $t("message.global.sure") }}
+          </p>
           <!-- <img src="@/assets/image/btn.png" alt="" class="tag-read" :data-clipboard-text="list" @click="copy" ></div>  -->
         </div>
       </div>
@@ -90,6 +115,7 @@
 import Clipboard from "clipboard";
 
 export default {
+  middleware: "responsive",
   data() {
     return {
       show: true,

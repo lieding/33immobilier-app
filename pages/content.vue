@@ -39,9 +39,7 @@
           />
         </van-cell-group>
         <van-button type="primary" class="btn" @click="OncontactUs">
-          {{
-          $t("message.global.woyaotiwen")
-          }}
+          {{ $t("message.global.woyaotiwen") }}
         </van-button>
       </div>
     </div>
@@ -54,6 +52,7 @@ import Header from "@/components/MIndex/common/head.vue";
 import Footer from "@/components/MIndex/common/footer.vue";
 export default {
   name: "",
+  middleware: "responsive",
   components: {
     Header,
     Footer

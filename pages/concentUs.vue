@@ -66,6 +66,7 @@ import foots from "@/components/PcIndex/moduleT/foot.vue";
 
 export default {
   name: "concentUs",
+  middleware: "responsive",
   components: {
     headers,
     foots

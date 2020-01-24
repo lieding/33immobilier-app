@@ -674,6 +674,7 @@ import Footer from "@/components/MIndex/common/footer.vue";
 import axios from "@/common/http";
 import VueGmaps from "vue-gmaps";
 export default {
+  middleware: "responsive",
   components: {
     Header,
     Footer

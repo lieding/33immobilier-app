@@ -199,6 +199,7 @@ import wxInd from "@/assets/image/wxInd.png";
 
 export default {
   name: "broker",
+  middleware: "responsive",
   components: {
     headers,
     foots

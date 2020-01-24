@@ -207,6 +207,7 @@ import baseUrl from "@/api/base.js";
 
 export default {
   name: "rentHouseList",
+  middleware: "responsive",
   components: {
     headers,
     foots

@@ -91,6 +91,7 @@ import logoT from "@/assets/image/logoTTT.png";
 
 export default {
   name: "encyclopedia",
+  middleware: "responsive",
   components: {
     headers,
     foots

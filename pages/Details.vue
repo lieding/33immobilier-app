@@ -459,6 +459,7 @@ import list from "@/components/MIndex/common/list.vue";
 var echarts = require("echarts");
 export default {
   name: "Details",
+  middleware: "responsive",
   components: {
     Header,
     Footer,

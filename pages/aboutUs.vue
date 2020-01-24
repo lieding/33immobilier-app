@@ -33,6 +33,7 @@ import logoT from "@/assets/image/logoTTT.png";
 
 export default {
   name: "aboutUs",
+  middleware: "responsive",
   components: {
     headers,
     foots

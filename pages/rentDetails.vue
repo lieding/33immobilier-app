@@ -284,61 +284,61 @@ import List from '@/components/MIndex/common/list.vue'
 import Header from '@/components/MIndex/common/head.vue'
 import Footer from '@/components/MIndex/common/footer.vue'
 export default {
-       name: '',
-        components:{
-        Header,
-        List,
-        Footer
-        },
-        watch: {
-            '$route' (to, from) {
-               this.id = this.$route.query.id
-                this.Onlist();
-            }
-        },
-        head() {
-            return {
-            title: `${this.data.title} | ${this.data.city}`,
-            meta: [
-                {
-                name: "description",
-                content: `${this.data.title} | ${this.data.city}`
-                },
-                {
-                name: "keywords",
-                content: `${this.data.title},${this.data.city}`
-                }
-            ]
-            };
-        },
-      data(){
-        return{
-              current:0,
-            value:0,
-            value1: 0,
-            ipt1:'',//您的姓名
-            ipt1:'',//您的姓名
-            ipt2:'',//您的电话
-            ipt3:'',//您的邮箱
-            ipt4:'',//您的信息
-            id:this.$route.query.id,//房屋id
-            false:false,
-            data:[],//租房
-            agent:{},//顾问
-            picList:[],//图片列表
-            interpret:true,//翻译中法文
-            List:[],//房屋详情列表
-            RentingApartmentList:[],//租客信息
-            promoteList:[],//推荐房源
-            W:'',
-            Url:'',
-            IspackUp:true,
-            option1: [
-                { text: '新房', value: 0 },
-                { text: '新款商品', value: 1 },
-                { text: '活动商品', value: 2 }
-            ]
+    name: '',
+    middleware: "responsive",
+    components:{
+    Header,
+    List,
+    Footer
+    },
+    watch: {
+        '$route' (to, from) {
+            this.id = this.$route.query.id
+            this.Onlist();
         }
+    },
+    head() {
+        return {
+        title: `${this.data.title} | ${this.data.city}`,
+        meta: [
+            {
+            name: "description",
+            content: `${this.data.title} | ${this.data.city}`
+            },
+            {
+            name: "keywords",
+            content: `${this.data.title},${this.data.city}`
+            }
+        ]
+        };
+    },
+    data(){
+    return{
+        current:0,
+        value:0,
+        value1: 0,
+        ipt1:'',//您的姓名
+        ipt1:'',//您的姓名
+        ipt2:'',//您的电话
+        ipt3:'',//您的邮箱
+        ipt4:'',//您的信息
+        id:this.$route.query.id,//房屋id
+        false:false,
+        data:[],//租房
+        agent:{},//顾问
+        picList:[],//图片列表
+        interpret:true,//翻译中法文
+        List:[],//房屋详情列表
+        RentingApartmentList:[],//租客信息
+        promoteList:[],//推荐房源
+        W:'',
+        Url:'',
+        IspackUp:true,
+        option1: [
+            { text: '新房', value: 0 },
+            { text: '新款商品', value: 1 },
+            { text: '活动商品', value: 2 }
+        ]}
     },
     mounted(){
         rem();

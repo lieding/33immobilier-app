@@ -6,7 +6,7 @@ import rem from "@/common/rem.js";
 
 export default {
   name: "mapbox_test",
-
+  middleware: "responsive",
   mounted() {
     rem();
     this.init();
