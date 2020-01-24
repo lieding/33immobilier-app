@@ -32,6 +32,7 @@
               <div
                 class="lunbotu"
                 v-bind:style="{ 'background-image': 'url(' + item + ')' }"
+                @click="galleryIndex = i"
               ></div>
             </el-carousel-item>
           </el-carousel>
@@ -125,6 +126,7 @@
             v-for="(item, i) in getPostListingData.picList"
             :key="i"
             v-bind:style="{ 'background-image': 'url(' + item + ')' }"
+            @click="galleryIndex = i"
           ></div>
         </div>
         <div class="houseInfo">
@@ -425,6 +427,13 @@
       </div>
     </el-dialog>
     <foots></foots>
+    <client-only>
+      <gallery
+        :images="getPostListingData.picList"
+        :index="galleryIndex"
+        @close="galleryIndex = null"
+      ></gallery>
+    </client-only>
   </div>
 </template>
 
@@ -495,7 +504,8 @@ export default {
       promoteList: "",
       dialogVisible: false,
       address_Map: "",
-      baseurl: baseurl.sq
+      baseurl: baseurl.sq,
+      galleryIndex: null
     };
   },
   created() {

@@ -1,6 +1,6 @@
 import Vue from "vue";
-import ElementUI from "vue-gallery";
+import VueGallery from "vue-gallery";
 
 export default () => {
-  Vue.use(ElementUI);
+  Vue.component("gallery", VueGallery);
 };

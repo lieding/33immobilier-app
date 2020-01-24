@@ -40,7 +40,8 @@ export default {
   plugins: [
     { src: "~/plugins/axios" },
     { src: "~/plugins/element-ui" },
-    { src: "~/plugins/vant", ssr: false }
+    { src: "~/plugins/vant", ssr: false },
+    { src: "~/plugins/vue-gallery", ssr: false }
   ],
   /*
    ** Nuxt.js dev-modules

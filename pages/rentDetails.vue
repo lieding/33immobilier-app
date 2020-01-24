@@ -6,7 +6,7 @@
           <div class="video">
               <van-swipe :autoplay="3000" :show-indicators='false'>
                 <van-swipe-item v-for="(image, index) in picList" :key="index">
-                    <img :src="image" />
+                    <img :src="image" @click="galleryIndex = index" />
                 </van-swipe-item>
               </van-swipe>
           </div>
@@ -274,6 +274,11 @@
     </div>
     <van-button type="info" size="large" @click="Onord('/ordIssue')" style="margin-bottom:.2rem">{{$t("message.global.woyaomaifang")}}</van-button>
      <Footer/>
+     <gallery
+        :images="picList"
+        :index="galleryIndex"
+        @close="galleryIndex = null"
+      ></gallery>
      </client-only>
     </div>
 
@@ -338,7 +343,8 @@ export default {
             { text: '新房', value: 0 },
             { text: '新款商品', value: 1 },
             { text: '活动商品', value: 2 }
-        ]}
+        ],       
+        galleryIndex: null};
     },
     mounted(){
         rem();

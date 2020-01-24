@@ -6,7 +6,8 @@
       <div class="video">
         <van-swipe :autoplay="3000" :show-indicators="false">
           <van-swipe-item v-for="(image, index) in picList" :key="index">
-            <img :src="image" />
+            <img :src="image" @click="galleryIndex = index"
+            />
           </van-swipe-item>
         </van-swipe>
       </div>
@@ -355,6 +356,11 @@
       @click="Onord('/ordIssue')"
     >{{$t("message.global.woyaomaifang")}}</van-button>
     <Footer />
+    <gallery
+        :images="picList"
+        :index="galleryIndex"
+        @close="galleryIndex = null"
+      ></gallery>
     </client-only>
   </div>
 
@@ -440,7 +446,8 @@ export default {
                 { text: '活动商品', value: 2 }
             ],
                getRate: [], //贷款利率
-            getRateList: []
+            getRateList: [],
+            galleryIndex: null
         } 
     },
     mounted(){

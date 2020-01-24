@@ -33,6 +33,7 @@
               <div
                 class="lunbotu"
                 v-bind:style="{ 'background-image': 'url(' + item + ')' }"
+                @click="galleryIndex = i"
               ></div>
             </el-carousel-item>
           </el-carousel>
@@ -464,6 +465,13 @@
       </div>
     </el-dialog>
     <foots></foots>
+    <client-only>
+      <gallery
+        :images="getPostListingData.picList"
+        :index="galleryIndex"
+        @close="galleryIndex = null"
+      ></gallery>
+    </client-only>
   </div>
 </template>
 
@@ -580,7 +588,8 @@ export default {
       dialogVisible: false,
       tableData: [{}, {}],
       baseurl: baseurl.sq,
-      qianlan: false
+      qianlan: false,
+      galleryIndex: null
     };
   },
   created() {

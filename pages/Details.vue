@@ -21,7 +21,7 @@
             :show-indicators="false"
           >
             <van-swipe-item v-for="(image, index) in picList" :key="index">
-              <img :src="image" />
+              <img :src="image" @click="galleryIndex = i" />
             </van-swipe-item>
           </van-swipe>
         </div>
@@ -447,6 +447,11 @@
         $t("message.global.woyaomaifang")
       }}</van-button>
       <Footer />
+      <gallery
+        :images="picList"
+        :index="galleryIndex"
+        @close="galleryIndex = null"
+      ></gallery>
     </client-only>
   </div>
 </template>
@@ -539,7 +544,8 @@ export default {
       Url: "",
       current: 0,
       getRate: [], //贷款利率
-      getRateList: []
+      getRateList: [],
+      galleryIndex: null
     };
   },
   mounted() {
