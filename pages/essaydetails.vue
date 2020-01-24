@@ -80,6 +80,21 @@ export default {
     headers,
     foots
   },
+  head() {
+    return {
+      title: `${this.outcome.title}`,
+      meta: [
+        {
+          name: "description",
+          content: `${this.outcome.title}`
+        },
+        {
+          name: "keywords",
+          content: `${this.outcome.title}`
+        }
+      ]
+    };
+  },
   data() {
     return {
       flag: true,

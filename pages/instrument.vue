@@ -4,14 +4,11 @@
       <Header :title="$t('message.global.instrument')" />
       <div class="offer">
         <P :class="isbtn ? 'P_btn' : 'P_onbtn'" @click="Onclick">
-          {{
-          $t("message.global.calculation")
-          }}
+          {{ $t("message.global.calculation") }}
         </P>
-        <p
-          :class="isbtn ? 'P_onbtn' : 'P_btn'"
-          @click="Onclick"
-        >{{ $t("message.global.Calculator") }}</p>
+        <p :class="isbtn ? 'P_onbtn' : 'P_btn'" @click="Onclick">
+          {{ $t("message.global.Calculator") }}
+        </p>
       </div>
       <!-- 贷款能力计算器 -->
       <div class="estates" v-if="isbtn">
@@ -37,7 +34,10 @@
               type="Number"
             />
           </van-cell-group>
-          <p class="repay_p">{{ $t("message.global.liability") }}{{ $t("message.global.Canfill") }}</p>
+          <p class="repay_p">
+            {{ $t("message.global.liability")
+            }}{{ $t("message.global.Canfill") }}
+          </p>
           <van-cell-group>
             <van-field
               v-model="rate"
@@ -50,9 +50,7 @@
         </div>
         <div class="btn">
           <van-button type="info" class="btn_i" @click="oncapacity">
-            {{
-            $t("message.global.calculate")
-            }}
+            {{ $t("message.global.calculate") }}
           </van-button>
         </div>
         <p class="monthly" v-if="M">
@@ -80,7 +78,9 @@
       </div>
       <!-- 还款计算器 -->
       <div class="estates" v-else>
-        <span class="consultants">{{ $t("message.global.loancalculate") }}</span>
+        <span class="consultants">{{
+          $t("message.global.loancalculate")
+        }}</span>
         <div class="repay">
           <p class="repay_p">{{ $t("message.global.Housing") }}</p>
           <van-cell-group>
@@ -118,14 +118,17 @@
                 <van-field v-model="year"  :placeholder='$t("message.global.qingshuru")' type="Number"/>
           </van-cell-group>-->
           <el-select v-model="year">
-            <el-option v-for="item in getRate" :key="item" :label="item" :value="item"></el-option>
+            <el-option
+              v-for="item in getRate"
+              :key="item"
+              :label="item"
+              :value="item"
+            ></el-option>
           </el-select>
         </div>
         <div class="btn">
           <van-button type="info" class="btn_i" @click="onrepay">
-            {{
-            $t("message.global.calculate")
-            }}
+            {{ $t("message.global.calculate") }}
           </van-button>
         </div>
         <p class="monthly" v-if="mothey">
@@ -150,7 +153,9 @@
             </p>
           </div>
         </div>
-        <div class="loanse" @click="OnPush">{{ $t("message.global.minimum") }}</div>
+        <div class="loanse" @click="OnPush">
+          {{ $t("message.global.minimum") }}
+        </div>
       </div>
       <Footer />
     </client-only>
@@ -166,6 +171,24 @@ export default {
   components: {
     Header,
     Footer
+  },
+  head() {
+    return {
+      title:
+        "法国房贷计算器_法国购房工具_贷款能力_还贷能力_月供计算,33immobilier|33找房-法国第一华人找房平台",
+      meta: [
+        {
+          name: "description",
+          content:
+            "33找房购房工具频道,为您提供法国在线买房贷款计算器,包括计算贷款额度,贷款能力,还贷计算器,计算月供。了解贷款能力,评估贷款状况,法国申请贷款就上法国33找房全程为您服务"
+        },
+        {
+          name: "keywords",
+          content:
+            "贷款能力计算器,法国贷款,计算贷款额度,法国贷款能力,法国如何贷款,还贷计算器,月供计算器,了解贷款能力,评估贷款状况,法国申请贷款"
+        }
+      ]
+    };
   },
   data() {
     return {

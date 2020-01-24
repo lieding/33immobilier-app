@@ -514,6 +514,21 @@ export default {
     foots,
     calculate
   },
+  head() {
+    return {
+      title: `${this.getPostListingData.estate} | ${this.getPostListingData.city}`,
+      meta: [
+        {
+          name: "description",
+          content: `${this.getPostListingData.estate} | ${this.getPostListingData.city}`
+        },
+        {
+          name: "keywords",
+          content: `法国新房,法国楼盘,买房投资,买房减税,PINEL减税,LMNP减税,VEFA,Logement neuf,${this.getPostListingData.estate},${this.getPostListingData.city}`
+        }
+      ]
+    };
+  },
   data() {
     return {
       input2: "",

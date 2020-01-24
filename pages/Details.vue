@@ -15,7 +15,11 @@
       <Header :title="$t('message.global.xingfangxiangqing')" />
       <div>
         <div class="video" @click="dialogVisible = true">
-          <van-swipe :autoplay="3000" @change="onChange" :show-indicators="false">
+          <van-swipe
+            :autoplay="3000"
+            @change="onChange"
+            :show-indicators="false"
+          >
             <van-swipe-item v-for="(image, index) in picList" :key="index">
               <img :src="image" />
             </van-swipe-item>
@@ -28,7 +32,12 @@
           @click="onMap(data.vrAddress)"
           v-show="data.vrAddress"
         />
-        <img src="@/assets/image/share.png" alt class="share" @click="Onshare('/dialog')" />
+        <img
+          src="@/assets/image/share.png"
+          alt
+          class="share"
+          @click="Onshare('/dialog')"
+        />
         <div>
           <img
             src="@/assets/image/shipin.png"
@@ -41,71 +50,80 @@
                 <span class="VR" @click="onMap(data.vrAddress)">VR</span>
                 <span class="price">图片</span>
           </p>-->
-          <div class="custom-indicator" slot="indicator">{{ current + 1 }}/{{picList.length}}</div>
+          <div class="custom-indicator" slot="indicator">
+            {{ current + 1 }}/{{ picList.length }}
+          </div>
         </div>
       </div>
       <div class="details">
-        <p class="detalis_title">{{data.estate}}</p>
-        <p class="details_province">{{data.province}}/{{data.city}}</p>
+        <p class="detalis_title">{{ data.estate }}</p>
+        <p class="details_province">{{ data.province }}/{{ data.city }}</p>
         <p class="item">
-          <span class="tax font" v-if="data.taxCuts">{{data.taxCuts}}</span>
-          <span class="check font" v-if="data.expressing">{{data.expressing}}</span>
-          <span class="itemize font1" v-for="(item,index) in tags" :key="index">{{item}}</span>
+          <span class="tax font" v-if="data.taxCuts">{{ data.taxCuts }}</span>
+          <span class="check font" v-if="data.expressing">{{
+            data.expressing
+          }}</span>
+          <span
+            class="itemize font1"
+            v-for="(item, index) in tags"
+            :key="index"
+            >{{ item }}</span
+          >
         </p>
         <img :src="data.developersPic" alt class="details_img" />
-        <p class="price">{{data.lowprice}}€ - {{data.maxPrice}}€</p>
+        <p class="price">{{ data.lowprice }}€ - {{ data.maxPrice }}€</p>
         <p class="hand">
-          <span class="time">{{$t("message.global.completionDate")}} ：</span>
-          {{data.expressing}}
+          <span class="time">{{ $t("message.global.completionDate") }} ：</span>
+          {{ data.expressing }}
         </p>
         <p class="hand">
-          <span class="time">{{$t("message.global.HouseNumber")}} ：</span>
-          {{data.homesNum}}
+          <span class="time">{{ $t("message.global.HouseNumber") }} ：</span>
+          {{ data.homesNum }}
         </p>
         <p class="hand">
-          <span class="time">{{$t("message.global.measures")}} ：</span>
-          {{data.taxCuts}}
+          <span class="time">{{ $t("message.global.measures") }} ：</span>
+          {{ data.taxCuts }}
         </p>
         <p class="hand">
-          <span class="time">{{$t("message.global.jianshuiuquyu")}} ：</span>
-          {{data.taxCutsArea}}
+          <span class="time">{{ $t("message.global.jianshuiuquyu") }} ：</span>
+          {{ data.taxCutsArea }}
         </p>
         <p class="hand">
-          <span class="time">{{$t("message.global.deductibility")}} ：</span>
-          {{data.taxCutsQuota}}
+          <span class="time">{{ $t("message.global.deductibility") }} ：</span>
+          {{ data.taxCutsQuota }}
         </p>
         <p class="hand">
-          <span class="time">{{$t("message.global.Inventor")}} ：</span>
-          {{data.province}}/{{data.city}}
+          <span class="time">{{ $t("message.global.Inventor") }} ：</span>
+          {{ data.province }}/{{ data.city }}
         </p>
         <p class="hand">
-          <span class="time">{{$t("message.global.range")}} ：</span>
-          {{data.minHall}} - {{data.maxHall}}{{$t("message.global.P")}}
+          <span class="time">{{ $t("message.global.range") }} ：</span>
+          {{ data.minHall }} - {{ data.maxHall }}{{ $t("message.global.P") }}
         </p>
       </div>
       <hr class="hr" />
       <!-- 房产顾问 -->
       <div class="estates">
-        <p class="consultants">{{$t("message.global.counselor")}}</p>
+        <p class="consultants">{{ $t("message.global.counselor") }}</p>
         <div class="broker_box">
           <div class="broker">
             <img :src="data.brokerAvatar" alt class="img" />
             <div>
-              <p class="name">{{data.brokerName}}</p>
-              <p class="agent">{{data.brokerJob}}</p>
+              <p class="name">{{ data.brokerName }}</p>
+              <p class="agent">{{ data.brokerJob }}</p>
             </div>
             <div class="attestation">
               <p>
                 <img src="@/assets/image/autonym.png" alt />
-                <span>{{$t("message.global.authentication")}}</span>
+                <span>{{ $t("message.global.authentication") }}</span>
               </p>
               <p>
                 <img src="@/assets/image/licensed.png" alt />
-                <span>{{$t("message.global.licensed")}}</span>
+                <span>{{ $t("message.global.licensed") }}</span>
               </p>
               <p>
                 <img src="@/assets/image/pro.png" alt />
-                <span>{{$t("message.global.EasyPro")}}</span>
+                <span>{{ $t("message.global.EasyPro") }}</span>
               </p>
             </div>
           </div>
@@ -113,17 +131,15 @@
           <div class="num">
             <p class="phone" v-if="data.brokerTelPhone">
               <img src="@/assets/image/phone1.png" alt class="margin" />
-              {{data.brokerTelPhone}}
+              {{ data.brokerTelPhone }}
             </p>
             <p>
-              <span
-                class="wx"
-                v-if="data.wxNumber"
-              >{{$t("message.global.WXWach")}}:{{data.wxNumber}}</span>
-              <span
-                class="yx"
-                v-if="data.brokerEmail"
-              >{{$t("message.global.mail")}}：{{data.brokerEmail}}</span>
+              <span class="wx" v-if="data.wxNumber"
+                >{{ $t("message.global.WXWach") }}:{{ data.wxNumber }}</span
+              >
+              <span class="yx" v-if="data.brokerEmail"
+                >{{ $t("message.global.mail") }}：{{ data.brokerEmail }}</span
+              >
             </p>
           </div>
           <div class="quiz">
@@ -162,50 +178,51 @@
                 :border="false"
               />
             </van-cell-group>
-            <van-button
-              type="primary"
-              class="btn_us"
-              @click="OncontactUs"
-            >{{$t("message.global.woyaotiwen")}}</van-button>
+            <van-button type="primary" class="btn_us" @click="OncontactUs">{{
+              $t("message.global.woyaotiwen")
+            }}</van-button>
           </div>
         </div>
       </div>
       <hr class="hr" />
       <!-- 楼盘介绍 -->
       <div class="estates pack">
-        <span class="consultants">{{$t("message.global.premises")}}</span>
-        <span
-          class="interpret"
-          v-if="interpret"
-          @click="oninterpret"
-        >{{$t("message.global.interpret")}}</span>
+        <span class="consultants">{{ $t("message.global.premises") }}</span>
+        <span class="interpret" v-if="interpret" @click="oninterpret">{{
+          $t("message.global.interpret")
+        }}</span>
         <span class="interpret" v-else @click="oninterpret">翻译法语</span>
         <p class="download interpret" @click="onMap(data.brochure)">
           <img src="@/assets/image/download.png" alt />
-          {{$t("message.global.brochure")}}
+          {{ $t("message.global.brochure") }}
         </p>
         <div
-          :class="IspackUp?'synopsisno':'synopsis'"
+          :class="IspackUp ? 'synopsisno' : 'synopsis'"
           v-if="!interpret"
           style="white-space: pre-line;"
-        >{{data.introduceCn}}</div>
+        >
+          {{ data.introduceCn }}
+        </div>
         <div
-          :class="IspackUp?'synopsisno':'synopsis'"
+          :class="IspackUp ? 'synopsisno' : 'synopsis'"
           v-else
           style="white-space: pre-line;"
-        >{{data.introduceFr}}</div>
+        >
+          {{ data.introduceFr }}
+        </div>
         <div>
-          <span
-            class="packUp"
-            @click="onpackUp"
-          >{{IspackUp?$t("message.global.seeMore"):$t("message.global.shouqi")}}</span>
+          <span class="packUp" @click="onpackUp">{{
+            IspackUp
+              ? $t("message.global.seeMore")
+              : $t("message.global.shouqi")
+          }}</span>
         </div>
       </div>
       <hr class="hr" />
       <!-- 楼盘位置 -->
       <div class="estates">
-        <span class="consultants">{{$t("message.global.position")}}</span>
-        <p class="province">{{data.estateAddress}}</p>
+        <span class="consultants">{{ $t("message.global.position") }}</span>
+        <p class="province">{{ data.estateAddress }}</p>
         <div class="map">
           <iframe :src="Url" frameborder="0" style="100%"></iframe>
         </div>
@@ -213,50 +230,57 @@
       <hr class="hr" />
       <!-- 户型详情 -->
       <div class="estates" v-show="aparementList.length != 0">
-        <span class="consultants">{{$t("message.global.modelDetails")}}</span>
+        <span class="consultants">{{ $t("message.global.modelDetails") }}</span>
         <div class="swipe">
           <!-- <div class="swipe_div"> -->
-          <div v-for="(info ,index) in aparementList" :key="index">
+          <div v-for="(info, index) in aparementList" :key="index">
             <p class="hand">
-              <span class="time">{{$t("message.global.chamberID")}} ：</span>
-              {{info.number}}
+              <span class="time">{{ $t("message.global.chamberID") }} ：</span>
+              {{ info.number }}
             </p>
             <p class="hand">
-              <span class="time">{{$t("message.global.DoorMode")}} ：</span>
-              {{info.roomNum}}
+              <span class="time">{{ $t("message.global.DoorMode") }} ：</span>
+              {{ info.roomNum }}
             </p>
             <p class="hand">
-              <span class="time">{{$t("message.global.usableArea")}} ：</span>
-              {{info.area}}
+              <span class="time">{{ $t("message.global.usableArea") }} ：</span>
+              {{ info.area }}
             </p>
             <p class="hand">
-              <span class="time">{{$t("message.global.level")}} ：</span>
-              {{info.floor}}
+              <span class="time">{{ $t("message.global.level") }} ：</span>
+              {{ info.floor }}
             </p>
             <p class="hand">
-              <span class="time">{{$t("message.global.price")}} ：</span>
-              {{info.price}}
+              <span class="time">{{ $t("message.global.price") }} ：</span>
+              {{ info.price }}
             </p>
             <p class="hand">
-              <span class="time">{{$t("message.global.averagePrice")}} ：</span>
-              {{info.averagePrice}}
+              <span class="time"
+                >{{ $t("message.global.averagePrice") }} ：</span
+              >
+              {{ info.averagePrice }}
             </p>
             <p class="hand">
-              <span class="time">{{$t("message.global.RAROC")}} ：</span>
-              {{info.rewards}}
+              <span class="time">{{ $t("message.global.RAROC") }} ：</span>
+              {{ info.rewards }}
             </p>
             <p class="hand" @click="onMap(info.vrAddress)">
-              <span class="time">{{$t("message.global.floorPlan")}}：</span>
-              <span style="border-bottom: 1px solid blue; color:rgba(34,75,215,1);">2D</span>
+              <span class="time">{{ $t("message.global.floorPlan") }}：</span>
+              <span
+                style="border-bottom: 1px solid blue; color:rgba(34,75,215,1);"
+                >2D</span
+              >
             </p>
             <p class="hand">
-              <span class="time">{{$t("message.global.condition")}}：</span>
-              {{State(info.state)}}
+              <span class="time">{{ $t("message.global.condition") }}：</span>
+              {{ State(info.state) }}
             </p>
             <p
               class="relation"
-              @click="connectUs('./content',info.apartmentId)"
-            >{{$t("message.global.connectUs")}}</p>
+              @click="connectUs('./content', info.apartmentId)"
+            >
+              {{ $t("message.global.connectUs") }}
+            </p>
             <!-- </div> -->
           </div>
         </div>
@@ -266,9 +290,9 @@
 
       <!-- 贷款能力计算 -->
       <div class="estates">
-        <span class="consultants">{{$t("message.global.calculation")}}</span>
+        <span class="consultants">{{ $t("message.global.calculation") }}</span>
         <div class="repay">
-          <p class="repay_p">{{$t("message.global.onnetincome")}}</p>
+          <p class="repay_p">{{ $t("message.global.onnetincome") }}</p>
           <van-cell-group>
             <van-field
               v-model="revenus"
@@ -278,7 +302,7 @@
               type="Number"
             />
           </van-cell-group>
-          <p class="repay_p">{{$t("message.global.calculation")}}</p>
+          <p class="repay_p">{{ $t("message.global.calculation") }}</p>
           <van-cell-group>
             <van-field
               v-model="apport"
@@ -288,7 +312,10 @@
               type="Number"
             />
           </van-cell-group>
-          <p class="repay_p">{{$t("message.global.liability")}} {{$t("message.global.Canfill")}}</p>
+          <p class="repay_p">
+            {{ $t("message.global.liability") }}
+            {{ $t("message.global.Canfill") }}
+          </p>
           <van-cell-group>
             <van-field
               v-model="rate"
@@ -300,30 +327,29 @@
           </van-cell-group>
         </div>
         <div class="btn">
-          <van-button
-            type="info"
-            class="btn_i"
-            @click="oncapacity"
-          >{{$t("message.global.calculate")}}</van-button>
+          <van-button type="info" class="btn_i" @click="oncapacity">{{
+            $t("message.global.calculate")
+          }}</van-button>
         </div>
         <p class="monthly" v-if="M">
-          {{$t("message.global.highest")}}
-          <span class="money">{{M}}€</span>
+          {{ $t("message.global.highest") }}
+          <span class="money">{{ M }}€</span>
         </p>
         <div class="loans" v-if="M">
-          <p class="loans_p">{{$t("message.global.Youcanloan")}}</p>
+          <p class="loans_p">{{ $t("message.global.Youcanloan") }}</p>
           <table>
             <tr>
-              <th>{{$t("message.global.loanPeriod")}}</th>
-              <th>{{$t("message.global.annual")}}</th>
-              <th>{{$t("message.global.capacity")}}</th>
+              <th>{{ $t("message.global.loanPeriod") }}</th>
+              <th>{{ $t("message.global.annual") }}</th>
+              <th>{{ $t("message.global.capacity") }}</th>
             </tr>
           </table>
-          <table v-for="(item,index) in reckenList" :key="index">
+
+          <table v-for="(item, index) in reckenList" :key="index">
             <tr>
-              <td>{{item.year}} {{$t("message.global.ans")}}</td>
-              <td>{{item.retes}}%</td>
-              <td>{{item.money}}€</td>
+              <td>{{ item.year }} {{ $t("message.global.ans") }}</td>
+              <td>{{ item.retes }}%</td>
+              <td>{{ item.money }}€</td>
             </tr>
           </table>
         </div>
@@ -331,9 +357,11 @@
       <hr class="hr" />
       <!-- 还贷计算 -->
       <div class="estates">
-        <span class="consultants">{{$t("message.global.loancalculate")}}</span>
+        <span class="consultants">{{
+          $t("message.global.loancalculate")
+        }}</span>
         <div class="repay">
-          <p class="repay_p">{{$t("message.global.Housing")}}</p>
+          <p class="repay_p">{{ $t("message.global.Housing") }}</p>
           <van-cell-group>
             <van-field
               v-model="loan"
@@ -343,7 +371,7 @@
               type="Number"
             />
           </van-cell-group>
-          <p class="repay_p">{{$t("message.global.payment")}}</p>
+          <p class="repay_p">{{ $t("message.global.payment") }}</p>
           <van-cell-group>
             <van-field
               v-model="downapport"
@@ -354,11 +382,16 @@
               type="Number"
             />
           </van-cell-group>
-          <p class="repay_p">{{$t("message.global.particular")}}</p>
+          <p class="repay_p">{{ $t("message.global.particular") }}</p>
           <el-select v-model="year">
-            <el-option v-for="item in getRate" :key="item" :label="item" :value="item"></el-option>
+            <el-option
+              v-for="item in getRate"
+              :key="item"
+              :label="item"
+              :value="item"
+            ></el-option>
           </el-select>
-          <p class="repay_p">{{$t("message.global.loaninterest")}}</p>
+          <p class="repay_p">{{ $t("message.global.loaninterest") }}</p>
           <van-cell-group>
             <van-field
               v-model="interesrate"
@@ -374,11 +407,13 @@
           </van-dropdown-menu>-->
         </div>
         <div class="btn">
-          <van-button type="info" class="btn_i" @click="onrepay">{{$t("message.global.calculate")}}</van-button>
+          <van-button type="info" class="btn_i" @click="onrepay">{{
+            $t("message.global.calculate")
+          }}</van-button>
         </div>
         <p class="monthly" v-if="mothey">
-          {{$t("message.global.highest")}}
-          <span class="money">{{mothey}}</span>
+          {{ $t("message.global.highest") }}
+          <span class="money">{{ mothey }}</span>
         </p>
         <!-- echarts -->
         <div v-if="mothey" class="canvas">
@@ -386,31 +421,31 @@
           <div class="echart_p">
             <p>
               <span class="green"></span>
-              {{$t("message.global.payment")}} € {{A}}
+              {{ $t("message.global.payment") }} € {{ A }}
             </p>
             <p>
               <span class="blue"></span>
-              {{$t("message.global.Interestamount")}} € {{L}}
+              {{ $t("message.global.Interestamount") }} € {{ L }}
             </p>
             <p>
               <span class="orgin"></span>
-              {{$t("message.global.loans")}} € {{S}}
+              {{ $t("message.global.loans") }} € {{ S }}
             </p>
           </div>
         </div>
-        <div class="loanse" @click="Onclick">{{$t("message.global.minimum")}}</div>
+        <div class="loanse" @click="Onclick">
+          {{ $t("message.global.minimum") }}
+        </div>
       </div>
       <hr class="hr" />
 
       <div class="estates" v-if="promoteList">
-        <span class="consultants">{{$t("message.global.Recommended")}}</span>
+        <span class="consultants">{{ $t("message.global.Recommended") }}</span>
         <list :promoteList="promoteList" type="新房" />
       </div>
-      <van-button
-        type="info"
-        size="large"
-        @click="Onord('/ordIssue')"
-      >{{$t("message.global.woyaomaifang")}}</van-button>
+      <van-button type="info" size="large" @click="Onord('/ordIssue')">{{
+        $t("message.global.woyaomaifang")
+      }}</van-button>
       <Footer />
     </client-only>
   </div>
@@ -428,6 +463,21 @@ export default {
     Header,
     Footer,
     list
+  },
+  head() {
+    return {
+      title: `${this.data.estate} | ${this.data.city}`,
+      meta: [
+        {
+          name: "description",
+          content: `${this.data.estate} | ${this.data.city}`
+        },
+        {
+          name: "keywords",
+          content: `法国新房,法国楼盘,买房投资,买房减税,PINEL减税,LMNP减税,VEFA,Logement neuf,${this.data.estate},${this.data.city}`
+        }
+      ]
+    };
   },
   watch: {
     $route(to, from) {
@@ -1287,7 +1337,7 @@ td {
   }
 }
 </style>
-<style lang="less" >
+<style lang="less">
 .el-dialog__wrapper dialog {
   background: #2a2a2a;
 }

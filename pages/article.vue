@@ -6,7 +6,9 @@
         <p class="title">{{ data.title }}</p>
         <p class="time">
           <span>{{ $t("message.global.author") }}:{{ data.nickName }}</span>
-          <span>{{ $t("message.global.releaseTime") }}:{{ data.createTime }}</span>
+          <span
+            >{{ $t("message.global.releaseTime") }}:{{ data.createTime }}</span
+          >
         </p>
         <div v-html="data.content"></div>
         <hr class="hr" />
@@ -14,7 +16,11 @@
         <div class="box">
           <p class="box_title">{{ $t("message.global.category") }}</p>
           <ul class="box_list">
-            <li v-for="(item, index) in typeList" :key="index" @click="onType(item.typeId)">
+            <li
+              v-for="(item, index) in typeList"
+              :key="index"
+              @click="onType(item.typeId)"
+            >
               <span class="box_dot">.</span>
               {{ item.typeName }}
             </li>
@@ -23,7 +29,11 @@
         <div class="box">
           <p class="box_title">{{ $t("message.global.zuixinxiaoxi") }}</p>
           <ul class="box_list">
-            <li v-for="(items, index) in lately" :key="index" @click="onLately(items.id)">
+            <li
+              v-for="(items, index) in lately"
+              :key="index"
+              @click="onLately(items.id)"
+            >
               <span class="box_dot">.</span>
               {{ items.title }}
             </li>
@@ -50,6 +60,21 @@ export default {
       data: "",
       typeList: [],
       lately: []
+    };
+  },
+  head() {
+    return {
+      title: `${this.data.title}`,
+      meta: [
+        {
+          name: "description",
+          content: `${this.data.title}`
+        },
+        {
+          name: "keywords",
+          content: `${this.data.title}`
+        }
+      ]
     };
   },
   mounted() {

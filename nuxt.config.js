@@ -49,7 +49,7 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: [["nuxt-i18n", I18N]],
+  modules: [["nuxt-i18n", I18N], "@nuxtjs/sitemap"],
 
   /*
    ** Build configuration
@@ -59,5 +59,8 @@ export default {
      ** You can extend webpack config here
      */
     extend(config, ctx) {}
+  },
+  googleAnalytics: {
+    id: "UA-152569500-1"
   }
 };

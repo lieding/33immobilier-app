@@ -564,6 +564,22 @@ export default {
     headers,
     foots
   },
+
+  head() {
+    return {
+      title: `${this.getPostListingData.title} | ${this.getPostListingData.city}`,
+      meta: [
+        {
+          name: "description",
+          content: `${this.getPostListingData.title} | ${this.getPostListingData.city}`
+        },
+        {
+          name: "keywords",
+          content: `${this.getPostListingData.title},${this.getPostListingData.city}`
+        }
+      ]
+    };
+  },
   data() {
     return {
       qianlan: false,

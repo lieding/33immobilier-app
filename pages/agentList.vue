@@ -2,7 +2,11 @@
   <div class="style">
     <client-only>
       <Header :title="$t('message.global.Platform')" />
-      <van-search :placeholder="$t('message.global.qingshuru')" v-model="value" @change="onVal" />
+      <van-search
+        :placeholder="$t('message.global.qingshuru')"
+        v-model="value"
+        @change="onVal"
+      />
       <van-dropdown-menu>
         <van-dropdown-item
           v-model="value1"
@@ -45,7 +49,11 @@
           </div>
           <div class="contact">
             <p class="phone_left">
-              <img src="@/assets/image/phone1.png" alt style="margin-right:0.06rem" />
+              <img
+                src="@/assets/image/phone1.png"
+                alt
+                style="margin-right:0.06rem"
+              />
               {{ item.certifiedPhone }}
             </p>
             <p class="phone_right">
@@ -74,6 +82,22 @@ export default {
   components: {
     Header,
     Footer
+  },
+  head() {
+    return {
+      title: "法国房产经纪人_法国房产中介",
+      meta: [
+        {
+          name: "description",
+          content:
+            "33找房平台欢迎在法房产销售人员,房产经纪人加入法国33找房-全法最大的华人找房平台"
+        },
+        {
+          name: "keywords",
+          content: "法国房产经纪人, 法国房产中介, 双语服务, 专业法国中介经纪人"
+        }
+      ]
+    };
   },
   data() {
     return {

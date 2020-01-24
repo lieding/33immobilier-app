@@ -452,6 +452,21 @@ export default {
     foots,
     jisuan
   },
+  head() {
+    return {
+      title: `${this.getPostListingData.title} | ${this.getPostListingData.privince}`,
+      meta: [
+        {
+          name: "description",
+          content: `${this.getPostListingData.title} | ${this.getPostListingData.privince}`
+        },
+        {
+          name: "keywords",
+          content: `${this.getPostListingData.title},${this.getPostListingData.privince}`
+        }
+      ]
+    };
+  },
   data() {
     return {
       qianlan: false,

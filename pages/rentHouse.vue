@@ -2,7 +2,11 @@
   <div>
     <client-only>
       <Header :title="$t('message.global.handpick')" />
-      <van-search :placeholder="$t('message.global.nxjzdqy')" v-model="ipt" @change="onList" />
+      <van-search
+        :placeholder="$t('message.global.nxjzdqy')"
+        v-model="ipt"
+        @change="onList"
+      />
       <div class="select">
         <!-- 区域 -->
         <van-dropdown-menu class="opn">
@@ -24,12 +28,25 @@
         </van-dropdown-menu>
         <!-- 价格 -->
         <van-dropdown-menu>
-          <van-dropdown-item class="asd" :title="$t('message.global.price')" ref="item">
-            <div
-              class="section"
-            >{{$t("message.global.price")}} : {{fmoney(minPrice,1)}}€ — {{fmoney(maxPrice,1)}}€</div>
-            <el-slider v-model="value" range :max="maxPrice" :min="minPrice" @change="onCost"></el-slider>
-            <van-button type="info" @click="Onprice" class="btn_i">{{$t("message.global.sure")}}</van-button>
+          <van-dropdown-item
+            class="asd"
+            :title="$t('message.global.price')"
+            ref="item"
+          >
+            <div class="section">
+              {{ $t("message.global.price") }} : {{ fmoney(minPrice, 1) }}€ —
+              {{ fmoney(maxPrice, 1) }}€
+            </div>
+            <el-slider
+              v-model="value"
+              range
+              :max="maxPrice"
+              :min="minPrice"
+              @change="onCost"
+            ></el-slider>
+            <van-button type="info" @click="Onprice" class="btn_i">{{
+              $t("message.global.sure")
+            }}</van-button>
           </van-dropdown-item>
         </van-dropdown-menu>
         <!-- 整租 /合租 -->
@@ -43,19 +60,26 @@
         </van-dropdown-menu>
       </div>
       <div class="map">
-        <iframe src="http://47.254.149.82/latest/map/rentMap" frameborder="0"></iframe>
+        <iframe
+          src="http://47.254.149.82/latest/map/rentMap"
+          frameborder="0"
+        ></iframe>
       </div>
       <div class="sort_title">
-        <p class="second-hand">{{$t("message.global.MethodAllRent")}}</p>
+        <p class="second-hand">{{ $t("message.global.MethodAllRent") }}</p>
         <div class="sorting">
           <el-popover placement="bottom" width="100" v-model="visible">
             <div class="rank">
-              <p @click="OnRank(1),visible = false">{{$t("message.global.lowToHigh")}}</p>
-              <p @click="OnRank(2),visible = false">{{$t("message.global.highToLow")}}</p>
+              <p @click="OnRank(1), (visible = false)">
+                {{ $t("message.global.lowToHigh") }}
+              </p>
+              <p @click="OnRank(2), (visible = false)">
+                {{ $t("message.global.highToLow") }}
+              </p>
             </div>
             <span slot="reference">
               <img src="@/assets/image/sorting.png" alt class="sortimage" />
-              {{$t("message.global.paixu")}}
+              {{ $t("message.global.paixu") }}
               <img src="@/assets/image/src.png" alt />
             </span>
           </el-popover>
@@ -63,30 +87,35 @@
       </div>
       <ul class="new_list">
         <router-link
-          v-for="(item,index) in HousingList"
+          v-for="(item, index) in HousingList"
           :key="index"
-          :to="{path: '/rentDetails', query: {id:item.id}}"
+          :to="{ path: '/rentDetails', query: { id: item.id } }"
         >
           <li class="list_li">
             <diV class="flex">
               <div class="img">
                 <img :src="item.showUrl" class="new_img" />
-                <span
-                  class="num"
-                >{{item.rentType?$t("message.global.sublease"):$t("message.global.entireTenancy")}}</span>
+                <span class="num">{{
+                  item.rentType
+                    ? $t("message.global.sublease")
+                    : $t("message.global.entireTenancy")
+                }}</span>
               </div>
               <div class="text">
-                <p class="text_title">{{item.title}}</p>
-                <p class="sort">{{item.province}}/{{item.city}}</p>
-                <p class="money">{{item.total}}{{$t("message.global.rise")}}</p>
+                <p class="text_title">{{ item.title }}</p>
+                <p class="sort">{{ item.province }}/{{ item.city }}</p>
+                <p class="money">
+                  {{ item.total }}{{ $t("message.global.rise") }}
+                </p>
                 <p class="font">
-                  <span
-                    class="itemize"
-                  >{{item.source?$t("message.global.Personal"):$t("message.global.Intermediary")}}</span>
-                  <span
-                    class="itemize"
-                    v-show="item.school=='0'"
-                  >{{$t("message.global.jinxuexiao")}}</span>
+                  <span class="itemize">{{
+                    item.source
+                      ? $t("message.global.Personal")
+                      : $t("message.global.Intermediary")
+                  }}</span>
+                  <span class="itemize" v-show="item.school == '0'">{{
+                    $t("message.global.jinxuexiao")
+                  }}</span>
                 </p>
               </div>
             </diV>
@@ -109,6 +138,23 @@ export default {
     Header,
     Footer,
     mapBox
+  },
+  head() {
+    return {
+      title: "法国租房_出租房源_法国租房就上法国33找房",
+      meta: [
+        {
+          name: "description",
+          content:
+            "法国33找房租房频道为您查找真实优质的法国出租房源,包括法国整租、合租、公寓出租等信息,法国出租房东联系信息、经纪人信息、品牌公寓等信息。找法国租房房源,就上法国33找房"
+        },
+        {
+          name: "keywords",
+          content:
+            "法国租房,法国出租房源,分租,合租,整租,买房出租,法国买房投资,法国学区房"
+        }
+      ]
+    };
   },
   data() {
     return {
@@ -575,7 +621,7 @@ div {
   margin: 0.1rem;
 }
 </style>
-<style lang ='less'>
+<style lang="less">
 .el-tooltip__popper.is-dark {
   display: none;
 }

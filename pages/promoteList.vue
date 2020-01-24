@@ -3,81 +3,134 @@
     <!-- <headers :class="{colors:flag}"></headers> -->
     <div>
       <div class="loans">
-        <div class="loansTop">{{$t("message.global.calculation")}}</div>
+        <div class="loansTop">{{ $t("message.global.calculation") }}</div>
         <div class="calculate">
           <div class="counter">
-            <p>{{$t("message.global.onnetincome")}}</p>
+            <p>{{ $t("message.global.onnetincome") }}</p>
             <!-- revenus -->
-            <el-input class="inputs" type="Number" v-model="listP.revenus" placeholder>
+            <el-input
+              class="inputs"
+              type="Number"
+              v-model="listP.revenus"
+              placeholder
+            >
               <i slot="suffix" class="el-input__icon">€</i>
             </el-input>
-            <p>{{$t("message.global.payment")}}</p>
-            <el-input class="inputs" type="Number" v-model="listP.apport" placeholder>
+            <p>{{ $t("message.global.payment") }}</p>
+            <el-input
+              class="inputs"
+              type="Number"
+              v-model="listP.apport"
+              placeholder
+            >
               <i slot="suffix" class="el-input__icon">€</i>
             </el-input>
-            <p>{{$t("message.global.liability")}} {{$t("message.global.Canfill")}}</p>
-            <el-input @input="gbs" class="inputs" type="Number" v-model="listP.rate" placeholder>
+            <p>
+              {{ $t("message.global.liability") }}
+              {{ $t("message.global.Canfill") }}
+            </p>
+            <el-input
+              @input="gbs"
+              class="inputs"
+              type="Number"
+              v-model="listP.rate"
+              placeholder
+            >
               <i slot="suffix" class="el-input__icon">%</i>
             </el-input>
-            <div class="buttonInput" @click="Calculators">{{$t("message.global.calculate")}}</div>
+            <div class="buttonInput" @click="Calculators">
+              {{ $t("message.global.calculate") }}
+            </div>
           </div>
           <div class="rightSs" v-if="reckenList.length">
-            <span
-              style="font-size:20px;color:#000;font-weight:600;"
-            >{{$t("message.global.highest")}}</span>
-            <span style="font-size:20px;color:#FF5E5E;">{{prise1}}€</span>
+            <span style="font-size:20px;color:#000;font-weight:600;">{{
+              $t("message.global.highest")
+            }}</span>
+            <span style="font-size:20px;color:#FF5E5E;">{{ prise1 }}€</span>
             <div class="botS">
-              <p>{{$t("message.global.Youcanloan")}}</p>
+              <p>{{ $t("message.global.Youcanloan") }}</p>
               <div class="tabs">
                 <table>
                   <tr>
-                    <th>{{$t("message.global.loanPeriod")}}</th>
-                    <th>{{$t("message.global.annual")}}</th>
-                    <th>{{$t("message.global.capacity")}}</th>
+                    <th>{{ $t("message.global.loanPeriod") }}</th>
+                    <th>{{ $t("message.global.annual") }}</th>
+                    <th>{{ $t("message.global.capacity") }}</th>
                   </tr>
                 </table>
-                <table v-for="(item,index) in reckenList" :key="index">
+
+                <table v-for="(item, index) in reckenList" :key="index">
                   <tr>
-                    <td>{{item.year}} {{$t("message.global.ans")}}</td>
-                    <td>{{item.retes}} %</td>
-                    <td>{{fmoney(item.money,0)}}€</td>
+                    <td>{{ item.year }} {{ $t("message.global.ans") }}</td>
+                    <td>{{ item.retes }} %</td>
+                    <td>{{ fmoney(item.money, 0) }}€</td>
                   </tr>
                 </table>
               </div>
             </div>
           </div>
         </div>
-        <div class="downSm" @click="routerGo">{{$t("message.global.minimum")}}</div>
-        <div class="loansTop">{{$t("message.global.loancalculate")}}</div>
+        <div class="downSm" @click="routerGo">
+          {{ $t("message.global.minimum") }}
+        </div>
+        <div class="loansTop">{{ $t("message.global.loancalculate") }}</div>
         <div class="calculate">
           <div class="counter couters" style="height:400px;">
-            <p>{{$t("message.global.Housing")}}</p>
-            <el-input class="inputs1" type="Number" v-model="listS.loan" placeholder>
+            <p>{{ $t("message.global.Housing") }}</p>
+            <el-input
+              class="inputs1"
+              type="Number"
+              v-model="listS.loan"
+              placeholder
+            >
               <i slot="suffix" class="el-input__icon">€</i>
             </el-input>
-            <p>{{$t("message.global.payment")}}</p>
-            <el-input class="inputs" type="Number" v-model="listS.apport" @input="gb" placeholder>
+            <p>{{ $t("message.global.payment") }}</p>
+            <el-input
+              class="inputs"
+              type="Number"
+              v-model="listS.apport"
+              @input="gb"
+              placeholder
+            >
               <i slot="suffix" class="el-input__icon">€</i>
             </el-input>
-            <p>{{$t("message.global.particular")}}</p>
+            <p>{{ $t("message.global.particular") }}</p>
             <!-- <el-input class="" type="Number" v-model="listS.year" placeholder="">
                                  <i slot="suffix" class="el-input__icon">{{$t("message.global.annual")}}</i>
             </el-input>-->
-            <el-select v-model="listS.year" style="width:305px;" @change="changs">
-              <el-option v-for="item in prsLis" :key="item" :label="item" :value="item"></el-option>
+            <el-select
+              v-model="listS.year"
+              style="width:305px;"
+              @change="changs"
+            >
+              <el-option
+                v-for="item in prsLis"
+                :key="item"
+                :label="item"
+                :value="item"
+              ></el-option>
             </el-select>
-            <p>{{$t("message.global.loaninterest")}}</p>
-            <el-input class="inputs" type="Number" v-model="listS.rate" placeholder>
+            <p>{{ $t("message.global.loaninterest") }}</p>
+            <el-input
+              class="inputs"
+              type="Number"
+              v-model="listS.rate"
+              placeholder
+            >
               <i slot="suffix" class="el-input__icon">%</i>
             </el-input>
 
-            <div class="buttonInput" @click="repayALoanJs">{{$t("message.global.calculate")}}</div>
+            <div class="buttonInput" @click="repayALoanJs">
+              {{ $t("message.global.calculate") }}
+            </div>
           </div>
           <div class="rightSs" v-if="repayALoanList">
-            <span
-              style="font-size:20px;color:#000;font-weight:600;"
-            >{{$t("message.global.repaymen")}}:</span>
-            <span style="font-size:20px;color:#FF5E5E;">{{fmoney(prise2,2)}}€</span>
+            <span style="font-size:20px;color:#000;font-weight:600;"
+              >{{ $t("message.global.repaymen") }}:</span
+            >
+            <span style="font-size:20px;color:#FF5E5E;"
+              >{{ fmoney(prise2, 2) }}€</span
+            >
             <div class="echarts" style="width: 331px;height:252px;"></div>
             <!-- {{repayALoanList.S }}{{repayALoanList.M}} -->
             <div>
@@ -85,28 +138,28 @@
                 <span
                   style="width:16px;height:16px;display:inline-block;background-color:#7ECF34;border-radius:8px;vertical-align: middle;"
                 ></span>
-                {{$t("message.global.payment")}} :
-                <span
-                  style="color:#FF5E5E"
-                >{{ fmoney(repayALoanList.A,0) }} €</span>
+                {{ $t("message.global.payment") }} :
+                <span style="color:#FF5E5E"
+                  >{{ fmoney(repayALoanList.A, 0) }} €</span
+                >
               </p>
               <p style="margin-top:10px;padding-left:20px;">
                 <span
                   style="width:16px;height:16px;display:inline-block;background-color:#1B9AFB;border-radius:8px;vertical-align: middle;"
                 ></span>
-                {{$t("message.global.Interestamount")}} :
-                <span
-                  style="color:#FF5E5E"
-                >{{ fmoney(repayALoanList.L,0) }} €</span>
+                {{ $t("message.global.Interestamount") }} :
+                <span style="color:#FF5E5E"
+                  >{{ fmoney(repayALoanList.L, 0) }} €</span
+                >
               </p>
               <p style="margin-top:10px;padding-left:20px;">
                 <span
                   style="width:16px;height:16px;display:inline-block;background-color:#F4A436;border-radius:8px;vertical-align: middle;"
                 ></span>
-                {{$t("message.global.loans")}} :
-                <span
-                  style="color:#FF5E5E"
-                >{{ fmoney(repayALoanList.S,0) }} €</span>
+                {{ $t("message.global.loans") }} :
+                <span style="color:#FF5E5E"
+                  >{{ fmoney(repayALoanList.S, 0) }} €</span
+                >
               </p>
             </div>
           </div>
@@ -127,6 +180,24 @@ export default {
   components: {
     headers,
     foots
+  },
+  head() {
+    return {
+      title:
+        "法国房贷计算器_法国购房工具_贷款能力_还贷能力_月供计算,33immobilier|33找房-法国第一华人找房平台",
+      meta: [
+        {
+          name: "description",
+          content:
+            "33找房购房工具频道,为您提供法国在线买房贷款计算器,包括计算贷款额度,贷款能力,还贷计算器,计算月供。了解贷款能力,评估贷款状况,法国申请贷款就上法国33找房全程为您服务"
+        },
+        {
+          name: "keywords",
+          content:
+            "贷款能力计算器,法国贷款,计算贷款额度,法国贷款能力,法国如何贷款,还贷计算器,月供计算器,了解贷款能力,评估贷款状况,法国申请贷款"
+        }
+      ]
+    };
   },
   data() {
     return {

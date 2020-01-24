@@ -381,6 +381,21 @@ export default {
                       this.interesrate = this.getRateList[val];
             }
         },
+        head() {
+          return {
+            title: `${this.data.title} | ${this.data.privince}`,
+            meta: [
+              {
+                name: "description",
+                content: `${this.data.title} | ${this.data.privince}`
+              },
+              {
+                name: "keywords",
+                content: `${this.data.title},${this.data.privince}`
+              }
+            ]
+          };
+        },
       data(){
         return{
             value:0,

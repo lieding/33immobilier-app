@@ -9,11 +9,18 @@
       <div class="block flex">
         <div class="flex block_1">
           <van-dropdown-menu class="opn">
-            <van-dropdown-item v-model="value1" :options="$t('message.index.option1')" />
+            <van-dropdown-item
+              v-model="value1"
+              :options="$t('message.index.option1')"
+            />
           </van-dropdown-menu>
         </div>
         <div class="flex block_2">
-          <img src="@/assets/image/Search Icon.png" class="Icon" @click="OnsearchGoods" />
+          <img
+            src="@/assets/image/Search Icon.png"
+            class="Icon"
+            @click="OnsearchGoods"
+          />
           <input
             type="serch"
             :placeholder="$t('message.global.Where')"
@@ -25,11 +32,17 @@
       </div>
       <!-- 多分类 -->
       <ul class="list">
-        <router-link :to="{ path: '/newhouse', query: { house: '新房' } }" tag="li">
+        <router-link
+          :to="{ path: '/newhouse', query: { house: '新房' } }"
+          tag="li"
+        >
           <img src="@/assets/image/newhouse.png" class="list_img" />
           <p>{{ $t("message.global.NewHouse") }}</p>
         </router-link>
-        <router-link :to="{ path: '/newhouse', query: { house: '二手房' } }" tag="li">
+        <router-link
+          :to="{ path: '/newhouse', query: { house: '二手房' } }"
+          tag="li"
+        >
           <img src="@/assets/image/ordhouse.png" class="list_img" />
           <p>{{ $t("message.global.second-hand") }}</p>
         </router-link>
@@ -75,7 +88,8 @@
           <router-link
             :to="{ path: '/newhouse', query: { house: '新房' } }"
             class="watch"
-          >{{ $t("message.global.examine") }}</router-link>
+            >{{ $t("message.global.examine") }}</router-link
+          >
         </div>
         <!-- router.push({name: 'applename', query: {color: 'red' }}) -->
 
@@ -98,11 +112,20 @@
 
             <div class="text">
               <p class="text_title">{{ item.estate }}</p>
-              <p class="sort">{{ item.huXing }} {{ $t("message.global.pieces") }}</p>
-              <p class="font">
-                <span class="itemize" v-for="(items, index) in item.tags" :key="index">{{ items }}</span>
+              <p class="sort">
+                {{ item.huXing }} {{ $t("message.global.pieces") }}
               </p>
-              <p class="money">{{ item.lowPrice }}{{ $t("message.global.rise") }}</p>
+              <p class="font">
+                <span
+                  class="itemize"
+                  v-for="(items, index) in item.tags"
+                  :key="index"
+                  >{{ items }}</span
+                >
+              </p>
+              <p class="money">
+                {{ item.lowPrice }}{{ $t("message.global.rise") }}
+              </p>
             </div>
           </router-link>
         </ul>
@@ -115,7 +138,8 @@
           <router-link
             :to="{ path: '/newhouse', query: { house: '二手房' } }"
             class="watch"
-          >{{ $t("message.global.AllNewHomes") }}</router-link>
+            >{{ $t("message.global.AllNewHomes") }}</router-link
+          >
         </div>
         <ul class="new_list">
           <router-link
@@ -131,13 +155,23 @@
               <p class="text_title">{{ item.title }}</p>
               <p class="sort">{{ item.bigProvince }}/{{ item.province }}</p>
               <p class="font">
-                <span class="itemize">{{ item.roomNum }}{{ $t("message.global.chamber") }}</span>
-                <span class="itemize">{{ item.bedRoomNum }}{{ $t("message.global.crouch") }}</span>
-                <span class="itemize">{{ item.acreage }}{{ $t("message.global.square") }}</span>
+                <span class="itemize"
+                  >{{ item.roomNum }}{{ $t("message.global.chamber") }}</span
+                >
+                <span class="itemize"
+                  >{{ item.bedRoomNum }}{{ $t("message.global.crouch") }}</span
+                >
+                <span class="itemize"
+                  >{{ item.acreage }}{{ $t("message.global.square") }}</span
+                >
               </p>
               <p class="font">
-                <span class="money">{{ item.total }}{{ $t("message.global.rise") }}</span>
-                <span class="average">{{ item.unit }}{{ $t("message.global.square€") }}</span>
+                <span class="money"
+                  >{{ item.total }}{{ $t("message.global.rise") }}</span
+                >
+                <span class="average"
+                  >{{ item.unit }}{{ $t("message.global.square€") }}</span
+                >
               </p>
             </div>
           </router-link>
@@ -148,7 +182,9 @@
       <div class="newhouse">
         <div class="font width">
           <span class="title">{{ $t("message.global.handpick") }}</span>
-          <router-link :to="{ path: '/rentHouse' }" class="watch">{{ $t("message.global.Allhand") }}</router-link>
+          <router-link :to="{ path: '/rentHouse' }" class="watch">{{
+            $t("message.global.Allhand")
+          }}</router-link>
         </div>
         <ul class="new_list">
           <router-link
@@ -162,9 +198,9 @@
               <span class="num">
                 <span class="city">
                   {{
-                  item.rentType
-                  ? $t("message.global.sublease")
-                  : $t("message.global.entireTenancy")
+                    item.rentType
+                      ? $t("message.global.sublease")
+                      : $t("message.global.entireTenancy")
                   }}
                 </span>
               </span>
@@ -175,17 +211,18 @@
               <p class="font">
                 <span class="itemize">
                   {{
-                  item.source
-                  ? $t("message.global.Personal")
-                  : $t("message.global.Intermediary")
+                    item.source
+                      ? $t("message.global.Personal")
+                      : $t("message.global.Intermediary")
                   }}
                 </span>
-                <span
-                  class="itemize"
-                  v-show="item.isSchools == '0'"
-                >{{ $t("message.global.jinxuexiao") }}</span>
+                <span class="itemize" v-show="item.isSchools == '0'">{{
+                  $t("message.global.jinxuexiao")
+                }}</span>
               </p>
-              <p class="money">{{ item.total }}{{ $t("message.global.rise") }}</p>
+              <p class="money">
+                {{ item.total }}{{ $t("message.global.rise") }}
+              </p>
             </div>
           </router-link>
         </ul>
@@ -195,19 +232,26 @@
       <div class="newhouse">
         <div class="font width">
           <span class="title">{{ $t("message.global.property") }}</span>
-          <router-link
-            :to="{ path: '/agentList' }"
-            tag="li"
-            class="watch"
-          >{{ $t("message.global.economics") }}</router-link>
+          <router-link :to="{ path: '/agentList' }" tag="li" class="watch">{{
+            $t("message.global.economics")
+          }}</router-link>
         </div>
         <p class="detail" style=" margin-bottom:0.07rem;">
           {{ $t("message.global.counselor") }}&nbsp;&nbsp;&nbsp;{{
-          $t("message.global.ZeroFee")
+            $t("message.global.ZeroFee")
           }}&nbsp;&nbsp; {{ $t("message.global.bilingualism") }}
         </p>
-        <van-swipe :loop="false" :width="180" :height="78" :show-indicators="false">
-          <van-swipe-item v-for="(item, index) in brokerList" :key="index" class="swipe">
+        <van-swipe
+          :loop="false"
+          :width="180"
+          :height="78"
+          :show-indicators="false"
+        >
+          <van-swipe-item
+            v-for="(item, index) in brokerList"
+            :key="index"
+            class="swipe"
+          >
             <div class="swipe_pro">
               <img :src="item.brokerAvatar" class="swipe_img" />
               <p class="swipe_P">PRO</p>
@@ -222,9 +266,15 @@
         </van-swipe>
         <div class="swipe_image">
           <img src="@/assets/image/pcBroker.png" alt />
-          <span style="margin-right: .1rem;">{{ $t("message.global.middleman") }}</span>
+          <span style="margin-right: .1rem;">{{
+            $t("message.global.middleman")
+          }}</span>
           <span @click="goRouter('/dialog')" class="text_img">
-            <img src="@/assets/image/pcPerson.png" alt style="margin-right: .05rem;" />
+            <img
+              src="@/assets/image/pcPerson.png"
+              alt
+              style="margin-right: .05rem;"
+            />
             {{ $t("message.global.jiaru") }}
           </span>
         </div>
@@ -248,7 +298,12 @@
         </div>
         <p class="trend_p">
           <el-select v-model="value" placeholder="请选择">
-            <el-option v-for="(item, index) in returnList" :key="index" :label="item" :value="item"></el-option>
+            <el-option
+              v-for="(item, index) in returnList"
+              :key="index"
+              :label="item"
+              :value="item"
+            ></el-option>
           </el-select>
         </p>
         <!-- <div style="widht:3.46rem;height:4rem;"> -->
@@ -270,6 +325,24 @@ export default {
   components: {
     Header,
     Footer
+  },
+
+  head() {
+    return {
+      title: "33找房, 法国第一华人找房平台",
+      meta: [
+        {
+          name: "description",
+          content:
+            "法国33找房为您提供法国房产、房价、投资、减税、生活服务等信息。在法国,寻找新房、二手房、租房、服务就上法国33找房! 全法最专业的华人找房平台"
+        },
+        {
+          name: "keywords",
+          content:
+            "法国找房平台,新房,二手房,租房,装修,保洁,服务,投资,减税,楼盘,法国购房,法国房产,法国租房,法国房地产网,个人急售二手房,33找房,PINEL,LMNP"
+        }
+      ]
+    };
   },
   data() {
     return {

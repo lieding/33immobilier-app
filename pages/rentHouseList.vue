@@ -8,14 +8,21 @@
       </div>
       <div class="footLine">
         <div class="inputSo">
-          <el-input :placeholder="$t('message.global.plec')" v-model="input"></el-input>
+          <el-input
+            :placeholder="$t('message.global.plec')"
+            v-model="input"
+          ></el-input>
           <span @click="btn">{{ $t("message.global.seek") }}</span>
         </div>
         <div class="areaLis quyus">
           <span class="filename">{{ $t("message.global.area") }}</span>
           <div style="display:inline-block;width:800px;vertical-align: top;">
             <el-radio-group v-model="quyu" size="mini">
-              <el-radio-button v-for="(item, i) in fileList1" :label="item" :key="i"></el-radio-button>
+              <el-radio-button
+                v-for="(item, i) in fileList1"
+                :label="item"
+                :key="i"
+              ></el-radio-button>
             </el-radio-group>
             <div style="text-align:center;margin-top:10px;">
               <span
@@ -23,9 +30,9 @@
                 style="padding:4px 24px;display:inline-block;border:1px solid #214ED4;color:#214ED4;font-size:14px;cursor: pointer;"
               >
                 {{
-                qbqy
-                ? $t("message.global.allquyu")
-                : $t("message.global.shouqi")
+                  qbqy
+                    ? $t("message.global.allquyu")
+                    : $t("message.global.shouqi")
                 }}
               </span>
             </div>
@@ -33,15 +40,28 @@
         </div>
         <div class="areaLis">
           <span class="filename">{{ $t("message.global.school") }}</span>
-          <div class="quyus" style="display:inline-block;width:800px;vertical-align: top;">
+          <div
+            class="quyus"
+            style="display:inline-block;width:800px;vertical-align: top;"
+          >
             <el-radio-group v-model="schVal" size="mini">
-              <el-radio-button v-for="(item, i) in fileList2" :label="item" :key="i"></el-radio-button>
+              <el-radio-button
+                v-for="(item, i) in fileList2"
+                :label="item"
+                :key="i"
+              ></el-radio-button>
             </el-radio-group>
           </div>
         </div>
         <div class="areaLis">
           <span class="filename">{{ $t("message.global.price") }}</span>
-          <el-slider @change="chaxun" v-model="jiageV" range :min="min" :max="max"></el-slider>
+          <el-slider
+            @change="chaxun"
+            v-model="jiageV"
+            range
+            :min="min"
+            :max="max"
+          ></el-slider>
           <div style="display:inline-block;padding-left:20px;">
             <span>{{ jiageV[0] }}€ — {{ jiageV[1] }}€</span>
           </div>
@@ -49,28 +69,38 @@
         <div class="areaLis zuhF">
           <span class="filename">{{ $t("message.global.tenancy") }}</span>
           <el-radio-group v-model="zulx" size="mini">
-            <el-radio-button label>{{ $t("message.global.allLan") }}</el-radio-button>
-            <el-radio-button label="0">{{ $t("message.global.entireTenancy") }}</el-radio-button>
-            <el-radio-button label="1">{{ $t("message.global.sublease") }}</el-radio-button>
+            <el-radio-button label>{{
+              $t("message.global.allLan")
+            }}</el-radio-button>
+            <el-radio-button label="0">{{
+              $t("message.global.entireTenancy")
+            }}</el-radio-button>
+            <el-radio-button label="1">{{
+              $t("message.global.sublease")
+            }}</el-radio-button>
           </el-radio-group>
         </div>
       </div>
       <div class="titleLine">
-        <iframe :src="baseurl" style="width:1200px;height:400px;" frameborder="0"></iframe>
+        <iframe
+          :src="baseurl"
+          style="width:1200px;height:400px;"
+          frameborder="0"
+        ></iframe>
         <span style="vertical-align: bottom;margin-right:10px;">
-          {{
-          $t("message.global.MethodAllRent")
-          }}
+          {{ $t("message.global.MethodAllRent") }}
         </span>
         <el-popover placement="bottom" width="130" trigger="click">
           <span
             @click="cli(1)"
             style="display:block;padding-top:5px;cursor: pointer;width:133px; text-align:center;border-bottom:1px solid #979797;"
-          >{{ $t("message.global.prisGdD") }}</span>
+            >{{ $t("message.global.prisGdD") }}</span
+          >
           <span
             @click="cli(2)"
             style="display:block;padding-top:5px;cursor: pointer;width:133px;text-align:center;border-bottom:1px solid #979797;"
-          >{{ $t("message.global.prisDdG") }}</span>
+            >{{ $t("message.global.prisDdG") }}</span
+          >
           <!-- <el-button slot="reference">click 激活</el-button> -->
           <span
             slot="reference"
@@ -83,12 +113,22 @@
             />
             <span
               style="margin-right:5px;font-size:16px;vertical-align: middle"
-            >{{ $t("message.global.price") }}</span>
-            <img style="vertical-align:middle;width:10px;height:6px;" :src="img.goDown" alt />
+              >{{ $t("message.global.price") }}</span
+            >
+            <img
+              style="vertical-align:middle;width:10px;height:6px;"
+              :src="img.goDown"
+              alt
+            />
           </span>
         </el-popover>
       </div>
-      <div class="ListNo" @click="routerGo(item.id)" v-for="(item, inde) in ListNoLis" :key="inde">
+      <div
+        class="ListNo"
+        @click="routerGo(item.id)"
+        v-for="(item, inde) in ListNoLis"
+        :key="inde"
+      >
         <span style="position:relative;float: left;">
           <img class="img" :src="item.showUrl" alt />
           <img
@@ -101,9 +141,9 @@
         <div class="centerL">
           <span class="layX">
             {{
-            item.rentType
-            ? $t("message.global.grouping")
-            : $t("message.global.entireTenancy")
+              item.rentType
+                ? $t("message.global.grouping")
+                : $t("message.global.entireTenancy")
             }}
           </span>
           <span class="layY">{{ item.title }}</span>
@@ -113,15 +153,16 @@
               style="padding:1px 3px;display:inline-block;background-color:#BFBFBFFF;margin-right:10px;"
             >
               {{
-              item.source
-              ? $t("message.global.Personal")
-              : $t("message.global.Intermediary")
+                item.source
+                  ? $t("message.global.Personal")
+                  : $t("message.global.Intermediary")
               }}
             </span>
             <span
               style="padding:1px 3px;display:inline-block;background-color:#BFBFBFFF;"
               v-show="!item.school"
-            >{{ $t("message.global.jinxuexiao") }}</span>
+              >{{ $t("message.global.jinxuexiao") }}</span
+            >
           </div>
         </div>
         <div class="centerR">
@@ -169,6 +210,23 @@ export default {
   components: {
     headers,
     foots
+  },
+  head() {
+    return {
+      title: "法国租房_出租房源_法国租房就上法国33找房",
+      meta: [
+        {
+          name: "description",
+          content:
+            "法国33找房租房频道为您查找真实优质的法国出租房源,包括法国整租、合租、公寓出租等信息,法国出租房东联系信息、经纪人信息、品牌公寓等信息。找法国租房房源,就上法国33找房"
+        },
+        {
+          name: "keywords",
+          content:
+            "法国租房,法国出租房源,分租,合租,整租,买房出租,法国买房投资,法国学区房"
+        }
+      ]
+    };
   },
   data() {
     return {

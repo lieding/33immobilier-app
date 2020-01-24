@@ -203,6 +203,22 @@ export default {
     headers,
     foots
   },
+  head() {
+    return {
+      title: "法国房产经纪人_法国房产中介",
+      meta: [
+        {
+          name: "description",
+          content:
+            "33找房平台欢迎在法房产销售人员,房产经纪人加入法国33找房-全法最大的华人找房平台"
+        },
+        {
+          name: "keywords",
+          content: "法国房产经纪人, 法国房产中介, 双语服务, 专业法国中介经纪人"
+        }
+      ]
+    };
+  },
   data() {
     return {
       qbqy: true,

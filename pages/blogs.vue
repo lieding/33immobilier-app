@@ -15,7 +15,10 @@
         </el-input>
         <div class="select_type">
           <!-- 类型 -->
-          <el-select v-model="select" :placeholder="$t('message.global.category')">
+          <el-select
+            v-model="select"
+            :placeholder="$t('message.global.category')"
+          >
             <el-option
               v-for="item in typeList"
               :key="item.value"
@@ -69,6 +72,23 @@ export default {
   components: {
     Header,
     Footer
+  },
+  head() {
+    return {
+      title: "法国房产百科_法国房产知识大全_法国买房卖房租房攻略-法国33找房",
+      meta: [
+        {
+          name: "description",
+          content:
+            "法国33找房百科为您提供法国房产百科,法国房产知识大全,法国买房卖房租房攻略,法国房产政策,法国租房政策"
+        },
+        {
+          name: "keywords",
+          content:
+            "法国房产百科,法国房产知识大全,法国买房卖房租房攻略,法国房产政策,法国租房政策,blog immo"
+        }
+      ]
+    };
   },
   watch: {
     select(val) {

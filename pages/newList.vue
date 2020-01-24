@@ -187,6 +187,23 @@ export default {
     foots,
     Treeselect
   },
+  head() {
+    return {
+      title: "法国新房_楼盘_买新房就上法国33找房网",
+      meta: [
+        {
+          name: "description",
+          content:
+            "法国33找房新房频道为您查找真实优质的法国新开盘楼盘, 法国新房投资,PINEL减税,LMNP减税,法国33找房收录全法最新最全新房信息。"
+        },
+        {
+          name: "keywords",
+          content:
+            "法国新房,法国买新房,法国楼盘,33找房,找房,买房投资,买房减税,PINEL减税,LMNP减税,Programme neuf,VEFA,Logement neuf,Promoteur immobilier"
+        }
+      ]
+    };
+  },
   data() {
     return {
       cities: "",

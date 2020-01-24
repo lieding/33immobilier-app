@@ -296,6 +296,21 @@ export default {
                 this.Onlist();
             }
         },
+        head() {
+            return {
+            title: `${this.data.title} | ${this.data.city}`,
+            meta: [
+                {
+                name: "description",
+                content: `${this.data.title} | ${this.data.city}`
+                },
+                {
+                name: "keywords",
+                content: `${this.data.title},${this.data.city}`
+                }
+            ]
+            };
+        },
       data(){
         return{
               current:0,
