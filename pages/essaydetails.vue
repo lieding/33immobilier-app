@@ -92,6 +92,10 @@ export default {
         {
           name: "keywords",
           content: `${this.outcome.title}`
+        },
+        {
+          name: "og:image",
+          content: this.outcome.picUrl
         }
       ]
     };

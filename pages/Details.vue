@@ -481,6 +481,10 @@ export default {
         {
           name: "keywords",
           content: `法国新房,法国楼盘,买房投资,买房减税,PINEL减税,LMNP减税,VEFA,Logement neuf,${this.data.estate},${this.data.city}`
+        },
+        {
+          name: "og:image",
+          content: this.data.picUrl
         }
       ]
     };

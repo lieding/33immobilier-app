@@ -576,15 +576,19 @@ export default {
   },
   head() {
     return {
-      title: `${this.getPostListingData.title} | ${this.getPostListingData.city}`,
+      title: `${this.getPostListingData.title} (${this.getPostListingData.city})`,
       meta: [
         {
           name: "description",
-          content: `${this.getPostListingData.title} | ${this.getPostListingData.city}`
+          content: `${this.getPostListingData.title} (${this.getPostListingData.city})`
         },
         {
           name: "keywords",
           content: `${this.getPostListingData.title},${this.getPostListingData.city}`
+        },
+        {
+          name: "og:image",
+          content: this.getPostListingData.pics[0]
         }
       ]
     };

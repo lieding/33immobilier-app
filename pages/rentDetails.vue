@@ -304,15 +304,19 @@ export default {
     },
     head() {
         return {
-        title: `${this.data.title} | ${this.data.city}`,
+        title: `${this.data.title} (${this.data.city})`,
         meta: [
             {
             name: "description",
-            content: `${this.data.title} | ${this.data.city}`
+            content: `${this.data.title} (${this.data.city})`
             },
             {
             name: "keywords",
             content: `${this.data.title},${this.data.city}`
+            },
+            {
+            name: "og:image",
+            content: this.data.picUrl
             }
         ]
         };

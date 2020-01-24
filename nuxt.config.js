@@ -19,6 +19,10 @@ export default {
         name: "keywords",
         content:
           "法国找房平台,新房,二手房,租房,装修,保洁,服务,投资,减税,楼盘,法国购房,法国房产,法国租房,法国房地产网,个人急售二手房,33找房,PINEL,LMNP"
+      },
+      {
+        name: "og:type",
+        content: "website"
       }
     ],
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],

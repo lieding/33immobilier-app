@@ -399,6 +399,10 @@ export default {
               {
                 name: "keywords",
                 content: `${this.data.title},${this.data.privince}`
+              },
+              {
+                name: "og:image",
+                content: this.data.picUrl
               }
             ]
           };
