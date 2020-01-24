@@ -1,6 +1,5 @@
 export default function({ route, isDesktop, redirect }) {
   const path = route.path;
-  console.log(route);
 
   if (path == "/") {
     return redirect(isDesktop ? "/pc_index" : "/m_index");
