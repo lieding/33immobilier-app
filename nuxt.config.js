@@ -6,14 +6,19 @@ export default {
    ** Headers of the page
    */
   head: {
-    title: process.env.npm_package_name || "",
+    title: "33找房, 法国第一华人找房平台",
     meta: [
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       {
-        hid: "description",
         name: "description",
-        content: process.env.npm_package_description || ""
+        content:
+          "法国33找房为您提供法国房产、房价、投资、减税、生活服务等信息。在法国,寻找新房、二手房、租房、服务就上法国33找房! 全法最专业的华人找房平台"
+      },
+      {
+        name: "keywords",
+        content:
+          "法国找房平台,新房,二手房,租房,装修,保洁,服务,投资,减税,楼盘,法国购房,法国房产,法国租房,法国房地产网,个人急售二手房,33找房,PINEL,LMNP"
       }
     ],
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
@@ -46,7 +51,14 @@ export default {
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: [],
+  buildModules: [
+    [
+      "@nuxtjs/google-analytics",
+      {
+        id: "UA-152569500-1"
+      }
+    ]
+  ],
   /*
    ** Nuxt.js modules
    */
@@ -60,8 +72,5 @@ export default {
      ** You can extend webpack config here
      */
     extend(config, ctx) {}
-  },
-  googleAnalytics: {
-    id: "UA-152569500-1"
   }
 };
