@@ -76,5 +76,10 @@ export default {
      ** You can extend webpack config here
      */
     extend(config, ctx) {}
+  },
+  server: {
+    port: process.env.PORT || 3000,
+    host: "0.0.0.0",
+    timing: false
   }
 };
