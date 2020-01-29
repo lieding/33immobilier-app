@@ -1,12 +1,12 @@
 <template>
   <div class="title">
     <div class="title-left">
-      <img src="@/assets/image/black.png" class="title-image" />
+      <img src="~/assets/image/black.png" class="title-image" />
       <!-- <p class="title-span">易家找房</p> -->
     </div>
     <el-popover placement="bottom" width="80" trigger="click">
       <div class="title-rig" slot="reference">
-        <img src="@/assets/image/liebiao.png" class="title-img" @click="list" />
+        <img src="~/assets/image/liebiao.png" class="title-img" @click="list" />
       </div>
       <ul class="title_list" @click="list">
         <router-link :to="{ path: '/m_index' }" tag="li">
@@ -59,7 +59,7 @@
         </router-link>
 
         <li v-on:click="changeLocale('zh')">
-          <img src="@/assets/image/chinese.png" style="margin-right: 0.1rem;" />
+          <img src="~/assets/image/chinese.png" style="margin-right: 0.1rem;" />
           <span style="display:inline-block;text-align:center;">
             {{
             $t("message.global.Chinese")
@@ -67,7 +67,7 @@
           </span>
         </li>
         <li v-on:click="changeLocale('fr')">
-          <img src="@/assets/image/french.png" style="margin-right: .05rem;" />
+          <img src="~/assets/image/french.png" style="margin-right: .05rem;" />
           <span style="display:inline-block;text-align:center;">{{ $t("message.global.French") }}</span>
         </li>
         <!-- <li v-on:click="Onrouter">{{$t("message.global.login")}}</li> -->
@@ -86,10 +86,10 @@
              <router-link :to="{path: '/InRegardTo'}" tag="li">{{$t("message.global.regards")}}</router-link>
              <router-link :to="{path: '/ordIssue'}" tag="li" class="rental">{{$t("message.global.rental")}}</router-link>
              
-             <li style="text-align:left;" v-on:click="Onclick('zh-cn')"><img src="@/assets/image/chinese.png" style="margin-right: 0.1rem;">
+             <li style="text-align:left;" v-on:click="Onclick('zh-cn')"><img src="~/assets/image/chinese.png" style="margin-right: 0.1rem;">
                  <span style="display:inline-block;text-align:center;">{{$t("message.global.Chinese")}}</span>
              </li>
-             <li style="text-align:left;" v-on:click="Onclick('fr')"><img src="@/assets/image/french.png" style="margin-right: .05rem;">
+             <li style="text-align:left;" v-on:click="Onclick('fr')"><img src="~/assets/image/french.png" style="margin-right: .05rem;">
                 <span style="display:inline-block;text-align:center;">{{$t("message.global.French")}}
                </span> 
     </li>-->
@@ -121,12 +121,12 @@ export default {
   }
 };
 </script>
-<style lang="less">
+<style lang="scss">
 .el-popover {
   min-width: 110px;
 }
 </style>
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .el-popover {
   min-width: 110px;
 }

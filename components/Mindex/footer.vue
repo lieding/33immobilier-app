@@ -5,7 +5,7 @@
 </template>
 <script>
 </script>
-<style lang="less">
+<style lang="scss">
 html,body{min-height: 100% }
  .footer{
      height: 0.25rem;

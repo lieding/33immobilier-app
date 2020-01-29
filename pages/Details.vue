@@ -26,21 +26,21 @@
           </van-swipe>
         </div>
         <img
-          src="@/assets/image/VRlogo.gif"
+          src="~/assets/image/VRlogo.gif"
           alt
           class="AR"
           @click="onMap(data.vrAddress)"
           v-show="data.vrAddress"
         />
         <img
-          src="@/assets/image/share.png"
+          src="~/assets/image/share.png"
           alt
           class="share"
           @click="Onshare('/dialog')"
         />
         <div>
           <img
-            src="@/assets/image/shipin.png"
+            src="~/assets/image/shipin.png"
             alt
             class="video_S"
             @click="onMap(data.videoUlr)"
@@ -114,15 +114,15 @@
             </div>
             <div class="attestation">
               <p>
-                <img src="@/assets/image/autonym.png" alt />
+                <img src="~/assets/image/autonym.png" alt />
                 <span>{{ $t("message.global.authentication") }}</span>
               </p>
               <p>
-                <img src="@/assets/image/licensed.png" alt />
+                <img src="~/assets/image/licensed.png" alt />
                 <span>{{ $t("message.global.licensed") }}</span>
               </p>
               <p>
-                <img src="@/assets/image/pro.png" alt />
+                <img src="~/assets/image/pro.png" alt />
                 <span>{{ $t("message.global.EasyPro") }}</span>
               </p>
             </div>
@@ -130,7 +130,7 @@
           <hr />
           <div class="num">
             <p class="phone" v-if="data.brokerTelPhone">
-              <img src="@/assets/image/phone1.png" alt class="margin" />
+              <img src="~/assets/image/phone1.png" alt class="margin" />
               {{ data.brokerTelPhone }}
             </p>
             <p>
@@ -193,7 +193,7 @@
         }}</span>
         <span class="interpret" v-else @click="oninterpret">翻译法语</span>
         <p class="download interpret" @click="onMap(data.brochure)">
-          <img src="@/assets/image/download.png" alt />
+          <img src="~/assets/image/download.png" alt />
           {{ $t("message.global.brochure") }}
         </p>
         <div
@@ -456,10 +456,10 @@
   </div>
 </template>
 <script>
-import rem from "@/common/rem.js";
-import Header from "@/components/MIndex/common/head.vue";
-import Footer from "@/components/MIndex/common/footer.vue";
-import list from "@/components/MIndex/common/list.vue";
+import rem from "~/common/rem.js";
+import Header from "~/components/MIndex/head.vue";
+import Footer from "~/components/MIndex/footer.vue";
+import list from "~/components/MIndex/list.vue";
 
 var echarts = require("echarts");
 export default {
@@ -779,7 +779,7 @@ export default {
   }
 };
 </script>
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .dialog {
   img {
     width: 100%;
@@ -1348,7 +1348,7 @@ td {
   }
 }
 </style>
-<style lang="less">
+<style lang="scss">
 .el-dialog__wrapper dialog {
   background: #2a2a2a;
 }

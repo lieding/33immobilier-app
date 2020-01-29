@@ -60,7 +60,7 @@
         </diV>
         <!-- <div >
             <div class="image">
-                <img src="@/assets/image/newhouse.png" class="list-img">  
+                <img src="~/assets/image/newhouse.png" class="list-img">  
                 <span class="list-font">Cogedim</span>
             </div>
             <p class="font">
@@ -109,7 +109,7 @@ export default {
   }
 };
 </script>
-<style lang="less" scoped>
+<style lang="scss" scoped>
 div {
   font-size: 16px;
 }

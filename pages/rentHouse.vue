@@ -2,11 +2,7 @@
   <div>
     <client-only>
       <Header :title="$t('message.global.handpick')" />
-      <van-search
-        :placeholder="$t('message.global.nxjzdqy')"
-        v-model="ipt"
-        @change="onList"
-      />
+      <van-search :placeholder="$t('message.global.nxjzdqy')" v-model="ipt" @change="onList" />
       <div class="select">
         <!-- 区域 -->
         <van-dropdown-menu class="opn">
@@ -28,25 +24,17 @@
         </van-dropdown-menu>
         <!-- 价格 -->
         <van-dropdown-menu>
-          <van-dropdown-item
-            class="asd"
-            :title="$t('message.global.price')"
-            ref="item"
-          >
+          <van-dropdown-item class="asd" :title="$t('message.global.price')" ref="item">
             <div class="section">
               {{ $t("message.global.price") }} : {{ fmoney(minPrice, 1) }}€ —
               {{ fmoney(maxPrice, 1) }}€
             </div>
-            <el-slider
-              v-model="value"
-              range
-              :max="maxPrice"
-              :min="minPrice"
-              @change="onCost"
-            ></el-slider>
-            <van-button type="info" @click="Onprice" class="btn_i">{{
+            <el-slider v-model="value" range :max="maxPrice" :min="minPrice" @change="onCost"></el-slider>
+            <van-button type="info" @click="Onprice" class="btn_i">
+              {{
               $t("message.global.sure")
-            }}</van-button>
+              }}
+            </van-button>
           </van-dropdown-item>
         </van-dropdown-menu>
         <!-- 整租 /合租 -->
@@ -60,27 +48,20 @@
         </van-dropdown-menu>
       </div>
       <div class="map">
-        <iframe
-          src="http://47.254.149.82/latest/map/rentMap"
-          frameborder="0"
-        ></iframe>
+        <iframe src="http://47.254.149.82/latest/map/rentMap" frameborder="0"></iframe>
       </div>
       <div class="sort_title">
         <p class="second-hand">{{ $t("message.global.MethodAllRent") }}</p>
         <div class="sorting">
           <el-popover placement="bottom" width="100" v-model="visible">
             <div class="rank">
-              <p @click="OnRank(1), (visible = false)">
-                {{ $t("message.global.lowToHigh") }}
-              </p>
-              <p @click="OnRank(2), (visible = false)">
-                {{ $t("message.global.highToLow") }}
-              </p>
+              <p @click="OnRank(1), (visible = false)">{{ $t("message.global.lowToHigh") }}</p>
+              <p @click="OnRank(2), (visible = false)">{{ $t("message.global.highToLow") }}</p>
             </div>
             <span slot="reference">
-              <img src="@/assets/image/sorting.png" alt class="sortimage" />
+              <img src="~/assets/image/sorting.png" alt class="sortimage" />
               {{ $t("message.global.paixu") }}
-              <img src="@/assets/image/src.png" alt />
+              <img src="~/assets/image/src.png" alt />
             </span>
           </el-popover>
         </div>
@@ -95,27 +76,31 @@
             <diV class="flex">
               <div class="img">
                 <img :src="item.showUrl" class="new_img" />
-                <span class="num">{{
+                <span class="num">
+                  {{
                   item.rentType
-                    ? $t("message.global.sublease")
-                    : $t("message.global.entireTenancy")
-                }}</span>
+                  ? $t("message.global.sublease")
+                  : $t("message.global.entireTenancy")
+                  }}
+                </span>
               </div>
               <div class="text">
                 <p class="text_title">{{ item.title }}</p>
                 <p class="sort">{{ item.province }}/{{ item.city }}</p>
-                <p class="money">
-                  {{ item.total }}{{ $t("message.global.rise") }}
-                </p>
+                <p class="money">{{ item.total }}{{ $t("message.global.rise") }}</p>
                 <p class="font">
-                  <span class="itemize">{{
+                  <span class="itemize">
+                    {{
                     item.source
-                      ? $t("message.global.Personal")
-                      : $t("message.global.Intermediary")
-                  }}</span>
-                  <span class="itemize" v-show="item.school == '0'">{{
+                    ? $t("message.global.Personal")
+                    : $t("message.global.Intermediary")
+                    }}
+                  </span>
+                  <span class="itemize" v-show="item.school == '0'">
+                    {{
                     $t("message.global.jinxuexiao")
-                  }}</span>
+                    }}
+                  </span>
                 </p>
               </div>
             </diV>
@@ -128,10 +113,10 @@
   </div>
 </template>
 <script>
-import rem from "@/common/rem.js";
-import Header from "@/components/MIndex/common/head.vue";
-import Footer from "@/components/MIndex/common/footer.vue";
-import mapBox from "@/components/MIndex/common/mapBox.vue";
+import rem from "~/common/rem.js";
+import Header from "~/components/MIndex/head.vue";
+import Footer from "~/components/MIndex/footer.vue";
+import mapBox from "~/components/MIndex/mapBox.vue";
 export default {
   name: "",
   middleware: "responsive",
@@ -359,7 +344,7 @@ export default {
   }
 };
 </script>
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .sortimage {
   position: relative;
   top: 0.02rem;
@@ -622,7 +607,7 @@ div {
   margin: 0.1rem;
 }
 </style>
-<style lang="less">
+<style lang="scss">
 .el-tooltip__popper.is-dark {
   display: none;
 }

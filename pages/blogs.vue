@@ -10,7 +10,7 @@
           @change="OnType"
         >
           <template slot="append">
-            <img src="@/assets/image/SearchIcon.png" alt />
+            <img src="~/assets/image/SearchIcon.png" alt />
           </template>
         </el-input>
         <div class="select_type">
@@ -64,9 +64,9 @@
   </div>
 </template>
 <script>
-import rem from "@/common/rem.js";
-import Header from "@/components/MIndex/common/head.vue";
-import Footer from "@/components/MIndex/common/footer.vue";
+import rem from "~/common/rem.js";
+import Header from "~/components/MIndex/head.vue";
+import Footer from "~/components/MIndex/footer.vue";
 export default {
   name: "",
   middleware: "responsive",
@@ -188,7 +188,7 @@ export default {
   }
 };
 </script>
-<style lang="less">
+<style lang="scss">
 .pedia {
   display: flex;
   margin-left: 0.12rem;
@@ -218,7 +218,7 @@ export default {
   }
 }
 </style>
-<style lang="less" scoped>
+<style lang="scss" scoped>
 div {
   font-size: 16px;
 }

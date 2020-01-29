@@ -11,10 +11,10 @@
           </van-swipe-item>
         </van-swipe>
       </div>
-      <!--<img src="@/assets/image/VRlogo.gif" alt="" class="AR" @click="onMap(data.vrAddress)" v-show="data.vrAddress">-->
-      <img src="@/assets/image/share.png" alt class="share" @click="Onshare('/dialog')" />
+      <!--<img src="~/assets/image/VRlogo.gif" alt="" class="AR" @click="onMap(data.vrAddress)" v-show="data.vrAddress">-->
+      <img src="~/assets/image/share.png" alt class="share" @click="Onshare('/dialog')" />
       <div>
-        <!-- <img src="@/assets/image/shipin.png" alt="" class="video_S" @click="onMap(data.videoUlr)" v-show="data.videoUlr"> -->
+        <!-- <img src="~/assets/image/shipin.png" alt="" class="video_S" @click="onMap(data.videoUlr)" v-show="data.videoUlr"> -->
         <!-- <p class="video_btn">
                 <span class="VR" @click="onMap(data.vrAddress)">VR</span>
                 <span class="price">图片</span>
@@ -35,19 +35,19 @@
       </p>
       <p class="identifying">
         <span>
-          <img src="@/assets/image/gongyu.png" alt />
+          <img src="~/assets/image/gongyu.png" alt />
           {{data.houseOrApartment == 1 ? $t("message.global.apartments") : $t("message.global.cottage") }}
         </span>
         <span>
-          <img src="@/assets/image/rooms.png" alt />
+          <img src="~/assets/image/rooms.png" alt />
           {{data.roomsNum}}{{$t("message.global.P")}} - {{data.bedroomNum}} {{$t("message.global.CH")}}
         </span>
         <span>
-          <img src="@/assets/image/time.png" alt />
+          <img src="~/assets/image/time.png" alt />
           {{data.year}}
         </span>
         <span>
-          <img src="@/assets/image/aram.png" alt />
+          <img src="~/assets/image/aram.png" alt />
           {{data.acreage}}{{$t("message.global.square")}}
         </span>
       </p>
@@ -65,15 +65,15 @@
           </div>
           <div class="attestation">
             <p>
-              <img src="@/assets/image/autonym.png" alt />
+              <img src="~/assets/image/autonym.png" alt />
               <span>{{$t("message.global.authentication")}}</span>
             </p>
             <p>
-              <img src="@/assets/image/licensed.png" alt />
+              <img src="~/assets/image/licensed.png" alt />
               <span>{{$t("message.global.licensed")}}</span>
             </p>
             <p>
-              <img src="@/assets/image/pro.png" alt />
+              <img src="~/assets/image/pro.png" alt />
               <span>{{$t("message.global.EasyPro")}}</span>
             </p>
           </div>
@@ -81,7 +81,7 @@
         <hr />
         <div class="num">
           <p class="phone" v-if="agent.brokerTelPhone">
-            <img src="@/assets/image/phone.png" alt class="margin" />
+            <img src="~/assets/image/phone.png" alt class="margin" />
             {{agent.brokerTelPhone}}
           </p>
           <p>
@@ -366,10 +366,10 @@
 
 </template>
 <script>
-import rem from "@/common/rem.js";
-import List from '@/components/MIndex/common/list.vue'
-import Header from '@/components/MIndex/common/head.vue'
-import Footer from '@/components/MIndex/common/footer.vue'
+import rem from "~/common/rem.js";
+import List from '../components/MIndex/list.vue'
+import Header from '../components/MIndex/head.vue'
+import Footer from '../components/MIndex/footer.vue'
 var echarts = require('echarts');
 export default {
        name: '',
@@ -390,11 +390,11 @@ export default {
         },
         head() {
           return {
-            title: `${this.data.title} | ${this.data.privince}`,
+            title: `${this.data.title}（${this.data.privince}）`,
             meta: [
               {
                 name: "description",
-                content: `${this.data.title} | ${this.data.privince}`
+                content: `${this.data.title}（${this.data.privince}）`
               },
               {
                 name: "keywords",
@@ -635,7 +635,7 @@ export default {
      },
 }
 </script>
-<style lang="less">
+<style lang="scss">
  .custom-indicator{
         position: absolute;
         top: 2.35rem;
@@ -1140,7 +1140,7 @@ export default {
                 margin: 0.1rem;
            }
 </style>
-<style lang="less" >
+<style lang="scss" >
 .repay{
     .el-select:hover .el-input__inner{
          background: #e9e9e9;

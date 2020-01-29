@@ -40,16 +40,16 @@
           </p>
           <!-- <p>{{$t("message.global.connection")}}：{{item.phone}}</p> -->
           <p class="yichu1" style="margin-top:30px;">
-            <img src="@/assets/image/times.png" alt />
+            <img src="~/assets/image/times.png" alt />
             {{ $t("message.global.service") }} : {{ item.lowPrice }} -
             {{ item.topPrice }}
           </p>
           <p class="yichu1">
-            <img src="@/assets/image/di.png" alt />
+            <img src="~/assets/image/di.png" alt />
             {{ $t("message.global.coverage") }} : {{ item.area }}
           </p>
           <p class="yichu1">
-            <img src="@/assets/image/hd.png" alt />
+            <img src="~/assets/image/hd.png" alt />
             {{ $t("message.global.connection") }} : {{ item.phone }}
           </p>
         </div>
@@ -60,8 +60,8 @@
 </template>
 
 <script>
-import headers from "@/components/PcIndex/moduleT/header.vue";
-import foots from "@/components/PcIndex/moduleT/foot.vue";
+import headers from "~/components/PcIndex/header.vue";
+import foots from "~/components/PcIndex/foot.vue";
 
 export default {
   name: "sellers",
@@ -154,7 +154,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .colors {
   color: #000 !important;
 }
@@ -237,4 +237,4 @@ export default {
   *zoom: 1; /*ie6清除浮动的方式 *号只有IE6-IE7执行，其他浏览器不执行*/
 }
 </style>
-<style lang="less"></style>
+<style lang="scss"></style>

@@ -186,16 +186,16 @@
 </template>
 
 <script>
-import headers from "@/components/PcIndex/moduleT/header.vue";
-import foots from "@/components/PcIndex/moduleT/foot.vue";
+import headers from "~/components/PcIndex/header.vue";
+import foots from "~/components/PcIndex/foot.vue";
 
-import proVip from "@/assets/image/proVip.png";
-import visitCard from "@/assets/image/visitCard.png";
-import authentication from "@/assets/image/authentication.png";
-import logoT from "@/assets/image/logoT.png";
-import phone from "@/assets/image/phone.png";
-import email from "@/assets/image/email.png";
-import wxInd from "@/assets/image/wxInd.png";
+import proVip from "~/assets/image/proVip.png";
+import visitCard from "~/assets/image/visitCard.png";
+import authentication from "~/assets/image/authentication.png";
+import logoT from "~/assets/image/logoT.png";
+import phone from "~/assets/image/phone.png";
+import email from "~/assets/image/email.png";
+import wxInd from "~/assets/image/wxInd.png";
 
 export default {
   name: "broker",
@@ -352,7 +352,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .broker {
   min-height: 100%;
 }
@@ -406,7 +406,7 @@ export default {
   color: #214ed4;
 }
 </style>
-<style lang="less">
+<style lang="scss">
 .fuwuquyu {
   .el-radio-button__inner {
     border: none !important;

@@ -134,7 +134,7 @@
           <img
             v-show="item.isOpenVR"
             style="position:absolute;width:268px;height:174px;top:0;left:0;"
-            src="@/assets/image/VRlogo.gif"
+            src="~/assets/image/VRlogo.gif"
             alt
           />
         </span>
@@ -193,17 +193,17 @@
 </template>
 
 <script>
-import headers from "@/components/PcIndex/moduleT/header.vue";
-import foots from "@/components/PcIndex/moduleT/foot.vue";
-import titles from "@/assets/image/titles.jpg";
-import goDown from "@/assets/image/goDown.png";
-import sort from "@/assets/image/sort.png";
-import phone from "@/assets/image/phone.png";
-import email from "@/assets/image/email.png";
-import wxInd from "@/assets/image/wxInd.png";
-import vrVlog from "@/assets/image/VRlogo.gif";
+import headers from "~/components/PcIndex/header.vue";
+import foots from "~/components/PcIndex/foot.vue";
+import titles from "~/assets/image/titles.jpg";
+import goDown from "~/assets/image/goDown.png";
+import sort from "~/assets/image/sort.png";
+import phone from "~/assets/image/phone.png";
+import email from "~/assets/image/email.png";
+import wxInd from "~/assets/image/wxInd.png";
+import vrVlog from "~/assets/image/VRlogo.gif";
 
-import baseUrl from "@/api/base.js";
+import baseUrl from "~/api/base.js";
 
 export default {
   name: "rentHouseList",
@@ -428,7 +428,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .colors {
   color: #000 !important;
 }
@@ -574,7 +574,7 @@ export default {
   }
 }
 </style>
-<style lang="less">
+<style lang="scss">
 .quyus {
   .el-radio-button__inner {
     border: none !important;

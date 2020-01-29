@@ -187,9 +187,9 @@
                    <p @click="OnRank(2)">{{$t("message.global.highToLow")}}</p>
                 </div>
                   <span slot="reference">
-                     <img src="@/assets/image/sorting.png" alt="" class="sortimage">
+                     <img src="~/assets/image/sorting.png" alt="" class="sortimage">
                         {{$t("message.global.paixu")}}
-                     <img src="@/assets/image/src.png" alt="">
+                     <img src="~/assets/image/src.png" alt="">
                   </span>
         </el-popover>-->
         <el-popover placement="bottom" width="100" v-model="visible">
@@ -202,9 +202,9 @@
             </p>
           </div>
           <span slot="reference">
-            <img src="@/assets/image/sorting.png" alt class="sortimage" />
+            <img src="~/assets/image/sorting.png" alt class="sortimage" />
             {{ $t("message.global.paixu") }}
-            <img src="@/assets/image/src.png" alt />
+            <img src="~/assets/image/src.png" alt />
           </span>
           <!-- <div style="text-align: right; margin: 0">
                   <el-button size="mini" type="text" @click="visible = false">取消</el-button>
@@ -318,10 +318,10 @@
   </div>
 </template>
 <script>
-import rem from "@/common/rem.js";
-import Header from "@/components/MIndex/common/head.vue";
-import Footer from "@/components/MIndex/common/footer.vue";
-import mapBox from "@/components/MIndex/common/mapBox.vue";
+import rem from "~/common/rem.js";
+import Header from "~/components/MIndex/head.vue";
+import Footer from "~/components/MIndex/footer.vue";
+import mapBox from "~/components/MIndex/mapBox.vue";
 export default {
   name: "",
   middleware: "responsive",
@@ -711,7 +711,7 @@ export default {
   }
 };
 </script>
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .sortimage {
   position: relative;
   top: 0.02rem;
@@ -972,7 +972,7 @@ div {
   border-radius: 0.06rem;
 }
 </style>
-<style lang="less">
+<style lang="scss">
 /* .house{
    .el-popover{
       padding:0,

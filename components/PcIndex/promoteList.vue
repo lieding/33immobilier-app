@@ -8,26 +8,44 @@
           <div class="counter">
             <p>{{ $t("message.global.onnetincome") }}</p>
             <!-- revenus -->
-            <el-input class="inputs" type="Number" v-model="listP.revenus" placeholder>
+            <el-input
+              class="inputs"
+              type="Number"
+              v-model="listP.revenus"
+              placeholder
+            >
               <i slot="suffix" class="el-input__icon">€</i>
             </el-input>
             <p>{{ $t("message.global.payment") }}</p>
-            <el-input class="inputs" type="Number" v-model="listP.apport" placeholder>
+            <el-input
+              class="inputs"
+              type="Number"
+              v-model="listP.apport"
+              placeholder
+            >
               <i slot="suffix" class="el-input__icon">€</i>
             </el-input>
             <p>
               {{ $t("message.global.liability") }}
               {{ $t("message.global.Canfill") }}
             </p>
-            <el-input @input="gbs" class="inputs" type="Number" v-model="listP.rate" placeholder>
+            <el-input
+              @input="gbs"
+              class="inputs"
+              type="Number"
+              v-model="listP.rate"
+              placeholder
+            >
               <i slot="suffix" class="el-input__icon">%</i>
             </el-input>
-            <div class="buttonInput" @click="Calculators">{{ $t("message.global.calculate") }}</div>
+            <div class="buttonInput" @click="Calculators">
+              {{ $t("message.global.calculate") }}
+            </div>
           </div>
           <div class="rightSs" v-if="reckenList.length">
-            <span
-              style="font-size:20px;color:#000;font-weight:600;"
-            >{{ $t("message.global.highest") }}</span>
+            <span style="font-size:20px;color:#000;font-weight:600;">{{
+              $t("message.global.highest")
+            }}</span>
             <span style="font-size:20px;color:#FF5E5E;">{{ prise1 }}€</span>
             <div class="botS">
               <p>{{ $t("message.global.Youcanloan") }}</p>
@@ -51,37 +69,68 @@
             </div>
           </div>
         </div>
-        <div class="downSm" @click="routerGo">{{ $t("message.global.minimum") }}</div>
+        <div class="downSm" @click="routerGo">
+          {{ $t("message.global.minimum") }}
+        </div>
         <div class="loansTop">{{ $t("message.global.loancalculate") }}</div>
         <div class="calculate">
           <div class="counter couters" style="height:400px;">
             <p>{{ $t("message.global.Housing") }}</p>
-            <el-input class="inputs1" type="Number" v-model="listS.loan" placeholder>
+            <el-input
+              class="inputs1"
+              type="Number"
+              v-model="listS.loan"
+              placeholder
+            >
               <i slot="suffix" class="el-input__icon">€</i>
             </el-input>
             <p>{{ $t("message.global.payment") }}</p>
-            <el-input class="inputs" type="Number" v-model="listS.apport" @input="gb" placeholder>
+            <el-input
+              class="inputs"
+              type="Number"
+              v-model="listS.apport"
+              @input="gb"
+              placeholder
+            >
               <i slot="suffix" class="el-input__icon">€</i>
             </el-input>
             <p>{{ $t("message.global.particular") }}</p>
             <!-- <el-input class="" type="Number" v-model="listS.year" placeholder="">
                                  <i slot="suffix" class="el-input__icon">{{$t("message.global.annual")}}</i>
             </el-input>-->
-            <el-select v-model="listS.year" style="width:305px;" @change="changs">
-              <el-option v-for="item in prsLis" :key="item" :label="item" :value="item"></el-option>
+            <el-select
+              v-model="listS.year"
+              style="width:305px;"
+              @change="changs"
+            >
+              <el-option
+                v-for="item in prsLis"
+                :key="item"
+                :label="item"
+                :value="item"
+              ></el-option>
             </el-select>
             <p>{{ $t("message.global.loaninterest") }}</p>
-            <el-input class="inputs" type="Number" v-model="listS.rate" placeholder>
+            <el-input
+              class="inputs"
+              type="Number"
+              v-model="listS.rate"
+              placeholder
+            >
               <i slot="suffix" class="el-input__icon">%</i>
             </el-input>
 
-            <div class="buttonInput" @click="repayALoanJs">{{ $t("message.global.calculate") }}</div>
+            <div class="buttonInput" @click="repayALoanJs">
+              {{ $t("message.global.calculate") }}
+            </div>
           </div>
           <div class="rightSs" v-if="repayALoanList">
-            <span
-              style="font-size:20px;color:#000;font-weight:600;"
-            >{{ $t("message.global.repaymen") }}:</span>
-            <span style="font-size:20px;color:#FF5E5E;">{{ fmoney(prise2, 2) }}€</span>
+            <span style="font-size:20px;color:#000;font-weight:600;"
+              >{{ $t("message.global.repaymen") }}:</span
+            >
+            <span style="font-size:20px;color:#FF5E5E;"
+              >{{ fmoney(prise2, 2) }}€</span
+            >
             <div class="echarts" style="width: 331px;height:252px;"></div>
             <!-- {{repayALoanList.S }}{{repayALoanList.M}} -->
             <div>
@@ -90,27 +139,27 @@
                   style="width:16px;height:16px;display:inline-block;background-color:#7ECF34;border-radius:8px;vertical-align: middle;"
                 ></span>
                 {{ $t("message.global.payment") }} :
-                <span
-                  style="color:#FF5E5E"
-                >{{ fmoney(repayALoanList.A, 0) }} €</span>
+                <span style="color:#FF5E5E"
+                  >{{ fmoney(repayALoanList.A, 0) }} €</span
+                >
               </p>
               <p style="margin-top:10px;padding-left:20px;">
                 <span
                   style="width:16px;height:16px;display:inline-block;background-color:#1B9AFB;border-radius:8px;vertical-align: middle;"
                 ></span>
                 {{ $t("message.global.Interestamount") }} :
-                <span
-                  style="color:#FF5E5E"
-                >{{ fmoney(repayALoanList.L, 0) }} €</span>
+                <span style="color:#FF5E5E"
+                  >{{ fmoney(repayALoanList.L, 0) }} €</span
+                >
               </p>
               <p style="margin-top:10px;padding-left:20px;">
                 <span
                   style="width:16px;height:16px;display:inline-block;background-color:#F4A436;border-radius:8px;vertical-align: middle;"
                 ></span>
                 {{ $t("message.global.loans") }} :
-                <span
-                  style="color:#FF5E5E"
-                >{{ fmoney(repayALoanList.S, 0) }} €</span>
+                <span style="color:#FF5E5E"
+                  >{{ fmoney(repayALoanList.S, 0) }} €</span
+                >
               </p>
             </div>
           </div>
@@ -122,8 +171,8 @@
 </template>
 
 <script>
-import headers from "@/components/PcIndex/moduleT/header.vue";
-import foots from "@/components/PcIndex/moduleT/foot.vue";
+import headers from "~/components/PcIndex/header.vue";
+import foots from "~/components/PcIndex/foot.vue";
 var echarts = require("echarts");
 
 export default {
@@ -292,7 +341,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .colors {
   color: #000 !important;
 }
@@ -393,7 +442,7 @@ export default {
   }
 }
 </style>
-<style lang="less">
+<style lang="scss">
 .promoteList {
   .el-input__icon {
     color: #000;

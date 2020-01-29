@@ -25,7 +25,7 @@
           >
             <img
               style="width:26px;height:26px;"
-              src="@/assets/image/sousuo.png"
+              src="~/assets/image/sousuo.png"
               alt
             />
           </span>
@@ -83,11 +83,11 @@
 </template>
 
 <script>
-import headers from "@/components/PcIndex/moduleT/header.vue";
-import foots from "@/components/PcIndex/moduleT/foot.vue";
+import headers from "~/components/PcIndex/header.vue";
+import foots from "~/components/PcIndex/foot.vue";
 
-import title from "@/assets/image/titles.jpg";
-import logoT from "@/assets/image/logoTTT.png";
+import title from "~/assets/image/titles.jpg";
+import logoT from "~/assets/image/logoTTT.png";
 
 export default {
   name: "encyclopedia",
@@ -225,7 +225,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .clearfix:after {
   /*伪元素是行内元素 正常浏览器清除浮动方法*/
   content: "";
@@ -318,7 +318,7 @@ export default {
   cursor: pointer;
 }
 </style>
-<style lang="less">
+<style lang="scss">
 .el-input__inner {
   height: 42px;
   box-shadow: none;

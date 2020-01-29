@@ -171,8 +171,8 @@
 </template>
 
 <script>
-import headers from "@/components/PcIndex/moduleT/header.vue";
-import foots from "@/components/PcIndex/moduleT/foot.vue";
+import headers from "~/components/PcIndex/header.vue";
+import foots from "~/components/PcIndex/foot.vue";
 var echarts = require("echarts");
 
 export default {
@@ -360,7 +360,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .colors {
   color: #000 !important;
 }
@@ -461,7 +461,7 @@ export default {
   }
 }
 </style>
-<style lang="less">
+<style lang="scss">
 .promoteList {
   .el-input__icon {
     color: #000;

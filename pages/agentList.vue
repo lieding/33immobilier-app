@@ -35,31 +35,31 @@
           </div>
           <div class="card">
             <div class="car">
-              <img src="@/assets/image/autonym.png" alt />
+              <img src="~/assets/image/autonym.png" alt />
               {{ $t("message.global.authentication") }}
             </div>
             <div class="car">
-              <img src="@/assets/image/licensed.png" alt />
+              <img src="~/assets/image/licensed.png" alt />
               {{ $t("message.global.licensed") }}
             </div>
             <div class="car">
-              <img src="@/assets/image/pro.png" alt />
+              <img src="~/assets/image/pro.png" alt />
               {{ $t("message.global.EasyPro") }}
             </div>
           </div>
           <div class="contact">
             <p class="phone_left">
               <img
-                src="@/assets/image/phone1.png"
+                src="~/assets/image/phone1.png"
                 alt
                 style="margin-right:0.06rem"
               />
               {{ item.certifiedPhone }}
             </p>
             <p class="phone_right">
-              <img src="@/assets/image/emil.png" alt class="email" />
+              <img src="~/assets/image/emil.png" alt class="email" />
               <img
-                src="@/assets/image/wx.png"
+                src="~/assets/image/wx.png"
                 alt
                 class="email"
                 @click="goRouter('/dialog', item.wxNumber)"
@@ -74,9 +74,9 @@
   </div>
 </template>
 <script>
-import rem from "@/common/rem.js";
-import Header from "@/components/MIndex/common/head.vue";
-import Footer from "@/components/MIndex/common/footer.vue";
+import rem from "~/common/rem.js";
+import Header from "~/components/MIndex/head.vue";
+import Footer from "~/components/MIndex/footer.vue";
 export default {
   name: "",
   middleware: "responsive",
@@ -200,7 +200,7 @@ export default {
   }
 };
 </script>
-<style lang="less">
+<style lang="scss">
 div {
   font-size: 16px;
 }

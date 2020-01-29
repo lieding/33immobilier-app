@@ -31,7 +31,7 @@
         <span class="searchBtn" @click="searchVals">
           <img
             style="width:26px;height:26px;margin-right:6px;"
-            src="@/assets/image/sousuo.png"
+            src="~/assets/image/sousuo.png"
             alt
           />
           {{ $t("message.global.seek") }}
@@ -39,7 +39,7 @@
       </div>
       <div class="cardLs">
         <div style="float:left;" @click="RoutingHop('/essaydetails', 3)">
-          <img src="@/assets/image/searchHouse.png" alt />
+          <img src="~/assets/image/searchHouse.png" alt />
           <span style="display:inline-block;padding-left:30px;">
             <p style="font-weight:600;">
               {{ $t("message.global.reductions") }}
@@ -50,7 +50,7 @@
           </span>
         </div>
         <div style="float:right;" @click="RoutingHop('/sellers')">
-          <img src="@/assets/image/houses.png" alt />
+          <img src="~/assets/image/houses.png" alt />
           <span style="display:inline-block;padding-left:30px;">
             <p style="font-weight:600;">{{ $t("message.global.want") }}</p>
             <p style="font-size:16px;margin-top:5px;">
@@ -210,7 +210,7 @@
         >
           <div class="leftCarA">
             <img :src="item.brokerAvatar" alt />
-            <img class="proAgent" src="@/assets/image/proAgent.png" alt />
+            <img class="proAgent" src="~/assets/image/proAgent.png" alt />
           </div>
           <div class="rightCarA">
             <p class="rightName">{{ item.brokerName }}</p>
@@ -273,18 +273,18 @@
 
 <script>
 // 引入
-import foots from "@/components/PcIndex/moduleT/foot.vue";
-import headers from "@/components/PcIndex/moduleT/header.vue";
+import foots from "~/components/PcIndex/foot.vue";
+import headers from "~/components/PcIndex/header.vue";
 // 引入图片
-import searchBtPn from "@/assets/image/searchBut.png";
-import logoT from "@/assets/image/logoT.png";
-import sellersT from "@/assets/image/sellers.png";
-import backgroundI from "@/assets/image/backPc.png";
-import rightCard from "@/assets/image/right.png";
-import leftCard from "@/assets/image/left.png";
-import pcBroker from "@/assets/image/pcBroker.png";
-import pcPerson from "@/assets/image/pcPerson.png";
-import pcss from "@/assets/image/logo_promoteur.png";
+import searchBtPn from "~/assets/image/searchBut.png";
+import logoT from "~/assets/image/logoT.png";
+import sellersT from "~/assets/image/sellers.png";
+import backgroundI from "~/assets/image/backPc.png";
+import rightCard from "~/assets/image/right.png";
+import leftCard from "~/assets/image/left.png";
+import pcBroker from "~/assets/image/pcBroker.png";
+import pcPerson from "~/assets/image/pcPerson.png";
+import pcss from "~/assets/image/logo_promoteur.png";
 // 引入
 import { async } from "q";
 var echarts = require("echarts");
@@ -473,7 +473,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 #index {
   text-align: left;
   //  中
@@ -847,7 +847,7 @@ export default {
   }
 }
 </style>
-<style lang="less">
+<style lang="scss">
 .echartss {
   .el-input--suffix .el-input__inner {
     height: 30px;

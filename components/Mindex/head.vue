@@ -1,11 +1,11 @@
 <template>
   <div class="title">
     <div class="title-left">
-      <img src="@/assets/image/left-arrow.png" class="title-image" @click="Onleft" />
+      <img src="~/assets/image/left-arrow.png" class="title-image" @click="Onleft" />
     </div>
     <p class="title_text">{{ title }}</p>
     <el-popover placement="bottom" width="80" trigger="click">
-      <img src="@/assets/image/liebiao.png" class="title-img" slot="reference" />
+      <img src="~/assets/image/liebiao.png" class="title-img" slot="reference" />
       <ul class="title_list">
         <router-link :to="{ path: '/m_index' }" tag="li">
           {{
@@ -56,7 +56,7 @@
           }}
         </router-link>
         <li v-on:click="changeLocale('zh')">
-          <img src="@/assets/image/chinese.png" style="margin-right: 0.1rem;" />
+          <img src="~/assets/image/chinese.png" style="margin-right: 0.1rem;" />
           <span style="display:inline-block;text-align:center;">
             {{
             $t("message.global.Chinese")
@@ -64,7 +64,7 @@
           </span>
         </li>
         <li v-on:click="changeLocale('fr')">
-          <img src="@/assets/image/french.png" style="margin-right: .05rem;" />
+          <img src="~/assets/image/french.png" style="margin-right: .05rem;" />
           <span style="display:inline-block;text-align:center;">{{ $t("message.global.French") }}</span>
         </li>
         <!-- <li v-on:click="Onrouter">{{$t("message.global.login")}}</li> -->
@@ -101,12 +101,12 @@ export default {
   }
 };
 </script>
-<style lang="less">
+<style lang="scss">
 .el-popover {
   min-width: 110px;
 }
 </style>
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .title {
   height: 0.44rem;
   background: rgba(255, 255, 255, 1);

@@ -508,11 +508,11 @@
           <div class="assort">
             <div @click="Ondisplay('isTV')">
               <div v-if="isTV">
-                <img src="@/assets/image/download_1.png" alt />
+                <img src="~/assets/image/download_1.png" alt />
                 <p>{{$t("message.global.television")}}</p>
               </div>
               <div v-else>
-                <img src="@/assets/image/download1_1.png" alt />
+                <img src="~/assets/image/download1_1.png" alt />
                 <p
                   style="text-decoration: line-through; color: #E5E5E5;"
                 >{{$t("message.global.television")}}</p>
@@ -520,11 +520,11 @@
             </div>
             <div @click="Ondisplay('isFrig')">
               <div v-if="isFrig">
-                <img src="@/assets/image/download_10.png" alt />
+                <img src="~/assets/image/download_10.png" alt />
                 <p>{{$t("message.global.refrigerator")}}</p>
               </div>
               <div v-else>
-                <img src="@/assets/image/picSzg/refrigH.png" alt />
+                <img src="~/assets/image/picSzg/refrigH.png" alt />
                 <p
                   style="text-decoration: line-through; color: #E5E5E5;"
                 >{{$t("message.global.refrigerator")}}</p>
@@ -532,11 +532,11 @@
             </div>
             <div @click="Ondisplay('isWashing')">
               <div v-if="isWashing">
-                <img src="@/assets/image/download_7.png" alt />
+                <img src="~/assets/image/download_7.png" alt />
                 <p>{{$t("message.global.microwave")}}</p>
               </div>
               <div v-else>
-                <img src="@/assets/image/picSzg/washerH.png" alt />
+                <img src="~/assets/image/picSzg/washerH.png" alt />
                 <p
                   style="text-decoration: line-through; color: #E5E5E5;"
                 >{{$t("message.global.microwave")}}</p>
@@ -544,11 +544,11 @@
             </div>
             <div @click="Ondisplay('isMicrowave')">
               <div v-if="isMicrowave">
-                <img src="@/assets/image/microwave1.png" alt />
+                <img src="~/assets/image/microwave1.png" alt />
                 <p>{{$t("message.global.microwave")}}</p>
               </div>
               <div v-else>
-                <img src="@/assets/image/microwave1_1.png" alt />
+                <img src="~/assets/image/microwave1_1.png" alt />
                 <p
                   style="text-decoration: line-through; color: #E5E5E5;"
                 >{{$t("message.global.microwave")}}</p>
@@ -556,11 +556,11 @@
             </div>
             <div @click="Ondisplay('isHeater')">
               <div v-if="isHeater">
-                <img src="@/assets/image/download_3.png" alt />
+                <img src="~/assets/image/download_3.png" alt />
                 <p>{{$t("message.global.calorifier")}}</p>
               </div>
               <div v-else>
-                <img src="@/assets/image/download3_3.png" alt />
+                <img src="~/assets/image/download3_3.png" alt />
                 <p
                   style="text-decoration: line-through; color: #E5E5E5;"
                 >{{$t("message.global.calorifier")}}</p>
@@ -568,11 +568,11 @@
             </div>
             <div @click="Ondisplay('isBed')">
               <div v-if="isBed">
-                <img src="@/assets/image/download_8.png" alt />
+                <img src="~/assets/image/download_8.png" alt />
                 <p>{{$t("message.global.bed")}}</p>
               </div>
               <div v-else>
-                <img src="@/assets/image/download8_8.png" alt />
+                <img src="~/assets/image/download8_8.png" alt />
                 <p
                   style="text-decoration: line-through; color: #E5E5E5;"
                 >{{$t("message.global.bed")}}</p>
@@ -580,11 +580,11 @@
             </div>
             <div @click="Ondisplay('isSteam')">
               <div v-if="isSteam">
-                <img src="@/assets/image/download_9.png" alt />
+                <img src="~/assets/image/download_9.png" alt />
                 <p>{{$t("message.global.heating")}}</p>
               </div>
               <div v-else>
-                <img src="@/assets/image/picSzg/heatH.png" alt />
+                <img src="~/assets/image/picSzg/heatH.png" alt />
                 <p
                   style="text-decoration: line-through; color: #E5E5E5;"
                 >{{$t("message.global.heating")}}</p>
@@ -592,11 +592,11 @@
             </div>
             <div @click="Ondisplay('isBroadband')">
               <div v-if="isBroadband">
-                <img src="@/assets/image/download_6.png" alt />
+                <img src="~/assets/image/download_6.png" alt />
                 <p>{{$t("message.global.broadband")}}</p>
               </div>
               <div v-else>
-                <img src="@/assets/image/download6_6.png" alt />
+                <img src="~/assets/image/download6_6.png" alt />
                 <p
                   style="text-decoration: line-through; color: #E5E5E5;"
                 >{{$t("message.global.broadband")}}</p>
@@ -604,11 +604,11 @@
             </div>
             <div @click="Ondisplay('isWardrobe')">
               <div v-if="isWardrobe">
-                <img src="@/assets/image/download_5.png" alt />
+                <img src="~/assets/image/download_5.png" alt />
                 <p>{{$t("message.global.wardrobe")}}</p>
               </div>
               <div v-else>
-                <img src="@/assets/image/download5_5.png" alt />
+                <img src="~/assets/image/download5_5.png" alt />
                 <p
                   style="text-decoration: line-through; color: #E5E5E5;"
                 >{{$t("message.global.wardrobe")}}</p>
@@ -616,11 +616,11 @@
             </div>
             <div @click="Ondisplay('isChair')">
               <div v-if="isChair">
-                <img src="@/assets/image/chair.png" alt />
+                <img src="~/assets/image/chair.png" alt />
                 <p>{{$t("message.global.chairs")}}</p>
               </div>
               <div v-else>
-                <img src="@/assets/image/chair_1.png" alt />
+                <img src="~/assets/image/chair_1.png" alt />
                 <p
                   style="text-decoration: line-through; color: #E5E5E5;"
                 >{{$t("message.global.chairs")}}</p>
@@ -667,11 +667,11 @@
   </div>
 </template>
 <script>
-import rem from "@/common/rem.js";
-import base from "@/api/base"; // 导入接口域名列表
-import Header from "@/components/MIndex/common/head.vue";
-import Footer from "@/components/MIndex/common/footer.vue";
-import axios from "@/common/http";
+import rem from "~/common/rem.js";
+import base from "~/api/base"; // 导入接口域名列表
+import Header from "~/components/MIndex/head.vue";
+import Footer from "~/components/MIndex/footer.vue";
+import axios from "~/common/http";
 import VueGmaps from "vue-gmaps";
 export default {
   middleware: "responsive",
@@ -1129,12 +1129,12 @@ export default {
   }
 };
 </script>
-<style lang="less">
+<style lang="scss">
 .el-input__inner {
   height: 0.4rem;
 }
 </style>
-<style lang="less" scoped>
+<style lang="scss" scoped>
 div {
   font-size: 16px;
 }
@@ -1274,7 +1274,7 @@ p {
   width: 100%;
 }
 </style> 
-<style lang="less">
+<style lang="scss">
 .videos {
   .el-upload {
     width: 100%;

@@ -14,16 +14,16 @@
             </div>
             <div class="conten conter_img">
               <p>
-                <img src="@/assets/image/times.png" alt />
+                <img src="~/assets/image/times.png" alt />
                 {{ $t("message.global.service") }}：{{ item.lowPrice }} -
                 {{ item.topPrice }}€
               </p>
               <p>
-                <img src="@/assets/image/di.png" alt />
+                <img src="~/assets/image/di.png" alt />
                 {{ $t("message.global.coverage") }}：{{ item.area }}
               </p>
               <p>
-                <img src="@/assets/image/hd.png" alt />
+                <img src="~/assets/image/hd.png" alt />
                 {{ $t("message.global.contactPhone") }}：{{ item.phone }}
               </p>
             </div>
@@ -40,16 +40,16 @@
             </div>
             <div class="conten conter_img">
               <p>
-                <img src="@/assets/image/times.png" alt />
+                <img src="~/assets/image/times.png" alt />
                 {{ $t("message.global.service") }}：{{ item.lowPrice }} -
                 {{ item.topPrice }}€
               </p>
               <p>
-                <img src="@/assets/image/di.png" alt />
+                <img src="~/assets/image/di.png" alt />
                 {{ $t("message.global.coverage") }}：{{ item.area }}
               </p>
               <p>
-                <img src="@/assets/image/hd.png" alt />
+                <img src="~/assets/image/hd.png" alt />
                 {{ $t("message.global.contactPhone") }}：{{ item.phone }}
               </p>
             </div>
@@ -66,16 +66,16 @@
             </div>
             <div class="conten conter_img">
               <p>
-                <img src="@/assets/image/times.png" alt />
+                <img src="~/assets/image/times.png" alt />
                 {{ $t("message.global.service") }}：{{ item.lowPrice }} -
                 {{ item.topPrice }}€
               </p>
               <p>
-                <img src="@/assets/image/di.png" alt />
+                <img src="~/assets/image/di.png" alt />
                 {{ $t("message.global.coverage") }}：{{ item.area }}
               </p>
               <p>
-                <img src="@/assets/image/hd.png" alt />
+                <img src="~/assets/image/hd.png" alt />
                 {{ $t("message.global.contactPhone") }}：{{ item.phone }}
               </p>
             </div>
@@ -87,9 +87,9 @@
   </div>
 </template>
 <script>
-import rem from "@/common/rem.js";
-import Header from "@/components/MIndex/common/head.vue";
-import Footer from "@/components/MIndex/common/footer.vue";
+import rem from "~/common/rem.js";
+import Header from "~/components/MIndex/head.vue";
+import Footer from "~/components/MIndex/footer.vue";
 export default {
   middleware: "responsive",
   components: {
@@ -185,7 +185,7 @@ export default {
   }
 };
 </script>
-<style lang="less">
+<style lang="scss">
 div {
   font-size: 16px;
 }

@@ -14,15 +14,13 @@
             style="height:50px;line-height:26px;"
             label="1"
             border
-            >{{ $t("message.global.SellingHouses") }}</el-radio
-          >
+          >{{ $t("message.global.SellingHouses") }}</el-radio>
           <el-radio
             v-model="radio1"
             style="height:50px;line-height:26px;"
             label="2"
             border
-            >{{ $t("message.global.RentalHousing") }}</el-radio
-          >
+          >{{ $t("message.global.RentalHousing") }}</el-radio>
         </div>
       </div>
       <div class="listTab">
@@ -33,15 +31,13 @@
             style="height:50px;line-height:26px;"
             label="1"
             border
-            >{{ $t("message.global.apartments") }}</el-radio
-          >
+          >{{ $t("message.global.apartments") }}</el-radio>
           <el-radio
             v-model="info.houseOrApartment"
             style="height:50px;line-height:26px;"
             label="0"
             border
-            >{{ $t("message.global.cottage") }}</el-radio
-          >
+          >{{ $t("message.global.cottage") }}</el-radio>
         </div>
       </div>
       <div class="listTab">
@@ -52,15 +48,13 @@
             style="height:50px;line-height:26px;"
             label="1"
             border
-            >{{ $t("message.global.Intermediary") }}</el-radio
-          >
+          >{{ $t("message.global.Intermediary") }}</el-radio>
           <el-radio
             v-model="info.oneselfOrAgent"
             style="height:50px;line-height:26px;"
             label="0"
             border
-            >{{ $t("message.global.Personal") }}</el-radio
-          >
+          >{{ $t("message.global.Personal") }}</el-radio>
         </div>
       </div>
       <div class="listTab" v-if="radio1 == 2">
@@ -71,34 +65,30 @@
             label="0"
             style="height:50px;line-height:26px;"
             border
-            >{{ $t("message.global.entireTenancy") }}</el-radio
-          >
+          >{{ $t("message.global.entireTenancy") }}</el-radio>
           <el-radio
             v-model="rentType"
             label="1"
             style="height:50px;line-height:26px;"
             border
-            >{{ $t("message.global.sublease") }}</el-radio
-          >
+          >{{ $t("message.global.sublease") }}</el-radio>
         </div>
       </div>
       <div class="details" style="overflow:hidden" v-show="rentType == 1">
         <p class="tit">{{ $t("message.global.zukexiangqing") }}</p>
         <div v-for="(itemsa, indexs) in ListList" :key="indexs">
           <div class="lists listss">
-            <p style="font-weight:400">
-              {{ $t("message.global.BedroomArea") }}
-            </p>
+            <p style="font-weight:400">{{ $t("message.global.BedroomArea") }}</p>
             <el-input placeholder type="Number" v-model="itemsa.roomArea">
-              <template slot="append">{{
+              <template slot="append">
+                {{
                 $t("message.global.square")
-              }}</template>
+                }}
+              </template>
             </el-input>
           </div>
           <div class="lists listss">
-            <p style="font-weight:400">
-              {{ $t("message.global.orientation") }}
-            </p>
+            <p style="font-weight:400">{{ $t("message.global.orientation") }}</p>
             <el-select v-model="itemsa.direction" placeholder>
               <el-option
                 v-for="item in options"
@@ -120,16 +110,14 @@
             </el-select>
           </div>
           <div class="lists listss">
-            <p style="font-weight:400">
-              {{ $t("message.global.constellation") }}
-            </p>
+            <p style="font-weight:400">{{ $t("message.global.constellation") }}</p>
             <el-input placeholder v-model="itemsa.zodiac"></el-input>
           </div>
           <div class="lists listss">
             <p style="font-weight:400">
               {{ $t("message.global.price") }}
               <span style="float:right" @click="deletes(indexs)">
-                <img style="width:20px;" src="@/assets/image/go.png" alt />
+                <img style="width:20px;" src="~/assets/image/go.png" alt />
               </span>
             </p>
             <el-input placeholder type="Number" v-model="itemsa.roomPrice">
@@ -141,9 +129,7 @@
           <div
             @click="addFJ"
             style="float:right;width:365px;font-size:20px;color:#fff;height:60px;line-height:60px;text-align:center;background-color:#234DD4FF;border-radius:7px;"
-          >
-            {{ $t("message.global.tjygfyxx") }}
-          </div>
+          >{{ $t("message.global.tjygfyxx") }}</div>
         </div>
       </div>
       <div class="details">
@@ -185,11 +171,7 @@
         </div>
         <div class="rights">
           <p>{{ $t("message.global.postcode") }}</p>
-          <el-input
-            placeholder
-            type="Number"
-            v-model="info.postcodes"
-          ></el-input>
+          <el-input placeholder type="Number" v-model="info.postcodes"></el-input>
         </div>
       </div>
       <div class="details">
@@ -202,10 +184,7 @@
       </div>
       <div class="details">
         <p>{{ $t("message.global.subject") }}</p>
-        <el-input
-          :placeholder="$t('message.global.suchas')"
-          v-model="info.title"
-        ></el-input>
+        <el-input :placeholder="$t('message.global.suchas')" v-model="info.title"></el-input>
       </div>
       <div class="details">
         <p>{{ $t("message.global.Describing") }}</p>
@@ -231,7 +210,7 @@
           :before-upload="beforeAvatarUpload"
           :on-success="handleAvatarSuccess"
         >
-          <!-- <img src="@/assets/image/addABC.png" class="avatar"> -->
+          <!-- <img src="~/assets/image/addABC.png" class="avatar"> -->
           <i class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
         <img
@@ -255,12 +234,7 @@
           <!-- <img v-if="imgurl" :src="imgurl" class="avatar"> -->
           <i class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
-        <video
-          :src="video"
-          controls="controls"
-          class="avatar"
-          v-if="video"
-        ></video>
+        <video :src="video" controls="controls" class="avatar" v-if="video"></video>
       </div>
       <div style="overflow:hidden">
         <div class="floorPlan">
@@ -299,17 +273,15 @@
         <div style="display:inline-block;padding:20px;vertical-align: top;">
           <p>{{ $t("message.global.drawingRoom") }}</p>
           <div>
-            <div
-              style="margin-top:10px;"
-              v-for="(itemsa, inds) in drawingList"
-              :key="inds"
-            >
+            <div style="margin-top:10px;" v-for="(itemsa, inds) in drawingList" :key="inds">
               <div style="display:inline-block;widht:80px;vertical-align: top;">
                 <p>{{ $t("message.global.proportion") }}</p>
                 <el-input placeholder type="Number" v-model="itemsa.area">
-                  <template slot="append">{{
+                  <template slot="append">
+                    {{
                     $t("message.global.square")
-                  }}</template>
+                    }}
+                  </template>
                 </el-input>
               </div>
               <div style="display:inline-block;width:160px;margin-left:10px;">
@@ -331,26 +303,22 @@
             style="width:568px;
                     height:60px;
                     background-color:#234DD4;border-radius:7px;font-size:24px;color:#fff;text-align:center;line-height:60px;"
-          >
-            {{ $t("message.global.drawingRoom") }}
-          </div>
+          >{{ $t("message.global.drawingRoom") }}</div>
         </div>
         <!-- // 厨房 -->
         <div style="display:inline-block; padding:20px;vertical-align: top;">
           <p>{{ $t("message.global.kitchen") }}</p>
           <div>
-            <div
-              style="margin-top:10px;"
-              v-for="(itemsa, inds) in kitchenList"
-              :key="inds"
-            >
+            <div style="margin-top:10px;" v-for="(itemsa, inds) in kitchenList" :key="inds">
               <div style="display:inline-block;widht:80px;vertical-align: top;">
                 <p>{{ $t("message.global.proportion") }}</p>
                 <el-input placeholder type="Number" v-model="itemsa.area">
                   area
-                  <template slot="append">{{
+                  <template slot="append">
+                    {{
                     $t("message.global.square")
-                  }}</template>
+                    }}
+                  </template>
                 </el-input>
               </div>
               <div style="display:inline-block;width:160px;margin-left:10px;">
@@ -372,25 +340,21 @@
             style="width:568px;
                     height:60px;
                     background-color:#234DD4;border-radius:7px;font-size:24px;color:#fff;text-align:center;line-height:60px;"
-          >
-            {{ $t("message.global.kitchen") }}
-          </div>
+          >{{ $t("message.global.kitchen") }}</div>
         </div>
         <!-- 卧室 -->
         <div style="display:inline-block; padding:20px;vertical-align: top;">
           <p>{{ $t("message.global.bedroomInformation") }}</p>
           <div>
-            <div
-              style="margin-top:10px;"
-              v-for="(itemsa, inds) in bedRoomList"
-              :key="inds"
-            >
+            <div style="margin-top:10px;" v-for="(itemsa, inds) in bedRoomList" :key="inds">
               <div style="display:inline-block;widht:80px;vertical-align: top;">
                 <p>{{ $t("message.global.proportion") }}</p>
                 <el-input placeholder type="Number" v-model="itemsa.area">
-                  <template slot="append">{{
+                  <template slot="append">
+                    {{
                     $t("message.global.square")
-                  }}</template>
+                    }}
+                  </template>
                 </el-input>
               </div>
               <div style="display:inline-block;width:160px;margin-left:10px;">
@@ -412,25 +376,21 @@
             style="width:568px;
                     height:60px;
                     background-color:#234DD4;border-radius:7px;font-size:24px;color:#fff;text-align:center;line-height:60px;"
-          >
-            {{ $t("message.global.bedroomInformation") }}
-          </div>
+          >{{ $t("message.global.bedroomInformation") }}</div>
         </div>
         <!-- 浴室 -->
         <div style="display:inline-block; padding:20px;vertical-align: top;">
           <p>{{ $t("message.global.sdbbotton") }}</p>
           <div>
-            <div
-              style="margin-top:10px;"
-              v-for="(itemsa, inds) in showersList"
-              :key="inds"
-            >
+            <div style="margin-top:10px;" v-for="(itemsa, inds) in showersList" :key="inds">
               <div style="display:inline-block;widht:80px;vertical-align: top;">
                 <p>{{ $t("message.global.proportion") }}</p>
                 <el-input placeholder type="Number" v-model="itemsa.area">
-                  <template slot="append">{{
+                  <template slot="append">
+                    {{
                     $t("message.global.square")
-                  }}</template>
+                    }}
+                  </template>
                 </el-input>
               </div>
               <div style="display:inline-block;width:160px;margin-left:10px;">
@@ -452,9 +412,7 @@
             style="width:568px;
                     height:60px;
                     background-color:#234DD4;border-radius:7px;font-size:24px;color:#fff;text-align:center;line-height:60px;"
-          >
-            {{ $t("message.global.sdbbotton") }}
-          </div>
+          >{{ $t("message.global.sdbbotton") }}</div>
         </div>
         <div class="Historical">
           <p class="titHis">{{ $t("message.global.transactionRecord") }}</p>
@@ -477,28 +435,22 @@
               value-format="MM"
               placeholder="选择月"
             ></el-date-picker>
-            <el-input
-              style="width:200px;vertical-align: top;"
-              placeholder
-              v-model="itemsa.money"
-            >
+            <el-input style="width:200px;vertical-align: top;" placeholder v-model="itemsa.money">
               <template slot="append">€</template>
             </el-input>
           </div>
           <br />
           <br />
-          <span @click="pushHs" class="Propertytaxrecord">{{
+          <span @click="pushHs" class="Propertytaxrecord">
+            {{
             $t("message.global.addtransactionRecord")
-          }}</span>
+            }}
+          </span>
         </div>
         <br />
         <div class="Historical">
           <p class="titHis">{{ $t("message.global.buildingTaxes") }}</p>
-          <div
-            v-for="(itemsa, index) in buildingHis"
-            style="margin-top:10px;"
-            :key="index"
-          >
+          <div v-for="(itemsa, index) in buildingHis" style="margin-top:10px;" :key="index">
             <el-date-picker
               style="margin-right:10px;"
               v-model="itemsa.year"
@@ -506,32 +458,24 @@
               value-format="yyyy"
               placeholder
             ></el-date-picker>
-            <el-input
-              style="width:200px;vertical-align: top;"
-              placeholder
-              v-model="itemsa.money"
-            >
+            <el-input style="width:200px;vertical-align: top;" placeholder v-model="itemsa.money">
               <template slot="append">€</template>
             </el-input>
           </div>
           <br />
           <br />
-          <span @click="pushFh" class="Propertytaxrecord">{{
+          <span @click="pushFh" class="Propertytaxrecord">
+            {{
             $t("message.global.PropertyTaxRecord")
-          }}</span>
+            }}
+          </span>
         </div>
         <div>
           <p
             style="font-size:30px;line-height:42px;padding:10px;font-weight:600"
-          >
-            {{ $t("message.global.sellingTime") }}
-          </p>
+          >{{ $t("message.global.sellingTime") }}</p>
           <!-- <el-input style="width:70%" placeholder="" v-model="info.wishSellingTime"></el-input> -->
-          <el-select
-            v-model="info.wishSellingTime"
-            placeholder
-            style="width:800px;"
-          >
+          <el-select v-model="info.wishSellingTime" placeholder style="width:800px;">
             <el-option
               v-for="item in optiona"
               :key="item.value"
@@ -542,9 +486,9 @@
         </div>
       </div>
       <div v-else>
-        <p style="font-size: 30px;font-weight: 600; padding: 12px;">
-          {{ $t("message.global.supporting") }}
-        </p>
+        <p
+          style="font-size: 30px;font-weight: 600; padding: 12px;"
+        >{{ $t("message.global.supporting") }}</p>
         <div class="peitao">
           <span :class="{ sizeClo: info.isChair }" @click="ClK('isChair')">
             <img v-if="!info.isChair" :src="img.chairsG" alt />
@@ -552,10 +496,7 @@
             <br />
             {{ $t("message.global.chairs") }}
           </span>
-          <span
-            :class="{ sizeClo: info.isWardrobe }"
-            @click="ClK('isWardrobe')"
-          >
+          <span :class="{ sizeClo: info.isWardrobe }" @click="ClK('isWardrobe')">
             <img v-if="!info.isWardrobe" :src="img.chestG" alt />
             <img v-else :src="img.chestH" alt />
             <br />
@@ -591,19 +532,13 @@
             <br />
             {{ $t("message.global.heating") }}
           </span>
-          <span
-            :class="{ sizeClo: info.isMicrowave }"
-            @click="ClK('isMicrowave')"
-          >
+          <span :class="{ sizeClo: info.isMicrowave }" @click="ClK('isMicrowave')">
             <img v-if="!info.isMicrowave" :src="img.ovenG" alt />
             <img v-else :src="img.ovenH" alt />
             <br />
             {{ $t("message.global.microwave") }}
           </span>
-          <span
-            :class="{ sizeClo: info.isBroadband }"
-            @click="ClK('isBroadband')"
-          >
+          <span :class="{ sizeClo: info.isBroadband }" @click="ClK('isBroadband')">
             <img v-if="!info.isBroadband" :src="img.wifiG" alt />
             <img v-else :src="img.wifiH" alt />
             <br />
@@ -619,36 +554,44 @@
       </div>
       <div>
         <div style="display:inline-block;width:25%;margin-right:20px;">
-          <span style="font-size: 30px;font-weight: 600; padding: 12px;">{{
+          <span style="font-size: 30px;font-weight: 600; padding: 12px;">
+            {{
             $t("message.global.contactName")
-          }}</span>
+            }}
+          </span>
           <br />
           <el-input placeholder v-model="info.contactName">
             <i slot="prefix" class="el-icon-user-solid"></i>
           </el-input>
         </div>
         <div style="display:inline-block;width:25%;margin-right:20px;">
-          <span style="font-size: 30px;font-weight: 600; padding: 12px;">{{
+          <span style="font-size: 30px;font-weight: 600; padding: 12px;">
+            {{
             $t("message.global.contactEmil")
-          }}</span>
+            }}
+          </span>
           <br />
           <el-input placeholder v-model="info.contactEmail">
             <i slot="prefix" class="el-icon-message"></i>
           </el-input>
         </div>
         <div style="display:inline-block;width:25%;margin-right:20px;">
-          <span style="font-size: 30px;font-weight: 600; padding: 12px;">{{
+          <span style="font-size: 30px;font-weight: 600; padding: 12px;">
+            {{
             $t("message.global.contactPhone")
-          }}</span>
+            }}
+          </span>
           <br />
           <el-input placeholder v-model="info.contactPhone">
             <i slot="prefix" class="el-icon-phone"></i>
           </el-input>
         </div>
         <div style="display:inline-block;width:25%;margin-right:20px;">
-          <span style="font-size: 30px;font-weight: 600; padding: 12px;">{{
+          <span style="font-size: 30px;font-weight: 600; padding: 12px;">
+            {{
             $t("message.global.contactWX")
-          }}</span>
+            }}
+          </span>
           <br />
           <el-input placeholder v-model="info.contactWX">
             <i slot="prefix" class="el-icon-search"></i>
@@ -663,38 +606,36 @@
       <div
         @click="Goover"
         style="float:right;color:#fff;border-radius:7px;width:702px;height:70px;text-align:center;line-height:70px;background-color:#234DD4FF"
-      >
-        {{ $t("message.global.AddHousing") }}
-      </div>
+      >{{ $t("message.global.AddHousing") }}</div>
     </div>
     <foots></foots>
   </div>
 </template>
 
 <script>
-import headers from "@/components/PcIndex/moduleT/header.vue";
-import foots from "@/components/PcIndex/moduleT/foot.vue";
-import addLis from "@/assets/image/addLis.png";
-import airG from "@/assets/image/picSzg/airG.png";
-import airH from "@/assets/image/picSzg/airH.png";
-import bedG from "@/assets/image/picSzg/bedG.png";
-import bedH from "@/assets/image/picSzg/bedH.png";
-import chairsG from "@/assets/image/picSzg/chairsG.png";
-import chairsH from "@/assets/image/picSzg/chairsH.png";
-import chestG from "@/assets/image/picSzg/chestG.png";
-import chestH from "@/assets/image/picSzg/chestH.png";
-import heatG from "@/assets/image/picSzg/heatG.png";
-import heatH from "@/assets/image/picSzg/heatH.png";
-import ovenG from "@/assets/image/picSzg/ovenG.png";
-import ovenH from "@/assets/image/picSzg/ovenH.png";
-import refrigG from "@/assets/image/picSzg/refrigG.png";
-import refrigH from "@/assets/image/picSzg/refrigH.png";
-import televisG from "@/assets/image/picSzg/televisG.png";
-import televisH from "@/assets/image/picSzg/televisH.png";
-import washerG from "@/assets/image/picSzg/washerG.png";
-import washerH from "@/assets/image/picSzg/washerH.png";
-import wifiG from "@/assets/image/picSzg/wifiG.png";
-import wifiH from "@/assets/image/picSzg/wifiH.png";
+import headers from "~/components/PcIndex/header.vue";
+import foots from "~/components/PcIndex/foot.vue";
+import addLis from "~/assets/image/addLis.png";
+import airG from "~/assets/image/picSzg/airG.png";
+import airH from "~/assets/image/picSzg/airH.png";
+import bedG from "~/assets/image/picSzg/bedG.png";
+import bedH from "~/assets/image/picSzg/bedH.png";
+import chairsG from "~/assets/image/picSzg/chairsG.png";
+import chairsH from "~/assets/image/picSzg/chairsH.png";
+import chestG from "~/assets/image/picSzg/chestG.png";
+import chestH from "~/assets/image/picSzg/chestH.png";
+import heatG from "~/assets/image/picSzg/heatG.png";
+import heatH from "~/assets/image/picSzg/heatH.png";
+import ovenG from "~/assets/image/picSzg/ovenG.png";
+import ovenH from "~/assets/image/picSzg/ovenH.png";
+import refrigG from "~/assets/image/picSzg/refrigG.png";
+import refrigH from "~/assets/image/picSzg/refrigH.png";
+import televisG from "~/assets/image/picSzg/televisG.png";
+import televisH from "~/assets/image/picSzg/televisH.png";
+import washerG from "~/assets/image/picSzg/washerG.png";
+import washerH from "~/assets/image/picSzg/washerH.png";
+import wifiG from "~/assets/image/picSzg/wifiG.png";
+import wifiH from "~/assets/image/picSzg/wifiH.png";
 export default {
   name: "sellers",
   middleware: "responsive",
@@ -1174,7 +1115,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .bacBlue {
   background-color: #234dd4;
   color: #fff !important;
@@ -1293,7 +1234,7 @@ export default {
   color: #bcbcbc;
 }
 </style>
-<style lang="less">
+<style lang="scss">
 .el-icon-plus:before {
   color: #234dd4;
 }

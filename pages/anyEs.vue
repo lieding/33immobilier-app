@@ -140,7 +140,7 @@
         >
           <img
             style="margin-right:50px;margin-left:10px;vertical-align:middle;width:16px;height:16px;"
-            src="@/assets/image/sort.png"
+            src="~/assets/image/sort.png"
             alt=""
           />
           <span
@@ -149,7 +149,7 @@
           >
           <img
             style="vertical-align:middle;width:10px;height:6px;"
-            src="@/assets/image/goDown.png"
+            src="~/assets/image/goDown.png"
             alt=""
           />
         </span>
@@ -178,7 +178,7 @@
           <img
             class="leftsa"
             v-show="item.isOpenVR"
-            src="@/assets/image/VRlogo.gif"
+            src="~/assets/image/VRlogo.gif"
             alt=""
           />
         </div>
@@ -242,21 +242,21 @@
 </template>
 
 <script>
-import headers from "@/components/PcIndex/moduleT/header.vue";
-import foots from "@/components/PcIndex/moduleT/foot.vue";
+import headers from "~/components/PcIndex/header.vue";
+import foots from "~/components/PcIndex/foot.vue";
 
-import pulldow from "@/assets/image/pullDow.png";
-import proVip from "@/assets/image/proVip.png";
-import visitCard from "@/assets/image/visitCard.png";
-import authentication from "@/assets/image/authentication.png";
-import logoT from "@/assets/image/logoT.png";
-import phone from "@/assets/image/phone.png";
-import email from "@/assets/image/email.png";
-import wxInd from "@/assets/image/wxInd.png";
-import gongyu from "@/assets/image/gongyu.png";
-import dingwei from "@/assets/image/dingwei.png";
+import pulldow from "~/assets/image/pullDow.png";
+import proVip from "~/assets/image/proVip.png";
+import visitCard from "~/assets/image/visitCard.png";
+import authentication from "~/assets/image/authentication.png";
+import logoT from "~/assets/image/logoT.png";
+import phone from "~/assets/image/phone.png";
+import email from "~/assets/image/email.png";
+import wxInd from "~/assets/image/wxInd.png";
+import gongyu from "~/assets/image/gongyu.png";
+import dingwei from "~/assets/image/dingwei.png";
 
-import baseUrl from "@/api/base.js";
+import baseUrl from "~/api/base.js";
 
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
@@ -533,7 +533,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .seconBrok {
   .headline {
     padding-top: 10px;
@@ -658,7 +658,7 @@ export default {
   padding-left: 10px;
 }
 </style>
-<style lang="less">
+<style lang="scss">
 .anyEs {
   .el-input__inner {
     height: 34px;

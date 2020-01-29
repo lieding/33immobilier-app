@@ -4,7 +4,7 @@
       <Header />
       <!-- <hr class="title_hr"/> -->
       <!-- logo图 -->
-      <img src="@/assets/image/index.png" alt class="logo" />
+      <img src="~/assets/image/index.png" alt class="logo" />
       <!-- 搜索框 -->
       <div class="block flex">
         <div class="flex block_1">
@@ -17,7 +17,7 @@
         </div>
         <div class="flex block_2">
           <img
-            src="@/assets/image/Search Icon.png"
+            src="~/assets/image/Search Icon.png"
             class="Icon"
             @click="OnsearchGoods"
           />
@@ -36,48 +36,48 @@
           :to="{ path: '/newhouse', query: { house: '新房' } }"
           tag="li"
         >
-          <img src="@/assets/image/newhouse.png" class="list_img" />
+          <img src="~/assets/image/newhouse.png" class="list_img" />
           <p>{{ $t("message.global.NewHouse") }}</p>
         </router-link>
         <router-link
           :to="{ path: '/newhouse', query: { house: '二手房' } }"
           tag="li"
         >
-          <img src="@/assets/image/ordhouse.png" class="list_img" />
+          <img src="~/assets/image/ordhouse.png" class="list_img" />
           <p>{{ $t("message.global.second-hand") }}</p>
         </router-link>
         <router-link :to="{ path: '/rentHouse' }" tag="li">
-          <img src="@/assets/image/house.png" class="list_img" />
+          <img src="~/assets/image/house.png" class="list_img" />
           <p>{{ $t("message.global.tenement") }}</p>
         </router-link>
         <router-link :to="{ path: '/agentList' }" tag="li">
-          <img src="@/assets/image/peoper.png" class="list_img" />
+          <img src="~/assets/image/peoper.png" class="list_img" />
           <p>{{ $t("message.global.agent") }}</p>
         </router-link>
         <router-link :to="{ path: '/blogs' }" tag="li">
-          <img src="@/assets/image/baidu.png" class="list_img" />
+          <img src="~/assets/image/baidu.png" class="list_img" />
           <p>{{ $t("message.global.encyclopedia") }}</p>
         </router-link>
         <router-link :to="{ path: '/service' }" tag="li">
-          <img src="@/assets/image/Copy.png" class="list_img" />
+          <img src="~/assets/image/Copy.png" class="list_img" />
           <p>{{ $t("message.global.Saas") }}</p>
         </router-link>
       </ul>
       <ul class="entry">
         <router-link :to="{ path: '/instrument' }" tag="li">
-          <img src="@/assets/image/blue.png" class="entry_img" />
+          <img src="~/assets/image/blue.png" class="entry_img" />
           <p>{{ $t("message.global.capacity") }}</p>
         </router-link>
         <router-link :to="{ path: '/instrument' }" tag="li">
-          <img src="@/assets/image/green.png" class="entry_img" />
+          <img src="~/assets/image/green.png" class="entry_img" />
           <p>{{ $t("message.global.purchase") }}</p>
         </router-link>
         <router-link :to="{ path: '/article', query: { id: 3 } }" tag="li">
-          <img src="@/assets/image/red.png" class="entry_img" />
+          <img src="~/assets/image/red.png" class="entry_img" />
           <p>{{ $t("message.global.reductionWhat") }}</p>
         </router-link>
         <router-link :to="{ path: '/article', query: { id: 4 } }" tag="li">
-          <img src="@/assets/image/Violet.png" class="entry_img" />
+          <img src="~/assets/image/Violet.png" class="entry_img" />
           <p>{{ $t("message.global.interest") }}</p>
         </router-link>
       </ul>
@@ -265,20 +265,20 @@
           </van-swipe-item>
         </van-swipe>
         <div class="swipe_image">
-          <img src="@/assets/image/pcBroker.png" alt />
+          <img src="~/assets/image/pcBroker.png" alt />
           <span style="margin-right: .1rem;">{{
             $t("message.global.middleman")
           }}</span>
           <span @click="goRouter('/dialog')" class="text_img">
             <img
-              src="@/assets/image/pcPerson.png"
+              src="~/assets/image/pcPerson.png"
               alt
               style="margin-right: .05rem;"
             />
             {{ $t("message.global.jiaru") }}
           </span>
         </div>
-        <!-- <img  src="@/assets/image/agent.png" class="swipe_image" /> -->
+        <!-- <img  src="~/assets/image/agent.png" class="swipe_image" /> -->
       </div>
       <hr class="hr" />
       <!-- 我们的合作伙伴 -->
@@ -288,7 +288,7 @@
         </div>
         <p class="detail">{{ $t("message.global.pionner") }}</p>
         <p class="detail">{{ $t("message.global.Courtier") }}</p>
-        <img src="@/assets/image/logo_promoteur.png" class="partner_image" />
+        <img src="~/assets/image/logo_promoteur.png" class="partner_image" />
       </div>
       <hr class="hr" />
       <!-- 房价走势 -->
@@ -317,9 +317,9 @@
   </div>
 </template>
 <script>
-import rem from "@/common/rem.js";
-import Header from "@/components/MIndex/common/header.vue";
-import Footer from "@/components/MIndex/common/footer.vue";
+import rem from "~/common/rem.js";
+import Header from "~/components/MIndex/header.vue";
+import Footer from "~/components/MIndex/footer.vue";
 var echarts = require("echarts");
 export default {
   components: {
@@ -518,14 +518,14 @@ export default {
   }
 };
 </script>
-<style lang="less">
+<style lang="scss">
 .trend_p {
   .el-input__inner {
     height: 0.3rem;
   }
 }
 </style>
-<style scoped lang="less">
+<style scoped lang="scss">
 .hr {
   border: none;
   height: 0.01rem;

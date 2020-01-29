@@ -165,21 +165,21 @@
 </template>
 
 <script>
-import headers from "@/components/PcIndex/moduleT/header.vue";
-import foots from "@/components/PcIndex/moduleT/foot.vue";
+import headers from "~/components/PcIndex/header.vue";
+import foots from "~/components/PcIndex/foot.vue";
 
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
-import pulldow from "@/assets/image/pullDow.png";
-import dingwei from "@/assets/image/dingwei.png";
-import titles from "@/assets/image/titles.jpg";
-import goDown from "@/assets/image/goDown.png";
-import sort from "@/assets/image/sort.png";
-import homeS from "@/assets/image/homeS.png";
+import pulldow from "~/assets/image/pullDow.png";
+import dingwei from "~/assets/image/dingwei.png";
+import titles from "~/assets/image/titles.jpg";
+import goDown from "~/assets/image/goDown.png";
+import sort from "~/assets/image/sort.png";
+import homeS from "~/assets/image/homeS.png";
 //
 // import countries from './data/countries-of-the-world'
-import baseUrl from "@/api/base.js";
+import baseUrl from "~/api/base.js";
 export default {
   name: "newList",
   middleware: "responsive",
@@ -423,7 +423,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .clearfix:after {
   /*伪元素是行内元素 正常浏览器清除浮动方法*/
   content: "";
@@ -598,7 +598,7 @@ export default {
   }
 }
 </style>
-<style lang="less">
+<style lang="scss">
 .newList {
   .secF {
     margin-right: 0 !important;

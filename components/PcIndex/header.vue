@@ -1,21 +1,31 @@
 <template>
   <div class="titles">
     <div class="lefts" @click="RoutingHop('/pc_index', true)">
-      <img class="logs" v-show="vas" src="@/assets/image/white.png" alt="logos" />
-      <img class="logs" v-show="!vas" src="@/assets/image/black.png" alt="logos" />
+      <img
+        class="logs"
+        v-show="vas"
+        src="~/assets/image/white.png"
+        alt="logos"
+      />
+      <img
+        class="logs"
+        v-show="!vas"
+        src="~/assets/image/black.png"
+        alt="logos"
+      />
     </div>
     <div class="rightL">
       <span @click="Onrouter" style="font-size:20px;cursor:pointer;">
         <img
           v-show="vas"
           style="width:16px;vertical-align:middle;cursor:pointer;"
-          src="@/assets/image/renwuW.png"
+          src="~/assets/image/renwuW.png"
           alt
         />
         <img
           v-show="!vas"
           style="width:16px;vertical-align:middle;cursor:pointer;"
-          src="@/assets/image/pcPerson.png"
+          src="~/assets/image/pcPerson.png"
           alt
         />
         {{ $t("message.global.login") }}
@@ -29,7 +39,7 @@
         >
           <img
             style="vertical-align: middle;margin-right:26px;"
-            src="@/assets/image/chinese.png"
+            src="~/assets/image/chinese.png"
             alt
           />
           {{ $t("message.global.Chinese") }}
@@ -40,7 +50,7 @@
         >
           <img
             style="vertical-align: middle;margin-right:21px;"
-            src="@/assets/image/french.png"
+            src="~/assets/image/french.png"
             alt
           />
           {{ $t("message.global.French") }}
@@ -50,10 +60,15 @@
           <img
             v-show="vas"
             style="width:16px;"
-            src="@/assets/image/sortW.png"
+            src="~/assets/image/sortW.png"
             alt
           />
-          <img v-show="!vas" style="width:16px;" src="@/assets/image/sort.png" alt />
+          <img
+            v-show="!vas"
+            style="width:16px;"
+            src="~/assets/image/sort.png"
+            alt
+          />
         </span>
       </el-popover>
     </div>
@@ -88,10 +103,8 @@
       </span>
       <!-- <span class="Buttons" @click="RoutingHop('/sellers', true)"><img :src="imgs.sellersT" alt=""></span> -->
       <span class="divide backC" @click="RoutingHop('/sellers', true)">
-        <img src="@/assets/image/houseAD.png" alt />
-        &nbsp;{{
-        $t("message.global.rental")
-        }}
+        <img src="~/assets/image/houseAD.png" alt />
+        &nbsp;{{ $t("message.global.rental") }}
       </span>
       <!--  -->
     </div>
@@ -99,9 +112,9 @@
 </template>
 
 <script>
-import logoT from "@/assets/image/logoT.png";
-import sellersT from "@/assets/image/sellers.png";
-import sort from "@/assets/image/sort.png";
+import logoT from "~/assets/image/logoT.png";
+import sellersT from "~/assets/image/sellers.png";
+import sort from "~/assets/image/sort.png";
 
 export default {
   name: "foots",
@@ -147,7 +160,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .titles {
   height: 104px;
   line-height: 104px;

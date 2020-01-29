@@ -2,7 +2,7 @@
   <div>
     <Header :title="$t('message.global.relation')" />
     <div>
-      <img src="@/assets/image/content.png" alt class="img" />
+      <img src="~/assets/image/content.png" alt class="img" />
       <div class="quiz">
         <div class="drug">
           <van-cell-group>
@@ -47,9 +47,9 @@
   </div>
 </template>
 <script>
-import rem from "@/common/rem.js";
-import Header from "@/components/MIndex/common/head.vue";
-import Footer from "@/components/MIndex/common/footer.vue";
+import rem from "~/common/rem.js";
+import Header from "~/components/MIndex/head.vue";
+import Footer from "~/components/MIndex/footer.vue";
 export default {
   name: "",
   middleware: "responsive",
@@ -90,7 +90,7 @@ export default {
   }
 };
 </script>
-<style lang="less" scoped>
+<style lang="scss" scoped>
 div {
   font-size: 16px;
 }

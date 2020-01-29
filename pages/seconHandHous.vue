@@ -14,7 +14,7 @@
         >
           <img
             style="width:20px;vertical-align: middle;"
-            src="@/assets/image/wxInd.png"
+            src="~/assets/image/wxInd.png"
             alt
           />
           {{ $t("message.global.WeChat") }}
@@ -438,21 +438,21 @@
 </template>
 
 <script>
-import headers from "@/components/PcIndex/moduleT/header.vue";
-import foots from "@/components/PcIndex/moduleT/foot.vue";
-import jisuan from "@/components/PcIndex/promoteList";
+import headers from "~/components/PcIndex/header.vue";
+import foots from "~/components/PcIndex/foot.vue";
+import jisuan from "~/components/PcIndex/promoteList";
 
-import phone from "@/assets/image/phone.png";
-// import proVip from '@/assets/image/proVip.png'
-import visitCard from "@/assets/image/visitCard.png";
-import authentication from "@/assets/image/authentication.png";
-import size from "@/assets/image/size.png";
-import time from "@/assets/image/time.png";
-import bed from "@/assets/image/bed.png";
-import proVip from "@/assets/image/proVip.png";
-import apartment from "@/assets/image/apartment.png";
-import location from "@/assets/image/location.png";
-import baseurl from "@/api/base.js";
+import phone from "~/assets/image/phone.png";
+// import proVip from '../assets/image/proVip.png'
+import visitCard from "~/assets/image/visitCard.png";
+import authentication from "~/assets/image/authentication.png";
+import size from "~/assets/image/size.png";
+import time from "~/assets/image/time.png";
+import bed from "~/assets/image/bed.png";
+import proVip from "~/assets/image/proVip.png";
+import apartment from "~/assets/image/apartment.png";
+import location from "~/assets/image/location.png";
+import baseurl from "~/api/base.js";
 
 export default {
   name: "seconHandHous",
@@ -686,7 +686,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .qianlan {
   background-color: #234dd4 !important;
 }

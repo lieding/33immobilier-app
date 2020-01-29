@@ -25,11 +25,11 @@
 </template>
 
 <script>
-import headers from "@/components/PcIndex/moduleT/header.vue";
-import foots from "@/components/PcIndex/moduleT/foot.vue";
+import headers from "~/components/PcIndex/header.vue";
+import foots from "~/components/PcIndex/foot.vue";
 
-import title from "@/assets/image/aboutus.png";
-import logoT from "@/assets/image/logoTTT.png";
+import title from "~/assets/image/aboutus.png";
+import logoT from "~/assets/image/logoTTT.png";
 
 export default {
   name: "aboutUs",
@@ -56,7 +56,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .centerSsss {
   width: 1360px;
   margin: 0 auto;

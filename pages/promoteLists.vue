@@ -10,10 +10,10 @@
   </div>
 </template>
 <script>
-import Header from "@/components/PcIndex/moduleT/header.vue";
-import Footer from "@/components/PcIndex/moduleT/foot.vue";
-import promoteLists from "@/components/PcIndex/promoteList.vue";
-// import Footer from "@/components/MIndex/common/footer.vue";
+import Header from "~/components/PcIndex/header.vue";
+import Footer from "~/components/PcIndex/foot.vue";
+import promoteLists from "~/components/PcIndex/promoteList.vue";
+// import Footer from "~/components/MIndex/footer.vue";
 // var echarts = require("echarts");
 export default {
   middleware: "responsive",
@@ -48,7 +48,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .colors {
   color: #000 !important;
 }

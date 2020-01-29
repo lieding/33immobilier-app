@@ -13,7 +13,7 @@
           style="float:right;color:#B9B9B9;font-size:18px;font-weight:400;cursor: pointer;"
           @click="handleOpen"
         >
-          <img style="width:20px;" src="@/assets/image/wxInd.png" alt="" />
+          <img style="width:20px;" src="~/assets/image/wxInd.png" alt="" />
           {{ $t("message.global.WeChat") }}
         </span>
         <img
@@ -108,7 +108,7 @@
               />
               <img
                 style="position:absolute;bottom:0px;left:50%;margin-left:-18px;width:28px;height:15px;"
-                src="@/assets/image/proAgent.png"
+                src="~/assets/image/proAgent.png"
                 alt=""
               />
             </div>
@@ -476,44 +476,44 @@
 </template>
 
 <script>
-import headers from "@/components/PcIndex/moduleT/header.vue";
-import foots from "@/components/PcIndex/moduleT/foot.vue";
-import calculate from "@/components/PcIndex/promoteList.vue";
+import headers from "~/components/PcIndex/header.vue";
+import foots from "~/components/PcIndex/foot.vue";
+import calculate from "~/components/PcIndex/promoteList.vue";
 
-import wxInd from "@/assets/image/wxInd.png";
-import phone from "@/assets/image/phone.png";
-import email from "@/assets/image/email.png";
-import proVip from "@/assets/image/proVip.png";
-import visitCard from "@/assets/image/visitCard.png";
-import authentication from "@/assets/image/authentication.png";
-import size from "@/assets/image/size.png";
-import time from "@/assets/image/time.png";
-import bed from "@/assets/image/bed.png";
-import apartment from "@/assets/image/apartment.png";
-import location from "@/assets/image/dingwei.png";
+import wxInd from "~/assets/image/wxInd.png";
+import phone from "~/assets/image/phone.png";
+import email from "~/assets/image/email.png";
+import proVip from "~/assets/image/proVip.png";
+import visitCard from "~/assets/image/visitCard.png";
+import authentication from "~/assets/image/authentication.png";
+import size from "~/assets/image/size.png";
+import time from "~/assets/image/time.png";
+import bed from "~/assets/image/bed.png";
+import apartment from "~/assets/image/apartment.png";
+import location from "~/assets/image/dingwei.png";
 
-import airG from "@/assets/image/picSzg/airG.png";
-import airH from "@/assets/image/picSzg/airH.png";
-import bedG from "@/assets/image/picSzg/bedG.png";
-import bedH from "@/assets/image/picSzg/bedH.png";
-import chairsG from "@/assets/image/picSzg/chairsG.png";
-import chairsH from "@/assets/image/picSzg/chairsH.png";
-import chestG from "@/assets/image/picSzg/chestG.png";
-import chestH from "@/assets/image/picSzg/chestH.png";
-import heatG from "@/assets/image/picSzg/heatG.png";
-import heatH from "@/assets/image/picSzg/heatH.png";
-import ovenG from "@/assets/image/picSzg/ovenG.png";
-import ovenH from "@/assets/image/picSzg/ovenH.png";
-import refrigG from "@/assets/image/picSzg/refrigG.png";
-import refrigH from "@/assets/image/picSzg/refrigH.png";
-import televisG from "@/assets/image/picSzg/televisG.png";
-import televisH from "@/assets/image/picSzg/televisH.png";
-import washerG from "@/assets/image/picSzg/washerG.png";
-import washerH from "@/assets/image/picSzg/washerH.png";
-import wifiG from "@/assets/image/picSzg/wifiG.png";
-import wifiH from "@/assets/image/picSzg/wifiH.png";
+import airG from "~/assets/image/picSzg/airG.png";
+import airH from "~/assets/image/picSzg/airH.png";
+import bedG from "~/assets/image/picSzg/bedG.png";
+import bedH from "~/assets/image/picSzg/bedH.png";
+import chairsG from "~/assets/image/picSzg/chairsG.png";
+import chairsH from "~/assets/image/picSzg/chairsH.png";
+import chestG from "~/assets/image/picSzg/chestG.png";
+import chestH from "~/assets/image/picSzg/chestH.png";
+import heatG from "~/assets/image/picSzg/heatG.png";
+import heatH from "~/assets/image/picSzg/heatH.png";
+import ovenG from "~/assets/image/picSzg/ovenG.png";
+import ovenH from "~/assets/image/picSzg/ovenH.png";
+import refrigG from "~/assets/image/picSzg/refrigG.png";
+import refrigH from "~/assets/image/picSzg/refrigH.png";
+import televisG from "~/assets/image/picSzg/televisG.png";
+import televisH from "~/assets/image/picSzg/televisH.png";
+import washerG from "~/assets/image/picSzg/washerG.png";
+import washerH from "~/assets/image/picSzg/washerH.png";
+import wifiG from "~/assets/image/picSzg/wifiG.png";
+import wifiH from "~/assets/image/picSzg/wifiH.png";
 
-import baseurl from "@/api/base.js";
+import baseurl from "~/api/base.js";
 
 export default {
   name: "seconHandHous",
@@ -731,7 +731,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .huodian {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1069,7 +1069,7 @@ export default {
   background-color: #234dd4 !important;
 }
 </style>
-<style lang="less">
+<style lang="scss">
 .contentS {
   .el-table thead {
     font-size: 16px;

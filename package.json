@@ -29,7 +29,7 @@
     "vue-wechat-title": "^2.0.5"
   },
   "devDependencies": {
-    "less": "^3.10.3",
-    "less-loader": "^5.0.0"
+    "node-sass": "^4.13.0",
+    "sass-loader": "^8.0.0"
   }
 }

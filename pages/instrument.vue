@@ -162,9 +162,9 @@
   </div>
 </template>
 <script>
-import rem from "@/common/rem.js";
-import Header from "@/components/MIndex/common/head.vue";
-import Footer from "@/components/MIndex/common/footer.vue";
+import rem from "~/common/rem.js";
+import Header from "~/components/MIndex/head.vue";
+import Footer from "~/components/MIndex/footer.vue";
 var echarts = require("echarts");
 export default {
   name: "",
@@ -330,7 +330,7 @@ export default {
   }
 };
 </script>
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .estates {
   padding-bottom: 0.3rem;
 }
@@ -520,7 +520,7 @@ td {
   }
 }
 </style>
-<style lang="less">
+<style lang="scss">
 .repay {
   .el-select:hover .el-input__inner {
     background: #e9e9e9;
