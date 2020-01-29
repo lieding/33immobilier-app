@@ -147,7 +147,7 @@
             oninput="value=value.replace(/[^\d]/g,'')"
             clearable
           ></el-input>
-          <p v-if="type=='二手房'">{{$t("message.global.tradingValue")}}</p>
+          <p v-if="type=='second_hand'">{{$t("message.global.tradingValue")}}</p>
           <p v-if="type=='租房'">{{$t("message.global.RentalPrices")}}</p>
           <el-input
             :placeholder="$t('message.global.qingshuru')"
@@ -234,7 +234,7 @@
           </el-upload>
           <video :src="video" controls="controls" class="avatar" v-if="video"></video>
         </div>
-        <div v-if="type=='二手房'">
+        <div v-if="type=='second_hand'">
           <p>{{$t("message.global.construction")}}</p>
           <div class="room">
             <p>{{$t("message.global.drawingRoom")}}</p>
@@ -683,7 +683,7 @@ export default {
     radio1() {
       //console.log(this.radio1)
       if (this.radio1 == "1") {
-        this.type = "二手房";
+        this.type = "second_hand";
       } else {
         this.type = "租房";
       }
@@ -843,7 +843,7 @@ export default {
     this.columnName == localStorage.getItem("columnName");
     this.orientation = this.$t("message.index.orientation");
     //console.log(this.$t("message.index.orientation"))
-    if (this.type == "二手房") {
+    if (this.type == "second_hand") {
       this.radio1 = "1";
     } else {
       this.radio1 = "2";
@@ -1037,7 +1037,7 @@ export default {
       //         item.money = 0
       //     }
       // });
-      if (this.type == "二手房") {
+      if (this.type == "second_hand") {
         let params = {
           houseOrApartment: this.houseOrApartment, //房屋种类
           oneselfOrAgent: this.oneselfOrAgent, //信息来源

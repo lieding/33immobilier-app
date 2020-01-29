@@ -441,7 +441,7 @@
 
       <div class="estates" v-if="promoteList">
         <span class="consultants">{{ $t("message.global.Recommended") }}</span>
-        <list :promoteList="promoteList" type="新房" />
+        <list :promoteList="promoteList" type="new" />
       </div>
       <van-button type="info" size="large" @click="Onord('/ordIssue')">{{
         $t("message.global.woyaomaifang")
@@ -748,7 +748,7 @@ export default {
       };
       let list = {
         id: this.id,
-        types: "新房",
+        types: "new",
         type: this.$t("message.global.NewHouse"),
         estate: this.data.estate,
         province: this.data.province,
@@ -773,7 +773,7 @@ export default {
     Onord(value) {
       this.$router.push({
         path: value,
-        query: { type: "二手房" }
+        query: { type: "second_hand" }
       });
     }
   }

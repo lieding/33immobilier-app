@@ -15,11 +15,11 @@
           }}
         </router-link>
         <router-link
-          :to="{ path: '/newhouse', query: { house: '新房' } }"
+          :to="{ path: '/newhouse', query: { house: 'new' } }"
           tag="li"
         >{{ $t("message.global.NewHouse") }}</router-link>
         <router-link
-          :to="{ path: '/newhouse', query: { house: '二手房' } }"
+          :to="{ path: '/newhouse', query: { house: 'second_hand' } }"
           tag="li"
         >{{ $t("message.global.second-hand") }}</router-link>
         <router-link :to="{ path: '/rentHouse' }" tag="li">
@@ -76,8 +76,8 @@
 
     <!-- <ul class="title_list" v-if="diaplay" @click="list">
             <router-link :to="{path: '/m_index'}" tag="li">{{$t("message.global.home")}}</router-link>
-            <router-link :to="{path: '/newhouse', query: {house: '新房' }}" tag="li">{{$t("message.global.NewHouse")}}</router-link>
-            <router-link :to="{path: '/newhouse', query: {house: '二手房' }}" tag="li">{{$t("message.global.second-hand")}}</router-link>
+            <router-link :to="{path: '/newhouse', query: {house: 'new' }}" tag="li">{{$t("message.global.NewHouse")}}</router-link>
+            <router-link :to="{path: '/newhouse', query: {house: 'second_hand' }}" tag="li">{{$t("message.global.second-hand")}}</router-link>
             <router-link :to="{path: '/rentHouse'}" tag="li">{{$t("message.global.tenement")}}</router-link>
             <router-link :to="{path: '/agentList'}" tag="li">{{$t("message.global.agent")}}</router-link>
             <router-link :to="{path: '/blogs'}" tag="li">{{$t("message.global.encyclopedia")}}</router-link>

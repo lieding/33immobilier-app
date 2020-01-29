@@ -155,9 +155,9 @@ export default {
     },
     bindQRCode: function() {
       let P = window.location.protocol + "//" + window.location.hostname;
-      if (this.listList.types == "新房") {
+      if (this.listList.types == "new") {
         this.href = P + "/Details" + "?id=" + this.list.id;
-      } else if (this.listList.types == "二手房") {
+      } else if (this.listList.types == "second_hand") {
         this.href = P + "/ordDetails" + "?id=" + this.list.id;
       } else if (this.listList.types == "租房") {
         this.href = P + "/rentDetails" + "?id=" + this.list.id;

@@ -336,8 +336,8 @@ export default {
         { text: "Dans 2-3 ans", value: "4" }
       ],
       option1: [
-        { text: "Neuf", value: "新房" },
-        { text: "Ancien", value: "二手房" },
+        { text: "Neuf", value: "new" },
+        { text: "Ancien", value: "second_hand" },
         { text: "Location", value: "租房" }
       ],
       serving: [

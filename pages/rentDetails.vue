@@ -344,7 +344,7 @@ export default {
         Url:'',
         IspackUp:true,
         option1: [
-            { text: '新房', value: 0 },
+            { text: 'new', value: 0 },
             { text: '新款商品', value: 1 },
             { text: '活动商品', value: 2 }
         ],       

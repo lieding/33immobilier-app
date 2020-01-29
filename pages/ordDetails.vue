@@ -348,7 +348,7 @@
     <hr class="hr" />
     <div class="estates">
       <span class="consultants">{{$t("message.global.Recommended")}}</span>
-      <List :promoteList="promoteList" type="二手房" />
+      <List :promoteList="promoteList" type="second_hand" />
     </div>
     <van-button
       type="info"
@@ -445,7 +445,7 @@ export default {
             W:'',
                Url:'',
             option1: [
-                { text: '新房', value: 0 },
+                { text: 'new', value: 0 },
                 { text: '新款商品', value: 1 },
                 { text: '活动商品', value: 2 }
             ],
@@ -526,7 +526,7 @@ export default {
        Onord(value){
           this.$router.push({
             path: value,
-            query: {type:'二手房'}
+            query: {type:'second_hand'}
           });
         },
         oncapacity(){
@@ -600,7 +600,7 @@ export default {
         },
        Onshare(smt){
             let list={  
-                types:'二手房',
+                types:'second_hand',
                 type:this.$t("message.global.second-hand"),
                 id:this.id,
                  estate:this.data.title,

@@ -5,29 +5,32 @@
         <diV class="flex">
           <div class="img">
             <img :src="item.promoteShowUrl" class="new_img" />
-            <span class="year" v-if="type=='新房'">{{item.promoteExpressing}}</span>
-            <span class="num" v-if="type=='新房'">{{item.promoteProvince}}</span>
+            <span class="year" v-if="type=='new'">{{item.promoteExpressing}}</span>
+            <span class="num" v-if="type=='new'">{{item.promoteProvince}}</span>
             <span
               class="num"
               v-if="type=='租房'"
             >{{item.rentType?$t("message.global.sublease"):$t("message.global.entireTenancy")}}</span>
           </div>
           <div class="text">
-            <p class="text_title" v-if="type=='新房'">{{item.promoteEstate}}</p>
-            <p class="text_title" v-else-if="type == '二手房'">{{item.promoteTitle}}</p>
+            <p class="text_title" v-if="type=='new'">{{item.promoteEstate}}</p>
+            <p class="text_title" v-else-if="type == 'second_hand'">{{item.promoteTitle}}</p>
             <p class="text_title" v-else-if="type == '租房'">{{item.promoteTitle}}</p>
 
             <p
               class="sort"
-              v-if="type=='新房'"
+              v-if="type=='new'"
             >{{item.promoteMinHall}} - {{item.promoteMaxHall}}{{$t("message.global.P")}}</p>
-            <p class="sort" v-if="type =='二手房'">{{item.promoteBigProvince}}/{{item.promoteProvince}}</p>
+            <p
+              class="sort"
+              v-if="type =='second_hand'"
+            >{{item.promoteBigProvince}}/{{item.promoteProvince}}</p>
             <p class="sort" v-if="type =='租房'">{{item.promoteProvince}}/{{item.promoteCity}}</p>
 
-            <p class="font" v-if="type=='新房'">
+            <p class="font" v-if="type=='new'">
               <span class="itemize" v-for="(items,index) in item.tags" :key="index">{{items}}</span>
             </p>
-            <p class="font" v-else-if="type == '二手房'">
+            <p class="font" v-else-if="type == 'second_hand'">
               <span class="itemize">{{item.promoteRoomNum}}{{$t("message.global.P")}}</span>
               <span class="itemize">{{item.promoteBedRoomNum}}{{$t("message.global.bedroom")}}</span>
               <span class="itemize">{{item.promoteAcreage}}{{$t("message.global.square")}}</span>
@@ -42,11 +45,11 @@
               >{{$t("message.global.jinxuexiao")}}</span>
             </p>
 
-            <p class="money" v-if="type=='新房'">
+            <p class="money" v-if="type=='new'">
               {{item.promoteLowPrice}}{{$t("message.global.rise")}} - {{item.promoteMaxPrice}}{{$t("message.global.rise")}}
               <span></span>
             </p>
-            <p class="money" v-else-if="type == '二手房'">
+            <p class="money" v-else-if="type == 'second_hand'">
               {{item.promoteTotal}} {{$t("message.global.rise")}}
               <span
                 style="font-size:.12rem;color:rgba(172,172,172,1);"
@@ -89,12 +92,12 @@ export default {
   methods: {
     Onclick(val) {
       //console.log(this.type,this.id)
-      if (this.type == "新房") {
+      if (this.type == "new") {
         this.$router.push({
           path: "/Details",
           query: { id: val }
         });
-      } else if (this.type == "二手房") {
+      } else if (this.type == "second_hand") {
         this.$router.push({
           path: "/ordDetails",
           query: { id: val }

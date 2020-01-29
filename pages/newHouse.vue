@@ -2,13 +2,13 @@
   <div class="house">
     <Header
       :title="
-        house == '新房'
+        house == 'new'
           ? $t('message.global.homeList')
           : $t('message.global.second-hand')
       "
     />
     <!-- '$t('message.global.homeList)':'second-hand' -->
-    <div :class="house == '新房' ? 'select' : 'section'">
+    <div :class="house == 'new' ? 'select' : 'section'">
       <!-- 区域 -->
       <!-- <van-dropdown-menu  class="opn" >
                <van-dropdown-item :title='$t("message.global.area")' ref="item">
@@ -21,7 +21,7 @@
                      />
                </van-dropdown-item>
       </van-dropdown-menu>-->
-      <van-dropdown-menu class="opn" v-if="house == '新房'">
+      <van-dropdown-menu class="opn" v-if="house == 'new'">
         <van-dropdown-item
           v-model="pro"
           :options="provinces"
@@ -29,7 +29,7 @@
           @change="onquyu"
         />
       </van-dropdown-menu>
-      <van-dropdown-menu class="opn" v-if="house == '二手房'">
+      <van-dropdown-menu class="opn" v-if="house == 'second_hand'">
         <van-dropdown-item
           v-model="pro"
           :options="provinceList"
@@ -39,7 +39,7 @@
       </van-dropdown-menu>
       <!-- 价格 -->
 
-      <van-dropdown-menu v-if="house == '新房'">
+      <van-dropdown-menu v-if="house == 'new'">
         <van-dropdown-item
           class="asd"
           :title="$t('message.global.price')"
@@ -62,7 +62,7 @@
         </van-dropdown-item>
       </van-dropdown-menu>
 
-      <van-dropdown-menu v-if="house == '二手房'">
+      <van-dropdown-menu v-if="house == 'second_hand'">
         <van-dropdown-item
           class="asd"
           :title="$t('message.global.price')"
@@ -85,7 +85,7 @@
         </van-dropdown-item>
       </van-dropdown-menu>
       <!-- 面积 -->
-      <van-dropdown-menu v-if="house == '二手房'">
+      <van-dropdown-menu v-if="house == 'second_hand'">
         <van-dropdown-item
           class="asd"
           :title="$t('message.global.proportion')"
@@ -108,10 +108,10 @@
         </van-dropdown-item>
       </van-dropdown-menu>
       <!-- 交房时间 -->
-      <!-- <van-dropdown-menu v-if="house == '新房'">
+      <!-- <van-dropdown-menu v-if="house == 'new'">
                <van-dropdown-item v-model="delivery" :options='$t("message.index.time")' :title='$t("message.global.completionDate")' @change="onList"/>
       </van-dropdown-menu>-->
-      <van-dropdown-menu v-if="house == '新房'">
+      <van-dropdown-menu v-if="house == 'new'">
         <van-dropdown-item
           v-model="delivery"
           :options="$t('message.index.option4')"
@@ -121,7 +121,7 @@
       </van-dropdown-menu>
       <!-- 居室 -->
 
-      <van-dropdown-menu class="opn" v-if="house == '新房'">
+      <van-dropdown-menu class="opn" v-if="house == 'new'">
         <van-dropdown-item
           class="asd"
           :title="$t('message.global.habitable')"
@@ -144,7 +144,7 @@
         </van-dropdown-item>
       </van-dropdown-menu>
       <!-- 居室 -->
-      <van-dropdown-menu class="opn" v-if="house == '二手房'">
+      <van-dropdown-menu class="opn" v-if="house == 'second_hand'">
         <van-dropdown-item
           v-model="LivingRoomNum"
           :options="$t('message.index.option2')"
@@ -153,7 +153,7 @@
         />
       </van-dropdown-menu>
       <!-- 卧室 -->
-      <van-dropdown-menu class="opn" v-if="house == '二手房'">
+      <van-dropdown-menu class="opn" v-if="house == 'second_hand'">
         <van-dropdown-item
           v-model="bedRoomNum"
           :options="$t('message.index.option3')"
@@ -166,16 +166,16 @@
       <iframe
         src="http://47.254.149.82/latest/map/newMap"
         frameborder="0"
-        v-if="house == '新房'"
+        v-if="house == 'new'"
       ></iframe>
       <iframe
         src="http://47.254.149.82/latest/map/homesMap"
         frameborder="0"
-        v-if="house == '二手房'"
+        v-if="house == 'second_hand'"
       ></iframe>
       <!-- <mapBox/> -->
     </div>
-    <div class="sort_title" v-if="house == '二手房'">
+    <div class="sort_title" v-if="house == 'second_hand'">
       <p class="second-hand">{{ $t("message.global.ordHouseapartment") }}</p>
 
       <div class="sorting">
@@ -222,10 +222,10 @@
         v-for="(item, index) in HousingList"
         :key="index"
       >
-        <li class="list_li" v-if="house == '新房'">
+        <li class="list_li" v-if="house == 'new'">
           <diV class="flex">
             <div class="img">
-              <img :src="item.showUrl" class="new_img" v-if="house == '新房'" />
+              <img :src="item.showUrl" class="new_img" v-if="house == 'new'" />
               <span class="year" v-if="item.expressing">{{
                 item.expressing
               }}</span>
@@ -264,7 +264,7 @@
         v-for="(item, index) in HousList"
         :key="index"
       >
-        <li class="list_li" v-if="house == '二手房'">
+        <li class="list_li" v-if="house == 'second_hand'">
           <diV class="flex">
             <div class="img">
               <img :src="item.showUrl" class="new_img" />
@@ -331,7 +331,7 @@ export default {
     mapBox
   },
   head() {
-    if (this.house == "新房") {
+    if (this.house == "new") {
       return {
         title: "法国新房_楼盘_买新房就上法国33找房网",
         meta: [
@@ -550,7 +550,7 @@ export default {
       //    //console.log(this.province)
       // });
       //  获取新房搜索
-      if (this.house == "新房") {
+      if (this.house == "new") {
         this.$api.article.NewgetSearch(params).then(res => {
           this.minPrice = Number(res.data.date.minPrice);
           this.value[0] = this.minPrice;
@@ -653,7 +653,7 @@ export default {
     },
     // 列表
     onList() {
-      if (this.house == "新房") {
+      if (this.house == "new") {
         this.openFullScreen();
         let params = {
           page: this.page,
@@ -679,7 +679,7 @@ export default {
 
           this.Maxpage = res.data.data.maxPage; //最大值
         });
-      } else if (this.house == "二手房") {
+      } else if (this.house == "second_hand") {
         this.openFullScreen();
         let params = {
           page: this.page,

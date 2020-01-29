@@ -10,8 +10,8 @@ export default function({ route, isDesktop, redirect }) {
       case "/m_index":
         return redirect("/pc_index");
       case "/newhouse":
-        if (route.query.house === "新房") return redirect("/newList");
-        if (route.query.house === "二手房") return redirect("/anyEs");
+        if (route.query.house === "new") return redirect("/newList");
+        if (route.query.house === "second_hand") return redirect("/anyEs");
       case "/rentHouse":
         return redirect("/renthouseList");
       case "/agentList":
@@ -40,9 +40,9 @@ export default function({ route, isDesktop, redirect }) {
       case "/pc_index":
         return redirect("/m_index");
       case "/newList":
-        return redirect("/newhouse", { house: "新房" });
+        return redirect("/newhouse", { house: "new" });
       case "/anyEs":
-        return redirect("/newhouse", { house: "二手房" });
+        return redirect("/newhouse", { house: "second_hand" });
       case "/renthouseList":
         return redirect("/rentHouse");
       case "/broker":

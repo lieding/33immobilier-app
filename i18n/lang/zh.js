@@ -327,8 +327,8 @@ export default {
     },
     index: {
       option1: [
-        { text: "新房", value: "新房" },
-        { text: "二手房", value: "二手房" },
+        { text: "新房", value: "new" },
+        { text: "二手房", value: "second_hand" },
         { text: "租房", value: "租房" }
       ],
       serving: [

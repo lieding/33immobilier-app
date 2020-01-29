@@ -13,11 +13,11 @@
           }}
         </router-link>
         <router-link
-          :to="{ path: '/newhouse', query: { house: '新房' } }"
+          :to="{ path: '/newhouse', query: { house: 'new' } }"
           tag="li"
         >{{ $t("message.global.NewHouse") }}</router-link>
         <router-link
-          :to="{ path: '/newhouse', query: { house: '二手房' } }"
+          :to="{ path: '/newhouse', query: { house: 'second_hand' } }"
           tag="li"
         >{{ $t("message.global.second-hand") }}</router-link>
         <router-link :to="{ path: '/rentHouse' }" tag="li">
