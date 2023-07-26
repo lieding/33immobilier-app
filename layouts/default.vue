@@ -143,7 +143,7 @@ body {
   margin-bottom: 20px;
 }
 /*-----------弹窗---------*/
-.el-message-box__btns/deep/.el-button--primary {
+.el-message-box__btns ::v-deep .el-button--primary {
   color: #fff;
   background-color: #4984fc !important;
   border-color: #4984fc !important;

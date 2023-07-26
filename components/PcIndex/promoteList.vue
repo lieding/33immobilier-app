@@ -74,7 +74,7 @@
         </div>
         <div class="loansTop">{{ $t("message.global.loancalculate") }}</div>
         <div class="calculate">
-          <div class="counter couters" style="height:400px;">
+          <div class="counter couters" style="height:418px;">
             <p>{{ $t("message.global.Housing") }}</p>
             <el-input
               class="inputs1"
@@ -282,7 +282,6 @@ export default {
         ////console.log(repayALoanJsInfo.data)
         this.repayALoanList = repayALoanJsInfo.data;
         this.prise2 = repayALoanJsInfo.data.M;
-        d;
         setTimeout(() => {
           if (process.client) {
             var e1 = echarts.init(document.querySelector(".echarts"));

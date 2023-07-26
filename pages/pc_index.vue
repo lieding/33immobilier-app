@@ -262,10 +262,10 @@
       center
     >
       <div>
-        <!-- <img :src="lianxiPhone.qrCode" alt=""> contactPhone  -->
-        <span style="font-size:20px;color:#000;"
-          >{{ $t("message.global.contactPhone") }}:{{ lianxiPhone.phone }}</span
-        >
+        <!-- <img :src="systemInfo.qrCode" alt=""> contactPhone  -->
+        <span style="font-size:20px;color:#000;">
+          {{ $t("message.global.contactPhone") }}:{{ systemInfo.phone }}
+        </span>
       </div>
     </el-dialog>
   </div>
@@ -285,8 +285,7 @@ import leftCard from "~/assets/image/left.png";
 import pcBroker from "~/assets/image/pcBroker.png";
 import pcPerson from "~/assets/image/pcPerson.png";
 import pcss from "~/assets/image/logo_promoteur.png";
-// 引入
-import { async } from "q";
+
 var echarts = require("echarts");
 export default {
   name: "index",
@@ -315,7 +314,7 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      lianxiPhone: "",
+      systemInfo: {},
       returnList: [],
       homeTrendList: [],
       img: {
@@ -380,14 +379,13 @@ export default {
       //console.log(1);
       this.label = val;
     },
-    async get() {
+    async queryIndexPageInfo() {
       const getHomePageInfo = (await this.$api.article.getHomePageInfo()).data;
-      //console.log(getHomePageInfo)
       if (getHomePageInfo.code == 0) {
         this.homePageIn = getHomePageInfo.data;
-        this.lianxiPhone = getHomePageInfo.data.system;
+        if (getHomePageInfo.data.system)
+          this.systemInfo = getHomePageInfo.data.system;
       }
-      //console.log(this.homePageIn)
     },
     RoutingHop(smt, flag) {
       this.$router.push({
@@ -465,10 +463,9 @@ export default {
   mounted() {
     this.$api.article.trendRegion().then(res => {
       this.returnList = res.data.data.returnList;
-      //console.log(this.returnList);
     });
     this.ByRegion();
-    this.get(); // 获取主页信息
+    this.queryIndexPageInfo(); // 获取主页信息
   }
 };
 </script>

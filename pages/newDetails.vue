@@ -191,7 +191,7 @@
           frameborder="0"
         ></iframe>
       </div>
-      <div v-if="getPostListingData.isOpenVR">
+      <div v-if="getPostListingData.isOpenVR && getPostListingData.vrAddress">
         <p
           class="titles"
           style="margin-top:10px;font-weight:600;padding-bottom:10px;"
@@ -275,7 +275,7 @@
       </el-table>
     </div>
     <div class="centerS">
-      <calculate></calculate>
+      <Calculate />
     </div>
     <div class="centerS" style="margin-top:20px;" v-show="promoteList.length">
       <div style="font-size:32px;font-weight:600;">
@@ -478,7 +478,7 @@
 <script>
 import headers from "~/components/PcIndex/header.vue";
 import foots from "~/components/PcIndex/foot.vue";
-import calculate from "~/components/PcIndex/promoteList.vue";
+import Calculate from "~/components/PcIndex/promoteList.vue";
 
 import wxInd from "~/assets/image/wxInd.png";
 import phone from "~/assets/image/phone.png";
@@ -513,7 +513,7 @@ import washerH from "~/assets/image/picSzg/washerH.png";
 import wifiG from "~/assets/image/picSzg/wifiG.png";
 import wifiH from "~/assets/image/picSzg/wifiH.png";
 
-import baseurl from "~/api/base.js";
+import { BASE_API } from "~/api";
 
 export default {
   name: "seconHandHous",
@@ -521,7 +521,7 @@ export default {
   components: {
     headers,
     foots,
-    calculate
+    Calculate
   },
   head() {
     console.log(this.getPostListingData.city);
@@ -553,7 +553,7 @@ export default {
         tableData: getInfoNewHousInfo.data.aparementList,
         promoteList: getInfoNewHousInfo.data.promoteList,
         address_Map:
-          "http://47.254.149.82" +
+          BASE_API.jsp +
           "/app/map/jumpMap?lat=" +
           getInfoNewHousInfo.data.latitude +
           "&lng=" +
@@ -612,7 +612,6 @@ export default {
       promoteList: ["", "", "", ""],
       dialogVisible: false,
       tableData: [{}, {}],
-      baseurl: baseurl.sq,
       qianlan: false,
       galleryIndex: null
     };
@@ -707,7 +706,7 @@ export default {
         this.tableData = getInfoNewHousInfo.data.aparementList;
         this.promoteList = getInfoNewHousInfo.data.promoteList;
         this.address_Map =
-          "http://47.254.149.82" +
+          BASE_API.jsp +
           "/app/map/jumpMap?lat=" +
           getInfoNewHousInfo.data.latitude +
           "&lng=" +

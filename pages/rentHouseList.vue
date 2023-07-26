@@ -292,7 +292,6 @@ export default {
     if (process.client) {
       window.onscroll = function() {};
     }
-    d;
   },
   watch: {
     quyu() {
