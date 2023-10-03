@@ -63,13 +63,6 @@
           v-model="value2"
           :placeholder="$t('message.global.completionDate')"
         >
-          <!-- <el-option
-                    v-for="item in cities"
-                    :key="item"
-                    :label="item"
-                    :value="item">
-                    
-                    </el-option> -->
           <el-option value="6" :label="$t('message.global.allLan')">
             {{ $t("message.global.allLan") }}</el-option
           >
@@ -89,12 +82,6 @@
             {{ $t("message.global.twoY") }}</el-option
           >
         </el-select>
-        <!-- <el-date-picker
-                v-model="value2"
-                type="month"
-                value-format="yyyy-MM"
-                :placeholder='$t("message.global.completionDate")'>
-                </el-date-picker> -->
         <div class="priceLabel" style="width:140px" @click.stop="popUps1">
           <span
             ><span style="font-size:18px;">{{
@@ -117,26 +104,16 @@
             </div>
           </div>
         </div>
-        <div class="listNews" v-for="(itemss, inde) in newInfoList" :key="inde">
-          <img
-            class="leftImg"
-            @click="routerGo(itemss.id)"
-            :src="itemss.showUrl"
-            alt=""
-          />
+        <div v-for="(itemss, inde) in newInfoList" :key="inde" @click="routerGo(itemss.id)" class="listNews">
+          <img :src="itemss.showUrl" class="leftImg" alt="" />
           <div class="rightLisT">
-            <img
-              style="float:right;height:74px;margin-top:30px;max-width:130px"
-              :src="itemss.developersPic"
-              alt=""
-            />
             <p>
-              <span class="oneNo" v-show="itemss.taxCuts">{{
-                itemss.taxCuts
-              }}</span
-              ><span class="NOtwo" v-show="itemss.expressing">{{
-                itemss.expressing
-              }}</span>
+              <span class="tag oneNo" v-show="itemss.taxCuts">
+                {{ itemss.taxCuts }}
+              </span>
+              <span class="tag NOtwo" v-show="itemss.expressing">
+                {{ itemss.expressing }}
+              </span>
             </p>
             <p class="RIghtTit">{{ itemss.estate }}</p>
             <p>
@@ -150,11 +127,9 @@
                 {{ $t("message.global.P") }}</span
               >
             </p>
-            <span class="prisesInd"
-              >{{ itemss.lowPrice }}€ - {{ itemss.maxPrice }}€</span
-            >
+            <p class="prisesInd">{{ itemss.lowPrice }}€ - {{ itemss.maxPrice }}€</p>
             <p class="btnBottom">
-              <span v-for="(itea, k) in itemss.tags" :key="k">{{ itea }}</span>
+              <span v-for="(itea, k) in itemss.tags" :key="k" class="tag">{{ itea }}</span>
             </p>
           </div>
         </div>
@@ -462,25 +437,34 @@ export default {
       font-weight: 600;
     }
     .listNews {
-      padding-bottom: 15px;
+      display: flex;
+      align-items: center;
+      padding: 5px 0;
       border-bottom: 1px solid #ccc;
       .leftImg {
-        float: left;
+        flex: unset;
         width: 221px;
-        height: 137px;
+        max-height: 137px;
       }
       .rightLisT {
-        margin-top: 5px;
-        overflow: hidden;
-        // margin-left:5px;
-        padding-left: 5px;
-        .oneNo,
-        .NOtwo {
+        flex: 1;
+        margin-left: 5px;
+        p {
+          line-height: 1.5;
+          img {
+            width: 12px;
+          }
+          .citiyes {
+            font-size: 14px;
+            color: #373737;
+            font-weight: bold;
+          }
+        }
+        .tag {
           display: inline-block;
-          padding: 3px 8px;
           font-size: 12px;
           color: #fff;
-          margin-right: 5px;
+          padding: 0 2px;
         }
         .oneNo {
           background-color: #6ac078;
@@ -492,41 +476,24 @@ export default {
           color: #000;
           font-size: 16px;
           font-weight: 600;
-          padding: 4px 0;
-        }
-        p {
-          padding: 2px;
-          img {
-            width: 15px;
-            height: 17px;
-            vertical-align: top;
-          }
-          .citiyes {
-            font-size: 14px;
-            color: #373737;
-            vertical-align: top;
-            font-weight: bold;
-          }
         }
         .btnBottom {
-          margin-top: 5px;
-          span {
-            display: inline-block;
-            padding: 3px 2px;
+          .tag {
             background-color: #bbb;
             color: #000;
             font-size: 14px;
-            // font-weight:600;
-            margin-left: 5px;
           }
         }
         .prisesInd {
           display: block;
           font-size: 16px;
           color: #ff5e5e;
-          margin-top: 8px;
           font-weight: bold;
         }
+      }
+      .rightImg {
+        flex: unset;
+        max-height: 74px;
       }
     }
     .priceLabel {

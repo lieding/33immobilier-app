@@ -16,11 +16,6 @@
           <img style="width:20px;" src="~/assets/image/wxInd.png" alt="" />
           {{ $t("message.global.WeChat") }}
         </span>
-        <img
-          style="float:right;height:73px;margin-top:-10px;margin-right:10px;vertical-align:top"
-          :src="getPostListingData.developersPic"
-          alt=""
-        />
       </div>
       <div class="leftBody">
         <!-- // 轮播图 -->
@@ -613,9 +608,6 @@ export default {
       galleryIndex: null
     };
   },
-  // created() {
-  //   this.get(this.$route.query.flag);
-  // },
   methods: {
     routerGos(val) {
       this.$router.push({

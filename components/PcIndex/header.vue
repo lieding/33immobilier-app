@@ -14,79 +14,10 @@
         alt="logos"
       />
     </div>
-    <div class="rightL">
-      <span v-if="curAuthInfo" style="font-size:20px">
-        <img
-          style="width:16px;vertical-align:middle;"
-          :src="curAuthInfo.picture || '/_nuxt/assets/image/renwuW.png'"
-          alt
-        />
-        {{ curAuthInfo.nickName || '' }}
-      </span>
-      <nuxt-link v-else to="loginOrRegister">
-        <span style="font-size:20px;cursor:pointer;">
-          <img
-            v-show="vas"
-            style="width:16px;vertical-align:middle;cursor:pointer;"
-            src="~/assets/image/renwuW.png"
-            alt
-          />
-          <img
-            v-show="!vas"
-            style="width:16px;vertical-align:middle;cursor:pointer;"
-            src="~/assets/image/pcPerson.png"
-            alt
-          />
-          {{ $t("message.global.login") }}
-        </span>
-      </nuxt-link>
-    </div>
-    <div class="right" style="margin-right:10px;">
-      <el-popover width="200" trigger="hover">
-        <p
-          v-on:click="changeLocale('zh')"
-          style="margin-bottom:6px;font-size:16px;box-sizing:border-box;padding-left:20px;cursor: pointer;"
-        >
-          <img
-            style="vertical-align: middle;margin-right:26px;"
-            src="~/assets/image/chinese.png"
-            alt
-          />
-          {{ $t("message.global.Chinese") }}
-        </p>
-        <p
-          v-on:click="changeLocale('fr')"
-          style="font-size:16px;box-sizing:border-box;padding-left:20px;cursor: pointer;"
-        >
-          <img
-            style="vertical-align: middle;margin-right:21px;"
-            src="~/assets/image/french.png"
-            alt
-          />
-          {{ $t("message.global.French") }}
-        </p>
-        <span style="cursor: pointer;font-size:20px;" slot="reference">
-          {{ fls ? "français" : "中文" }}
-          <img
-            v-show="vas"
-            style="width:16px;"
-            src="~/assets/image/sortW.png"
-            alt
-          />
-          <img
-            v-show="!vas"
-            style="width:16px;"
-            src="~/assets/image/sort.png"
-            alt
-          />
-        </span>
-      </el-popover>
-    </div>
-    <div class="centerL">
+    <div class="routes">
       <span class="divide" @click="RoutingHop('/pc_index', true)">
         <span>{{ $t("message.global.home") }}</span>
       </span>
-
       <span class="divide" @click="RoutingHop('/newList', true)">
         <span>{{ $t("message.global.NewHouse") }}</span>
       </span>
@@ -118,6 +49,56 @@
       </span>
       <!--  -->
     </div>
+    <div class="lang-switcher-wrapper">
+      <el-popover width="200" trigger="hover">
+        <p
+          @click="changeLocale('zh')"
+          class="lang-switcher-popup"
+        >
+          <img src="~/assets/image/chinese.png" alt />
+          {{ $t("message.global.Chinese") }}
+        </p>
+        <p
+          @click="changeLocale('fr')"
+          class="lang-switcher-popup"
+        >
+          <img src="~/assets/image/french.png" alt />
+          {{ $t("message.global.French") }}
+        </p>
+        <div class="lang-switcher-popup-trigger" slot="reference">
+          {{ frOrCn ? "Français" : "中文" }}
+          <img v-show="vas" src="~/assets/image/sortW.png" alt />
+          <img v-show="!vas" src="~/assets/image/sort.png" alt />
+        </div>
+      </el-popover>
+    </div>
+    <div class="login-btn-wrapper">
+      <span v-if="curAuthInfo" style="font-size:20px">
+        <img
+          style="width:16px;vertical-align:middle;"
+          :src="curAuthInfo.picture || '/_nuxt/assets/image/renwuW.png'"
+          alt
+        />
+        {{ curAuthInfo.nickName || '' }}
+      </span>
+      <nuxt-link v-else to="loginOrRegister">
+        <span style="font-size:20px;cursor:pointer;">
+          <img
+            v-show="vas"
+            style="width:16px;vertical-align:middle;cursor:pointer;"
+            src="~/assets/image/renwuW.png"
+            alt
+          />
+          <img
+            v-show="!vas"
+            style="width:16px;vertical-align:middle;cursor:pointer;"
+            src="~/assets/image/pcPerson.png"
+            alt
+          />
+          {{ $t("message.global.login") }}
+        </span>
+      </nuxt-link>
+    </div>
   </div>
 </template>
 
@@ -126,11 +107,12 @@ import logoT from "~/assets/image/logoT.png";
 import sellersT from "~/assets/image/sellers.png";
 import sort from "~/assets/image/sort.png";
 import { createNamespacedHelpers } from 'vuex'
-const { mapGetters } = createNamespacedHelpers('auth')
+const { mapGetters } = createNamespacedHelpers('auth');
 
 export default {
   name: "foots",
   data() {
+    const frOrCn = this.$i18n.locale === 'fr';
     return {
       imgs: {
         title: logoT,
@@ -138,7 +120,7 @@ export default {
         sort: sort
       },
       flag: false,
-      fls: 1
+      frOrCn,
     };
   },
   props: ["vas"],
@@ -157,17 +139,8 @@ export default {
     Onrouter() {
       window.location.href = "http://www.milliome.com";
     },
-    Onclick(val) {
-      //   if (val == "fr") {
-      //     this.fls = 0;
-      //   } else {
-      //     this.fls = 1;
-      //   }
-      //   localStorage.lan = val;
-      //   this.$i18n.locale = val;
-      //   localStorage.lang = val;
-    },
     changeLocale(locale) {
+      this.frOrCn = locale === 'fr';
       this.$i18n.setLocaleCookie(locale);
       this.$router.push(this.switchLocalePath(locale));
     }
@@ -177,18 +150,14 @@ export default {
 
 <style lang="scss" scoped>
 .titles {
-  height: 104px;
-  line-height: 104px;
+  display: flex;
+  align-items: center;
   padding: 0 12px;
   box-shadow: 0px 8px 13px 0px rgba(0, 0, 0, 0.15);
   color: #fff;
   .lefts {
-    padding-left: 20px;
-    box-sizing: border-box;
-    float: left;
-    // width: 260px;
+    flex: unset;
     .logs {
-      // width: 58px;
       height: 56px;
       vertical-align: middle;
     }
@@ -198,10 +167,10 @@ export default {
       vertical-align: middle;
     }
   }
-  .centerL {
-    float: right;
-    box-sizing: border-box;
-    margin-right: 2%;
+  .routes {
+    flex: 1;
+    margin-right: 20px;
+    text-align: right;
     .divide {
       display: inline-block;
       vertical-align: middle;
@@ -211,7 +180,6 @@ export default {
       text-align: center;
       // width: 80px;
       padding: 0 10px;
-      line-height: 104px;
       span {
         cursor: pointer;
       }
@@ -239,9 +207,33 @@ export default {
       }
     }
   }
-  .rightL {
+  .login-btn-wrapper {
+    flex: unset;
     padding-right: 20px;
-    float: right;
+  }
+  .lang-switcher-wrapper {
+    margin-right: 20px;
+  }
+}
+</style>
+<style lang="scss">
+.lang-switcher-popup {
+  display: flex;
+  align-items: center;
+  margin: 3px 0;
+  font-size: 16px;
+  padding-left: 20px;
+  cursor: pointer;
+  img {
+    margin-right: 6px;
+  }
+}
+.lang-switcher-popup-trigger {
+  display: inline;
+  cursor: pointer;
+  font-size: 20px;
+  img {
+    width: 16px;
   }
 }
 </style>

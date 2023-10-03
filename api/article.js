@@ -149,8 +149,8 @@ const article = {
   getListWz(params) {
     return axios.get('/wiki/getList', { params });
   },
-  getRigthLit(params) {
-    return axios.post('/wiki/getRigth', qs.stringify(params));
+  getRigthLit() {
+    return axios.get('/wiki/getRigth');
   },
   // wiki/getInfo
   getInfoLis(params) {
