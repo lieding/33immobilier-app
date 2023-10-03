@@ -27,7 +27,9 @@ export default {
     ],
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
     script: [
-      { src: "https://cdn.jsdelivr.net/npm/qrcodejs2@0.0.2/qrcode.min.js" }
+      { src: "https://cdn.jsdelivr.net/npm/qrcodejs2@0.0.2/qrcode.min.js" },
+      { src: "https://accounts.google.com/gsi/client" },
+      { src: "https://unpkg.com/blueimp-gallery@2.27.0/js/blueimp-gallery.js" }
     ]
   },
 
@@ -50,7 +52,7 @@ export default {
     { src: "~/plugins/axios" },
     { src: "~/plugins/element-ui" },
     { src: "~/plugins/vant", ssr: false },
-    { src: "~/plugins/vue-gallery", ssr: false }
+    { src: "~/plugins/vue-gallery.client.js", ssr: false }
   ],
   /*
    ** Nuxt.js dev-modules

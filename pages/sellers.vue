@@ -636,6 +636,8 @@ import washerG from "~/assets/image/picSzg/washerG.png";
 import washerH from "~/assets/image/picSzg/washerH.png";
 import wifiG from "~/assets/image/picSzg/wifiG.png";
 import wifiH from "~/assets/image/picSzg/wifiH.png";
+import { BASE_API } from '../api'
+
 export default {
   name: "sellers",
   middleware: "responsive",
@@ -744,7 +746,7 @@ export default {
       imageUrlList: [],
       imageUrl_list: [],
       video: "", //video
-      baseU: "http://47.254.149.82/latest/file/addPhoto",
+      baseU: BASE_API.sq + "/file/addPhoto",
       imgurl: "",
       huXingUrl: "",
       options: [
@@ -843,9 +845,6 @@ export default {
   },
   methods: {
     deletes(val) {
-      d;
-      //console.log(val)
-      // //console.log(type)
       if (this.ListList.length > 1) {
         this.ListList.splice(val, 1);
       }

@@ -11,6 +11,8 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
+    "@firebase/app": "^0.9.17",
+    "@firebase/auth": "1.1.0",
     "@nuxtjs/device": "^1.2.4",
     "@nuxtjs/google-analytics": "^2.2.3",
     "@nuxtjs/sitemap": "^2.0.1",

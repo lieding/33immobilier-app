@@ -48,7 +48,7 @@
         </van-dropdown-menu>
       </div>
       <div class="map">
-        <iframe src="http://47.254.149.82/latest/map/rentMap" frameborder="0"></iframe>
+        <iframe :src="iframeSrc" frameborder="0"></iframe>
       </div>
       <div class="sort_title">
         <p class="second-hand">{{ $t("message.global.MethodAllRent") }}</p>
@@ -117,6 +117,9 @@ import rem from "~/common/rem.js";
 import Header from "~/components/MIndex/head.vue";
 import Footer from "~/components/MIndex/footer.vue";
 import mapBox from "~/components/MIndex/mapBox.vue";
+import { BASE_API } from '../api';
+import { fmoney } from '../utils';
+
 export default {
   name: "",
   middleware: "responsive",
@@ -199,8 +202,10 @@ export default {
     });
   },
   created() {
+    this.fmoney = fmoney;
     const that = this;
     if (process.client) {
+      this.iframeSrc = BASE_API.sq + '/map/rentMap';
       window.onscroll = function() {
         var scrollTop =
           document.documentElement.scrollTop || document.body.scrollTop;
@@ -237,27 +242,6 @@ export default {
       setTimeout(() => {
         loading.close();
       }, 500);
-    },
-    fmoney(s, n) {
-      n = n > 0 && n <= 20 ? n : 2;
-      s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
-      var l = s
-          .split(".")[0]
-          .split("")
-          .reverse(),
-        r = s.split(".")[1];
-      var t = "";
-      for (var i = 0; i < l.length; i++) {
-        t += l[i] + ((i + 1) % 3 == 0 && i + 1 != l.length ? " " : "");
-      }
-      return (
-        t
-          .split("")
-          .reverse()
-          .join("") +
-        "." +
-        r
-      );
     },
     onclick() {
       this.display = !this.display;
@@ -368,7 +352,8 @@ div {
 .select {
   display: flex;
   flex-wrap: wrap;
-  margin-left: 0.03rem;
+  justify-content: space-evenly;
+  height: .6rem;
 }
 .select > div {
   width: 20%;
@@ -381,13 +366,6 @@ div {
   padding: 0.05rem 0.05rem 0;
 }
 .van-dropdown-menu {
-  height: 0.26rem;
-  background: rgba(236, 236, 236, 1);
-  margin-right: 0.08rem;
-  font-size: 0.14rem;
-  color: rgba(58, 58, 58, 1);
-  line-height: 0.2rem;
-  padding-right: 0.08rem;
   margin-top: 0.12rem;
 }
 .order_title {
@@ -560,7 +538,7 @@ div {
   padding-top: 0.11rem;
 }
 .text p {
-  padding-bottom: 0.04rem;
+  line-height: 1.2;
 }
 .hr {
   border: none;

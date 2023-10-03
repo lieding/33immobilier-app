@@ -9,18 +9,15 @@
         <span
           :class="{ listSmallT: true, emphasis: label == 1 ? true : false }"
           @click="theKey(1)"
-          >{{ $t("message.global.NewHouse") }}</span
-        >
-        <span
+        >{{ $t("message.global.NewHouse") }}</span>
+        <!-- <span
           :class="{ listSmallT: true, emphasis: label == 2 ? true : false }"
           @click="theKey(2)"
-          >{{ $t("message.global.second-hand") }}</span
-        >
+        >{{ $t("message.global.second-hand") }}</span> -->
         <span
           :class="{ listSmallT: true, emphasis: label == 3 ? true : false }"
           @click="theKey(3)"
-          >{{ $t("message.global.tenement") }}</span
-        >
+        >{{ $t("message.global.tenement") }}</span>
       </div>
       <div class="searchHou">
         <el-input
@@ -100,7 +97,7 @@
         </div>
       </div>
       <!-- 底-二手 -->
-      <div class="secondHoB">
+      <!-- <div class="secondHoB">
         <div class="secondTit">
           <span class="secondL">{{ $t("message.global.ordapartment") }}</span>
           <span class="secondR" @click="RoutingHop('/anyEs', false)">{{
@@ -141,7 +138,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
       <!-- 底-租房 -->
       <div class="rentingHoB">
         <div class="secondTit">
@@ -230,6 +227,7 @@
         </span>
       </div>
     </div>
+    <!-- 房价走势 -->
     <div class="partner centerSs">
       <span>{{ $t("message.global.trust") }}</span>
       <p>{{ $t("message.global.pionner") }}</p>
@@ -349,27 +347,13 @@ export default {
   },
   methods: {
     searchVals() {
-      // //console.log(this.label, this.searchVal)
-      let urls = "";
-      switch (this.label) {
-        case 1:
-          urls = "/newList";
-          //console.log(urls)
-          break;
-        case 2:
-          urls = "/anyEs";
-          //console.log(urls)
-          break;
-        case 3:
-          urls = "/rentHouseList";
-        //console.log(urls)
-      }
-      this.$router.push({
-        path: urls,
-        query: {
-          val: this.searchVal
-        }
-      });
+      let path = "/newList", val = this.searchVal;
+      if (this.label === 2) {
+        path = "/anyEs";
+      } else if (this.label === 3) {
+        path = "/rentHouseList";
+      } 
+      this.$router.push({ path, query: { val } });
     },
     clickChange() {
       this.dialogVisible = true;
@@ -399,9 +383,10 @@ export default {
       let params = { homeTrendRegion: this.value };
       let createTime = [];
       let homeTrendPrice = [];
-      this.$api.article.getTrendByRegion(params).then(res => {
-        this.homeTrendList = res.data.data.homeTrendList;
-        res.data.data.homeTrendList.map(function(item) {
+      this.$api.article.getTrendByRegion(params).then((res = {}) => {
+        const homeTrendList = res?.data?.data?.homeTrendList || [];
+        this.homeTrendList = homeTrendList;
+        homeTrendList.map(function(item) {
           createTime.push(item.homeTrendQuarter);
           homeTrendPrice.push(item.homeTrendPrice);
         });

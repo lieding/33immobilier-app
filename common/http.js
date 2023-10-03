@@ -1,5 +1,5 @@
 import axios from "axios";
-// import store from "../store";
+import BASE_API from '../api/base'
 
 /**
  * 提示函数
@@ -56,10 +56,10 @@ const errorHandle = (status, other) => {
 };
 
 // 创建axios实例
-var instance = axios.create({ timeout: 1000 * 12 });
+const instance = axios.create({ timeout: 1000 * 12, baseURL: BASE_API.sq });
 // 设置post请求头
 instance.defaults.headers.post["Content-Type"] =
-  "application/x-www-form-urlencoded";
+  "application/json";
 /**
  * 请求拦截器
  * 每次请求前，如果存在token则在请求头中携带token
@@ -100,4 +100,4 @@ instance.interceptors.request.use(
 //   }
 // );
 
-export default axios;
+export default instance;

@@ -12,7 +12,7 @@
         <p>作者：{{ outcome.nickName }} 发布时间: {{ outcome.createTime }}</p>
 
         <div class="topicofthearticle">
-          <div v-html="outcome.content"></div>
+          <div ref="contentWrapper"></div>
         </div>
         <div class="topIright">
           <div
@@ -121,8 +121,8 @@ export default {
   },
   async asyncData({ route, app }) {
     try {
-      const options = { id: route.query.flag };
-      const getInfoInfo = (await app.$api.article.getInfoLis(options)).data;
+      const { flag: id } = route.query;
+      const getInfoInfo = (await app.$api.article.getInfoLis({ id })).data;
       return {
         outcome: getInfoInfo.data
       };
@@ -131,10 +131,10 @@ export default {
     }
   },
   created() {
-    this.get(this.options);
     this.getRight();
-    //console.log(this.$route.query.flag)
-    //console.log('123asd')
+  },
+  mounted () {
+    this.loadRemoteHTML();
   },
   methods: {
     ccs(val) {
@@ -172,6 +172,14 @@ export default {
         this.category = getRigthLitInfo.data.typeList;
         this.abc = getRigthLitInfo.data.latelyList;
       }
+    },
+    loadRemoteHTML () {
+      const fileURL = this.outcome?.content;
+      const wrapper = this.$refs.contentWrapper;
+      if (!wrapper || !fileURL) return;
+      fetch(fileURL)
+        .then(res => res.text())
+        .then(content => wrapper.innerHTML = content);
     }
   }
 };

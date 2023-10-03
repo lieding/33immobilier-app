@@ -45,11 +45,11 @@
               >{{ getPostListingData.province }} / {{ getPostListingData.city }}
             </span>
           </div>
-          <div style="border: 1px solid #ccc;">
+          <div v-if="mapIframeSrc" style="border: 1px solid #ccc;">
             <iframe
               height="500px"
               width="710px"
-              :src="address_Map"
+              :src="mapIframeSrc"
               frameborder="0"
             ></iframe>
           </div>
@@ -78,8 +78,8 @@
             }}
           </div>
         </div>
-        <!-- 房屋详情 -->
-        <div class="houseDetails">
+        <!-- 户型详情 -->
+        <!-- <div class="houseDetails">
           <div class="houseTop" v-show="getPostListingData.huXingUrl">
             {{ $t("message.global.floorPlan") }}
           </div>
@@ -127,7 +127,7 @@
             >
             </el-table-column>
           </el-table>
-        </div>
+        </div> -->
         <!-- 虚拟 看房 -->
         <div class="seeApartment" v-if="getPostListingData.isOpenVr">
           <div class="apartmentTop">
@@ -301,39 +301,19 @@
         <div class="broker">
           <div class="agencyLiCar">
             <div class="leftCarA">
-              <img :src="getPostListingData.contactUrl" alt="" />
+              <img src="~/assets/image/avatar.svg" alt="" />
             </div>
             <div class="rightCarA">
               <p class="rightName">{{ getPostListingData.contactName }}</p>
+              <div>
+                <img :src="img.phone" alt="" style="width:12px;" />
+                <span>{{ getPostListingData.contactPhone }}</span>
+              </div>
+              <p>
+                <span>{{ $t("message.global.contactWX") }}：{{ getPostListingData.contactWx }}</span>
+                <!-- <span>{{ $t("message.global.contactEmil") }}：{{ getPostListingData.contactEmail }}</span> -->
+              </p>
             </div>
-          </div>
-          <!-- <div>
-                        <span style="font-size:14px;color:#262626;vertical-align: middle;display:inline-block;margin-right:10px;padding:5px 15px;background-color: #f5f5f5;">
-                            <img style="width:22px;height:16px; vertical-align: middle" :src="img.authentication" alt=""> <span style=" vertical-align: middle;"> {{$t("message.global.authentication")}}</span></span>
-                        <span style="font-size:14px;color:#262626;vertical-align: middle;display:inline-block;margin-right:10px;padding:5px 15px;background-color: #f5f5f5;">
-                            <img style="width:22px;height:16px; vertical-align: middle" :src="img.visitCard" alt=""> <span style=" vertical-align: middle;"> {{$t("message.global.licensed")}}</span></span>
-                        <span style="font-size:14px;color:#262626;vertical-align: middle;display:inline-block;margin-right:0;padding:5px 15px;background-color: #f5f5f5;">
-                            <img style="width:22px;height:16px; vertical-align: middle" :src="img.visitCard" alt=""> <span style=" vertical-align: middle;"> {{$t("message.global.EasyPro")}}</span></span>
-                    </div>-->
-          <div style="text-align: center;padding-top: 16px;">
-            <img
-              style="width:17px;height:17px;vertical-align:middle"
-              :src="img.phone"
-              alt=""
-            />
-            <span style="vertical-align:middle">{{
-              getPostListingData.contactPhone
-            }}</span>
-          </div>
-          <div
-            style="text-align: center;padding-top: 10px;font-size:14px;margin-bottom:20px;"
-          >
-            {{ $t("message.global.contactWX") }}：{{
-              getPostListingData.contactWx
-            }}
-            &nbsp;&nbsp;&nbsp; {{ $t("message.global.contactEmil") }}：{{
-              getPostListingData.contactEmail
-            }}
           </div>
           <div style="margin-bottom:10px">
             <el-input
@@ -372,8 +352,8 @@
         </div>
       </div>
     </div>
-    <div class="centerS" style="margin-top:20px;" v-show="promoteList">
-      <div style="font-size:32px;font-weight:600;">
+    <div v-if="promoteList?.length" class="recommend">
+      <div class="title">
         {{ $t("message.global.Recommended") }}
       </div>
       <div class="housingResourceL">
@@ -496,9 +476,7 @@
         <textarea
           style="z-index:-10000;font-size:0;border:1px solid #fff;"
           id="input"
-        >
-这是幕后黑手</textarea
-        >
+        ></textarea>
         <div
           :class="{ qianlan: qianlan }"
           style="float:right;
@@ -519,13 +497,11 @@
       </div>
     </el-dialog>
     <foots></foots>
-    <client-only>
-      <gallery
-        :images="getPostListingData.pics"
-        :index="galleryIndex"
-        @close="galleryIndex = null"
-      ></gallery
-    ></client-only>
+    <gallery
+      :images="getPostListingData.pics"
+      :index="galleryIndex"
+      @close="galleryIndex = null"
+    ></gallery>
   </div>
 </template>
 
@@ -564,11 +540,10 @@ import washerG from "~/assets/image/picSzg/washerG.png";
 import washerH from "~/assets/image/picSzg/washerH.png";
 import wifiG from "~/assets/image/picSzg/wifiG.png";
 import wifiH from "~/assets/image/picSzg/wifiH.png";
-
-import baseurl from "~/api/base.js";
+import { BASE_API } from '../api'
 
 export default {
-  name: "seconHandHous",
+  name: "renting",
   middleware: "responsive",
   components: {
     headers,
@@ -588,30 +563,14 @@ export default {
         },
         {
           name: "og:image",
-          content: this.getPostListingData.pics[0]
+          content: this.getPostListingData.pics?.[0] ?? '' 
         }
       ]
     };
   },
-
   async asyncData({ route, app }) {
-    try {
-      const as = { id: route.query.flag };
-      const getInFoData = (await app.$api.article.getInFo(as)).data;
-      return {
-        getPostListingData: getInFoData.data,
-        address_Map:
-          "http://47.254.149.82/" +
-          "/app/map/jumpMap?lat=" +
-          getInFoData.data.latitude +
-          "&lng=" +
-          getInFoData.data.longitude,
-        roomInc: getInFoData.data.RentingApartmentList,
-        promoteList: getInFoData.data.promoteList
-      };
-    } catch {
-      return {};
-    }
+    const id = route.query.flag;
+    return await query(app.$api.article.getInFo, id);
   },
   data() {
     return {
@@ -621,7 +580,7 @@ export default {
       input4: "",
       input5: "",
       flag: true,
-      frOrCn: true,
+      frOrCn: false,
       img: {
         location,
         apartment,
@@ -654,25 +613,14 @@ export default {
       },
       dialogVisible: false,
       inputs: "",
-      getPostListingData: "",
+      getPostListingData: {},
       apartmentList: [],
       agent: "",
       roomInc: [],
       promoteList: [],
-      address_Map: "",
-      baseurl: baseurl.sq,
+      mapIframeSrc: "",
       galleryIndex: null
     };
-  },
-  created() {
-    this.get(this.$route.query.flag);
-  },
-  mounted() {},
-  watch: {
-    $route(to, from) {
-      //console.log(to.path, 123);
-      //console.log(this.$router.query.flag)
-    }
   },
   methods: {
     consf() {
@@ -718,26 +666,12 @@ export default {
         });
       }
     },
-    async get(smt) {
-      const as = { id: smt };
-      const getInFoData = (await this.$api.article.getInFo(as)).data;
-      if (getInFoData.code == 0) {
-        this.getPostListingData = getInFoData.data;
-        this.address_Map =
-          "http://47.254.149.82/" +
-          "/app/map/jumpMap?lat=" +
-          getInFoData.data.latitude +
-          "&lng=" +
-          getInFoData.data.longitude;
-        this.roomInc = this.getPostListingData.RentingApartmentList;
-        this.promoteList = this.getPostListingData.promoteList;
-        //console.log(this.roomInc)
-      }
+    async get(id) {
+      const ret = await query(this.$api.article.getInFo, id);
+      Object.assign(this, ret);
     },
     routerGo(flags) {
-      //console.log(flags)
       this.get(flags);
-
       if (process.client) {
         document.body.scrollTop = 0;
         document.documentElement.scrollTop = 0;
@@ -776,9 +710,33 @@ export default {
     }
   }
 };
+async function query (queryFn, id) {
+  try {
+    const getInFoData = (await queryFn({ id })).data;
+    if (getInFoData.code == 0) {
+      const getPostListingData = getInFoData.data;
+      const { latitude, longitude } = getPostListingData;
+      const mapIframeSrc = (latitude && longitude) ?
+        `${BASE_API.jsp}/app/map/jumpMap?lat=${latitude}&lng=${longitude}` : '';
+      return {
+        getPostListingData,
+        mapIframeSrc,
+        roomInc: getPostListingData.RentingApartmentList,
+        promoteList: getPostListingData.promoteList,
+      };
+    }
+    return {};
+  } catch (err) { return {}; }
+}
 </script>
 
 <style lang="scss" scoped>
+.recommend {
+  .title {
+    font-size: 32px;
+    font-weight: 600;
+  }
+}
 .yicu {
   white-space: nowrap;
   overflow: hidden;
@@ -817,8 +775,7 @@ export default {
   *zoom: 1; /*ie6清除浮动的方式 *号只有IE6-IE7执行，其他浏览器不执行*/
 }
 .secondBod {
-  // overflow: hidden;
-  // ???
+  
   .headline {
     padding-top: 10px;
     color: #000;
@@ -838,13 +795,10 @@ export default {
   .leftBody {
     float: left;
     width: 710px;
+    margin-bottom: 20px;
     // 轮播图
     .slideshow {
       text-align: center;
-
-      // .el-carousel {
-      //     height:400px;
-      // }
       .el-carousel__item img {
         height: 404px;
       }
@@ -1046,19 +1000,13 @@ export default {
       }
     }
     .broker {
-      height: 705px;
       box-shadow: 0px 2px 26px 0px rgba(0, 0, 0, 0.11);
       margin-top: 20px;
       padding: 22px;
       .agencyLiCar {
-        background-color: #fff;
-        width: 317px;
-        height: 96px;
-        // box-sizing: border-box;
-        padding: 24px 0px 0px;
+        display: flex;
+        margin-bottom: 8px;
         .leftCarA {
-          float: left;
-          // width: 20%;
           img {
             width: 86px;
             height: 86px;
@@ -1066,24 +1014,10 @@ export default {
           }
         }
         .rightCarA {
-          float: right;
-          width: 56%;
-          height: 100%;
+          margin-left: 10px;
           .rightName {
-            margin-top: 10px;
-            color: #000000;
             font-weight: 700;
             font-size: 18px;
-          }
-          .attestation {
-            margin-top: 20px;
-            font-size: 14px;
-            color: #838383;
-          }
-          .NumberP {
-            margin-top: 14px;
-            color: #0433ff;
-            font-size: 16px;
           }
         }
       }

@@ -12,7 +12,7 @@
         </div>
         <iframe
           class="iframes"
-          :src="baseurl"
+          :src="iframeSrc"
           style="height:82%;width:42%;"
           frameborder="0"
         ></iframe>
@@ -177,9 +177,11 @@ import titles from "~/assets/image/titles.jpg";
 import goDown from "~/assets/image/goDown.png";
 import sort from "~/assets/image/sort.png";
 import homeS from "~/assets/image/homeS.png";
-//
+
 // import countries from './data/countries-of-the-world'
-import baseUrl from "~/api/base.js";
+import BaseUrl from "~/api/base.js";
+import { fmoney } from '../utils';
+
 export default {
   name: "newList",
   middleware: "responsive",
@@ -239,33 +241,31 @@ export default {
       maxs: 0,
       newInfoList: [],
       page: 1,
-      maxPage: "",
-      baseurl: baseUrl.sq
-      // baseurl: 'http://192.168.3.84/latest'
+      maxPage: ""
     };
   },
   created() {
+    this.iframeSrc = BaseUrl.sq + "/map/newMap";
+    this.fmoney = fmoney;
     this.getsas();
-    this.baseurl = this.baseurl + "/map/newMap";
     const that = this;
     this.get();
     this.getSearchNew();
     if (process.client) {
-      window.onscroll = function() {
-        var scrollTop =
-          document.documentElement.scrollTop || document.body.scrollTop;
-        var windowHeight =
-          document.documentElement.clientHeight || document.body.clientHeight;
-        var scrollHeight =
-          document.documentElement.scrollHeight || document.body.scrollHeight;
-        if (scrollTop + windowHeight == scrollHeight) {
-          that.page++;
-          that.getListNews();
-        }
-      };
+      // window.onscroll = function() {
+      //   var scrollTop =
+      //     document.documentElement.scrollTop || document.body.scrollTop;
+      //   var windowHeight =
+      //     document.documentElement.clientHeight || document.body.clientHeight;
+      //   var scrollHeight =
+      //     document.documentElement.scrollHeight || document.body.scrollHeight;
+      //   if (scrollTop + windowHeight == scrollHeight) {
+      //     that.page++;
+      //     that.getListNews();
+      //   }
+      // };
     }
   },
-  mounted() {},
   watch: {
     quyuC() {
       this.getListNew();
@@ -383,41 +383,18 @@ export default {
         });
       }
     },
-    fmoney(s, n) {
-      n = n > 0 && n <= 20 ? n : 2;
-      s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
-      var l = s
-          .split(".")[0]
-          .split("")
-          .reverse(),
-        r = s.split(".")[1];
-      var t = "";
-      for (var i = 0; i < l.length; i++) {
-        t += l[i] + ((i + 1) % 3 == 0 && i + 1 != l.length ? " " : "");
-      }
-      return (
-        t
-          .split("")
-          .reverse()
-          .join("") +
-        "." +
-        r
-      );
-    },
     async getsas() {
       const getCityInfo = (await this.$api.article.getRegionalNew()).data;
       if (getCityInfo.code == 0) {
         // this.somecity = getCityInfo.data.retract;
         // this.allcity = getCityInfo.data.spreads;
         this.cities = getCityInfo.data.spreads;
-        //console.log(this.cities)
       }
-      // //console.log(getCityInfo)
     }
   },
   beforeDestroy() {
     if (process.client) {
-      window.onscroll = function() {};
+      window.onscroll = null;
     }
   }
 };

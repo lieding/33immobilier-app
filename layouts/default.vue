@@ -4,6 +4,19 @@
   </div>
 </template>
 
+<script>
+import { createNamespacedHelpers } from 'vuex';
+const { mapActions } = createNamespacedHelpers('auth')
+export default {
+  mounted () {
+    this.verifyToken();
+  },
+  methods: {
+    ...mapActions(['verifyToken'])
+  }
+}
+</script>
+
 <style lang="scss">
 body,
 div,
@@ -108,6 +121,12 @@ body {
 
 .margin {
   margin: 0 auto;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .left {
@@ -509,5 +528,5 @@ input[type="number"] {
     font-size: 12px;
     color: #292929;
   }
-}</style
->>
+}
+</style>

@@ -9,6 +9,8 @@ export default function({ route, isDesktop, redirect }) {
     switch (path) {
       case "/m_index":
         return redirect("/pc_index");
+      case "/loginOrRegister":
+        return redirect("/loginOrRegister");
       case "/newhouse":
         if (route.query.house === "new") return redirect("/newList");
         if (route.query.house === "second_hand") return redirect("/anyEs");
@@ -39,6 +41,8 @@ export default function({ route, isDesktop, redirect }) {
     switch (path) {
       case "/pc_index":
         return redirect("/m_index");
+      case "/loginOrRegister":
+        return redirect("/m_loginOrRegister");
       case "/newList":
         return redirect("/newhouse", { house: "new" });
       case "/anyEs":

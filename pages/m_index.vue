@@ -29,10 +29,10 @@
           <img src="~/assets/image/newhouse.png" class="list_img" />
           <p>{{ $t("message.global.NewHouse") }}</p>
         </router-link>
-        <router-link :to="{ path: '/newhouse', query: { house: 'second_hand' } }" tag="li">
+        <!-- <router-link :to="{ path: '/newhouse', query: { house: 'second_hand' } }" tag="li">
           <img src="~/assets/image/ordhouse.png" class="list_img" />
           <p>{{ $t("message.global.second-hand") }}</p>
-        </router-link>
+        </router-link> -->
         <router-link :to="{ path: '/rentHouse' }" tag="li">
           <img src="~/assets/image/house.png" class="list_img" />
           <p>{{ $t("message.global.tenement") }}</p>
@@ -45,10 +45,10 @@
           <img src="~/assets/image/baidu.png" class="list_img" />
           <p>{{ $t("message.global.encyclopedia") }}</p>
         </router-link>
-        <router-link :to="{ path: '/service' }" tag="li">
+        <!-- <router-link :to="{ path: '/service' }" tag="li">
           <img src="~/assets/image/Copy.png" class="list_img" />
           <p>{{ $t("message.global.Saas") }}</p>
-        </router-link>
+        </router-link> -->
       </ul>
       <ul class="entry">
         <router-link :to="{ path: '/instrument' }" tag="li">
@@ -97,7 +97,7 @@
             </div>
 
             <div class="text">
-              <p class="text_title">{{ item.estate }}</p>
+              <p class="text-title">{{ item.estate }}</p>
               <p class="sort">{{ item.huXing }} {{ $t("message.global.pieces") }}</p>
               <p class="font">
                 <span class="itemize" v-for="(items, index) in item.tags" :key="index">{{ items }}</span>
@@ -109,7 +109,7 @@
       </div>
       <hr class="hr" />
       <!-- 二手房 -->
-      <div class="newhouse">
+      <!-- <div class="newhouse">
         <div class="font width">
           <span class="title">{{ $t("message.global.ordapartment") }}</span>
           <router-link
@@ -128,7 +128,7 @@
               <img :src="item.showUrl" class="new_img" />
             </div>
             <div class="text">
-              <p class="text_title">{{ item.title }}</p>
+              <p class="text-title">{{ item.title }}</p>
               <p class="sort">{{ item.bigProvince }}/{{ item.province }}</p>
               <p class="font">
                 <span class="itemize">{{ item.roomNum }}{{ $t("message.global.chamber") }}</span>
@@ -142,8 +142,8 @@
             </div>
           </router-link>
         </ul>
-      </div>
-      <hr class="hr" />
+      </div> -->
+      <!-- <hr class="hr" /> -->
       <!-- 租房 -->
       <div class="newhouse">
         <div class="font width">
@@ -174,7 +174,7 @@
               </span>
             </div>
             <div class="text">
-              <p class="text_title">{{ item.title }}</p>
+              <p class="text-title">{{ item.title }}</p>
               <p class="sort">{{ item.province }}/{{ item.city }}</p>
               <p class="font">
                 <span class="itemize">
@@ -320,21 +320,15 @@ export default {
   },
   watch: {
     value(val) {
-      //console.log("chufajiancha");
-      //console.log(this.ByRegion);
       this.ByRegion();
-      //console.log(this.value);
     }
   },
   mounted() {
     rem();
-    //console.log(this);
-    //console.log(this.value1);
     this.ByRegion();
     //   所有走势图
     this.$api.article.trendRegion().then(res => {
       this.returnList = res.data.data.returnList;
-      //console.log(this.returnList);
     });
     this.$api.article.getHomePageInfo().then(res => {
       this.newHousings = res.data.data.newHousings; //新房
@@ -368,8 +362,6 @@ export default {
       if (event.keyCode == 13) {
         //如果按的是enter键 13是enter
         event.preventDefault(); //禁止默认事件（默认是换行）
-        //console.log(event.target.value)
-        //console.log(this.value1)
         if (this.value1 == "new") {
           this.$router.push({
             path: "/newhouse",
@@ -537,6 +529,13 @@ export default {
   font-size: 0.13rem;
   width: 0.72rem;
   height: 0.43rem;
+  ::v-deep {
+    .van-dropdown-menu__bar {
+      box-shadow: unset;
+      background-color: transparent;
+      height: 43px;
+    }
+  }
 }
 .van-ellipsis {
   color: rgba(38, 38, 38, 1);
@@ -559,8 +558,7 @@ export default {
 .list {
   font-size: 0.15rem;
   width: 100%;
-  height: 1.5rem;
-  margin-top: 0.15rem;
+  margin-top: 0.2rem;
 }
 .list li {
   float: left;
@@ -573,7 +571,6 @@ export default {
   height: 0.5rem;
 }
 .entry li {
-  float: left;
   text-align: center;
   width: 24%;
   position: relative;
@@ -581,6 +578,8 @@ export default {
 .entry {
   font-size: 0.12rem;
   height: 0.75rem;
+  display: flex;
+  width: 100%;
 }
 .entry_img {
   width: 1.04rem;
@@ -619,18 +618,17 @@ export default {
   font-size: 16px;
   padding-bottom: 0.1rem;
 }
-.text_title {
+.text-title {
   font-size: 0.16rem;
   font-weight: 600;
   color: rgba(80, 80, 80, 1);
-  line-height: 0.18rem;
   text-shadow: 0px 2px 3px rgba(255, 255, 255, 0.5);
+  min-height: .35rem;
 }
 .sort {
   font-size: 0.13rem;
   font-weight: 600;
   color: rgba(168, 168, 168, 1);
-  line-height: 0.18rem;
 }
 .itemize {
   /* width:0.45rem; */
@@ -639,7 +637,6 @@ export default {
   font-size: 0.11rem;
   font-weight: 600;
   color: rgba(255, 255, 255, 1);
-  line-height: 0.16rem;
   margin-right: 0.06rem;
   padding: 0 0.1rem;
 }
@@ -647,7 +644,6 @@ export default {
   font-size: 0.16rem;
   font-weight: 600;
   color: rgba(255, 94, 94, 1);
-  line-height: 0.22rem;
 }
 .year {
   height: 0.24rem;
@@ -656,7 +652,6 @@ export default {
   font-size: 0.12rem;
   font-weight: 600;
   color: rgba(255, 255, 255, 1);
-  line-height: 0.24rem;
   position: absolute;
   top: 0rem;
   right: 0;
@@ -670,7 +665,6 @@ export default {
   font-size: 0.12rem;
   font-weight: 600;
   color: rgba(255, 255, 255, 1);
-  line-height: 0.17rem;
   position: absolute;
   top: 0.75rem;
 
@@ -711,7 +705,7 @@ export default {
   padding-top: 0.11rem;
 }
 .text p {
-  padding-bottom: 0.04rem;
+  line-height: 1.25;
 }
 .average {
   font-size: 0.12rem;

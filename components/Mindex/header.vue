@@ -2,7 +2,6 @@
   <div class="title">
     <div class="title-left">
       <img src="~/assets/image/black.png" class="title-image" />
-      <!-- <p class="title-span">易家找房</p> -->
     </div>
     <el-popover placement="bottom" width="80" trigger="click">
       <div class="title-rig" slot="reference">
@@ -18,10 +17,10 @@
           :to="{ path: '/newhouse', query: { house: 'new' } }"
           tag="li"
         >{{ $t("message.global.NewHouse") }}</router-link>
-        <router-link
+        <!-- <router-link
           :to="{ path: '/newhouse', query: { house: 'second_hand' } }"
           tag="li"
-        >{{ $t("message.global.second-hand") }}</router-link>
+        >{{ $t("message.global.second-hand") }}</router-link> -->
         <router-link :to="{ path: '/rentHouse' }" tag="li">
           {{
           $t("message.global.tenement")
@@ -73,28 +72,6 @@
         <!-- <li v-on:click="Onrouter">{{$t("message.global.login")}}</li> -->
       </ul>
     </el-popover>
-
-    <!-- <ul class="title_list" v-if="diaplay" @click="list">
-            <router-link :to="{path: '/m_index'}" tag="li">{{$t("message.global.home")}}</router-link>
-            <router-link :to="{path: '/newhouse', query: {house: 'new' }}" tag="li">{{$t("message.global.NewHouse")}}</router-link>
-            <router-link :to="{path: '/newhouse', query: {house: 'second_hand' }}" tag="li">{{$t("message.global.second-hand")}}</router-link>
-            <router-link :to="{path: '/rentHouse'}" tag="li">{{$t("message.global.tenement")}}</router-link>
-            <router-link :to="{path: '/agentList'}" tag="li">{{$t("message.global.agent")}}</router-link>
-            <router-link :to="{path: '/blogs'}" tag="li">{{$t("message.global.encyclopedia")}}</router-link>
-             <router-link :to="{path: '/service'}" tag="li" >{{$t("message.global.Saas")}}</router-link>
-            <router-link :to="{path: '/instrument'}" tag="li">{{$t("message.global.instrument")}}</router-link>
-             <router-link :to="{path: '/InRegardTo'}" tag="li">{{$t("message.global.regards")}}</router-link>
-             <router-link :to="{path: '/ordIssue'}" tag="li" class="rental">{{$t("message.global.rental")}}</router-link>
-             
-             <li style="text-align:left;" v-on:click="Onclick('zh-cn')"><img src="~/assets/image/chinese.png" style="margin-right: 0.1rem;">
-                 <span style="display:inline-block;text-align:center;">{{$t("message.global.Chinese")}}</span>
-             </li>
-             <li style="text-align:left;" v-on:click="Onclick('fr')"><img src="~/assets/image/french.png" style="margin-right: .05rem;">
-                <span style="display:inline-block;text-align:center;">{{$t("message.global.French")}}
-               </span> 
-    </li>-->
-    <!-- <li v-on:click="Onrouter">{{$t("message.global.login")}}</li> -->
-    <!-- </ul> -->
   </div>
 </template>
 <script>

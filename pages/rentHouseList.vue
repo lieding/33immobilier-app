@@ -170,7 +170,7 @@
           <br />
           <!-- <span></span> -->
           <div class="economics">
-            <img class="imgs" :src="item.contactUrl" alt />
+            <img class="imgs" src="~/assets/image/avatar.svg" alt />
             <span class="names">{{ item.contactName }}</span>
             <span class="card">
               <img :src="img.phone" alt />
@@ -333,16 +333,13 @@ export default {
       });
     },
     cli(val) {
-      // this.sort?this.sort=1:this.sort=2;
-      // // this.sort = 2
-      // //console.log(this.sort)
       this.sort = val;
     },
     chaxun() {
       this.btn();
     },
-    async getSearchEs(par) {
-      const getSearchEsInfo = (await this.$api.article.getSearchEs(par)).data;
+    async getSearchEs() {
+      const getSearchEsInfo = (await this.$api.article.getSearchEs()).data;
       if (getSearchEsInfo.code == 0) {
         this.fileList = getSearchEsInfo.date.schoolList;
         getSearchEsInfo.date.schoolList.forEach(item => {
@@ -352,8 +349,6 @@ export default {
         this.max = Number(getSearchEsInfo.date.maxPrice);
         this.jiageV[0] = this.min;
         this.jiageV[1] = this.max;
-        //console.log(this.min, this.max)
-        //console.log(getSearchEsInfo);
       }
       const getCityInfo = (await this.$api.article.getRegional()).data;
       if (getCityInfo.code == 0) {
@@ -363,13 +358,11 @@ export default {
       }
     },
     async btn() {
-      //console.log(this.quyu, this.schVal, this.zulx,this.jiageV)
       this.fileList.forEach(item => {
         if (item.schoolName == this.schVal) {
           this.schoolId = item.id;
         }
       });
-      //console.log(this.zulx)
       this.zulxs = this.zulx;
 
       const vr = {
@@ -383,19 +376,14 @@ export default {
         search: this.input,
         sort: this.sort
       };
-      //console.log(vr)
-      // this.$route.query.val = ''
-      // return
       const getRentingListInfo = (await this.$api.article.getRentingList(vr))
         .data;
       if (getRentingListInfo.code == 0) {
         this.ListNoLis = getRentingListInfo.data.rentingPoLists;
-        //console.log(this.ListNoLis)
         this.page = 1;
       }
     },
     async btns() {
-      //console.log(this.quyu, this.schVal, this.zulx,this.jiageV)
       this.fileList.forEach(item => {
         if (item.schoolName == this.schVal) {
           this.schoolId = item.id;
@@ -412,15 +400,12 @@ export default {
         search: this.input,
         sort: this.sort
       };
-      //console.log(vr,123)
-      // return
       const getRentingListInfo = (await this.$api.article.getRentingList(vr))
         .data;
       if (getRentingListInfo.code == 0) {
         getRentingListInfo.data.rentingPoLists.forEach(item => {
           this.ListNoLis.push(item);
         });
-        //console.log(this.ListNoLis)
       }
     }
   }

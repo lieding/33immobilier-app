@@ -10,7 +10,7 @@
             >{{ $t("message.global.releaseTime") }}:{{ data.createTime }}</span
           >
         </p>
-        <div v-html="data.content"></div>
+        <div ref="contentWrapper"></div>
         <hr class="hr" />
         <!-- <p class="text">文章图片来源自网络，如有侵权请联系「易家」 删除 本文著作权归作者和「易家」所有</p> -->
         <div class="box">
@@ -95,8 +95,9 @@ export default {
     WikigetInfo() {
       let params = { id: this.id };
       this.$api.article.WikigetInfo(params).then(res => {
+        if (res.data?.code) return;
         this.data = res.data.data;
-        // console.log(_this.$refs.data.content.innerHTML)
+        this.loadRemoteHTML();
       });
     },
     onLately(value) {
@@ -109,6 +110,14 @@ export default {
     },
     onType(value) {
       this.$router.push({ path: "/blogs", query: { id: value } });
+    },
+    loadRemoteHTML () {
+      const fileURL = this.data?.content;
+      const wrapper = this.$refs.contentWrapper;
+      if (!wrapper || !fileURL) return;
+      fetch(fileURL)
+        .then(res => res.text())
+        .then(content => wrapper.innerHTML = content);
     }
   }
 };

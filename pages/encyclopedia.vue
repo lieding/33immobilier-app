@@ -142,7 +142,7 @@ export default {
     // if (this.$router.query.flags == true) {
     //     this.typeId = this.$router.query.flags
     // }
-    this.get(this.pares);
+    this.get();
     this.getRight();
     //console.log('123asd')
     let that = this;

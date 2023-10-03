@@ -103,7 +103,7 @@
             <div style="float:left;position:relative;">
               <img
                 style="border-radius:50%;"
-                :src="getPostListingData.brokerAvatar"
+                :src="getPostListingData.brokerAvatar || img.DefaultAvatar"
                 alt=""
               />
               <img
@@ -512,6 +512,7 @@ import washerG from "~/assets/image/picSzg/washerG.png";
 import washerH from "~/assets/image/picSzg/washerH.png";
 import wifiG from "~/assets/image/picSzg/wifiG.png";
 import wifiH from "~/assets/image/picSzg/wifiH.png";
+import DefaultAvatar from '~/assets/image/avatar.svg';
 
 import { BASE_API } from "~/api";
 
@@ -524,7 +525,6 @@ export default {
     Calculate
   },
   head() {
-    console.log(this.getPostListingData.city);
     return {
       title: `${this.getPostListingData.estate} (${this.getPostListingData.city})`,
       meta: [
@@ -545,19 +545,15 @@ export default {
   },
   async asyncData({ route, app }) {
     try {
-      const as = { id: route.query.flag };
-      const getInfoNewHousInfo = (await app.$api.article.getInfoNewHous(as))
-        .data;
+      const id = route.query.flag;
+      const { data: getPostListingData } = (await app.$api.article.getInfoNewHous({ id })).data;
+      const { aparementList, promoteList, latitude, longitude } = getPostListingData;
+      const address_Map = `${BASE_API.jsp}/app/map/jumpMap?lat=${latitude}&lng=${longitude}`;
       return {
-        getPostListingData: getInfoNewHousInfo.data,
-        tableData: getInfoNewHousInfo.data.aparementList,
-        promoteList: getInfoNewHousInfo.data.promoteList,
-        address_Map:
-          BASE_API.jsp +
-          "/app/map/jumpMap?lat=" +
-          getInfoNewHousInfo.data.latitude +
-          "&lng=" +
-          getInfoNewHousInfo.data.longitude
+        getPostListingData,
+        tableData: aparementList,
+        promoteList: promoteList,
+        address_Map,
       };
     } catch {
       return {};
@@ -602,7 +598,8 @@ export default {
         wifiG,
         wifiH,
         email,
-        wxInd
+        wxInd,
+        DefaultAvatar
       },
       inputs: "",
       getPostListingData: "",
@@ -616,9 +613,9 @@ export default {
       galleryIndex: null
     };
   },
-  created() {
-    this.get(this.$route.query.flag);
-  },
+  // created() {
+  //   this.get(this.$route.query.flag);
+  // },
   methods: {
     routerGos(val) {
       this.$router.push({
@@ -632,7 +629,6 @@ export default {
     // 小方法
     consf() {
       if (process.client) {
-        // console.log(document.querySelector('.absc').innerText)
         const ass = document.querySelector(".absc").innerText;
         var input = document.getElementById("input");
         input.value = ass;
@@ -697,28 +693,10 @@ export default {
         return this.$t("message.global.CanBuy");
       }
     },
-    async get(smt) {
-      const as = { id: smt };
-      const getInfoNewHousInfo = (await this.$api.article.getInfoNewHous(as))
-        .data;
-      if (getInfoNewHousInfo.code == 0) {
-        this.getPostListingData = getInfoNewHousInfo.data;
-        this.tableData = getInfoNewHousInfo.data.aparementList;
-        this.promoteList = getInfoNewHousInfo.data.promoteList;
-        this.address_Map =
-          BASE_API.jsp +
-          "/app/map/jumpMap?lat=" +
-          getInfoNewHousInfo.data.latitude +
-          "&lng=" +
-          getInfoNewHousInfo.data.longitude;
-        // console.log(this.address_Map)
-      }
-    },
     // 判断对象是否为空
     isEmptyObject(obj) {
       for (let key in obj) {
         return true;
-        console.log(key);
       }
       return false;
     },

@@ -191,9 +191,10 @@ export default {
 <style lang="scss">
 .pedia {
   display: flex;
-  margin-left: 0.12rem;
+  justify-content: space-between;
+  margin: 0 0.12rem;
   .el-input-group {
-    width: 54%;
+    width: 55%;
   }
   .el-input-group__append {
     font-size: 0.15rem;
@@ -209,13 +210,7 @@ export default {
   }
 }
 .select_type {
-  .el-input {
-    width: 88%;
-  }
-  .el-input__inner {
-    box-shadow: none;
-    border: none;
-  }
+  width: 40%;
 }
 </style>
 <style lang="scss" scoped>
@@ -239,12 +234,6 @@ div {
 .flex_size {
   display: flex;
 }
-//   .van-dropdown-menu{
-//     height:.26rem;
-//     background:rgba(236,236,236,1);
-//     margin-right: .08rem;
-//     font-size:.14rem;
-//   }
 .conter {
   height: 0.34rem;
   font-size: 0.12rem;

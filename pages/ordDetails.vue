@@ -370,7 +370,9 @@ import rem from "~/common/rem.js";
 import List from '../components/MIndex/list.vue'
 import Header from '../components/MIndex/head.vue'
 import Footer from '../components/MIndex/footer.vue'
+import { BASE_API } from "../api" 
 var echarts = require('echarts');
+
 export default {
        name: '',
        middleware: "responsive",
@@ -481,44 +483,43 @@ export default {
          this.$router.push('./content')
         },
       Onlist(){
-             let params = {id:this.id}
-            this.$api.article.OrdInfo(params).then(res => {
-                this.data =  res.data.data//二手房
-                this.agent = res.data.data.agent //顾问
-                res.data.data.bedRoomList.forEach(item => {
-                  item['room'] = this.$t("message.global.bedroom")
-                    this.List.push(item)
-                })
-                res.data.data.parlorList.forEach(item => {
-                   item['room'] = this.$t("message.global.drawingRoom")
+        let params = {id:this.id}
+        this.$api.article.OrdInfo(params).then(res => {
+          this.data =  res.data.data//二手房
+          this.agent = res.data.data.agent //顾问
+          res.data.data.bedRoomList.forEach(item => {
+            item['room'] = this.$t("message.global.bedroom");
+            this.List.push(item);
+          });
+          res.data.data.parlorList.forEach(item => {
+              item['room'] = this.$t("message.global.drawingRoom")
 
-                    this.List.push(item)
-                })
-                res.data.data.bathRoomList.forEach(item => {
-              item['room'] = this.$t("message.global.showerRoom")
-    
-                    this.List.push(item)
-                })
-                res.data.data.kitChenList.forEach(item => {
-               item['room'] = this.$t("message.global.kitchen")
-                    this.List.push(item)
-                })
-    //console.log(this.List)
-                this.List.forEach((item, i) => {
-                    //console.log(item);
-                    if (i%2) {
-                        this.ListBottom.push(item)
-                    } else {
-                        this.ListTop.push(item)
-                    }
-                })
-                this.Url = "http://47.254.149.82/app/map/jumpMap?lat="+ res.data.data.latitude +'&lng=' +res.data.data.longitude
-                //console.log(this.Url)
-             this.W = this.ListTop.length * 2 +'rem'
-                this.promoteList = res.data.data.promoteList
-                 this.picList = res.data.data.picList
-                //console.log(this.ListBottom, this.ListTop);
-            });
+                this.List.push(item)
+            })
+            res.data.data.bathRoomList.forEach(item => {
+        item['room'] = this.$t("message.global.showerRoom")
+
+                this.List.push(item)
+            })
+            res.data.data.kitChenList.forEach(item => {
+          item['room'] = this.$t("message.global.kitchen")
+                this.List.push(item)
+            })
+          this.List.forEach((item, i) => {
+              //console.log(item);
+              if (i%2) {
+                  this.ListBottom.push(item)
+              } else {
+                  this.ListTop.push(item)
+              }
+          })
+          this.Url = BASE_API.jsp + "/app/map/jumpMap?lat="+ res.data.data.latitude +'&lng=' +res.data.data.longitude
+          
+        this.W = this.ListTop.length * 2 +'rem'
+          this.promoteList = res.data.data.promoteList
+            this.picList = res.data.data.picList
+          
+      });
       },
        onpackUp(){
           this.IspackUp = !this.IspackUp

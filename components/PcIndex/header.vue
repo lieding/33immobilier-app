@@ -15,21 +15,31 @@
       />
     </div>
     <div class="rightL">
-      <span @click="Onrouter" style="font-size:20px;cursor:pointer;">
+      <span v-if="curAuthInfo" style="font-size:20px">
         <img
-          v-show="vas"
-          style="width:16px;vertical-align:middle;cursor:pointer;"
-          src="~/assets/image/renwuW.png"
+          style="width:16px;vertical-align:middle;"
+          :src="curAuthInfo.picture || '/_nuxt/assets/image/renwuW.png'"
           alt
         />
-        <img
-          v-show="!vas"
-          style="width:16px;vertical-align:middle;cursor:pointer;"
-          src="~/assets/image/pcPerson.png"
-          alt
-        />
-        {{ $t("message.global.login") }}
+        {{ curAuthInfo.nickName || '' }}
       </span>
+      <nuxt-link v-else to="loginOrRegister">
+        <span style="font-size:20px;cursor:pointer;">
+          <img
+            v-show="vas"
+            style="width:16px;vertical-align:middle;cursor:pointer;"
+            src="~/assets/image/renwuW.png"
+            alt
+          />
+          <img
+            v-show="!vas"
+            style="width:16px;vertical-align:middle;cursor:pointer;"
+            src="~/assets/image/pcPerson.png"
+            alt
+          />
+          {{ $t("message.global.login") }}
+        </span>
+      </nuxt-link>
     </div>
     <div class="right" style="margin-right:10px;">
       <el-popover width="200" trigger="hover">
@@ -80,9 +90,9 @@
       <span class="divide" @click="RoutingHop('/newList', true)">
         <span>{{ $t("message.global.NewHouse") }}</span>
       </span>
-      <span class="divide" @click="RoutingHop('/anyEs', true)">
+      <!-- <span class="divide" @click="RoutingHop('/anyEs', true)">
         <span>{{ $t("message.global.second-hand") }}</span>
-      </span>
+      </span> -->
       <span class="divide" @click="RoutingHop('/rentHouseList', true)">
         <span>{{ $t("message.global.tenement") }}</span>
       </span>
@@ -95,9 +105,9 @@
       <span class="divide" @click="RoutingHop('/promoteLists', true)">
         <span>{{ $t("message.global.instrument") }}</span>
       </span>
-      <span class="divide" @click="RoutingHop('/serve', true)">
+      <!-- <span class="divide" @click="RoutingHop('/serve', true)">
         <span>{{ $t("message.global.Saas") }}</span>
-      </span>
+      </span> -->
       <span class="divide" @click="RoutingHop('/aboutUs', true)">
         <span>{{ $t("message.global.regards") }}</span>
       </span>
@@ -115,6 +125,8 @@
 import logoT from "~/assets/image/logoT.png";
 import sellersT from "~/assets/image/sellers.png";
 import sort from "~/assets/image/sort.png";
+import { createNamespacedHelpers } from 'vuex'
+const { mapGetters } = createNamespacedHelpers('auth')
 
 export default {
   name: "foots",
@@ -130,6 +142,9 @@ export default {
     };
   },
   props: ["vas"],
+  computed: {
+    ...mapGetters(['curAuthInfo']),
+  },
   methods: {
     RoutingHop(smt, flag) {
       this.$router.push({

@@ -452,7 +452,7 @@ import bed from "~/assets/image/bed.png";
 import proVip from "~/assets/image/proVip.png";
 import apartment from "~/assets/image/apartment.png";
 import location from "~/assets/image/location.png";
-import baseurl from "~/api/base.js";
+import { BASE_API } from '../api';
 
 export default {
   name: "seconHandHous",
@@ -508,7 +508,6 @@ export default {
       promoteList: "",
       dialogVisible: false,
       address_Map: "",
-      baseurl: baseurl.sq,
       galleryIndex: null
     };
   },
@@ -538,7 +537,7 @@ export default {
 
       return {
         address_Map:
-          "http://47.254.149.82/" +
+          BASE_API.jsp +
           "/app/map/jumpMap?lat=" +
           getPostListingData.data.latitude +
           "&lng=" +
@@ -620,7 +619,7 @@ export default {
       ).data;
 
       this.address_Map =
-        "http://47.254.149.82/" +
+        BASE_API.jsp +
         "/app/map/jumpMap?lat=" +
         getPostListingData.data.latitude +
         "&lng=" +

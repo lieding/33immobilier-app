@@ -164,12 +164,12 @@
     </div>
     <div class="map">
       <iframe
-        src="http://47.254.149.82/latest/map/newMap"
+        :src="latestApi + '/map/newMap'"
         frameborder="0"
         v-if="house == 'new'"
       ></iframe>
       <iframe
-        src="http://47.254.149.82/latest/map/homesMap"
+        :src="latestApi + '/map/homesMap'"
         frameborder="0"
         v-if="house == 'second_hand'"
       ></iframe>
@@ -322,6 +322,9 @@ import rem from "~/common/rem.js";
 import Header from "~/components/MIndex/head.vue";
 import Footer from "~/components/MIndex/footer.vue";
 import mapBox from "~/components/MIndex/mapBox.vue";
+import { BASE_API } from "~/api";
+import { fmoney } from '../utils';
+
 export default {
   name: "",
   middleware: "responsive",
@@ -420,13 +423,13 @@ export default {
   mounted() {
     rem();
     this.page = "1";
-    //console.log(this.$route.query.house )
     this.getList();
   },
   created() {
+    this.fmoney = fmoney;
     if (process.client) {
       const that = this;
-      (window.onscroll = function() {
+      window.onscroll = function() {
         if (that.isLoadingNew == true) {
           return;
         }
@@ -438,29 +441,17 @@ export default {
         // 总共的高度
         var scrollHeight =
           document.documentElement.scrollHeight || document.body.scrollHeight;
-        console.log(scrollTop + windowHeight, scrollHeight - 9);
         if (
           scrollTop + windowHeight <= scrollHeight + 10 &&
           scrollTop + windowHeight >= scrollHeight - 10
         ) {
-          //console.log(that.page,that.Maxpage)
           that.isLoadingNew = true;
           if (that.page < that.Maxpage) {
-            console.log("111");
             that.page++;
             that.onList();
           }
         }
-      }),
-        this.$api.article.getRegional().then(res => {
-          res.data.data.spreads.forEach((item, index) => {
-            let obj = {
-              text: "",
-              value: ""
-            };
-            (obj.text = item), (obj.value = index), this.provinceList.push(obj);
-          });
-        });
+      };
       this.$api.article.getRegionalNew().then(res => {
         res.data.data.spreads.forEach((item, index) => {
           let obj = {
@@ -470,6 +461,7 @@ export default {
           (obj.text = item), (obj.value = index), this.provinces.push(obj);
         });
       });
+      this.latestApi = BASE_API.sq;
     }
   },
   methods: {
@@ -487,32 +479,9 @@ export default {
         loading.close();
       }, 500);
     },
-    fmoney(s, n) {
-      n = n > 0 && n <= 20 ? n : 2;
-      s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
-      var l = s
-          .split(".")[0]
-          .split("")
-          .reverse(),
-        r = s.split(".")[1];
-      var t = "";
-      for (var i = 0; i < l.length; i++) {
-        t += l[i] + ((i + 1) % 3 == 0 && i + 1 != l.length ? " " : "");
-      }
-      return (
-        t
-          .split("")
-          .reverse()
-          .join("") +
-        "." +
-        r
-      );
-    },
     onquyu(value) {
-      //console.log(value)
       if (value != "") {
         this.provinces.forEach((item, index) => {
-          //  //console.log(value,item.value,item.text)
           if (value == item.value) {
             this.pro = item.text;
           }
@@ -526,10 +495,8 @@ export default {
         this.onList();
     },
     onmenu(value) {
-      //console.log(value)
       if (value != "") {
         this.provinceList.forEach((item, index) => {
-          //  //console.log(value,item.value,item.text)
           if (value == item.value) {
             this.pro = item.text;
           }
@@ -569,7 +536,6 @@ export default {
           // this.maxroomHall= Number(res.data.date.maxHall)
           this.minCost = Number(res.data.date.minPrice);
           this.maxCost = Number(res.data.date.maxPrice);
-          //console.log(this.minPrice,this.maxPrice)
           this.onList();
         });
       } else {
@@ -596,7 +562,6 @@ export default {
     OnRank(val) {
       this.sort = val;
       this.display = false;
-      //console.log(this.display);
       this.page = 1;
       this.HousingList = [];
       this.HousList = [];
@@ -639,7 +604,6 @@ export default {
     },
     Onpir() {
       this.page = 1;
-      //console.log(this.$refs.item)
       this.$refs.item5.toggle();
       this.$refs.item6.toggle();
       this.HousingList = [];
@@ -670,7 +634,6 @@ export default {
         this.$api.article.getList(params).then(res => {
           this.fullscreenLoading = false;
           this.isLoadingNew = false;
-          //console.log(res.data.data.newHousingList)
           if (res.data.data.newHousingList.length != 0) {
             this.HousingList.push(...res.data.data.newHousingList); //新房
           } else {
@@ -696,7 +659,6 @@ export default {
           bedRoomNum: this.bedRoomNum
         };
         this.$api.article.OrdList(params).then(res => {
-          //console.log(res.data.data.homesList)
           if (res.data.data.homesList.length != 0) {
             this.fullscreenLoading = false;
             this.HousList.push(...res.data.data.homesList); //二手房
@@ -708,6 +670,9 @@ export default {
         });
       }
     }
+  },
+  beforeDestroy () {
+    window.onscroll = undefined;
   }
 };
 </script>

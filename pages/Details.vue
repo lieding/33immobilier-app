@@ -187,15 +187,19 @@
       <hr class="hr" />
       <!-- 楼盘介绍 -->
       <div class="estates pack">
-        <span class="consultants">{{ $t("message.global.premises") }}</span>
-        <span class="interpret" v-if="interpret" @click="oninterpret">{{
-          $t("message.global.interpret")
-        }}</span>
-        <span class="interpret" v-else @click="oninterpret">翻译法语</span>
-        <p class="download interpret" @click="onMap(data.brochure)">
-          <img src="~/assets/image/download.png" alt />
-          {{ $t("message.global.brochure") }}
-        </p>
+        <div class="top">
+          <div>
+            <span class="consultants">{{ $t("message.global.premises") }}</span>
+            <span class="interpret" v-if="interpret" @click="oninterpret">
+              {{ $t("message.global.interpret") }}
+            </span>
+            <span class="interpret" v-else @click="oninterpret">翻译法语</span>
+          </div>
+          <div class="download interpret" @click="onMap(data.brochure)">
+            <img src="~/assets/image/download.png" alt />
+            {{ $t("message.global.brochure") }}
+          </div>
+        </div>
         <div
           :class="IspackUp ? 'synopsisno' : 'synopsis'"
           v-if="!interpret"
@@ -460,6 +464,7 @@ import rem from "~/common/rem.js";
 import Header from "~/components/MIndex/head.vue";
 import Footer from "~/components/MIndex/footer.vue";
 import list from "~/components/MIndex/list.vue";
+import { BASE_API } from "~/api" 
 
 var echarts = require("echarts");
 export default {
@@ -498,21 +503,6 @@ export default {
       this.interesrate = this.getRateList[val];
     }
   },
-  // TODO fetch all data when server rendering
-  // async asyncData({ app, query }) {
-  //   let params = { id: query.id };
-  //   const res = await app.$api.article.getInfo(params);
-  //   return {
-  //     data: res.data.data,
-  //     picList: res.data.data.picList,
-  //     phone: res.data.data.system.phone,
-  //     tags: res.data.data.tags,
-  //     promoteList: res.data.data.promoteList,
-  //     latitude: res.data.data.latitude,
-  //     longitude: res.data.data.longitude,
-  //     aparementList: res.data.data.aparementList
-  //   };
-  // },
   data() {
     return {
       value: 0,
@@ -554,8 +544,6 @@ export default {
   },
   mounted() {
     rem();
-
-    //console.log(this.labelLine)
     this.$api.article.getRate().then(res => {
       if (res.data.code == 0) {
         this.getRateList = res.data.data;
@@ -599,20 +587,18 @@ export default {
     Onlist() {
       let params = { id: this.id };
       this.$api.article.getInfo(params).then(res => {
-        this.data = res.data.data;
-        this.picList = res.data.data.picList;
-        this.phone = res.data.data.system.phone;
-        this.tags = res.data.data.tags;
-        this.promoteList = res.data.data.promoteList;
-        this.latitude = res.data.data.latitude;
-        this.longitude = res.data.data.longitude;
-        this.aparementList = res.data.data.aparementList;
+        const data = res.data.data;
+        if (!data) return;
+        this.data = data;
+        const { picList, system: { phone }, tags, promoteList, longitude, latitude, aparementList } = data;
+        this.picList = picList;
+        this.phone = phone;
+        this.tags = tags;
+        this.promoteList = promoteList;
+        this.aparementList = aparementList;
         this.Url =
-          "http://47.254.149.82/app/map/jumpMap?lat=" +
-          this.latitude +
-          "&lng=" +
-          this.longitude;
-        //console.log(this.Url)
+          `${BASE_API.jsp}/app/map/jumpMap?lat=` + latitude +
+          "&lng=" + longitude;
       });
     },
     onpackUp() {
@@ -803,7 +789,6 @@ div {
 .pack {
   padding: 0.1rem;
   div {
-    width: 100%;
     .packUp {
       float: right;
       font-size: 0.13rem;
@@ -902,7 +887,6 @@ td {
 .btn_us {
   float: right;
   height: 0.4rem;
-  margin: 0.1rem;
 }
 .van-button--large {
   width: 92%;
@@ -992,12 +976,9 @@ td {
   color: rgba(186, 186, 186, 1);
 }
 .consultants {
-  height: 0.28rem;
   font-size: 0.2rem;
   font-weight: 600;
   color: rgba(0, 0, 0, 0.76);
-  line-height: 0.28rem;
-  margin-bottom: 0.09rem;
   margin-right: 0.1rem;
 }
 /* 房产顾问 */
@@ -1124,8 +1105,9 @@ td {
     line-height: 0.18rem;
   }
   .download {
-    float: right;
-    margin-top: 0.05rem;
+    img {
+      width: 16px;
+    }
   }
   .synopsis {
     margin: 0.1rem 0;
@@ -1303,6 +1285,15 @@ td {
       color: rgba(134, 134, 134, 1);
       line-height: 0.2rem;
       width: 33.3%;
+    }
+  }
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    span {
+      display: inline-block;
     }
   }
 }
