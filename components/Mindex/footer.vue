@@ -1,9 +1,10 @@
 <template>
-     <div class="footer" >
-           <span>© 2019 33 immobilier. All right reserved.</span>
-       </div>
+  <div class="footer" >
+    <span>© 2019 33 immobilier. All right reserved.</span>
+  </div>
 </template>
 <script>
+export default {}
 </script>
 <style lang="scss">
 html,body{min-height: 100% }
