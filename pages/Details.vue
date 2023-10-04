@@ -461,9 +461,9 @@
 </template>
 <script>
 import rem from "~/common/rem.js";
-import Header from "~/components/MIndex/head.vue";
-import Footer from "~/components/MIndex/footer.vue";
-import list from "~/components/MIndex/list.vue";
+import Header from "~/components/mIndex/head.vue";
+import Footer from "~/components/mIndex/footer.vue";
+import list from "~/components/mIndex/list.vue";
 import { BASE_API } from "~/api" 
 
 var echarts = require("echarts");

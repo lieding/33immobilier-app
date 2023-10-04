@@ -471,9 +471,9 @@
 </template>
 
 <script>
-import headers from "~/components/PcIndex/header.vue";
-import foots from "~/components/PcIndex/foot.vue";
-import Calculate from "~/components/PcIndex/promoteList.vue";
+import headers from "~/components/pcIndex/header.vue";
+import foots from "~/components/pcIndex/foot.vue";
+import Calculate from "~/components/pcIndex/promoteList.vue";
 
 import wxInd from "~/assets/image/wxInd.png";
 import phone from "~/assets/image/phone.png";

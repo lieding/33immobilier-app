@@ -1,7 +1,7 @@
 const LOCAL_DEV_BASE_URL = 'http://localhost:8080/milliome/latest';
-const LOCAL_DEV_JSP_URL = 'http://localhost:8080/milliome'; 
-const BASE_URL = process.env.BASE_URL || LOCAL_DEV_BASE_URL;
-const JSP_URL = process.env.JSP_URL || LOCAL_DEV_JSP_URL;
+const LOCAL_DEV_JSP_URL = 'http://localhost:8080/milliome';
+const BASE_URL = "https://5whr06suvi.execute-api.eu-west-3.amazonaws.com/latest";
+const JSP_URL = "https://5whr06suvi.execute-api.eu-west-3.amazonaws.com";
 const IS_DEV = process.env.NODE_ENV === 'development';
 
 /**

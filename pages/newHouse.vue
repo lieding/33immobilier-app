@@ -319,9 +319,9 @@
 </template>
 <script>
 import rem from "~/common/rem.js";
-import Header from "~/components/MIndex/head.vue";
-import Footer from "~/components/MIndex/footer.vue";
-import mapBox from "~/components/MIndex/mapBox.vue";
+import Header from "~/components/mIndex/head.vue";
+import Footer from "~/components/mIndex/footer.vue";
+import mapBox from "~/components/mIndex/mapBox.vue";
 import { BASE_API } from "~/api";
 import { fmoney } from '../utils';
 

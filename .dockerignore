@@ -1,0 +1,6 @@
+.nuxt
+node_modules
+package_lock.json
+yarn-error.log
+.git
+.gitignore

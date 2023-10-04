@@ -25,8 +25,8 @@
 </template>
 
 <script>
-import headers from "~/components/PcIndex/header.vue";
-import foots from "~/components/PcIndex/foot.vue";
+import headers from "~/components/pcIndex/header.vue";
+import foots from "~/components/pcIndex/foot.vue";
 
 import title from "~/assets/image/aboutus.png";
 import logoT from "~/assets/image/logoTTT.png";
