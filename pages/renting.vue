@@ -35,14 +35,13 @@
         <!-- 地图 -->
         <div class="atlas">
           <div class="atlasTop">
-            <span class="noO"
-              >{{
-                $t("message.global.locationwz")
-              }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
-            >
+            <span class="noO">
+              {{ $t("message.global.locationwz") }}
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </span>
             <img :src="img.location" alt="" />
-            <span class="noT"
-              >{{ getPostListingData.province }} / {{ getPostListingData.city }}
+            <span class="noT">
+              {{ getPostListingData.province }} / {{ getPostListingData.city }}
             </span>
           </div>
           <div v-if="mapIframeSrc" style="border: 1px solid #ccc;">
@@ -57,17 +56,12 @@
         <!-- 房屋简介 -->
         <div class="synopsis">
           <div class="synopsisTop">
-            <span class="synopsisjj"
-              >{{
-                $t("message.global.Describing")
-              }}&nbsp;&nbsp;&nbsp;&nbsp;</span
-            >
+            <span class="synopsisjj">
+              {{ $t("message.global.Describing") }}
+              &nbsp;&nbsp;&nbsp;&nbsp;
+            </span>
             <span class="translate" @click="frCn">
-              {{
-                frOrCn
-                  ? $t("message.global.interpret")
-                  : $t("message.global.interpret")
-              }}
+              {{ frOrCn ? "翻译中文" : "Traduction en français" }}
             </span>
           </div>
           <div class="synopsisBod">
@@ -1045,8 +1039,7 @@ async function query (queryFn, id) {
     display: inline-block;
     text-align: center;
     width: 48px;
-    margin: 0 16px;
-    margin-bottom: 10px;
+    margin: 0 20px 10px 0;
     img {
       width: 31px;
       height: 23px;

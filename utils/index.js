@@ -21,3 +21,16 @@ export function fmoney(s, n) {
     r
   );
 }
+
+export function scrollListener (cbk) {
+  if (!cbk) return;
+  const scrollTop =
+    document.documentElement.scrollTop || document.body.scrollTop;
+  const windowHeight =
+    document.documentElement.clientHeight || document.body.clientHeight;
+  const scrollHeight =
+    document.documentElement.scrollHeight || document.body.scrollHeight;
+  if (scrollTop + windowHeight >= scrollHeight) {
+    cbk();
+  }
+};

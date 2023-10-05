@@ -2,7 +2,7 @@
   <div>
     <client-only>
       <Header :title="$t('message.global.handpick')" />
-      <van-search :placeholder="$t('message.global.nxjzdqy')" v-model="ipt" @change="onList" />
+      <van-search :placeholder="$t('message.global.nxjzdqy')" v-model="ipt" @change="queryList" />
       <div class="select">
         <!-- 区域 -->
         <van-dropdown-menu class="opn">
@@ -50,7 +50,7 @@
       <div class="map">
         <iframe :src="iframeSrc" frameborder="0"></iframe>
       </div>
-      <div class="sort_title">
+      <div class="sort-title">
         <p class="second-hand">{{ $t("message.global.MethodAllRent") }}</p>
         <div class="sorting">
           <el-popover placement="bottom" width="100" v-model="visible">
@@ -59,33 +59,38 @@
               <p @click="OnRank(2), (visible = false)">{{ $t("message.global.highToLow") }}</p>
             </div>
             <span slot="reference">
-              <img src="~/assets/image/sorting.png" alt class="sortimage" />
               {{ $t("message.global.paixu") }}
-              <img src="~/assets/image/src.png" alt />
+              <img src="~/assets/image/sort.png" alt class="sortimage" />
             </span>
           </el-popover>
         </div>
       </div>
-      <ul class="new_list">
+      <van-list
+        v-model="isLoading"
+        :finished="finished"
+        :finished-text="$t('message.global.noMore')"
+        @load="nextPage"
+        class="new-list"
+      >
         <router-link
-          v-for="(item, index) in HousingList"
+          v-for="(item, index) in rentingList"
           :key="index"
           :to="{ path: '/rentDetails', query: { id: item.id } }"
         >
           <li class="list_li">
-            <diV class="flex">
+            <div class="flex">
               <div class="img">
                 <img :src="item.showUrl" class="new_img" />
                 <span class="num">
                   {{
-                  item.rentType
-                  ? $t("message.global.sublease")
-                  : $t("message.global.entireTenancy")
+                    item.rentType
+                    ? $t("message.global.sublease")
+                    : $t("message.global.entireTenancy")
                   }}
                 </span>
               </div>
               <div class="text">
-                <p class="text_title">{{ item.title }}</p>
+                <p class="text-title">{{ item.title }}</p>
                 <p class="sort">{{ item.province }}/{{ item.city }}</p>
                 <p class="money">{{ item.total }}{{ $t("message.global.rise") }}</p>
                 <p class="font">
@@ -103,11 +108,11 @@
                   </span>
                 </p>
               </div>
-            </diV>
+            </div>
           </li>
         </router-link>
         <hr class="hr" />
-      </ul>
+      </van-list>
       <Footer />
     </client-only>
   </div>
@@ -158,9 +163,9 @@ export default {
       rentType: "", //出租类型
       page: 1, //页数
       isLoading: false, //下拉刷新
-      HousingList: [], //租房
+      rentingList: [], //租房
       schoolList: [], //学校
-      Maxpage: "1", //租房的最大页数
+      maxPage: 1, //租房的最大页数
       minPrice: "", //最小金额
       maxPrice: "", //最大金额
       minCost: "",
@@ -173,66 +178,23 @@ export default {
       ipt: this.$route.query.ipt //获取搜索的值
     };
   },
+  computed: {
+    finished () {
+      return this.page >= this.maxPage;
+    }
+  },
   mounted() {
     rem();
-    this.onList();
-    let params = {};
-    this.$api.article.getSearch(params).then(res => {
-      res.data.date.schoolList.forEach((item, index) => {
-        item["text"] = item.schoolName;
-        item["value"] = item.id;
-      });
-      this.schoolList = res.data.date.schoolList; //学校
-      this.price = Number(res.data.date.minPrice);
-      this.minCost = Number(res.data.date.minPrice); //	最低金额
-      this.maxCost = Number(res.data.date.maxPrice); //	最高金额
-      this.minPrice = Number(res.data.date.minPrice); //	最低金额
-      this.maxPrice = Number(res.data.date.maxPrice); //	最高金额
-      this.value[0] = this.minPrice;
-      this.value[1] = this.maxPrice;
-    });
-    this.$api.article.getRegional(params).then(res => {
-      res.data.data.spreads.forEach((item, index) => {
-        let obj = {
-          text: "",
-          value: ""
-        };
-        (obj.text = item), (obj.value = index), this.provinceList.push(obj);
-      });
-    });
+    this.queryList();
   },
   created() {
     this.fmoney = fmoney;
-    const that = this;
-    if (process.client) {
-      this.iframeSrc = BASE_API.sq + '/map/rentMap';
-      window.onscroll = function() {
-        var scrollTop =
-          document.documentElement.scrollTop || document.body.scrollTop;
-        // 页面高度
-        var windowHeight =
-          document.documentElement.clientHeight || document.body.clientHeight;
-        // 总共的高度
-        var scrollHeight =
-          document.documentElement.scrollHeight || document.body.scrollHeight;
-        if (
-          scrollTop + windowHeight <= scrollHeight + 10 &&
-          scrollTop + windowHeight >= scrollHeight - 10
-        ) {
-          //console.log(that.page,that.Maxpage)
-          if (that.page < that.Maxpage) {
-            that.page++;
-            that.onList();
-          }
-        }
-      };
-    }
+    this.iframeSrc = BASE_API.sq + '/map/rentMap';
+    this.getSearchFilters();
   },
   methods: {
     openFullScreen() {
       this.fullscreenLoading = true;
-    },
-    openFullScreen() {
       const loading = this.$loading({
         spinner: "el-icon-loading",
         customClass: "rgba(0, 0, 0, 0.8)",
@@ -245,13 +207,10 @@ export default {
     },
     onclick() {
       this.display = !this.display;
-      //console.log(this.display)
     },
     OnRank(val) {
-      this.page = "1";
-      this.HousingList = [];
       this.sort = val;
-      this.onList();
+      this.queryList();
       this.display = false;
     },
     //  价格弹框
@@ -262,16 +221,12 @@ export default {
     },
     Onprice() {
       this.$refs.item.toggle();
-      this.page = "1";
-      this.HousingList = [];
-      this.onList();
+      this.queryList();
     },
     //  区域
     onmenu(value) {
-      //console.log(value)
       if (value != "") {
         this.provinceList.forEach((item, index) => {
-          //  //console.log(value,item.value,item.text)
           if (value == item.value) {
             this.province = item.text;
           }
@@ -279,33 +234,27 @@ export default {
       } else {
         this.province = "";
       }
-      this.page = "1";
-      this.HousingList = [];
-      this.onList();
+      this.queryList();
     },
     //  学校
     onschool(value) {
-      //  if(value != ''){
       this.schoolId = value;
-      //  }
-      this.page = "1";
-      this.HousingList = [];
-      this.onList();
+      this.queryList();
     },
     // 出租类型
     onrentType(value) {
-      //console.log(value)
       this.rentType = value;
-      this.page = "1";
-      this.HousingList = [];
-      this.onList();
+      this.queryList();
+    },
+    nextPage () {
+      this.queryList(this.page + 1);
     },
     // 列表
-    onList() {
+    async queryList(page = 1) {
       this.openFullScreen();
       let params = {
-        page: this.page,
-        pageSize: "10",
+        page,
+        pageSize: 10,
         province: this.province,
         schoolId: this.schoolId,
         search: this.ipt,
@@ -314,15 +263,34 @@ export default {
         maxPrice: this.maxCost,
         sort: this.sort
       };
-      this.$api.article.getRentingList(params).then(res => {
-        this.fullscreenLoading = false;
-        if (res.data.data.rentingPoLists.length != 0) {
-          this.HousingList.push(...res.data.data.rentingPoLists); //租房
-        } else {
-          this.HousingList = res.data.data.rentingPoLists;
-        }
-
-        this.Maxpage = res.data.data.maxPage; //最大值
+      const res = await this.$api.article.getRentingList(params);
+      this.fullscreenLoading = false;
+      const { rentingPoList: list, maxPage } = res.data.data;
+      if (page === 1) {
+        this.rentingList = list;
+      } else {
+        this.rentingList = [...this.rentingList, ...list];
+      }
+      this.page = page;
+      this.maxPage = maxPage || 1;
+    },
+    getSearchFilters () {
+      this.$api.article.getSearch().then(res => {
+        let { schoolList, minPrice, maxPrice } = res.data.data;
+        this.schoolList = schoolList.map(({ schoolName, id }) => ({
+          text: schoolName,
+          value: id
+        }));
+        minPrice = Number(minPrice);
+        maxPrice = Number(maxPrice);
+        this.price = this.minPrice = this.minCost = minPrice;
+        this.maxCost = this.maxPrice = maxPrice;
+        this.value = [ minPrice, maxPrice ];
+      });
+      this.$api.article.getRegional().then(res => {
+        this.provinceList = res.data.data.spreads.map((item, value) =>
+          ({ item, value })
+        );
       });
     }
   }
@@ -330,20 +298,13 @@ export default {
 </script>
 <style lang="scss" scoped>
 .sortimage {
-  position: relative;
-  top: 0.02rem;
+  width: 12px;
 }
 iframe {
   width: 100%;
   height: 100%;
 }
 .rank {
-  // position: absolute;
-  // background: #eee;
-  // padding: .2rem;
-  // z-index: 1;
-  // right: .1rem;
-  // top: 4.7rem;
   line-height: 0.3rem;
 }
 div {
@@ -363,7 +324,7 @@ div {
   margin: 0.11rem 0.13rem;
 }
 .van-search {
-  padding: 0.05rem 0.05rem 0;
+  padding: 0.05rem 0.13rem 0;
 }
 .van-dropdown-menu {
   margin-top: 0.12rem;
@@ -373,9 +334,11 @@ div {
   font-weight: 600;
   line-height: 0.28rem;
 }
-.sort_title {
+.sort-title {
   margin: 0.12rem;
-  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   .second-hand {
     font-size: 0.2rem;
     font-weight: 600;
@@ -455,12 +418,15 @@ div {
   margin: 0 0.12rem;
   padding-bottom: 0.1rem;
 }
-.text_title {
-  font-size: 0.16rem;
+.text-title {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  font-size: 14px;
   font-weight: 600;
   color: rgba(80, 80, 80, 1);
-  line-height: 0.18rem;
-  text-shadow: 0px 0.02rem 0.03rem rgba(255, 255, 255, 0.5);
+  height: 50px;
 }
 .sort {
   font-size: 0.13rem;
@@ -526,10 +492,10 @@ div {
   width: 1.44rem;
   margin-right: 0.11rem;
 }
-.new_list {
+.new-list {
   padding-bottom: 0.2rem;
 }
-.new_list li > div {
+.new-list li > div {
   display: flex;
   padding-bottom: 0.1rem;
   //   padding-top: 0.11rem;

@@ -70,7 +70,6 @@
             >{{ item }}</span
           >
         </p>
-        <img :src="data.developersPic" alt class="details_img" />
         <p class="price">{{ data.lowprice }}€ - {{ data.maxPrice }}€</p>
         <p class="hand">
           <span class="time">{{ $t("message.global.completionDate") }} ：</span>
@@ -927,13 +926,7 @@ td {
   height: 0.18rem;
   background: rgba(191, 191, 191, 1);
 }
-.details_img {
-  width: 0.58rem;
-  height: 0.59rem;
-  position: absolute;
-  right: 0.2rem;
-  top: 0rem;
-}
+
 .item > span {
   margin-right: 0.08rem;
 }

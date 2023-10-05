@@ -112,7 +112,7 @@ export default {
 .title {
   height: 0.44rem;
   background: #fff;
-  padding: 0 0.08rem;
+  padding: 0 0.13rem;
   display: flex;
   align-items: center;
 }

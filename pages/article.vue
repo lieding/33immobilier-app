@@ -12,7 +12,6 @@
         </p>
         <div ref="contentWrapper"></div>
         <hr class="hr" />
-        <!-- <p class="text">文章图片来源自网络，如有侵权请联系「易家」 删除 本文著作权归作者和「易家」所有</p> -->
         <div class="box">
           <p class="box_title">{{ $t("message.global.category") }}</p>
           <ul class="box_list">
@@ -84,8 +83,7 @@ export default {
   },
   mounted() {
     rem();
-    let param = {};
-    this.$api.article.WikigetRigth(param).then(res => {
+    this.$api.article.WikigetRigth().then(res => {
       this.typeList = res.data.data.typeList;
       this.lately = res.data.data.latelyList;
     });

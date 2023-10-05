@@ -9,8 +9,6 @@
       <div class="oductions">
         {{ $t("message.global.encyclopedia") }}
         <span style="float:right">
-          <!-- <el-input v-model="input" style="width:296px;height:45px!important;background-color:#f0f0f0;border:0;"
-          placeholder="请输入内容"></el-input>-->
           <input
             style="width:210px;padding-left:5px;background-color:#f0f0f0;border:0;font-weight:400;height:42px;font-size:18px;"
             type="text"
@@ -21,7 +19,7 @@
           <span
             style="background-color:#4D6DDA;display:inline-block;height:42px;width:55px;text-align:center;
                     cursor: pointer;vertical-align: bottom;"
-            @click="consts"
+            @click="queryFirstPage"
           >
             <img
               style="width:26px;height:26px;"
@@ -31,11 +29,14 @@
           </span>
         </span>
       </div>
-      <div class="leftsS">
+      <div
+        class="article-list"
+      >
         <div
-          :class="{ mars: i % 3 == 2, leftSa: true }"
-          v-for="(item, i) in outcome"
+          v-for="(item, i) in articles"
           :key="i"
+          :class="{ mars: i % 3 == 2 }"
+          class="article-item"
         >
           <div class="picZs" @click="RoutingHop(item.id)">
             <img :src="item.picUrl" alt />
@@ -51,7 +52,9 @@
           </p>
         </div>
       </div>
-      <div class="rightsS">
+      <p v-show="loading">Loading...</p>
+      <p v-show="finished">{{ $t('message.global.noMore') }}</p>
+      <div class="filters">
         <div
           class="rightTops"
           style="box-shadow:0px 2px 26px 0px rgba(0,0,0,0.11);"
@@ -85,9 +88,9 @@
 <script>
 import headers from "~/components/pcIndex/header.vue";
 import foots from "~/components/pcIndex/foot.vue";
-
 import title from "~/assets/image/titles.jpg";
 import logoT from "~/assets/image/logoTTT.png";
+import { scrollListener } from '../utils';
 
 export default {
   name: "encyclopedia",
@@ -116,98 +119,75 @@ export default {
   data() {
     return {
       flag: true,
-      img: {
-        title,
-        logoT
-      },
       typeId: "",
-      pares: {
-        page: 1,
-        pageSize: "10"
-      },
       options: {},
-      outcome: "",
+      articles: [],
       category: "",
       abc: "",
       value: "",
-      page: 1
+      page: 1,
+      maxPage: 1,
+      loading: false,
     };
   },
   watch: {
     typeId() {
-      this.get();
+      this.queryFirstPage();
+    }
+  },
+  computed: {
+    finished () {
+      return this.page >= this.maxPage;
     }
   },
   created() {
-    // if (this.$router.query.flags == true) {
-    //     this.typeId = this.$router.query.flags
-    // }
-    this.get();
+    this.img = { title, logoT };
+    this.queryFirstPage();
     this.getRight();
-    //console.log('123asd')
-    let that = this;
-    if (process.client) {
-      window.onscroll = function() {
-        var scrollTop =
-          document.documentElement.scrollTop || document.body.scrollTop;
-        var windowHeight =
-          document.documentElement.clientHeight || document.body.clientHeight;
-        var scrollHeight =
-          document.documentElement.scrollHeight || document.body.scrollHeight;
-        if (scrollTop + windowHeight == scrollHeight) {
-          that.page++;
-          that.gets();
-        }
-      };
-    }
   },
-  beforeDestroy() {
-    if (process.client) {
-      window.onscroll = function() {};
-    }
+  mounted () {
+    this.__scrollCbk = () => !this.finished && scrollListener(this.queryMore);
+    window.addEventListener('scroll', this.__scrollCbk);
+  },
+  beforeDestroy () {
+    window.removeEventListener('scroll', this.__scrollCbk);
   },
   methods: {
-    consts() {
-      //console.log(this.value)
-      this.get();
-    },
     tabs(val) {
       this.typeId = val;
     },
-    async get() {
-      const pares = {
-        page: 1,
-        pageSize: 9,
-        typeId: this.typeId,
-        title: this.value
-      };
-      const getListWzInfo = (await this.$api.article.getListWz(pares)).data;
-      //console.log(getListWzInfo)
-      if (getListWzInfo.code == 0) {
-        this.outcome = getListWzInfo.data.agentList;
-        //console.log(this.outcome)
-        this.page = 1;
-      }
+    async queryFirstPage() {
+      const params = { page: 1, title: this.value };
+      this.queryList(params).then(() => { this.page = 1; });
     },
-    async gets() {
-      // this.page++
-      const pares = {
+    queryMore () {
+      this.page++;
+      this.queryList();
+    },
+    queryList(params = {}) {
+      const queryParams = {
         page: this.page,
         pageSize: 9,
         typeId: this.typeId,
-        title: ""
+        title: "",
+        ...params
       };
-      const getListWzInfo = (await this.$api.article.getListWz(pares)).data;
-      //console.log(getListWzInfo)
-      if (getListWzInfo.code == 0) {
-        getListWzInfo.data.agentList.forEach(item => {
-          this.outcome.push(item);
+      this.loading = true;
+      return this.$api.article.WikigetList(queryParams)
+        .then(res => {
+          const { code, data: { agentList: articles, maxPage } } = res.data;
+          if (code == 0) {
+            this.articles = queryParams.page === 1 ?
+              articles : [...this.articles, ...articles];
+            this.maxPage = maxPage || 1;
+          }
+        })
+        .finally(() => {
+          this.loading = false;
         });
-      }
     },
-    async getRight(pares) {
-      const getRigthLitInfo = (await this.$api.article.getRigthLit(pares)).data;
-      //console.log(getRigthLitInfo.data);
+    async getRight() {
+      const getRigthLitInfo = (await this.$api.article.WikigetRigth()).data;
       if (getRigthLitInfo.code == 0) {
         this.category = getRigthLitInfo.data.typeList;
         this.abc = getRigthLitInfo.data.latelyList;
@@ -265,7 +245,7 @@ export default {
     padding-bottom: 30px;
   }
 }
-.leftsS {
+.article-list {
   min-height: 600px;
   float: left;
   overflow: hidden;
@@ -273,7 +253,7 @@ export default {
   .mars {
     margin-right: 0px !important;
   }
-  .leftSa {
+  .article-item {
     padding-bottom: 10px;
     display: inline-block;
     margin-right: 30px;
@@ -298,10 +278,11 @@ export default {
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
+      line-height: 1.2;
     }
   }
 }
-.rightsS {
+.filters {
   float: right;
   padding-bottom: 23px;
   width: 19%;

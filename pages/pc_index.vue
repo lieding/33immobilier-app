@@ -755,10 +755,8 @@ export default {
             font-size: 18px;
           }
           .attestation {
-            margin-top: 20px;
             font-size: 14px;
             color: #838383;
-            height: 38px;
             overflow: hidden;
             display: -webkit-box; //将对象作为弹性伸缩盒子模型显示;
             text-overflow: ellipsis; //溢出部分用省略号代替

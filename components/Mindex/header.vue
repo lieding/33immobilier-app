@@ -110,7 +110,7 @@ export default {
 .titler {
   height: 0.44rem;
   background: rgba(255, 255, 255, 1);
-  padding: 0 0.08rem;
+  padding: 0 0.13rem;
 }
 .title-span {
   float: left;

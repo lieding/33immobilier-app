@@ -7,7 +7,7 @@
           :placeholder="$t('message.global.qingshuru')"
           v-model="value"
           prefix-icon="el-icon-search"
-          @change="OnType"
+          @change="onTypeChange"
         >
           <template slot="append">
             <img src="~/assets/image/SearchIcon.png" alt />
@@ -28,9 +28,15 @@
           </el-select>
         </div>
       </div>
-      <ul class="new_list">
+      <van-list
+        v-model="isLoading"
+        :finished="finished"
+        :finished-text="$t('message.global.noMore')"
+        @load="nextPage"
+        class="new-list"
+      >
         <li
-          class="list_li"
+          class="list-li"
           @click="onclick(item.id)"
           v-for="(item, index) in agentList"
           :key="index"
@@ -56,9 +62,37 @@
             </p>
           </div>
         </li>
-
         <hr class="hr" />
-      </ul>
+      </van-list>
+      <!-- <ul class="new-list">
+        <li
+          class="list-li"
+          @click="onclick(item.id)"
+          v-for="(item, index) in agentList"
+          :key="index"
+        >
+          <div class="flex">
+            <div class="img">
+              <img :src="item.picUrl" class="new_img" />
+              <span class="year">{{ item.createTime }}</span>
+            </div>
+            <div class="text">
+              <p class="text_title">{{ item.title }}</p>
+            </div>
+          </diV>
+          <div class="flex_size">
+            <div class="image">
+              <span>{{ $t("message.global.aufaburen") }}:</span>
+              <span style="color:#234CD3">{{ item.nickName }}</span>
+            </div>
+            <p class="font">
+              <span>{{ $t("message.global.category") }} :</span>
+              <span style="color:#234CD3">{{ item.typeName }}</span>
+            </p>
+          </div>
+        </li>
+        <hr class="hr" />
+      </ul> -->
       <Footer />
     </client-only>
   </div>
@@ -68,7 +102,7 @@ import rem from "~/common/rem.js";
 import Header from "~/components/mIndex/head.vue";
 import Footer from "~/components/mIndex/footer.vue";
 export default {
-  name: "",
+  name: "blogs",
   middleware: "responsive",
   components: {
     Header,
@@ -91,14 +125,6 @@ export default {
       ]
     };
   },
-  watch: {
-    select(val) {
-      this.value1 = val;
-      this.page = "1";
-      this.agentList = [];
-      this.onList();
-    }
-  },
   data() {
     return {
       value: "",
@@ -108,82 +134,66 @@ export default {
       isLoading: false, //下拉刷新
       agentList: [],
       typeList: [],
-      Maxpage: "1", //最大页数
+      maxPage: 1, //最大页数
       switch1: false,
       switch2: false,
-
-      // value: 50,
       areaList: [{ text: "区域", value: 0 }],
       roomList: [{ text: "一室", value: 0 }],
       proportionList: [{ text: "100m", value: 0 }]
     };
   },
-  mounted() {
-    rem();
-    let params = {};
-    this.$api.article.WikigetRigth(params).then(res => {
-      //console.log(res);
-      res.data.data.typeList.forEach(item => {
-        item["text"] = item.typeName;
-        item["value"] = item.typeId;
-      });
-      //console.log(res.data.data.typeList);
-      this.typeList = res.data.data.typeList;
-    });
-
-    this.onList();
-  },
-  created() {
-    const that = this;
-    if (process.client) {
-      window.onscroll = function() {
-        var scrollTop =
-          document.documentElement.scrollTop || document.body.scrollTop;
-        // 页面高度
-        var windowHeight =
-          document.documentElement.clientHeight || document.body.clientHeight;
-        // 总共的高度
-        var scrollHeight =
-          document.documentElement.scrollHeight || document.body.scrollHeight;
-        if (scrollTop + windowHeight == scrollHeight) {
-          //console.log(that.page, that.Maxpage);
-          if (that.page < that.maxPage) {
-            that.page++;
-            that.onList();
-          }
-        }
-      };
+  watch: {
+    select(val) {
+      this.value1 = val;
+      this.page = 1;
+      this.agentList = [];
+      this.queryList();
     }
   },
+  computed: {
+    finished () {
+      return this.page >= this.maxPage;
+    }
+  },
+  mounted() {
+    rem();
+    this.$api.article.WikigetRigth().then(res => {
+      this.typeList = res.data.data.typeList
+        .map(item => ({ text: item.typeName, value: item.typeId }));
+    });
+    this.queryList();
+  },
   methods: {
-    OnType() {
-      //console.log(this.value, this.value1, 123);
-      this.page = "1";
+    onTypeChange() {
+      this.page = 1;
       this.agentList = [];
-      this.onList();
+      this.queryList();
+    },
+    nextPage () {
+      this.page++;
+      this.queryList();
     },
     // 列表
-    onList() {
-      let params = {
+    queryList() {
+      const params = {
         page: this.page,
-        pageSize: "10",
+        pageSize: 10,
         typeId: this.value1,
         title: this.value
       };
       this.$api.article.WikigetList(params).then(res => {
-        //console.log(res.data.data.agentList);
-        if (res.data.data.agentList.length != 0) {
-          this.agentList.push(...res.data.data.agentList);
+        const { agentList: articles, maxPage } = res.data.data;
+        if (params.page > 1) {
+          this.agentList.push(...articles);
         } else {
-          this.agentList = res.data.data.agentList;
+          this.agentList = articles;
         }
-        this.Maxpage = res.data.data.Maxpage;
-        //console.log(this.agentList);
+        this.maxPage = maxPage || 1;
+        this.isLoading = false;
       });
     },
     onclick(value) {
       this.$router.push({ path: "/article", query: { id: value } });
-      //console.log(value);
     }
   }
 };
@@ -315,10 +325,10 @@ div {
   width: 1.44rem;
   margin-right: 0.11rem;
 }
-.new_list {
+.new-list {
   margin-bottom: 0.2rem;
 }
-// .new_list li>div{
+// .new-list li>div{
 //    // display: flex;
 //  //   padding-top: 0.11rem;
 // }
@@ -346,7 +356,7 @@ div {
   position: relative;
   bottom: 0.08rem;
 }
-.list_li {
+.list-li {
   margin: 0.1rem;
   background: rgba(255, 255, 255, 1);
   border: 1px solid rgba(151, 151, 151, 1);

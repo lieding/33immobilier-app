@@ -64,16 +64,9 @@ const article = {
       qs.stringify(params)
     );
   },
-  // 获取租房列表
-  getRentingList(params) {
-    return axios.post(
-      '/renting/getRentingList',
-      qs.stringify(params)
-    );
-  },
-  //获取搜索数据
-  getSearch(params) {
-    return axios.post('/renting/getSearch', qs.stringify(params));
+  //获取租房搜索条件
+  getSearch() {
+    return axios.get('/renting/getSearch');
   },
   // 获取二手房详情页面
   OrdInfo(params) {
@@ -87,8 +80,8 @@ const article = {
     return axios.get('/wiki/getList', { params });
   },
   // 获取文章标题
-  WikigetRigth(params) {
-    return axios.get('/wiki/getRigth', { params });
+  WikigetRigth() {
+    return axios.get('/wiki/getRigth');
   },
   // 获取文章详细信息
   WikigetInfo(params) {
@@ -145,12 +138,6 @@ const article = {
   // },
   loanCapability(params) {
     return axios.get('/calculator/loanCapability', { params });
-  },
-  getListWz(params) {
-    return axios.get('/wiki/getList', { params });
-  },
-  getRigthLit() {
-    return axios.get('/wiki/getRigth');
   },
   // wiki/getInfo
   getInfoLis(params) {

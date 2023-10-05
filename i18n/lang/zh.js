@@ -58,7 +58,7 @@ export default {
       purchase: "买房月供计算",
       reductionWhat: "法国如何减税",
       interest: "房贷最低利率",
-
+      noMore: "没有更多了",
       //  新房 二手房列表
       method: "全法新房",
       homepage: "主页 / 新房列表",
@@ -76,7 +76,7 @@ export default {
 
       ordHouseapartment: "全法二手房",
       school: "学校",
-      tenancy: "整租/合租",
+      tenancy: "整/合租",
       MethodAllRent: "全法租房",
       Intermediary: "中介房源",
 

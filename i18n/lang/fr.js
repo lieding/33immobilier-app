@@ -61,7 +61,7 @@ export default {
       purchase: "Calcul de mensualité",
       reductionWhat: "Défiscalisation",
       interest: "Taux immobilier",
-
+      noMore: "Rien de plus",
       //新房
       method: "Tous nos programmes neufs",
       homepage: "Page d'accueil/Programmes neufs",

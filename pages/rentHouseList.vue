@@ -1,7 +1,7 @@
 <template>
   <div class="rentHouseList">
     <headers :class="{ colors: flag }"></headers>
-    <div class="centerS rentHouseTop">
+    <div class="centerS rent-house-top">
       <div class="headline">
         <span>{{ $t("message.global.home") }}</span> /
         <span>{{ $t("message.global.handpick") }}</span>
@@ -12,7 +12,7 @@
             :placeholder="$t('message.global.plec')"
             v-model="input"
           ></el-input>
-          <span @click="btn">{{ $t("message.global.seek") }}</span>
+          <span @click="queryFirstPage">{{ $t("message.global.seek") }}</span>
         </div>
         <div class="areaLis quyus">
           <span class="filename">{{ $t("message.global.area") }}</span>
@@ -56,7 +56,7 @@
         <div class="areaLis">
           <span class="filename">{{ $t("message.global.price") }}</span>
           <el-slider
-            @change="chaxun"
+            @change="queryFirstPage"
             v-model="jiageV"
             range
             :min="min"
@@ -81,52 +81,39 @@
           </el-radio-group>
         </div>
       </div>
-      <div class="titleLine">
+      <div class="iframe-wrapper">
         <iframe
-          :src="baseurl"
+          :src="iframeSrc"
           style="width:1200px;height:400px;"
           frameborder="0"
-        ></iframe>
-        <span style="vertical-align: bottom;margin-right:10px;">
+        />
+      </div>
+      <div class="list-title">
+        <div class="title">
           {{ $t("message.global.MethodAllRent") }}
-        </span>
+        </div>
         <el-popover placement="bottom" width="130" trigger="click">
-          <span
-            @click="cli(1)"
-            style="display:block;padding-top:5px;cursor: pointer;width:133px; text-align:center;border-bottom:1px solid #979797;"
-            >{{ $t("message.global.prisGdD") }}</span
-          >
-          <span
-            @click="cli(2)"
-            style="display:block;padding-top:5px;cursor: pointer;width:133px;text-align:center;border-bottom:1px solid #979797;"
-            >{{ $t("message.global.prisDdG") }}</span
-          >
-          <!-- <el-button slot="reference">click 激活</el-button> -->
-          <span
+          <div
+            @click="sort = 1"
+            class="rhl-price-sort-popup-text"
+          >{{ $t("message.global.prisGdD") }}</div>
+          <div
+            @click="sort = 2"
+            class="rhl-price-sort-popup-text"
+          >{{ $t("message.global.prisDdG") }}</div>
+          <div
             slot="reference"
-            style="line-height:34px;box-size:border-box;display:inline-block;width:131px;height:38px;background-color:#E9E9E9;vertical-align: middle"
+            class="rhl-price-sort-popup-trigger"
           >
-            <img
-              style="margin-right:50px;margin-left:10px;vertical-align:middle;width:16px;height:16px;"
-              :src="img.sort"
-              alt
-            />
-            <span
-              style="margin-right:5px;font-size:16px;vertical-align: middle"
-              >{{ $t("message.global.price") }}</span
-            >
-            <img
-              style="vertical-align:middle;width:10px;height:6px;"
-              :src="img.goDown"
-              alt
-            />
-          </span>
+            <img :src="img.sort" style="width:16px;height:16px;" alt />
+            <span>{{ $t("message.global.price") }}</span>
+        </div>
         </el-popover>
       </div>
       <div
         class="ListNo"
         @click="routerGo(item.id)"
-        v-for="(item, inde) in ListNoLis"
+        v-for="(item, inde) in rentingItems"
         :key="inde"
       >
         <span style="position:relative;float: left;">
@@ -166,9 +153,7 @@
           </div>
         </div>
         <div class="centerR">
-          <span class="prise">{{ item.total }}€</span>
-          <br />
-          <!-- <span></span> -->
+          <div class="prise">{{ item.total }}€</div>
           <div class="economics">
             <img class="imgs" src="~/assets/image/avatar.svg" alt />
             <span class="names">{{ item.contactName }}</span>
@@ -203,7 +188,8 @@ import email from "~/assets/image/email.png";
 import wxInd from "~/assets/image/wxInd.png";
 import vrVlog from "~/assets/image/VRlogo.gif";
 
-import baseUrl from "~/api/base.js";
+import BaseUrl from "~/api/base.js";
+import { scrollListener } from '../utils';
 
 export default {
   name: "rentHouseList",
@@ -230,9 +216,10 @@ export default {
     };
   },
   data() {
+    const input = this.$route.query.val;
     return {
       flag: true,
-      input: "",
+      input,
       fileList: [],
       fileList1: "",
       fileList2: [],
@@ -240,78 +227,58 @@ export default {
       quyu: "Tout sélectionner",
       zulx: "",
       jiageV: [0, 0],
-      img: {
-        goDown,
-        sort,
-        titles,
-        phone,
-        email,
-        wxInd,
-        vrVlog
-      },
       min: 0,
       max: 0,
       page: 1,
       schoolId: "",
       sort: 0,
-      ListNoLis: [],
+      rentingItems: [],
       zulxs: "",
-      baseurl: baseUrl.sq,
       allcity: "",
       somecity: "",
-      qbqy: true
-      // baseurl: 'http://192.168.3.84/latest'
+      qbqy: true,
+      maxPage: 1,
     };
-  },
-  created() {
-    this.baseurl = this.baseurl + "/map/rentMap";
-    this.input = this.$route.query.val;
-    this.getSearchEs();
-    this.btn();
-    var $that = this;
-    //console.log($that)
-    if (process.client) {
-      window.onscroll = function() {
-        var scrollTop =
-          document.documentElement.scrollTop || document.body.scrollTop;
-        var windowHeight =
-          document.documentElement.clientHeight || document.body.clientHeight;
-        var scrollHeight =
-          document.documentElement.scrollHeight || document.body.scrollHeight;
-        if (scrollTop + windowHeight == scrollHeight) {
-          $that.page = $that.page + 1;
-          if ($that.maxPage <= $that.page) {
-            return;
-          }
-          $that.btns();
-        }
-      };
-    }
-  },
-  beforeDestroy() {
-    if (process.client) {
-      window.onscroll = function() {};
-    }
   },
   watch: {
     quyu() {
-      this.btn();
+      this.queryFirstPage();
     },
     schVal() {
-      this.btn();
+      this.queryFirstPage();
     },
     sort() {
-      this.btn();
+      this.queryFirstPage();
     },
     zulx() {
-      this.btn();
+      this.queryFirstPage();
     }
-    // jiageV() {
-
-    //     setTimeout(()=> {
-    //         this.btn()
-    //     },1000)
-    // }
+  },
+  computed: {
+    finished () {
+      return this.page >= this.maxPage;
+    }
+  },
+  created() {
+    this.img = {
+      goDown,
+      sort,
+      titles,
+      phone,
+      email,
+      wxInd,
+      vrVlog
+    };
+    this.iframeSrc = BaseUrl.sq + "/map/rentMap";
+    this.getSearchFilters();
+    this.queryFirstPage();
+  },
+  mounted () {
+    this.__scrollCbk = () => !this.finished && scrollListener(this.queryMore);
+    window.addEventListener('scroll', this.__scrollCbk);
+  },
+  beforeDestroy () {
+    window.removeEventListener('scroll', this.__scrollCbk);
   },
   methods: {
     allCi() {
@@ -332,13 +299,7 @@ export default {
         }
       });
     },
-    cli(val) {
-      this.sort = val;
-    },
-    chaxun() {
-      this.btn();
-    },
-    async getSearchEs() {
+    async getSearchFilters() {
       const getSearchEsInfo = (await this.$api.article.getSearchEs()).data;
       if (getSearchEsInfo.code == 0) {
         this.fileList = getSearchEsInfo.date.schoolList;
@@ -357,16 +318,21 @@ export default {
         this.fileList1 = this.somecity;
       }
     },
-    async btn() {
+    queryFirstPage () {
+      this.queryList(1);
+    },
+    queryMore () {
+      this.queryList(this.page + 1);
+    },
+    async queryList(page = 1) {
       this.fileList.forEach(item => {
         if (item.schoolName == this.schVal) {
           this.schoolId = item.id;
         }
       });
       this.zulxs = this.zulx;
-
-      const vr = {
-        page: 1,
+      const params = {
+        page,
         pageSize: 10,
         province: this.quyu,
         schoolId: this.schoolId,
@@ -376,37 +342,13 @@ export default {
         search: this.input,
         sort: this.sort
       };
-      const getRentingListInfo = (await this.$api.article.getRentingList(vr))
+      const { code, data: { rentingPoLists, maxPage } } = (await this.$api.article.getRentingList(params))
         .data;
-      if (getRentingListInfo.code == 0) {
-        this.ListNoLis = getRentingListInfo.data.rentingPoLists;
-        this.page = 1;
-      }
-    },
-    async btns() {
-      this.fileList.forEach(item => {
-        if (item.schoolName == this.schVal) {
-          this.schoolId = item.id;
-        }
-      });
-      const vr = {
-        page: this.page,
-        pageSize: 10,
-        province: this.quyu,
-        schoolId: this.schoolId,
-        minPrice: this.jiageV[0],
-        maxPrice: this.jiageV[1] != this.min ? this.jiageV[1] : this.max,
-        rentType: this.zulx,
-        search: this.input,
-        sort: this.sort
-      };
-      const getRentingListInfo = (await this.$api.article.getRentingList(vr))
-        .data;
-      if (getRentingListInfo.code == 0) {
-        getRentingListInfo.data.rentingPoLists.forEach(item => {
-          this.ListNoLis.push(item);
-        });
-      }
+      if (code !== 0) return;
+      this.rentingItems = page === 1 ?
+        rentingPoLists : [...this.rentingItems, ...rentingPoLists];
+      this.maxPage = maxPage || 1;
+      this.page = page;
     }
   }
 };
@@ -417,7 +359,7 @@ export default {
   color: #000 !important;
 }
 .rentHouseList {
-  .rentHouseTop {
+  .rent-house-top {
     .headline {
       padding-top: 20px;
       padding-bottom: 10px;
@@ -457,14 +399,21 @@ export default {
         }
       }
     }
-    .titleLine {
-      font-size: 32px;
-      color: #000;
-      font-weight: 600;
+    .iframe-wrapper {
       padding: 25px 0;
     }
+    .list-title {
+      display: flex;
+      align-items: center;
+      margin-bottom: 25px;
+      .title {
+        margin-right: 10px;
+        font-size: 32px;
+        color: #000;
+        font-weight: 600;
+      }
+    }
     .ListNo {
-      margin-top: 10px;
       overflow: hidden;
       margin-bottom: 10px;
       .img {
@@ -475,7 +424,7 @@ export default {
       .centerL {
         float: left;
         margin-left: 10px;
-        width: 318px;
+        width: 450px;
         .layX {
           display: inline-block;
           font-size: 12px;
@@ -488,39 +437,41 @@ export default {
         }
         .layY {
           display: block;
-          margin-top: 26px;
+          margin-top: 8px;
           font-size: 18px;
           color: #000;
           font-weight: 600;
-          height: 48px;
+          height: 76px;
           overflow: hidden;
           display: -webkit-box; //将对象作为弹性伸缩盒子模型显示;
           text-overflow: ellipsis; //溢出部分用省略号代替
-          -webkit-line-clamp: 2; //设置文本显示两行
+          -webkit-line-clamp: 3; //设置文本显示两行
           white-space: normal;
           -webkit-box-orient: vertical;
         }
         .layZ {
           display: block;
-          margin-top: 16px;
+          margin-top: 8px;
           font-size: 16px;
           color: #b5b5b5;
           font-weight: 400;
         }
       }
       .centerR {
-        float: right;
-        // width:450px;
         text-align: right;
+        display: flex;
+        flex-direction: column;
+        height: 174px;
+        padding: 50px 0 10px;
+        box-sizing: border-box;
         .prise {
-          float: right;
+          flex: 1;
           color: red;
           font-size: 28px;
           font-weight: 600;
         }
         .economics {
-          float: right;
-          margin-top: 80px;
+          flex: unset;
           .imgs {
             width: 40px;
             margin-right: 10px;
@@ -555,6 +506,24 @@ export default {
         }
       }
     }
+  }
+}
+.rhl-price-sort-popup-text {
+  padding-top: 5px;
+  cursor: pointer;
+  width: 133px;
+  text-align: center;
+  border-bottom: 1px solid #979797;
+}
+.rhl-price-sort-popup-trigger {
+  display: flex;
+  align-items: center;
+  background-color:#E9E9E9;
+  padding: 4px 8px;
+  font-size: 16px;
+  span {
+    display: inline-block;
+    margin-left: 30px;
   }
 }
 </style>

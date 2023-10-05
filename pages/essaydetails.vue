@@ -164,11 +164,9 @@ export default {
         //console.log(this.outcome)
       }
     },
-    async getRight(pares) {
-      const getRigthLitInfo = (await this.$api.article.getRigthLit(pares)).data;
-      //console.log(getRigthLitInfo.data);
+    async getRight() {
+      const getRigthLitInfo = (await this.$api.article.WikigetRigth()).data;
       if (getRigthLitInfo.code == 0) {
-        // //console.log(getRigthLitInfo.data.typeList)
         this.category = getRigthLitInfo.data.typeList;
         this.abc = getRigthLitInfo.data.latelyList;
       }

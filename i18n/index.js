@@ -18,7 +18,7 @@ export default {
   detectBrowserLanguage: {
     useCookie: true,
     cookieKey: "lang",
-    alwaysRedirect: true
+    alwaysRedirect: false
   },
   vueI18n: {
     fallbackLocale: "zh",
