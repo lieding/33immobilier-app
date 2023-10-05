@@ -272,8 +272,8 @@
 </template>
 <script>
 import rem from "~/common/rem.js";
-import Header from "~/components/mindex/header.vue";
-import Footer from "~/components/mindex/footer.vue";
+import Header from "~components/mindex/header.vue";
+import Footer from "~components/mindex/footer.vue";
 var echarts = require("echarts");
 export default {
   components: {

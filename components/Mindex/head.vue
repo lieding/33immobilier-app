@@ -77,16 +77,6 @@
 <script>
 export default {
   props: ["title"],
-  name: "",
-  data() {
-    return {};
-  },
-  mounted() {},
-  created() {
-    // if (localStorage.lang) {
-    //   this.$i18n.locale = localStorage.lang;
-    // }
-  },
   methods: {
     changeLocale(locale) {
       this.$i18n.setLocaleCookie(locale);

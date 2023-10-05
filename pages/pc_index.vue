@@ -271,8 +271,8 @@
 
 <script>
 // 引入
-import foots from "~/components/pcindex/foot.vue";
-import headers from "~/components/pcindex/header.vue";
+import foots from "~components/pcindex/foot.vue";
+import headers from "~components/pcindex/header.vue";
 // 引入图片
 import searchBtPn from "~/assets/image/searchBut.png";
 import logoT from "~/assets/image/logoT.png";

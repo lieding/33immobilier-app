@@ -59,8 +59,8 @@
 </template>
 
 <script>
-import headers from "~/components/pcindex/header.vue";
-import foots from "~/components/pcindex/foot.vue";
+import headers from "~components/pcindex/header.vue";
+import foots from "~components/pcindex/foot.vue";
 
 export default {
   name: "concentUs",

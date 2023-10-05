@@ -79,7 +79,7 @@ export default {
      ** You can extend webpack config here
      */
     extend(config, ctx) {
-      config.resolve.alias['~'] = resolve(__dirname, './');
+      config.resolve.alias['~components'] = resolve(__dirname, './components');
     }
   },
   server: {

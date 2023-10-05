@@ -1,6 +1,5 @@
 <template>
   <div class="promoteList">
-    <!-- <headers :class="{colors:flag}"></headers> -->
     <div>
       <div class="loans">
         <div class="loansTop">{{ $t("message.global.calculation") }}</div>
@@ -166,21 +165,14 @@
         </div>
       </div>
     </div>
-    <!-- <foots/> -->
   </div>
 </template>
 
 <script>
-import headers from "~/components/pcindex/header.vue";
-import foots from "~/components/pcindex/foot.vue";
 var echarts = require("echarts");
 
 export default {
   name: "promoteList",
-  components: {
-    headers,
-    foots
-  },
   data() {
     return {
       reckenList: "",

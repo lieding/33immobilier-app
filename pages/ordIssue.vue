@@ -669,8 +669,8 @@
 <script>
 import rem from "~/common/rem.js";
 import base from "~/api/base"; // 导入接口域名列表
-import Header from "~/components/mindex/head.vue";
-import Footer from "~/components/mindex/footer.vue";
+import Header from "~components/mindex/head.vue";
+import Footer from "~components/mindex/footer.vue";
 import axios from "~/common/http";
 import VueGmaps from "vue-gmaps";
 export default {

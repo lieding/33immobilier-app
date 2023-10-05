@@ -80,18 +80,8 @@
 <script>
 export default {
   props: ["promoteList", "type"],
-  data() {
-    return {
-      //  promoteList:this.props.promoteList,//新房
-      //  type :this.props.type,
-    };
-  },
-  mounted() {
-    //console.log(this.props)
-  },
   methods: {
     Onclick(val) {
-      //console.log(this.type,this.id)
       if (this.type == "new") {
         this.$router.push({
           path: "/Details",
