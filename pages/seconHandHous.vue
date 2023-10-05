@@ -438,9 +438,9 @@
 </template>
 
 <script>
-import headers from "~/components/pcIndex/header.vue";
-import foots from "~/components/pcIndex/foot.vue";
-import jisuan from "~/components/pcIndex/promoteList";
+import headers from "~/components/pcindex/header.vue";
+import foots from "~/components/pcindex/foot.vue";
+import jisuan from "~/components/pcindex/promoteList";
 
 import phone from "~/assets/image/phone.png";
 // import proVip from '../assets/image/proVip.png'

@@ -248,9 +248,9 @@
 </template>
 <script>
 import rem from "~/common/rem.js";
-import List from '../components/mIndex/list.vue'
-import Header from '../components/mIndex/head.vue'
-import Footer from '../components/mIndex/footer.vue';
+import List from '../components/mindex/list.vue'
+import Header from '../components/mindex/head.vue'
+import Footer from '../components/mindex/footer.vue';
 import { BASE_API } from '../api'
 
 export default {

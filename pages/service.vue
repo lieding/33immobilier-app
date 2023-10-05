@@ -88,8 +88,8 @@
 </template>
 <script>
 import rem from "~/common/rem.js";
-import Header from "~/components/mIndex/head.vue";
-import Footer from "~/components/mIndex/footer.vue";
+import Header from "~/components/mindex/head.vue";
+import Footer from "~/components/mindex/footer.vue";
 export default {
   middleware: "responsive",
   components: {

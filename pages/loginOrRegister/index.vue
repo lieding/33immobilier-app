@@ -57,8 +57,8 @@
 </template>
 
 <script>
-import Headers from "~/components/pcIndex/header.vue";
-import Foots from "~/components/pcIndex/foot.vue";
+import Headers from "~/components/pcindex/header.vue";
+import Foots from "~/components/pcindex/foot.vue";
 import { initialize as initializeGoogleAccount, renderButton } from './helper'
 import { checkValidMail } from '~/utils/validate'
 import { createNamespacedHelpers } from 'vuex'

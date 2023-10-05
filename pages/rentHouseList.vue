@@ -178,8 +178,8 @@
 </template>
 
 <script>
-import headers from "~/components/pcIndex/header.vue";
-import foots from "~/components/pcIndex/foot.vue";
+import headers from "~/components/pcindex/header.vue";
+import foots from "~/components/pcindex/foot.vue";
 import titles from "~/assets/image/titles.jpg";
 import goDown from "~/assets/image/goDown.png";
 import sort from "~/assets/image/sort.png";

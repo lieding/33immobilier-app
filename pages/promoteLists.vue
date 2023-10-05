@@ -10,10 +10,10 @@
   </div>
 </template>
 <script>
-import Header from "~/components/pcIndex/header.vue";
-import Footer from "~/components/pcIndex/foot.vue";
-import promoteLists from "~/components/pcIndex/promoteList.vue";
-// import Footer from "~/components/mIndex/footer.vue";
+import Header from "~/components/pcindex/header.vue";
+import Footer from "~/components/pcindex/foot.vue";
+import promoteLists from "~/components/pcindex/promoteList.vue";
+// import Footer from "~/components/mindex/footer.vue";
 // var echarts = require("echarts");
 export default {
   middleware: "responsive",
