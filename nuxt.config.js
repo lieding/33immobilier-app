@@ -1,4 +1,5 @@
 import I18N from "./i18n";
+const { resolve } = require('path')
 
 export default {
   mode: "universal",
@@ -77,7 +78,9 @@ export default {
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) {}
+    extend(config, ctx) {
+      config.resolve.alias['~'] = resolve(__dirname, './');
+    }
   },
   server: {
     port: process.env.PORT || 3000,
