@@ -7,21 +7,9 @@
           : $t('message.global.second-hand')
       "
     />
-    <!-- '$t('message.global.homeList)':'second-hand' -->
-    <div :class="house == 'new' ? 'select' : 'section'">
+    <div :class="isNew ? 'select' : 'section'">
       <!-- 区域 -->
-      <!-- <van-dropdown-menu  class="opn" >
-               <van-dropdown-item :title='$t("message.global.area")' ref="item">
-                     <van-tree-select
-                     :items="province"
-                     :active-id.sync="activeId"
-                      @navclick="onNavClick"
-                      @itemclick="onItemClick"
-                     :main-active-index.sync="activeIndex"
-                     />
-               </van-dropdown-item>
-      </van-dropdown-menu>-->
-      <van-dropdown-menu class="opn" v-if="house == 'new'">
+      <van-dropdown-menu class="opn" v-if="isNew">
         <van-dropdown-item
           v-model="pro"
           :options="provinces"
@@ -29,7 +17,7 @@
           @change="onquyu"
         />
       </van-dropdown-menu>
-      <van-dropdown-menu class="opn" v-if="house == 'second_hand'">
+      <van-dropdown-menu class="opn" v-if="isSecondHand">
         <van-dropdown-item
           v-model="pro"
           :options="provinceList"
@@ -38,8 +26,7 @@
         />
       </van-dropdown-menu>
       <!-- 价格 -->
-
-      <van-dropdown-menu v-if="house == 'new'">
+      <van-dropdown-menu v-if="isNew">
         <van-dropdown-item
           class="asd"
           :title="$t('message.global.price')"
@@ -61,8 +48,7 @@
           }}</van-button>
         </van-dropdown-item>
       </van-dropdown-menu>
-
-      <van-dropdown-menu v-if="house == 'second_hand'">
+      <van-dropdown-menu v-if="isSecondHand">
         <van-dropdown-item
           class="asd"
           :title="$t('message.global.price')"
@@ -85,7 +71,7 @@
         </van-dropdown-item>
       </van-dropdown-menu>
       <!-- 面积 -->
-      <van-dropdown-menu v-if="house == 'second_hand'">
+      <van-dropdown-menu v-if="isSecondHand">
         <van-dropdown-item
           class="asd"
           :title="$t('message.global.proportion')"
@@ -96,22 +82,19 @@
             {{ maxArea }}m²
           </div>
           <el-slider
-            v-model="Acreage"
+            v-model="acreage"
             range
             :max="maxAcreage"
             :min="minAcreage"
             @change="onAcreage"
           ></el-slider>
-          <van-button type="info" @click="Onpir" class="btn_i">{{
-            $t("message.global.sure")
-          }}</van-button>
+          <van-button type="info" @click="Onpir" class="btn_i">
+            {{ $t("message.global.sure") }}
+          </van-button>
         </van-dropdown-item>
       </van-dropdown-menu>
       <!-- 交房时间 -->
-      <!-- <van-dropdown-menu v-if="house == 'new'">
-               <van-dropdown-item v-model="delivery" :options='$t("message.index.time")' :title='$t("message.global.completionDate")' @change="onList"/>
-      </van-dropdown-menu>-->
-      <van-dropdown-menu v-if="house == 'new'">
+      <van-dropdown-menu v-if="isNew">
         <van-dropdown-item
           v-model="delivery"
           :options="$t('message.index.option4')"
@@ -119,9 +102,8 @@
           @change="OnTime"
         />
       </van-dropdown-menu>
-      <!-- 居室 -->
-
-      <van-dropdown-menu class="opn" v-if="house == 'new'">
+      <!-- 新房居室 -->
+      <van-dropdown-menu class="opn" v-if="isNew">
         <van-dropdown-item
           class="asd"
           :title="$t('message.global.habitable')"
@@ -143,8 +125,8 @@
           }}</van-button>
         </van-dropdown-item>
       </van-dropdown-menu>
-      <!-- 居室 -->
-      <van-dropdown-menu class="opn" v-if="house == 'second_hand'">
+      <!-- 二手房居室 -->
+      <van-dropdown-menu class="opn" v-if="isSecondHand">
         <van-dropdown-item
           v-model="LivingRoomNum"
           :options="$t('message.index.option2')"
@@ -153,7 +135,7 @@
         />
       </van-dropdown-menu>
       <!-- 卧室 -->
-      <van-dropdown-menu class="opn" v-if="house == 'second_hand'">
+      <van-dropdown-menu class="opn" v-if="isSecondHand">
         <van-dropdown-item
           v-model="bedRoomNum"
           :options="$t('message.index.option3')"
@@ -163,35 +145,11 @@
       </van-dropdown-menu>
     </div>
     <div class="map">
-      <iframe
-        :src="latestApi + '/map/newMap'"
-        frameborder="0"
-        v-if="house == 'new'"
-      ></iframe>
-      <iframe
-        :src="latestApi + '/map/homesMap'"
-        frameborder="0"
-        v-if="house == 'second_hand'"
-      ></iframe>
-      <!-- <mapBox/> -->
+      <iframe :src="iframeSrcUrl" frameborder="0" />
     </div>
-    <div class="sort_title" v-if="house == 'second_hand'">
+    <div class="sort-title" v-if="isSecondHand">
       <p class="second-hand">{{ $t("message.global.ordHouseapartment") }}</p>
-
       <div class="sorting">
-        <!-- <el-popover
-               placement="bottom"
-               width="100">
-               <div class="rank" >
-                   <p @click="OnRank(1)" >{{$t("message.global.lowToHigh")}}</p>
-                   <p @click="OnRank(2)">{{$t("message.global.highToLow")}}</p>
-                </div>
-                  <span slot="reference">
-                     <img src="~/assets/image/sorting.png" alt="" class="sortimage">
-                        {{$t("message.global.paixu")}}
-                     <img src="~/assets/image/src.png" alt="">
-                  </span>
-        </el-popover>-->
         <el-popover placement="bottom" width="100" v-model="visible">
           <div class="rank">
             <p @click="OnRank(1), (visible = false)">
@@ -206,66 +164,54 @@
             {{ $t("message.global.paixu") }}
             <img src="~/assets/image/src.png" alt />
           </span>
-          <!-- <div style="text-align: right; margin: 0">
-                  <el-button size="mini" type="text" @click="visible = false">取消</el-button>
-                  <el-button type="primary" size="mini" @click="visible = false">确定</el-button>
-          </div>-->
         </el-popover>
       </div>
     </div>
-
-    <!-- <infinite-loading  @refresh="onRefresh" v-model="isLoading"> -->
-    <!-- <van-pull-refresh v-model="isLoading" @refresh="onRefresh"> -->
-    <ul class="new_list">
-      <router-link
-        :to="{ path: '/Details', query: { id: item.id } }"
-        v-for="(item, index) in HousingList"
-        :key="index"
-      >
-        <li class="list_li" v-if="house == 'new'">
-          <diV class="flex">
-            <div class="img">
-              <img :src="item.showUrl" class="new_img" v-if="house == 'new'" />
-              <span class="year" v-if="item.expressing">{{
-                item.expressing
-              }}</span>
-              <span class="num" v-if="item.province">{{ item.province }}</span>
-              <!--<div class="image" >
-                      <img :src="item.developersPic" alt="" class="list-img"  >
-                      <span class="list-font">{{item.developers}}</span>
-              </div>-->
+    <van-list
+      v-model="isLoading"
+      :finished="finished"
+      :finished-text="$t('message.global.noMore')"
+      @load="queryList(false)"
+      class="new-list"
+    >
+      <template v-if="isNew">
+        <router-link
+          :to="{ path: '/Details', query: { id: item.id } }"
+          v-for="(item, index) in newHousingList"
+          :key="index"
+        >
+          <li class="list_li">
+            <div class="flex">
+              <div class="img">
+                <img :src="item.showUrl" class="new_img" v-if="house == 'new'" />
+                <span class="year" v-if="item.expressing">{{
+                  item.expressing
+                }}</span>
+                <span class="num" v-if="item.province">{{ item.province }}</span>
+              </div>
+              <div class="text">
+                <p class="text_title">{{ item.estate }}</p>
+                <p class="sort">{{ item.province }}/{{ item.city }}</p>
+                <p class="sort">
+                  {{ item.minHall }} pièces - {{ item.maxHall }} pièces
+                </p>
+                <p class="money">
+                  {{ item.lowPrice }}{{ $t("message.global.rise") }} -
+                  {{ item.maxPrice }}{{ $t("message.global.rise") }}
+                </p>
+              </div>
             </div>
-            <div class="text">
-              <p class="text_title">{{ item.estate }}</p>
-              <p class="sort">{{ item.province }}/{{ item.city }}</p>
-              <p class="sort">
-                {{ item.minHall }} pièces - {{ item.maxHall }} pièces
-              </p>
-              <!-- <p class="font">
-                           <span class="itemize">低TVA</span>
-                           <span class="itemize">低TVA</span>
-                           <span class="itemize">低TVA</span>
-              </p>-->
-              <p class="money">
-                {{ item.lowPrice }}{{ $t("message.global.rise") }} -
-                {{ item.maxPrice }}{{ $t("message.global.rise") }}
-              </p>
-            </div>
-          </diV>
-          <div>
-            <!-- <p class="font" >
-                          <span class="itemize" v-for="(items,index) in item.tags" :key="index">{{items}}</span>
-            </p>-->
-          </div>
-        </li>
-      </router-link>
-      <router-link
+          </li>
+        </router-link>
+      </template>
+      <template v-if="isSecondHand">
+        <router-link
         :to="{ path: '/ordDetails', query: { id: item.id } }"
-        v-for="(item, index) in HousList"
+        v-for="(item, index) in secondHousingList"
         :key="index"
       >
-        <li class="list_li" v-if="house == 'second_hand'">
-          <diV class="flex">
+        <li class="list_li">
+          <div class="flex">
             <div class="img">
               <img :src="item.showUrl" class="new_img" />
               <span class="year">{{
@@ -282,7 +228,6 @@
             <div class="text">
               <p class="text_title">{{ item.title }}</p>
               <p class="sort">{{ item.bigProvince }}/{{ item.province }}</p>
-              <!-- <p class="sort">{{item.roomsNum}} {{$t("message.global.P")}} - {{item.bedroomNum}}{{$t("message.global.CH")}} </p> -->
               <p class="money">
                 {{ item.total }}{{ $t("message.global.rise") }}
                 <span class="unit"
@@ -301,27 +246,20 @@
                 >
               </p>
             </div>
-          </diV>
-          <!-- <div>
-                  <div class="image" >
-                  </div>
-                  
-          </div>-->
+          </div>
         </li>
       </router-link>
+      </template>
       <hr class="hr" />
-    </ul>
-    <!-- </infinite-loading> -->
-    <div style="height:.15rem">
-      <Footer />
-    </div>
+    </van-list>
+    <Footer />
   </div>
 </template>
 <script>
 import rem from "~/common/rem.js";
 import Header from "~/components/mIndex/head.vue";
 import Footer from "~/components/mIndex/footer.vue";
-import mapBox from "~/components/mIndex/mapBox.vue";
+import MapBox from "~/components/mIndex/mapBox.vue";
 import { BASE_API } from "~/api";
 import { fmoney } from '../utils';
 
@@ -331,7 +269,7 @@ export default {
   components: {
     Header,
     Footer,
-    mapBox
+    MapBox
   },
   head() {
     if (this.house == "new") {
@@ -369,8 +307,6 @@ export default {
   },
   data() {
     return {
-      fullscreenLoading: false,
-      isLoadingNew: false,
       visible: false,
       activeId: 1,
       activeIndex: 0,
@@ -378,34 +314,34 @@ export default {
       ipt: this.$route.query.ipt, //获取搜索的值
       minroom: [0, 1], //居室
       value: [4, 8], //'价格'
-      Acreage: [0, 1], //面积
+      acreage: [0, 1], //面积
       bedroom: [0, 1], //卧室
-      minbedroom: "", //最小卧室数量
-      maxbedroom: "", //最大卧室数量
-      minArea: "", //最小面积
+      minbedroom: 0, //最小卧室数量
+      maxbedroom: 0, //最大卧室数量
+      minArea: 0, //最小面积
       display: false,
-      maxArea: "", //最大面积
-      minPrice: "", //价格
-      minCost: "", //最小价格上传
-      maxCost: "", //最大价格上传
-      maxPrice: "", //最大价格
-      minAcreage: "", //最小面积
-      maxAcreage: "", //最大面积
+      maxArea: 0, //最大面积
+      minPrice: 0, //价格
+      minCost: 0, //最小价格上传
+      maxCost: 0, //最大价格上传
+      maxPrice: 0, //最大价格
+      minAcreage: 0, //最小面积
+      maxAcreage: 0, //最大面积
       minroomHall: "", //最小房间数
       maxroomHall: "", //最大房间数
       delivery: "", //交房时间
       page: 1, //页数
       isLoading: false, //下拉刷新
-      HousingList: [], //新房
-      HousList: [],
-      Maxpage: "1", //新房的最大页数
+      newHousingList: [], //新房
+      secondHousingList: [],
+      maxPage: "1", //新房的最大页数
       provinceList: [], //大小省
       provinces: [],
       pro: "", //小省
       bigProvince: "", //大省
       room: "", //房屋
-      minHall: "", //最大居室
-      maxHall: "", //最大居室
+      minHall: 0, //最大居室
+      maxHall: 0, //最大居室
       sort: 0,
       bedRoomNum: "",
       switch1: false,
@@ -414,243 +350,153 @@ export default {
     };
   },
   watch: {
-    $route(to, from) {
+    $route() {
       this.house = this.$route.query.house;
-      this.getList();
+      this.initParamsAndSearch();
     }
   },
-
+  computed: {
+    isNew () {
+      return this.house === 'new';
+    },
+    isSecondHand () {
+      return this.house === 'second_hand';
+    },
+    iframeSrcUrl () {
+      return this.latestApi + (this.isNew ? '/map/newMap' : '/map/homesMap');
+    },
+    finished () {
+      return this.page >= this.maxPage;
+    }
+  },
   mounted() {
     rem();
-    this.page = "1";
-    this.getList();
+    this.initParamsAndSearch();
   },
   created() {
     this.fmoney = fmoney;
-    if (process.client) {
-      const that = this;
-      window.onscroll = function() {
-        if (that.isLoadingNew == true) {
-          return;
-        }
-        var scrollTop =
-          document.documentElement.scrollTop || document.body.scrollTop;
-        // 页面高度
-        var windowHeight =
-          document.documentElement.clientHeight || document.body.clientHeight;
-        // 总共的高度
-        var scrollHeight =
-          document.documentElement.scrollHeight || document.body.scrollHeight;
-        if (
-          scrollTop + windowHeight <= scrollHeight + 10 &&
-          scrollTop + windowHeight >= scrollHeight - 10
-        ) {
-          that.isLoadingNew = true;
-          if (that.page < that.Maxpage) {
-            that.page++;
-            that.onList();
-          }
-        }
-      };
-      this.$api.article.getRegionalNew().then(res => {
-        res.data.data.spreads.forEach((item, index) => {
-          let obj = {
-            text: "",
-            value: ""
-          };
-          (obj.text = item), (obj.value = index), this.provinces.push(obj);
-        });
-      });
-      this.latestApi = BASE_API.sq;
-    }
+    this.latestApi = BASE_API.sq;
+    this.init();
   },
   methods: {
-    openFullScreen() {
-      this.fullscreenLoading = true;
-    },
-    openFullScreen() {
-      const loading = this.$loading({
-        spinner: "el-icon-loading",
-        customClass: "rgba(0, 0, 0, 0.8)",
-        lock: true,
-        text: "Loding..."
-      });
-      setTimeout(() => {
-        loading.close();
-      }, 500);
-    },
     onquyu(value) {
-      if (value != "") {
-        this.provinces.forEach((item, index) => {
-          if (value == item.value) {
-            this.pro = item.text;
-          }
-        });
-      } else {
-        this.pro = "";
-      }
-      this.page = "1";
-      (this.HousList = []),
-        (this.HousingList = []), //新房
-        this.onList();
+      this.pro = this.provinces?.find(item => item.value === value)?.text || '';
+      this.queryList();
     },
     onmenu(value) {
-      if (value != "") {
-        this.provinceList.forEach((item, index) => {
-          if (value == item.value) {
-            this.pro = item.text;
-          }
-        });
-      } else {
-        this.pro = "";
-      }
-      this.page = "1";
-      (this.HousList = []),
-        (this.HousingList = []), //新房
-        this.onList();
+      this.pro = this.provinceList?.find(item => item.value === value)?.text || '';
+      this.queryList();
     },
-    getList() {
-      let params = {};
-      //  获取大小省
-      // this.$api.article.getAddress(params).then(res => {
-      //    this.province = res.data.data
-      //    //console.log(this.province)
-      // });
+    async initParamsAndSearch() {
       //  获取新房搜索
+      const queryFun = this.isNew ?
+        this.$api.article.NewgetSearch : this.$api.article.OrdSearch;
+      const { code, data, date } = (await queryFun()).data;
+      if (code) return;
+      let {
+        minPrice, maxPrice,
+        minAcreage, maxAcreage,
+        minHall, maxHall,
+      } = data || date;
+      minPrice = Number(minPrice), maxPrice = Number(maxPrice);
+      minAcreage = Number(minAcreage), maxAcreage = Number(maxAcreage);
+      this.minPrice = minPrice, this.maxPrice = maxPrice;
+      this.minAcreage = minAcreage, this.maxAcreage = maxAcreage;
+      this.value = [ minPrice, maxPrice ];
+      this.minCost = minPrice, this.maxCost = maxPrice;
       if (this.house == "new") {
-        this.$api.article.NewgetSearch(params).then(res => {
-          this.minPrice = Number(res.data.date.minPrice);
-          this.value[0] = this.minPrice;
-          this.maxPrice = Number(res.data.date.maxPrice);
-          this.value[1] = this.maxPrice;
-          this.minAcreage = Number(res.data.date.minAcreage);
-          this.maxAcreage = Number(res.data.date.maxAcreage);
-
-          // this.minArea[0] = this.minAcreage
-          // this.minArea[1] = this.maxAcreage
-          this.minHall = Number(res.data.date.minHall);
-          this.minroom[0] = this.minHall;
-          this.maxHall = Number(res.data.date.maxHall);
-          this.minroom[1] = this.maxHall;
-          // this.minroomHall= Number(res.data.date.minHall)
-          // this.maxroomHall= Number(res.data.date.maxHall)
-          this.minCost = Number(res.data.date.minPrice);
-          this.maxCost = Number(res.data.date.maxPrice);
-          this.onList();
-        });
+        minHall = Number(minHall), maxHall = Number(maxHall);
+        this.minHall = minHall, this.maxHall = maxHall;
+        this.minroom= [ minHall, maxHall ];
       } else {
-        this.$api.article.OrdSearch(params).then(res => {
-          this.minPrice = Number(res.data.date.minPrice);
-          this.maxPrice = Number(res.data.date.maxPrice);
-          this.value[0] = this.minPrice;
-          this.value[1] = this.maxPrice;
-          this.minAcreage = Number(res.data.date.minAcreage);
-          this.maxAcreage = Number(res.data.date.maxAcreage);
-          this.Acreage[0] = this.minAcreage;
-          this.Acreage[1] = this.maxAcreage;
-          this.minCost = Number(res.data.date.minPrice);
-          this.maxCost = Number(res.data.date.maxPrice);
-          this.minArea = Number(res.data.date.minAcreage);
-          this.maxArea = Number(res.data.date.maxAcreage);
-          this.onList();
-        });
+        this.acreage = [ minAcreage, maxAcreage ];
+        this.minArea = minAcreage, this.maxArea = maxAcreage;
       }
-    },
-    onclick() {
-      this.display = !this.display;
+      this.queryList();
     },
     OnRank(val) {
       this.sort = val;
       this.display = false;
-      this.page = 1;
-      this.HousingList = [];
-      this.HousList = [];
-      this.onList();
-    },
-    handleCommand() {
-      this.$message("click on item " + command);
+      this.queryList();
     },
     onroomNum() {
-      this.page = 1;
-      this.HousingList = [];
-      this.HousList = [];
-      this.onList();
+      this.queryList();
     },
     //  面积
     onAcreage(value) {
-      //  this.$toast('当前值：最小值' + value[0] + ' 最大值' + value[1]);
       this.minArea = value[0];
       this.maxArea = value[1];
     },
     //  价格弹框
     onCost(value) {
-      // this.$toast('当前值：最小值' + value[0] + ' 最大值' + value[1]);
       this.minCost = value[0];
       this.maxCost = value[1];
     },
     Onprice() {
-      this.page = 1;
       this.$refs.item2.toggle();
       this.$refs.item3.toggle();
-      this.HousingList = [];
-      this.HousList = [];
-      this.onList();
+      this.queryList();
     },
     OnTime() {
-      this.page = 1;
-      this.HousingList = [];
-      this.HousList = [];
-      this.onList();
+      this.queryList();
     },
     Onpir() {
-      this.page = 1;
       this.$refs.item5.toggle();
       this.$refs.item6.toggle();
-      this.HousingList = [];
-      this.HousList = [];
-      this.onList();
+      this.queryList();
     },
     //
     onroom(value) {
       this.minroomHall = value[0];
       this.maxroomHall = value[1];
     },
+    init () {
+      this.$api.article.getRegionalNew().then(res => {
+        const { data: { spreads }, code } = res.data;
+        if (code == 0) {
+          this.provinces = spreads.map((text, value) => ({ text, value }));
+        }
+      });
+    },
     // 列表
-    onList() {
-      if (this.house == "new") {
-        this.openFullScreen();
-        let params = {
-          page: this.page,
-          pageSize: "10",
-          search: this.ipt,
-          bigProvince: this.bigProvince,
-          Province: this.pro,
-          lowPrice: this.minCost,
-          maxPrice: this.maxCost,
+    queryList(initial = true) {
+      let page = this.page;
+      if (initial) {
+        page = 1;
+        this.secondHousingList = [];
+        this.newHousingList = []; //新房
+      } else {
+        page++;
+      }
+      let params = {
+        page,
+        pageSize: 10,
+        search: this.ipt,
+        bigProvince: this.bigProvince,
+        province: this.pro,
+        lowPrice: this.minCost,
+        maxPrice: this.maxCost,
+      };
+      this.isLoading = true;
+      if (this.isNew) {
+        params = {
+          ...params,
           expressing: this.delivery,
           minHall: this.minroomHall,
           maxHall: this.maxroomHall
         };
-        this.$api.article.getList(params).then(res => {
-          this.fullscreenLoading = false;
-          this.isLoadingNew = false;
-          if (res.data.data.newHousingList.length != 0) {
-            this.HousingList.push(...res.data.data.newHousingList); //新房
-          } else {
-            this.HousingList = res.data.data.newHousingList;
-          }
-
-          this.Maxpage = res.data.data.maxPage; //最大值
-        });
-      } else if (this.house == "second_hand") {
-        this.openFullScreen();
-        let params = {
-          page: this.page,
-          pageSize: "10",
+        this.$api.article.getListnew(params).then(res => {
+          const { code, data: { newHousingList, maxPage } } = res.data;
+          if (code) return;
+          this.newHousingList = initial ? newHousingList :
+            [...this.newHousingList, ...newHousingList];
+          this.maxPage = maxPage;
+          this.page = params.page;
+        }).finally(() => this.isLoading = false);
+      } else if (this.isSecondHand) {
+        params = {
+          ...params,
           sort: this.sort,
-          bigProvince: this.bigProvince,
-          Province: this.pro,
-          search: this.ipt,
           lowestHousePrice: this.minCost,
           highestHousePrice: this.maxCost,
           loweAcreage: this.minArea,
@@ -659,21 +505,16 @@ export default {
           bedRoomNum: this.bedRoomNum
         };
         this.$api.article.OrdList(params).then(res => {
-          if (res.data.data.homesList.length != 0) {
-            this.fullscreenLoading = false;
-            this.HousList.push(...res.data.data.homesList); //二手房
-          } else {
-            this.HousList = res.data.date.homesList;
-          }
-
-          this.Maxpage = res.data.data.maxPage; //最大值
-        });
+          const { code, data: { homesList, maxPage } } = res.data;
+          if (code) return;
+          this.secondHousingList = initial ? homesList :
+            [...this.secondHousingList, ...homesList];
+          this.maxPage = maxPage;
+          this.page = params.page;
+        }).finally(() => this.isLoading = false);
       }
     }
   },
-  beforeDestroy () {
-    window.onscroll = undefined;
-  }
 };
 </script>
 <style lang="scss" scoped>
@@ -725,7 +566,7 @@ div {
 .van-pull-refresh__track {
   margin-bottom: 0.25rem;
 }
-.sort_title {
+.sort-title {
   margin: 0.12rem;
   overflow: hidden;
   .second-hand {
@@ -880,7 +721,7 @@ div {
   width: 1.44rem;
   margin-right: 0.11rem;
 }
-.new_list li > div {
+.new-list li > div {
   display: flex;
   //   padding-top: 0.11rem;
 }

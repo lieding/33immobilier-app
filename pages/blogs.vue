@@ -64,35 +64,6 @@
         </li>
         <hr class="hr" />
       </van-list>
-      <!-- <ul class="new-list">
-        <li
-          class="list-li"
-          @click="onclick(item.id)"
-          v-for="(item, index) in agentList"
-          :key="index"
-        >
-          <div class="flex">
-            <div class="img">
-              <img :src="item.picUrl" class="new_img" />
-              <span class="year">{{ item.createTime }}</span>
-            </div>
-            <div class="text">
-              <p class="text_title">{{ item.title }}</p>
-            </div>
-          </diV>
-          <div class="flex_size">
-            <div class="image">
-              <span>{{ $t("message.global.aufaburen") }}:</span>
-              <span style="color:#234CD3">{{ item.nickName }}</span>
-            </div>
-            <p class="font">
-              <span>{{ $t("message.global.category") }} :</span>
-              <span style="color:#234CD3">{{ item.typeName }}</span>
-            </p>
-          </div>
-        </li>
-        <hr class="hr" />
-      </ul> -->
       <Footer />
     </client-only>
   </div>

@@ -38,8 +38,8 @@ const article = {
     });
   },
   // 获取新房搜索
-  NewgetSearch(params) {
-    return axios.get('/newHousing/getSearch', { params });
+  NewgetSearch() {
+    return axios.get('/newHousing/getSearch');
   },
   // 获取新房列表
   getList(params) {
@@ -50,8 +50,8 @@ const article = {
     return axios.get('/newHousing/getInfo', { params });
   },
 
-  OrdSearch(params) {
-    return axios.get('/home/getSearch', { params });
+  OrdSearch() {
+    return axios.get('/home/getSearch');
   },
   // 获取二手房列表
   OrdList(params) {

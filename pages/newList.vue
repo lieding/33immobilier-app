@@ -133,9 +133,10 @@
             </p>
           </div>
         </div>
+        <p v-show="isLoading">Loading...</p>
+        <p v-show="finished">{{ $t('message.global.noMore') }}</p>
       </div>
     </div>
-    <!-- <foots></foots> -->
   </div>
 </template>
 
@@ -149,14 +150,9 @@ import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import pulldow from "~/assets/image/pullDow.png";
 import dingwei from "~/assets/image/dingwei.png";
 import titles from "~/assets/image/titles.jpg";
-import goDown from "~/assets/image/goDown.png";
-import sort from "~/assets/image/sort.png";
 import homeS from "~/assets/image/homeS.png";
-
-// import countries from './data/countries-of-the-world'
 import BaseUrl from "~/api/base.js";
-import { fmoney } from '../utils';
-
+import { fmoney, scrollListener } from '../utils';
 export default {
   name: "newList",
   middleware: "responsive",
@@ -216,42 +212,40 @@ export default {
       maxs: 0,
       newInfoList: [],
       page: 1,
-      maxPage: ""
+      maxPage: 1,
+      isLoading: false
     };
-  },
-  created() {
-    this.iframeSrc = BaseUrl.sq + "/map/newMap";
-    this.fmoney = fmoney;
-    this.getsas();
-    const that = this;
-    this.get();
-    this.getSearchNew();
-    if (process.client) {
-      // window.onscroll = function() {
-      //   var scrollTop =
-      //     document.documentElement.scrollTop || document.body.scrollTop;
-      //   var windowHeight =
-      //     document.documentElement.clientHeight || document.body.clientHeight;
-      //   var scrollHeight =
-      //     document.documentElement.scrollHeight || document.body.scrollHeight;
-      //   if (scrollTop + windowHeight == scrollHeight) {
-      //     that.page++;
-      //     that.getListNews();
-      //   }
-      // };
-    }
   },
   watch: {
     quyuC() {
       this.getListNew();
     },
     value2() {
-      //console.log(this.value2)
       if (this.value2 == 6) {
         this.value2 = "";
       }
       this.getListNew();
     }
+  },
+  computed: {
+    finished () {
+      return this.page >= this.maxPage;
+    }
+  },
+  created() {
+    this.iframeSrc = BaseUrl.sq + "/map/newMap";
+    this.fmoney = fmoney;
+    this.getsas();
+    this.get();
+    this.getSearchNew();
+  },
+  mounted () {
+    this.__scrollCbk = () =>
+      !this.finished && scrollListener(() => this.getListNew(this.page + 1));
+    window.addEventListener('scroll', this.__scrollCbk);
+  },
+  beforeDestroy () {
+    window.removeEventListener('scroll', this.__scrollCbk);
   },
   methods: {
     popUp1() {
@@ -260,13 +254,11 @@ export default {
     },
     popUp2() {
       this.popUpT1 = !this.popUpT1;
-      this.page = 1;
       this.getListNew();
     },
     hides() {
       this.popUpT2 = false;
       this.popUpT1 = false;
-      //console.log(123)
     },
     popUps1() {
       this.popUpT2 = !this.popUpT2;
@@ -313,9 +305,10 @@ export default {
       }
       this.getListNew();
     },
-    async getListNew() {
-      const prams = {
-        page: 1,
+    async getListNew(page = 1) {
+      this.isLoading = true;
+      const params = {
+        page,
         pageSize: 10,
         expressing: this.value2,
         lowPrice: this.values[0] ? this.values[0] : this.min - 1,
@@ -329,49 +322,24 @@ export default {
           this.values2[1] != this.values2[0] ? this.values2[1] : this.maxs + 1,
         search: this.$route.query.val ? this.$route.query.val : ""
       };
-      const getListNewInfo = (await this.$api.article.getListnew(prams)).data;
-      if (getListNewInfo.code == 0) {
-        this.newInfoList = getListNewInfo.data.newHousingList;
-        this.maxPage = getListNewInfo.data.maxPage;
-      }
-    },
-    async getListNews() {
-      const prams = {
-        page: this.page,
-        pageSize: 10,
-        expressing: this.value2,
-        lowPrice: this.values[0] ? this.values[0] : this.marks[0],
-        maxPrice:
-          this.values[1] != this.marks[0]
-            ? this.values[1]
-            : this.marks[100] + 1,
-        province: this.quyuC,
-        minHall: this.values2[0] ? this.values2[0] : this.marks2[0],
-        maxHall:
-          this.values2[1] != this.values2[0] ? this.values2[1] : this.maxs
-      };
-      const getListNewInfo = (await this.$api.article.getListnew(prams)).data;
-      if (getListNewInfo.code == 0) {
-        getListNewInfo.data.newHousingList.forEach(item => {
-          //console.log(item)
-          this.newInfoList.push(item);
-        });
+      try {
+        const getListNewInfo = (await this.$api.article.getListnew(params)).data;
+        if (getListNewInfo.code == 0) {
+          this.newInfoList = getListNewInfo.data.newHousingList;
+          this.maxPage = getListNewInfo.data.maxPage;
+          this.page = params.page;
+        }
+      } finally {
+        this.isLoading = false;
       }
     },
     async getsas() {
       const getCityInfo = (await this.$api.article.getRegionalNew()).data;
       if (getCityInfo.code == 0) {
-        // this.somecity = getCityInfo.data.retract;
-        // this.allcity = getCityInfo.data.spreads;
         this.cities = getCityInfo.data.spreads;
       }
     }
   },
-  beforeDestroy() {
-    if (process.client) {
-      window.onscroll = null;
-    }
-  }
 };
 </script>
 
