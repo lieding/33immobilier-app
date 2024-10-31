@@ -1,7 +1,7 @@
 import I18N from "./i18n";
 
 export default {
-  mode: "universal",
+  // mode: "universal",
   /*
    ** Headers of the page
    */
@@ -29,7 +29,7 @@ export default {
     script: [
       { src: "https://cdn.jsdelivr.net/npm/qrcodejs2@0.0.2/qrcode.min.js" },
       { src: "https://accounts.google.com/gsi/client" },
-      { src: "https://unpkg.com/blueimp-gallery@2.27.0/js/blueimp-gallery.js" }
+      // { src: "https://unpkg.com/blueimp-gallery@2.27.0/js/blueimp-gallery.js" }
     ]
   },
 

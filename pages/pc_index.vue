@@ -20,12 +20,21 @@
         >{{ $t("message.global.tenement") }}</span>
       </div>
       <div class="searchHou">
-        <el-input
+        <el-autocomplete
           v-model="searchVal"
           class="inputElem"
           :placeholder="$t('message.global.Where')"
-        ></el-input>
-        <span class="searchBtn" @click="searchVals">
+          :trigger-on-focus="false"
+          :fetch-suggestions="queryCity"
+        >
+        <template slot-scope="{ item }">
+          <div class="value">
+            <span>{{ item.title }}</span>
+            <span>{{ item.subtitle }}</span>
+          </div>
+        </template>
+        </el-autocomplete>
+        <span class="searchBtn" @click="searchBtnHandler">
           <img
             style="width:26px;height:26px;margin-right:6px;"
             src="~/assets/image/sousuo.png"
@@ -74,14 +83,14 @@
             :class="[index == 3 ? 'marginRigh' : '']"
           >
             <span class="city">
-              <span class="provinces">{{ item.province }}</span>
+              <span class="provinces">{{ item.zip_code }}</span>
               <span style="text-shadow:2px 2px 3px rgba(0,0,0,0.5);">{{
                 item.city
               }}</span>
             </span>
-            <span class="rightFlo">{{ item.expressing }}</span>
-            <img class="newHoImg" :src="item.showUrl" alt />
-            <p class="newHoTit">{{ item.estate }}</p>
+            <span class="rightFlo">{{ item.deliveryQuarter }}</span>
+            <img class="newHoImg" :src="item.images[0]" alt />
+            <p class="newHoTit">{{ item.name }}</p>
             <p class="newHoPr">
               {{ item.huXing }} {{ $t("message.global.pieces") }}
             </p>
@@ -91,7 +100,7 @@
               }}</span>
             </div>
             <div class="newPrice">
-              {{ item.lowPrice }} {{ $t("message.global.rise") }}
+              {{ item.availablePropertiesMinPrice }} {{ $t("message.global.rise") }}
             </div>
           </div>
         </div>
@@ -273,6 +282,7 @@
 // 引入
 import foots from "~/components/pcIndex/foot.vue";
 import headers from "~/components/pcIndex/header.vue";
+import { gmapApiLoader } from '../common/gmapApiLoader';
 // 引入图片
 import searchBtPn from "~/assets/image/searchBut.png";
 import logoT from "~/assets/image/logoT.png";
@@ -337,7 +347,8 @@ export default {
       label: 1, // 标记 选择租房买房
       searchVal: "", // 搜索绑定
       index: 1, // 绑定
-      homePageIn: [] // 主页数据
+      homePageIn: [], // 主页数据,
+      gmapAutocompleteService: null,
     };
   },
   watch: {
@@ -346,13 +357,13 @@ export default {
     }
   },
   methods: {
-    searchVals() {
+    searchBtnHandler() {
       let path = "/newList", val = this.searchVal;
       if (this.label === 2) {
         path = "/anyEs";
       } else if (this.label === 3) {
         path = "/rentHouseList";
-      } 
+      }
       this.$router.push({ path, query: { val } });
     },
     clickChange() {
@@ -364,12 +375,11 @@ export default {
       this.label = val;
     },
     async queryIndexPageInfo() {
-      const getHomePageInfo = (await this.$api.article.getHomePageInfo()).data;
-      if (getHomePageInfo.code == 0) {
-        this.homePageIn = getHomePageInfo.data;
-        if (getHomePageInfo.data.system)
-          this.systemInfo = getHomePageInfo.data.system;
-      }
+      const res = await this.$api.article.getHomePageInfo();
+      const getHomePageInfo = res.data;
+      this.homePageIn = getHomePageInfo;
+      if (getHomePageInfo.system)
+        this.systemInfo = getHomePageInfo.system;
     },
     RoutingHop(smt, flag) {
       this.$router.push({
@@ -378,6 +388,20 @@ export default {
           flag: flag
         }
       });
+    },
+    queryCity(queryString, cb) {
+      if (!queryString) return cb([]);
+      const autocomplete = this.gmapAutocompleteService;
+      if (!autocomplete) return cb([]);
+      autocomplete.getPlacePredictions({
+        input: queryString,
+        componentRestrictions: {
+          country: ['FRA'],
+        },
+        types: ["(cities)"],
+      }).then(console.log)
+      // call callback function to return suggestions
+      // cb(results);
     },
     ByRegion() {
       let params = { homeTrendRegion: this.value };
@@ -446,11 +470,13 @@ export default {
     }
   },
   mounted() {
-    this.$api.article.trendRegion().then(res => {
-      this.returnList = res.data.data.returnList;
-    });
-    this.ByRegion();
+    // this.$api.article.trendRegion().then(res => {
+    //   this.returnList = res.data.data.returnList;
+    // });
+    // this.ByRegion();
     this.queryIndexPageInfo(); // 获取主页信息
+    gmapApiLoader(this._i18n.locale)
+      .then(() => this.gmapAutocompleteService = new window.google.maps.places.AutocompleteService());
   }
 };
 </script>

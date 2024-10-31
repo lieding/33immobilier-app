@@ -305,7 +305,7 @@
                                      v-for="item in orientation"
                                      :key="item.value"
                                      :label="item.label"
-                                     :value="item.value"> 
+                                     :value="item.value">
                   </el-option>-->
                   <el-option
                     value="东"
@@ -672,7 +672,7 @@ import base from "~/api/base"; // 导入接口域名列表
 import Header from "~/components/mIndex/head.vue";
 import Footer from "~/components/mIndex/footer.vue";
 import axios from "~/common/http";
-import VueGmaps from "vue-gmaps";
+
 export default {
   middleware: "responsive",
   components: {
@@ -1273,7 +1273,7 @@ p {
 .el-date-editor.el-input__inner {
   width: 100%;
 }
-</style> 
+</style>
 <style lang="scss">
 .videos {
   .el-upload {

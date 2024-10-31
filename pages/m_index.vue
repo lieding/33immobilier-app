@@ -88,21 +88,21 @@
             tag="li"
           >
             <div class="img">
-              <img :src="item.showUrl" class="new_img" />
-              <span class="year">{{ item.expressing }}</span>
+              <img :src="item.images[0]" class="new_img" />
+              <span class="year">{{ item.deliveryQuarter }}</span>
               <span class="num">
-                <span class="city">{{ item.province }}</span>
+                <span class="city">{{ item.zip_code }}</span>
                 <span class="citynum">{{ item.city }}</span>
               </span>
             </div>
 
             <div class="text">
-              <p class="text-title">{{ item.estate }}</p>
+              <p class="text-title">{{ item.name }}</p>
               <p class="sort">{{ item.huXing }} {{ $t("message.global.pieces") }}</p>
               <p class="font">
                 <span class="itemize" v-for="(items, index) in item.tags" :key="index">{{ items }}</span>
               </p>
-              <p class="money">{{ item.lowPrice }}{{ $t("message.global.rise") }}</p>
+              <p class="money">{{ item.availablePropertiesMinPrice }}{{ $t("message.global.rise") }}</p>
             </div>
           </router-link>
         </ul>
@@ -270,11 +270,13 @@
     </client-only>
   </div>
 </template>
+
 <script>
 import rem from "~/common/rem.js";
 import Header from "~/components/mIndex/header.vue";
 import Footer from "~/components/mIndex/footer.vue";
 var echarts = require("echarts");
+
 export default {
   components: {
     Header,
@@ -325,17 +327,17 @@ export default {
   },
   mounted() {
     rem();
-    this.ByRegion();
+    // this.ByRegion();
     //   所有走势图
-    this.$api.article.trendRegion().then(res => {
-      this.returnList = res.data.data.returnList;
-    });
+    // this.$api.article.trendRegion().then(res => {
+    //   this.returnList = res.data.data.returnList;
+    // });
     this.$api.article.getHomePageInfo().then(res => {
-      this.newHousings = res.data.data.newHousings; //新房
-      this.homesList = res.data.data.homesList; //二手房
-      this.rentings = res.data.data.rentings; //租房
-      this.brokerList = res.data.data.brokerList; //经纪人
-      this.system = res.data.data.system; //立即加入
+      this.newHousings = res.data.newHousings; //新房
+      //this.homesList = res.data.data.homesList; //二手房
+      //this.rentings = res.data.data.rentings; //租房
+      //this.brokerList = res.data.data.brokerList; //经纪人
+      //this.system = res.data.data.system; //立即加入
     });
   },
   methods: {

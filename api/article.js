@@ -1,8 +1,8 @@
 import axios from "~/common/http"; // 导入http中创建的axios实例
 import qs from "qs"; // 根据需求是否导入qs模块
+
 const article = {
   // 查询所有走势图的地区
-
   trendRegion() {
     return axios.get('/homePage/trendRegion');
   },
@@ -33,9 +33,7 @@ const article = {
   },
   // 获取首页数据
   getHomePageInfo() {
-    return axios.get('/homePage/shouye', {
-      // params: params
-    });
+    return axios.get('/homepage-index');
   },
   // 获取新房搜索
   NewgetSearch() {
