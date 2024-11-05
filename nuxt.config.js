@@ -1,4 +1,15 @@
 import I18N from "./i18n";
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const EnvConfig = process.env;
+const Env33IMMO = {};
+for (const [k, v] of Object.entries(EnvConfig)) {
+  if (k.startsWith('33IMMO')) {
+    Env33IMMO[k] = v;
+  }
+}
 
 export default {
   // mode: "universal",
@@ -32,7 +43,7 @@ export default {
       // { src: "https://unpkg.com/blueimp-gallery@2.27.0/js/blueimp-gallery.js" }
     ]
   },
-
+  env: Env33IMMO,
   /*
    ** Customize the progress-bar color
    */

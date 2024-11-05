@@ -1,7 +1,7 @@
 <template>
   <div class="concentUs">
     <headers :class="{ colors: flag }"></headers>
-    <div class="centerS" style=";height:600px;padding-top:40px;">
+    <div class="centerS" style="height:600px;padding-top:40px;">
       <div
         style="font-size:48px;font-weight:600;padding:27px 0;"
       >{{ $t("message.global.relation") }}</div>

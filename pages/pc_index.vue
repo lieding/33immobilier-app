@@ -26,14 +26,7 @@
           :placeholder="$t('message.global.Where')"
           :trigger-on-focus="false"
           :fetch-suggestions="queryCity"
-        >
-        <template slot-scope="{ item }">
-          <div class="value">
-            <span>{{ item.title }}</span>
-            <span>{{ item.subtitle }}</span>
-          </div>
-        </template>
-        </el-autocomplete>
+        ></el-autocomplete>
         <span class="searchBtn" @click="searchBtnHandler">
           <img
             style="width:26px;height:26px;margin-right:6px;"
@@ -77,7 +70,7 @@
         <div class="newHoList">
           <div
             class="NewLi"
-            @click="RoutingHop('/newDetails', item.id)"
+            @click="RoutingHop('/newDetails', { zip_code: item.zip_code, name_id: item.name_id, estate_name: item.estate_name, city: item.city })"
             v-for="(item, index) in homePageIn.newHousings"
             :key="index"
             :class="[index == 3 ? 'marginRigh' : '']"
@@ -92,7 +85,7 @@
             <img class="newHoImg" :src="item.images[0]" alt />
             <p class="newHoTit">{{ item.name }}</p>
             <p class="newHoPr">
-              {{ item.huXing }} {{ $t("message.global.pieces") }}
+              {{ item.availablePropertiesCount }} {{ $t("message.global.pieces") }}
             </p>
             <div class="tallylis">
               <span class="tally" v-for="(tags, i) in item.tags" :key="i">{{
@@ -295,6 +288,8 @@ import pcPerson from "~/assets/image/pcPerson.png";
 import pcss from "~/assets/image/logo_promoteur.png";
 
 var echarts = require("echarts");
+const gmapApiKey = process.env['33IMMO_GOOGLE_MAPS_API_KEY'];
+
 export default {
   name: "index",
   components: {
@@ -356,6 +351,16 @@ export default {
       this.ByRegion();
     }
   },
+  mounted () {
+    // this.$api.article.trendRegion().then(res => {
+    //   this.returnList = res.data.data.returnList;
+    // });
+    // this.ByRegion();
+    this.queryIndexPageInfo(); // 获取主页信息
+    let lang = this._i18n.locale;
+    gmapApiLoader(gmapApiKey, lang)
+      .then(() => this.gmapAutocompleteService = new window.google.maps.places.AutocompleteService());
+  },
   methods: {
     searchBtnHandler() {
       let path = "/newList", val = this.searchVal;
@@ -381,12 +386,11 @@ export default {
       if (getHomePageInfo.system)
         this.systemInfo = getHomePageInfo.system;
     },
-    RoutingHop(smt, flag) {
+    RoutingHop(smt, flag = undefined) {
+      const query = typeof flag === 'object' ? flag : { flag };
       this.$router.push({
         path: smt,
-        query: {
-          flag: flag
-        }
+        query,
       });
     },
     queryCity(queryString, cb) {
@@ -399,9 +403,15 @@ export default {
           country: ['FRA'],
         },
         types: ["(cities)"],
-      }).then(console.log)
-      // call callback function to return suggestions
-      // cb(results);
+      }).then(res => {
+        const predictions = res.predictions;
+        if (!Array.isArray(predictions)) return cb([]);
+        const list = predictions.map(({ structured_formatting, place_id }) => {
+          const { main_text, secondary_text } = structured_formatting;
+          return { value: main_text, link: `/newList?val=${main_text}&place_id=${place_id}` };
+        });
+        cb(list);
+      });
     },
     ByRegion() {
       let params = { homeTrendRegion: this.value };
@@ -414,70 +424,10 @@ export default {
           createTime.push(item.homeTrendQuarter);
           homeTrendPrice.push(item.homeTrendPrice);
         });
-        this.$nextTick(function() {
-          //console.log(document.querySelector(".echart"));
-          var myChart = echarts.init(document.querySelector(".echart"));
-          setTimeout(() => {
-            myChart.setOption({
-              xAxis: {
-                type: "category",
-                data: createTime
-              },
-              yAxis: {
-                type: "value",
-                name: "  € / m² "
-              },
-              dataZoom: [
-                {
-                  show: true,
-                  startValue: 0,
-                  end: 100,
-                  handleIcon:
-                    "M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z",
-                  handleSize: "80%",
-                  handleStyle: {
-                    color: "#fff",
-                    shadowBlur: 3,
-                    shadowColor: "rgba(0, 0, 0, 0.6)",
-                    shadowOffsetX: 2,
-                    shadowOffsetY: 2
-                  }
-                }
-              ],
-              grid: {
-                left: "3%",
-                right: "3%",
-                containLabel: true
-              },
-              series: [
-                {
-                  label: {
-                    normal: {
-                      show: true,
-                      position: "top"
-                    }
-                  },
-                  data: homeTrendPrice,
-                  type: "line"
-                }
-              ]
-            });
-          }, 300);
-          this.$forceUpdate();
-        });
       });
       //console.log(homeTrendPrice,createTime)
     }
   },
-  mounted() {
-    // this.$api.article.trendRegion().then(res => {
-    //   this.returnList = res.data.data.returnList;
-    // });
-    // this.ByRegion();
-    this.queryIndexPageInfo(); // 获取主页信息
-    gmapApiLoader(this._i18n.locale)
-      .then(() => this.gmapAutocompleteService = new window.google.maps.places.AutocompleteService());
-  }
 };
 </script>
 

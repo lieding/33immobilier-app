@@ -151,7 +151,7 @@ import pulldow from "~/assets/image/pullDow.png";
 import dingwei from "~/assets/image/dingwei.png";
 import titles from "~/assets/image/titles.jpg";
 import homeS from "~/assets/image/homeS.png";
-import BaseUrl from "~/api/base.js";
+
 import { fmoney, scrollListener } from '../utils';
 export default {
   name: "newList",
@@ -233,16 +233,15 @@ export default {
     }
   },
   created() {
-    this.iframeSrc = BaseUrl.sq + "/map/newMap";
     this.fmoney = fmoney;
-    this.getsas();
+
     this.get();
     this.getSearchNew();
   },
   mounted () {
-    this.__scrollCbk = () =>
-      !this.finished && scrollListener(() => this.getListNew(this.page + 1));
-    window.addEventListener('scroll', this.__scrollCbk);
+    // this.__scrollCbk = () =>
+    //   !this.finished && scrollListener(() => this.getListNew(this.page + 1));
+    // window.addEventListener('scroll', this.__scrollCbk);
   },
   beforeDestroy () {
     window.removeEventListener('scroll', this.__scrollCbk);

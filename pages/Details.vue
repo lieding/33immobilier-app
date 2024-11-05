@@ -2,16 +2,6 @@
 <template>
   <div>
     <client-only>
-      <!-- <el-dialog 
-       :visible.sync="dialogVisible"
-
-       class="dialog">
-            <van-swipe :autoplay="3000"  @change="onChange" :show-indicators='false'>
-                <van-swipe-item v-for="(image, index) in picList" :key="index">
-                    <img :src="image" />
-                </van-swipe-item>
-             </van-swipe>
-      </el-dialog>-->
       <Header :title="$t('message.global.xingfangxiangqing')" />
       <div>
         <div class="video" @click="dialogVisible = true">
@@ -227,7 +217,7 @@
         <span class="consultants">{{ $t("message.global.position") }}</span>
         <p class="province">{{ data.estateAddress }}</p>
         <div class="map">
-          <iframe :src="Url" frameborder="0" style="100%"></iframe>
+          <iframe :src="Url" frameborder="0"></iframe>
         </div>
       </div>
       <hr class="hr" />
@@ -463,7 +453,7 @@ import rem from "~/common/rem.js";
 import Header from "~/components/mIndex/head.vue";
 import Footer from "~/components/mIndex/footer.vue";
 import list from "~/components/mIndex/list.vue";
-import { BASE_API } from "~/api" 
+import { BASE_API } from "~/api"
 
 var echarts = require("echarts");
 export default {
@@ -494,10 +484,6 @@ export default {
     };
   },
   watch: {
-    $route(to, from) {
-      this.id = this.$route.query.id;
-      this.Onlist();
-    },
     year(val) {
       this.interesrate = this.getRateList[val];
     }
@@ -543,23 +529,23 @@ export default {
   },
   mounted() {
     rem();
-    this.$api.article.getRate().then(res => {
-      if (res.data.code == 0) {
-        this.getRateList = res.data.data;
-        this.getRate = Object.keys(res.data.data);
-        //console.log(this.getRate);
-        this.interesrate = res.data.data["25"];
-      }
-    });
-    if (this.mothey) {
-      this.$nextTick(function() {
-        //console.log(document.querySelector(".echart"))
-        if (process.client) {
-          var myChart = echarts.init(document.querySelector(".echart"));
-          myChart.setOption(this.orgOptions);
-        }
-      });
-    }
+    // this.$api.article.getRate().then(res => {
+    //   if (res.data.code == 0) {
+    //     this.getRateList = res.data.data;
+    //     this.getRate = Object.keys(res.data.data);
+    //     //console.log(this.getRate);
+    //     this.interesrate = res.data.data["25"];
+    //   }
+    // });
+    // if (this.mothey) {
+    //   this.$nextTick(function() {
+    //     //console.log(document.querySelector(".echart"))
+    //     if (process.client) {
+    //       var myChart = echarts.init(document.querySelector(".echart"));
+    //       myChart.setOption(this.orgOptions);
+    //     }
+    //   });
+    // }
     this.Onlist();
   },
   methods: {
@@ -585,7 +571,7 @@ export default {
     },
     Onlist() {
       let params = { id: this.id };
-      this.$api.article.getInfo(params).then(res => {
+      this.$api.article.getInfoNewHous(params).then(res => {
         const data = res.data.data;
         if (!data) return;
         this.data = data;

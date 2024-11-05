@@ -8,7 +8,7 @@
       </div>
       <div class="oductions">
         {{ $t("message.global.premisess") }}:
-        {{ getPostListingData.estate }}
+        {{ getPostListingData.estate_name }}
         <span
           style="float:right;color:#B9B9B9;font-size:18px;font-weight:400;cursor: pointer;"
           @click="handleOpen"
@@ -22,7 +22,7 @@
         <div class="slideshow">
           <el-carousel :interval="5000" height="404px" arrow="always">
             <el-carousel-item
-              v-for="(item, i) in getPostListingData.picList"
+              v-for="(item, i) in getPostListingData.images"
               :key="i"
             >
               <div
@@ -38,13 +38,13 @@
       <div class="rightBody">
         <div class="ContentPakeAge">
           <p class="prises">
-            {{ getPostListingData.lowprice }}€ —
-            {{ getPostListingData.maxPrice }}€
+            {{ getPostListingData.availablePropertiesMinPrice }}€ —
+            {{ getPostListingData.availablePropertiesMaxPrice }}€
           </p>
           <p class="block">
             <!-- <span style="background-color:#6AC078;padding:3px 8px;">PINEL减税</span> -->
             <span style="background-color:#234CD3;padding:3px 8px;">{{
-              getPostListingData.expressing
+              getPostListingData.deliveryQuarter
             }}</span>
             <span
               style="background-color:#BFBFBF;padding:2px 3px; float:right;"
@@ -55,11 +55,11 @@
           </p>
           <p class="smJf">
             {{ $t("message.global.completionDate") }}：
-            <span>{{ getPostListingData.expressing }}</span>
+            <span>{{ getPostListingData.deliveryQuarter }}</span>
           </p>
           <p class="smJf">
             {{ $t("message.global.HouseNumber") }}：
-            <span>{{ getPostListingData.homesNum }}</span>
+            <span>{{ getPostListingData.propertiesCount }}</span>
           </p>
           <p class="smJf">
             {{ $t("message.global.measures") }}：
@@ -67,7 +67,7 @@
           </p>
           <p class="smJf">
             {{ $t("message.global.jianshuiuquyu") }}：
-            <span>{{ getPostListingData.taxCutsArea }}</span>
+            <span>{{ getPostListingData.taxArea }}</span>
           </p>
           <p class="smJf">
             {{ $t("message.global.deductibility") }}：
@@ -76,7 +76,7 @@
           <p class="smJf">
             {{ $t("message.global.Inventor") }}：
             <span
-              >{{ getPostListingData.province }}/{{
+              >{{ getPostListingData.zip_code }}/{{
                 getPostListingData.city
               }}</span
             >
@@ -162,29 +162,23 @@
         <span
           style="font-size:20px;color:#fff;float:right;background-color:#027AFF;padding:8px 20px;cursor: pointer"
           @click="downX(getPostListingData.brochure)"
-          >{{ $t("message.global.brochure") }}</span
-        >
+        >{{ $t("message.global.brochure") }}</span>
       </p>
       <p style="margin-top: 10px; white-space: pre-line;">
-        {{
-          interpret
-            ? getPostListingData.introduceFr
-            : getPostListingData.introduceCn
-        }}
+        <div v-html="getPostListingData.description"></div>
       </p>
       <p class="titles" style="margin-top:10px;">
-        <span style="font-size:32px;margin-right:10px;font-weight:600;"
-          >{{ $t("message.global.position") }}：
-          {{ getPostListingData.estateAddress }}</span
-        >
+        <span style="font-size:32px;margin-right:10px;font-weight:600;">
+          {{ $t("message.global.position") }}：{{ getPostListingData.address }}
+        </span>
       </p>
-      <div style="border: 1px solid #ccc;">
-        <iframe
-          height="500px"
-          width="1200px"
-          :src="address_Map"
-          frameborder="0"
-        ></iframe>
+      <div style="border: 1px solid #ccc;height:500px;width:1200px">
+        <jump-map
+          v-if="getPostListingData.description"
+          :latitude="getPostListingData.latitude"
+          :longitude="getPostListingData.longitude"
+          :interactive="false"
+        ></jump-map>
       </div>
       <div v-if="getPostListingData.isOpenVR && getPostListingData.vrAddress">
         <p
@@ -214,14 +208,14 @@
       >
         <el-table-column
           prop="number"
-          :label="$t('message.global.chamberID')"
+          :label="$t('message.global.chamberNum')"
         ></el-table-column>
         <el-table-column
-          prop="roomNum"
+          prop="typology"
           :label="$t('message.global.DoorMode')"
         ></el-table-column>
         <el-table-column
-          prop="area"
+          prop="surface"
           :label="$t('message.global.usableArea')"
         ></el-table-column>
         <el-table-column
@@ -232,25 +226,21 @@
           prop="price"
           :label="$t('message.global.price')"
         ></el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           prop="averagePrice"
           :label="$t('message.global.averagePrice')"
-        ></el-table-column>
+        ></el-table-column> -->
         <el-table-column
           prop="rentPrice"
           :label="$t('message.global.estimate')"
         ></el-table-column>
         <el-table-column
-          prop="rewards"
+          prop="profitability"
           :label="$t('message.global.RAROC')"
         ></el-table-column>
         <el-table-column :label="$t('message.global.floorPlan')">
           <template slot-scope="scope">
-            <span
-              style="color:#224BD7;cursor: pointer;text-decoration:underline;"
-              @click="goTwoD(scope.row.vrAddress)"
-              >2D</span
-            >
+            <el-link :href="scope.planLink" target="'_blank'">Plan</el-link>
           </template>
         </el-table-column>
         <el-table-column :label="$t('message.global.condition')">
@@ -263,14 +253,13 @@
             <span
               style="color:#224BD7;cursor: pointer;text-decoration:underline;"
               @click="routerGos(scope.row.apartmentId)"
-              >{{ $t("message.global.connectUs") }}</span
-            >
+            >{{ $t("message.global.connectUs") }}</span>
           </template>
         </el-table-column>
       </el-table>
     </div>
     <div class="centerS">
-      <Calculate />
+      <promote-list></promote-list>
     </div>
     <div class="centerS" style="margin-top:20px;" v-show="promoteList.length">
       <div style="font-size:32px;font-weight:600;">
@@ -384,20 +373,20 @@
           </p>
           <p class="huodian">
             {{ $t("message.global.subject") }}：<span>{{
-              getPostListingData.estate
+              getPostListingData.estate_name
             }}</span>
           </p>
           <p class="huodian">
             {{ $t("message.global.position") }}：<span>{{
-              getPostListingData.estateAddress
+              getPostListingData.address
             }}</span>
           </p>
           <!-- estateAddress -->
           <p>
             {{ $t("message.global.price") }}：
             <span
-              >{{ getPostListingData.lowprice }} €-
-              {{ getPostListingData.maxPrice }}€</span
+              >{{ getPostListingData.availablePropertiesMinPrice }} €-
+              {{ getPostListingData.availablePropertiesMaxPrice }}€</span
             >
           </p>
           <p>
@@ -409,13 +398,11 @@
           </p>
           <p>
             {{ $t("message.global.completionDate") }}：
-            <span>{{ getPostListingData.expressing }}</span>
+            <span>{{ getPostListingData.deliveryQuarter }}</span>
           </p>
           <!-- <p>房源链接：<span>{{ getPostListingData.city }}</span></p> -->
           <p class="huodian">
-            {{ $t("message.global.Describing") }}：{{
-              getPostListingData.introduceFr
-            }}
+            {{ $t("message.global.Describing") }}：<div v-html="getPostListingData.description"></div>
           </p>
           <p>
             {{ $t("message.global.Inventor") }}：
@@ -437,9 +424,7 @@
         <textarea
           style="z-index:-10000;font-size:0;border:1px solid #fff;"
           id="input"
-        >
-这是幕后黑手</textarea
-        >
+        ></textarea>
         <div
           :class="{ qianlan: qianlan }"
           style="float:right;
@@ -462,7 +447,7 @@
     <foots></foots>
     <client-only>
       <gallery
-        :images="getPostListingData.picList"
+        :images="getPostListingData.images"
         :index="galleryIndex"
         @close="galleryIndex = null"
       ></gallery>
@@ -473,7 +458,7 @@
 <script>
 import headers from "~/components/pcIndex/header.vue";
 import foots from "~/components/pcIndex/foot.vue";
-import Calculate from "~/components/pcIndex/promoteList.vue";
+import PromoteList from "~/components/pcIndex/promoteList.vue";
 
 import wxInd from "~/assets/image/wxInd.png";
 import phone from "~/assets/image/phone.png";
@@ -509,7 +494,7 @@ import wifiG from "~/assets/image/picSzg/wifiG.png";
 import wifiH from "~/assets/image/picSzg/wifiH.png";
 import DefaultAvatar from '~/assets/image/avatar.svg';
 
-import { BASE_API } from "~/api";
+import JumpMap from '~/components/jumpMap.vue';
 
 export default {
   name: "seconHandHous",
@@ -517,49 +502,35 @@ export default {
   components: {
     headers,
     foots,
-    Calculate
+    PromoteList,
+    JumpMap,
+  },
+  asyncData ({ route }) {
+    return {
+      getPostListingData: route.query,
+    }
   },
   head() {
+    const { estate_name, city } = this.getPostListingData;
     return {
-      title: `${this.getPostListingData.estate} (${this.getPostListingData.city})`,
+      title: `${estate_name} (${city})`,
       meta: [
         {
           name: "description",
-          content: `${this.getPostListingData.estate} (${this.getPostListingData.city})`
+          content: `${estate_name} (${city})`
         },
         {
           name: "keywords",
-          content: `法国新房,法国楼盘,买房投资,买房减税,PINEL减税,LMNP减税,VEFA,Logement neuf,${this.getPostListingData.estate},${this.getPostListingData.city}`
+          content: `法国新房,法国楼盘,买房投资,买房减税,PINEL减税,LMNP减税,VEFA,Logement neuf,${estate_name},${city}`
         },
-        {
-          name: "og:image",
-          content: this.getPostListingData.picList[0]
-        }
       ]
     };
-  },
-  async asyncData({ route, app }) {
-    try {
-      const id = route.query.flag;
-      const { data: getPostListingData } = (await app.$api.article.getInfoNewHous({ id })).data;
-      const { aparementList, promoteList, latitude, longitude } = getPostListingData;
-      const address_Map = `${BASE_API.jsp}/app/map/jumpMap?lat=${latitude}&lng=${longitude}`;
-      return {
-        getPostListingData,
-        tableData: aparementList,
-        promoteList: promoteList,
-        address_Map,
-      };
-    } catch {
-      return {};
-    }
   },
   data() {
     return {
       input2: "",
       flag: true,
       interpret: true,
-      address_Map: "",
       ft1: false,
       ft2: false,
       ft3: false,
@@ -597,18 +568,44 @@ export default {
         DefaultAvatar
       },
       inputs: "",
-      getPostListingData: "",
+      getPostListingData: {},
       apartmentList: [],
       agent: "",
       roomInc: [],
-      promoteList: ["", "", "", ""],
+      promoteList: [],
       dialogVisible: false,
-      tableData: [{}, {}],
+      tableData: [],
       qianlan: false,
       galleryIndex: null
     };
   },
+  mounted () {
+    this.queryDetail();
+  },
   methods: {
+    async queryDetail () {
+      const lang = this._i18n.locale;
+      const { zip_code, name_id } = this.$route.query;
+      try {
+        const res = await this.$api.article.getInfoNewHous({ zip_code, name_id, lang });
+        const { properties, promoteList, } = res.data;
+        if (Array.isArray(properties)) {
+          for (const it of properties) {
+            it.price = it.prices?.[0]?.price;
+            it.rentPrice = it.prices?.[0]?.monthlyRent;
+            it.planLink = it.plan?.url;
+            it.profitability = it.prices?.[0]?.profitability;
+          }
+        }
+        Object.assign(this, {
+          getPostListingData: res.data,
+          tableData: properties,
+          promoteList: promoteList ?? [],
+        });
+      } catch (e) {
+        console.error('query detail: ', e);
+      }
+    },
     routerGos(val) {
       this.$router.push({
         path: "/concentUs",

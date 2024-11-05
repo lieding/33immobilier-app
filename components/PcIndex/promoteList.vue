@@ -174,7 +174,12 @@
 import headers from "~/components/pcIndex/header.vue";
 import foots from "~/components/pcIndex/foot.vue";
 var echarts = require("echarts");
-
+const Rate = process.env['33IMMO_PROMOTE_RATE'];
+const SevenRate = process.env['33IMMO_PROMOTE_SEVEN_RATE'];
+const TenRate = process.env['33IMMO_PROMOTE_TEN_RATE'];
+const FiftenRate = process.env['33IMMO_PROMOTE_FIFTEN_RATE'];
+const TwentyRate = process.env['33IMMO_PROMOTE_TWENTY_RATE'];
+const TwentyfiveRate = process.env['33IMMO_PROMOTE_TWENTYFIVE_RATE'];
 export default {
   name: "promoteList",
   components: {
@@ -259,18 +264,9 @@ export default {
         this.prise1 = loanCapabilityInfo.data.M;
       }
     }, //getRate
-    async getRate() {
-      const loanCapabilityInfo = (await this.$api.article.getRate()).data;
-      if (loanCapabilityInfo.code == 0) {
-        // this.prsLis = loanCapabilityInfo.data
-        this.prsList = loanCapabilityInfo.data;
-        // ////console.log(this.prsLis)
-        for (var i in this.prsList) {
-          ////console.log(i)
-          this.prsLis.push(i);
-        }
-        this.listS.rate = this.prsList[this.listS.year];
-      }
+    getRate() {
+      this.prsList = [Rate, SevenRate, TenRate, FiftenRate, TwentyRate, TwentyfiveRate].map(it => Number(it) ?? 0);
+      this.listS.rate = this.prsList[this.listS.year];
     },
     //repayALoanJs
     async repayALoanJs() {

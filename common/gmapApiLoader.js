@@ -1,8 +1,6 @@
 import { Loader } from "@googlemaps/js-api-loader";
 
-const apiKey = 'AIzaSyA3QgWpLKDZBdJfB5GAZHSPva1NGf1igGk';
-
-export function gmapApiLoader (language) {
+export function gmapApiLoader (apiKey, language) {
   if (window.google?.maps?.places) return;
   const loader = new Loader({
     apiKey,

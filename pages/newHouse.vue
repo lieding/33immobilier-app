@@ -259,7 +259,6 @@
 import rem from "~/common/rem.js";
 import Header from "~/components/mIndex/head.vue";
 import Footer from "~/components/mIndex/footer.vue";
-import MapBox from "~/components/mIndex/mapBox.vue";
 import { BASE_API } from "~/api";
 import { fmoney } from '../utils';
 
@@ -269,7 +268,6 @@ export default {
   components: {
     Header,
     Footer,
-    MapBox
   },
   head() {
     if (this.house == "new") {

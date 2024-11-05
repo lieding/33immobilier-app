@@ -121,7 +121,6 @@
 import rem from "~/common/rem.js";
 import Header from "~/components/mIndex/head.vue";
 import Footer from "~/components/mIndex/footer.vue";
-import mapBox from "~/components/mIndex/mapBox.vue";
 import { BASE_API } from '../api';
 import { fmoney } from '../utils';
 
@@ -131,7 +130,6 @@ export default {
   components: {
     Header,
     Footer,
-    mapBox
   },
   head() {
     return {

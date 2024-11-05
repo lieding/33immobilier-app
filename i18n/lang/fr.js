@@ -123,6 +123,7 @@ export default {
       position: "Adresse",
       modelDetails: "Informations des lots",
       chamberID: "N° Lot",
+      chamberNum: 'N° Lot',
       DoorMode: "Type",
       usableArea: "Surface",
       level: "Etage",

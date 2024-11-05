@@ -43,10 +43,6 @@ const article = {
   getList(params) {
     return axios.get('/newHousing/getList', { params });
   },
-  // 获取新房详情页面
-  getInfo(params) {
-    return axios.get('/newHousing/getInfo', { params });
-  },
 
   OrdSearch() {
     return axios.get('/home/getSearch');
@@ -151,7 +147,7 @@ const article = {
   },
   // 新newHousing/getInfo
   getInfoNewHous(params) {
-    return axios.get('/newHousing/getInfo', { params });
+    return axios.get('/programme-detail', { params });
   },
   // ji 192.168.3.94/latest/calculator/repayALoan
   repayALoanJs(params) {
@@ -196,6 +192,9 @@ const article = {
   // 192.168.3.94/latest/latest/calculator/getRate  获取所有利率
   getRate() {
     return axios.get('/calculator/getRate');
+  },
+  getProgramesByPlaceid (params) {
+    return axios.get('/search-programmes-by-placeid', qs.stringify(params));
   }
 };
 

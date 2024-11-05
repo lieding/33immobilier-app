@@ -127,6 +127,7 @@ export default {
       theoretical: "虚拟看房",
       modelDetails: "户型详情",
       chamberID: "新房ID",
+      chamberNum: '号码',
       De: "年份",
       DoorMode: "户型",
       huxingjiegou: "户型结构",
