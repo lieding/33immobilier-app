@@ -178,6 +178,8 @@
           :latitude="getPostListingData.latitude"
           :longitude="getPostListingData.longitude"
           :interactive="false"
+          :need-circle="true"
+          :need-center-logo="true"
         ></jump-map>
       </div>
       <div v-if="getPostListingData.isOpenVR && getPostListingData.vrAddress">

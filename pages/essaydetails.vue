@@ -1,7 +1,6 @@
 <template>
   <div class="encyclopedia">
     <headers :class="{ colors: flag }"></headers>
-    <div v-wechat-title="outcome.title"></div>
     <div class="centerS seconBrok">
       <div class="headline">
         <span>主页</span> /
@@ -23,11 +22,7 @@
               v-for="(item, index) in category"
               :key="index"
               @click="cas(item.typeId)"
-              style="padding:10px; 28px;background-color:#F0F0F0;width:80%;margin:0 auto;
-                        margin-bottom:3px;
-                        line-height:24px;
-                        font-size:18px;
-                        color:#234CD3"
+              style="padding:10px;background-color:#F0F0F0;width:80%;margin:0 auto;margin-bottom:3px;line-height:24px;font-size:18px;color:#234CD3"
             >
               <span
                 style="display:inline-block;width:5px;height:5px;
@@ -50,7 +45,7 @@
               v-for="(item, index) in abc"
               :key="index"
               @click="ccs(item.id)"
-              style="padding:10px;margin-bottom:3px;margin-top:2px; 28px;background-color:#F0F0F0;width:80%;margin:0 auto;font-size:18px;color:#234CD3"
+              style="padding:10px;margin-bottom:3px;margin-top:2px;background-color:#F0F0F0;width:80%;margin:0 auto;font-size:18px;color:#234CD3"
             >
               <span
                 style="display:inline-block;width:5px;height:5px;

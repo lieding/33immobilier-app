@@ -26,15 +26,16 @@
           :placeholder="$t('message.global.Where')"
           :trigger-on-focus="false"
           :fetch-suggestions="queryCity"
+          @select="queryCityHandler"
         ></el-autocomplete>
-        <span class="searchBtn" @click="searchBtnHandler">
+        <!-- <span class="searchBtn">
           <img
             style="width:26px;height:26px;margin-right:6px;"
             src="~/assets/image/sousuo.png"
             alt
           />
           {{ $t("message.global.seek") }}
-        </span>
+        </span> -->
       </div>
       <div class="cardLs">
         <div style="float:left;" @click="RoutingHop('/essaydetails', 3)">
@@ -230,7 +231,7 @@
       </div>
     </div>
     <!-- 房价走势 -->
-    <div class="partner centerSs">
+    <!-- <div class="partner centerSs">
       <span>{{ $t("message.global.trust") }}</span>
       <p>{{ $t("message.global.pionner") }}</p>
       <p>{{ $t("message.global.Courtier") }}</p>
@@ -253,7 +254,7 @@
         </el-select>
       </p>
       <div class="echart" style="width: 1100px;height:525px;"></div>
-    </div>
+    </div> -->
     <foots></foots>
     <el-dialog
       :title="$t('message.global.join')"
@@ -332,7 +333,6 @@ export default {
         pcPerson: pcPerson,
         pcss: pcss
       },
-      value: "Paris 1",
       backs: {
         //  背景
         background: "url(" + backgroundI + ")",
@@ -346,31 +346,13 @@ export default {
       gmapAutocompleteService: null,
     };
   },
-  watch: {
-    value(val) {
-      this.ByRegion();
-    }
-  },
   mounted () {
-    // this.$api.article.trendRegion().then(res => {
-    //   this.returnList = res.data.data.returnList;
-    // });
-    // this.ByRegion();
     this.queryIndexPageInfo(); // 获取主页信息
     let lang = this._i18n.locale;
     gmapApiLoader(gmapApiKey, lang)
-      .then(() => this.gmapAutocompleteService = new window.google.maps.places.AutocompleteService());
+      ?.then(() => this.gmapAutocompleteService = new window.google.maps.places.AutocompleteService());
   },
   methods: {
-    searchBtnHandler() {
-      let path = "/newList", val = this.searchVal;
-      if (this.label === 2) {
-        path = "/anyEs";
-      } else if (this.label === 3) {
-        path = "/rentHouseList";
-      }
-      this.$router.push({ path, query: { val } });
-    },
     clickChange() {
       this.dialogVisible = true;
     },
@@ -408,25 +390,16 @@ export default {
         if (!Array.isArray(predictions)) return cb([]);
         const list = predictions.map(({ structured_formatting, place_id }) => {
           const { main_text, secondary_text } = structured_formatting;
-          return { value: main_text, link: `/newList?val=${main_text}&place_id=${place_id}` };
+          return { value: main_text, place_id, place_text: main_text };
         });
         cb(list);
       });
     },
-    ByRegion() {
-      let params = { homeTrendRegion: this.value };
-      let createTime = [];
-      let homeTrendPrice = [];
-      this.$api.article.getTrendByRegion(params).then((res = {}) => {
-        const homeTrendList = res?.data?.data?.homeTrendList || [];
-        this.homeTrendList = homeTrendList;
-        homeTrendList.map(function(item) {
-          createTime.push(item.homeTrendQuarter);
-          homeTrendPrice.push(item.homeTrendPrice);
-        });
-      });
-      //console.log(homeTrendPrice,createTime)
-    }
+    queryCityHandler (item) {
+      const { place_text, place_id } = item;
+      if (!place_text || !place_id) return;
+      this.$router.push({ path: `/newList?place_text=${place_text}&place_id=${place_id}` });
+    },
   },
 };
 </script>

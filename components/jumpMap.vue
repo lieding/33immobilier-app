@@ -35,7 +35,22 @@ export default {
     },
     minZoom: {
       type: Number,
-      default: 12
+      default: 10
+    },
+    initZoom: {
+      type: Number,
+      default: 15
+    },
+    points: {
+      type: Array,
+    },
+    needCircle: {
+      type: Boolean,
+      default: false
+    },
+    needCenterLogo: {
+      type: Boolean,
+      default: false
     }
   },
   mounted () {
@@ -46,54 +61,58 @@ export default {
     loadMapCallback () {
       const getMmapElRef = () => this.$refs.map;
       const name = 'metroMap';
-      const lat = this.latitude, lng = this.longitude;
+      const lat = this.latitude, lng = this.longitude, points = this.points, needCircle = this.needCircle,
+        interactive = this.interactive, minZoom = this.minZoom, initZoom = this.initZoom, needCenterLogo = this.needCenterLogo;
       window.__mapLoaded = false;
-      const interactive = this.interactive;
-      const minZoom = this.minZoom;
-      function metroMap () {
+      async function metroMap () {
         const GMapLib = window.google.maps;
         if (!GMapLib) return;
         const mapElRef = getMmapElRef();
         if (!mapElRef) return;
         if (window.__mapLoaded) return;
         window.__mapLoaded = true;
+        const { Map } = await GMapLib.importLibrary("maps");
+        const { AdvancedMarkerElement } = await GMapLib.importLibrary("marker");
         const mapConfig = {
-          zoom: 15,
+          zoom: initZoom,
           center: { lat, lng },
-          minZoom: minZoom,
+          minZoom,
+          mapId: 'DEMO_MAP_ID',
         };
         if (interactive === false) {
           mapConfig.gestureHandling = 'none';
           mapConfig.zoomControl = false;
         }
-        const map = new GMapLib.Map(mapElRef, mapConfig);
-        const transitLayer = new GMapLib.TransitLayer();
-        transitLayer.setMap(map);
-        //初始中心坐标 该房源为中心
-        const pyrmont = { lat, lng };
-        new GMapLib.Marker({
-          map,
-          draggable: false,
-          icon: '/home.png',
-          position: new GMapLib.LatLng(lat, lng)
-        });
-
-        new google.maps.Circle({
-          strokeColor: '#4286f4',
-          strokeOpacity: 0.1,
-          strokeWeight: 2,
-          fillColor: '#4286f4',
-          fillOpacity: 0.1,
-          map: map,
-          center: pyrmont,
-          radius: 500
-        });
+        const map = new Map(mapElRef, mapConfig);
+        const center = { lat, lng };
+        if (needCenterLogo) {
+          const imageEl = document.createElement('img');
+          imageEl.src = '/home.png'
+          new AdvancedMarkerElement({
+            map,
+            draggable: false,
+            content: imageEl,
+            position: center
+          });
+        }
+        if (needCircle) {
+          new GMapLib.Circle({
+            strokeColor: '#4286f4',
+            strokeOpacity: 0.1,
+            strokeWeight: 2,
+            fillColor: '#4286f4',
+            fillOpacity: 0.1,
+            map,
+            center,
+            radius: 500
+          });
+        }
       }
       window[name] = metroMap;
       setTimeout(metroMap, 5000);
       return name;
     }
-  }
+  },
 }
 
 function loadScript (cbkName) {

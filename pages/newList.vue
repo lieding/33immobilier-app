@@ -2,7 +2,7 @@
   <div class="newList" @click="hides">
     <headers
       style="position:fixed;top:0;left:0;right:0;background-color:#fff;z-index:1000;"
-      :class="{ colors: flag, clearfix: true }"
+      :class="{ colors: true, clearfix: true }"
     ></headers>
     <div class="centerS rentHouseTop clearfix">
       <div class="lefts">
@@ -10,124 +10,81 @@
           <span>{{ $t("message.global.home") }}</span> /
           <span>{{ $t("message.global.homeList") }}</span>
         </div>
-        <iframe
-          class="iframes"
-          :src="iframeSrc"
-          style="height:82%;width:42%;"
-          frameborder="0"
-        ></iframe>
+        <div class="iframes" style="height:82%;width:42%;">
+          <template v-if="placeInfo && placeInfo.longitude && placeInfo.latitude">
+            <jump-map
+              :latitude="placeInfo.latitude"
+              :longitude="placeInfo.longitude"
+              :init-zoom="11"
+            ></jump-map>
+          </template>
+        </div>
       </div>
-      <!-- <div></div> -->
-      <div class="rights" style="z-index:-100;padding-top:51px;">
-        <div
-          style="position:fixed;width:606px;height:51px;top:104px;background-color:#fff;z-index:999;"
-        ></div>
+      <div class="rights" style="padding-top:51px;">
         <p class="tit">{{ $t("message.global.method") }}</p>
-        <el-select
-          class="secF"
-          v-model="quyuC"
-          :placeholder="$t('message.global.quyu')"
-        >
-          <el-option
-            v-for="item in cities"
-            :key="item"
-            :label="item"
-            :value="item"
-          >
-          </el-option>
-        </el-select>
-        <div class="priceLabel" style="width:140px" @click.stop="popUp1">
+        <div class="priceLabel" style="width:140px" @click.stop="togglePriceSlide">
           <span>
             <span style="font-size: 18px;">
-              {{ $t("message.global.price") }}</span
-            ><img
-              :src="img.pulldow"
-              alt=""
-              style="    position: absolute;top: 50%; right: 20px;"
-          /></span>
-          <div class="slideKids" @click.stop="" v-show="popUpT1">
-            <el-slider v-model="values" :max="max" :min="min" range>
-            </el-slider>
-            <p style="overflow:hidden">
-              <span style="float:left;"> {{ fmoney(values[0], 1) }} </span>
-              <span style="float:right;">{{ fmoney(values[1], 1) }}</span>
-            </p>
-            <div class="butss" @click.stop="popUp2">
-              {{ $t("message.global.sure") }}
-            </div>
-          </div>
-        </div>
-        <el-select
-          class="secF"
-          style="border-left: 1px solid #ccc;"
-          v-model="value2"
-          :placeholder="$t('message.global.completionDate')"
-        >
-          <el-option value="6" :label="$t('message.global.allLan')">
-            {{ $t("message.global.allLan") }}</el-option
-          >
-          <el-option value="5" :label="$t('message.global.Livré')">
-            {{ $t("message.global.Livré") }}</el-option
-          >
-          <el-option value="1" :label="$t('message.global.zoomM')">
-            {{ $t("message.global.zoomM") }}</el-option
-          >
-          <el-option value="2" :label="$t('message.global.sixM')">
-            {{ $t("message.global.sixM") }}</el-option
-          >
-          <el-option value="3" :label="$t('message.global.oneY')">
-            {{ $t("message.global.oneY") }}</el-option
-          >
-          <el-option value="4" :label="$t('message.global.twoY')">
-            {{ $t("message.global.twoY") }}</el-option
-          >
-        </el-select>
-        <div class="priceLabel" style="width:140px" @click.stop="popUps1">
-          <span
-            ><span style="font-size:18px;">{{
-              $t("message.global.habitable")
-            }}</span>
+              {{ $t("message.global.price") }}
+            </span>
             <img
               :src="img.pulldow"
               alt=""
               style="position: absolute;top: 50%; right: 20px;"
-          /></span>
-          <div class="slideKids" @click.stop="" v-show="popUpT2">
-            <el-slider v-model="values2" :max="maxs" :min="mins" range>
+            />
+          </span>
+          <div class="slideKids" v-show="priceSlideVis">
+            <el-slider v-model="priceRange" :max="maxPrice" :min="minPrice" range>
             </el-slider>
             <p style="overflow:hidden">
-              <span style="float:left;"> {{ values2[0] }} </span>
-              <span style="float:right;">{{ values2[1] }}</span>
+              <span style="float:left;"> {{ fmoney(priceRange[0], 1) }} </span>
+              <span style="float:right;">{{ fmoney(priceRange[1], 1) }}</span>
             </p>
-            <div class="butss" @click.stop="popUps2">
+            <div class="butss" @click.stop="togglePriceSlide">
               {{ $t("message.global.sure") }}
             </div>
           </div>
         </div>
-        <div v-for="(itemss, inde) in newInfoList" :key="inde" @click="routerGo(itemss.id)" class="listNews">
-          <img :src="itemss.showUrl" class="leftImg" alt="" />
+        <el-select
+          multiple
+          class="secF"
+          style="border-left: 1px solid #ccc;"
+          v-model="completionStatusArr"
+          :placeholder="$t('message.NEW_LIST.ALL_COMPLETION_STATUS')"
+        >
+          <el-option v-for="it in CompletionStatusOption" :key="it.value" :label="it.label" :value="it.value"></el-option>
+        </el-select>
+        <el-select
+          multiple
+          class="secF"
+          style="border-left: 1px solid #ccc;"
+          v-model="selectedTypologies"
+          :placeholder="$t('message.NEW_LIST.ALL_TYPOLOGY_LABEL')"
+        >
+          <el-option v-for="it in typologyOptions" :key="it.value" :label="it.label" :value="it.value"></el-option>
+        </el-select>
+        <!-- Programe List -->
+        <div v-for="(itemss, inde) in programList" :key="inde" @click="toDetail(itemss)" class="listNews">
+          <img :src="itemss.images[0]" class="leftImg" alt="" />
           <div class="rightLisT">
             <p>
-              <span class="tag oneNo" v-show="itemss.taxCuts">
-                {{ itemss.taxCuts }}
-              </span>
-              <span class="tag NOtwo" v-show="itemss.expressing">
-                {{ itemss.expressing }}
-              </span>
+              <span class="tag oneNo">{{ itemss.taxArea }}</span>
+              <span class="tag NOtwo">{{ itemss.deliveryQuarter }}</span>
             </p>
-            <p class="RIghtTit">{{ itemss.estate }}</p>
+            <p class="RIghtTit">{{ itemss.estate_name }}</p>
             <p>
-              <img :src="img.dingwei" alt="" />&nbsp;<span class="citiyes">
-                {{ itemss.province }}/{{ itemss.city }}</span
-              >
+              <img :src="img.dingwei" alt="" />
+              &nbsp;
+              <span class="citiyes">{{ itemss.zip_code }}/{{ itemss.city }}</span>
             </p>
             <p>
-              <img :src="img.homeS" alt="" />&nbsp;<span class="citiyes">
-                {{ itemss.minHall }}-{{ itemss.maxHall }}
-                {{ $t("message.global.P") }}</span
-              >
+              <img :src="img.homeS" alt="" />
+              &nbsp;
+              <span class="citiyes">
+                {{ itemss.translatedTypologies.join(',') }}
+              </span>
             </p>
-            <p class="prisesInd">{{ itemss.lowPrice }}€ - {{ itemss.maxPrice }}€</p>
+            <p class="prisesInd">{{ itemss.availablePropertiesMinPrice }}€ - {{ itemss.availablePropertiesMaxPrice }}€</p>
             <p class="btnBottom">
               <span v-for="(itea, k) in itemss.tags" :key="k" class="tag">{{ itea }}</span>
             </p>
@@ -144,22 +101,19 @@
 import headers from "~/components/pcIndex/header.vue";
 import foots from "~/components/pcIndex/foot.vue";
 
-import Treeselect from "@riophae/vue-treeselect";
-import "@riophae/vue-treeselect/dist/vue-treeselect.css";
-
 import pulldow from "~/assets/image/pullDow.png";
 import dingwei from "~/assets/image/dingwei.png";
 import titles from "~/assets/image/titles.jpg";
 import homeS from "~/assets/image/homeS.png";
-
 import { fmoney, scrollListener } from '../utils';
+import JumpMap from '../components/jumpMap.vue';
 export default {
   name: "newList",
   middleware: "responsive",
   components: {
     headers,
     foots,
-    Treeselect
+    JumpMap,
   },
   head() {
     return {
@@ -180,52 +134,19 @@ export default {
   },
   data() {
     return {
-      cities: "",
-      options: [],
-      flag: true,
-      quyuC: "",
-      values2: ["", ""],
-      input: "",
-      radio4: "",
-      value: "",
-      values: ["", ""],
-      img: {
-        titles,
-        dingwei,
-        pulldow,
-        homeS
-      },
-      popUpT1: false,
-      popUpT2: false,
-      value2: "",
-      marks: {
-        0: this.min,
-        100: this.max
-      },
-      marks2: {
-        0: this.mins,
-        100: this.maxs
-      },
-      max: 0,
-      min: 0,
-      mins: 0,
-      maxs: 0,
-      newInfoList: [],
+      placeInfo: null,
+      priceRange: ["", ""],
+      priceSlideVis: false,
+      completionStatusArr: [],
+      typologyOptions: [],
+      selectedTypologies: [],
+      maxPrice: 0,
+      minPrice: 0,
+      programList: [],
       page: 1,
       maxPage: 1,
       isLoading: false
     };
-  },
-  watch: {
-    quyuC() {
-      this.getListNew();
-    },
-    value2() {
-      if (this.value2 == 6) {
-        this.value2 = "";
-      }
-      this.getListNew();
-    }
   },
   computed: {
     finished () {
@@ -234,11 +155,15 @@ export default {
   },
   created() {
     this.fmoney = fmoney;
-
-    this.get();
-    this.getSearchNew();
+    this.placeText = this.$route.query.place_text;
+    this.img = { titles, dingwei, pulldow, homeS};
+    this.CompletionStatusOption =
+      CompletionStatusOptionConfig.map(({ key, I18NKey }) => ({ value:key, label: this.$t(`message.NEW_LIST.${I18NKey}`) }));
+    this.TypologyOption = TypologyOptionConfig
+      .map(({ incluedKey, I18NKey }) => ({ value: incluedKey, incluedKey, label: this.$t(`message.NEW_LIST.${I18NKey}`) }));
   },
   mounted () {
+    this.getSearchNew();
     // this.__scrollCbk = () =>
     //   !this.finished && scrollListener(() => this.getListNew(this.page + 1));
     // window.addEventListener('scroll', this.__scrollCbk);
@@ -247,99 +172,126 @@ export default {
     window.removeEventListener('scroll', this.__scrollCbk);
   },
   methods: {
-    popUp1() {
-      this.popUpT1 = !this.popUpT1;
-      this.popUpT2 = false;
-    },
-    popUp2() {
-      this.popUpT1 = !this.popUpT1;
-      this.getListNew();
+    togglePriceSlide() {
+      this.priceSlideVis = !this.priceSlideVis;
     },
     hides() {
-      this.popUpT2 = false;
-      this.popUpT1 = false;
+      this.priceSlideVis = false;
     },
-    popUps1() {
-      this.popUpT2 = !this.popUpT2;
-      this.popUpT1 = false;
-    },
-    popUps2() {
-      this.popUpT2 = !this.popUpT2;
-      this.getListNew();
-    },
-    routerGo(flags) {
+    toDetail(item) {
       this.$router.push({
         path: "/newDetails",
-        query: {
-          flag: flags
-        }
+        query: {}
       });
     },
-    async get() {
-      const getAddressInfo = (await this.$api.article.getAddress()).data;
-      if (getAddressInfo.code == 0) {
-        getAddressInfo.data.shift();
-        this.options = getAddressInfo.data;
-        this.options.forEach(item => {
-          item.label = item.text;
-          item.id = item.text;
-          item.children.forEach(items => {
-            items.label = items.text;
-            items.id = items.text;
-          });
-        });
-      }
-    },
     async getSearchNew() {
-      const getSearchNewInfo = (await this.$api.article.getSearchNew()).data;
-      if (getSearchNewInfo.code == 0) {
-        this.max = Number(getSearchNewInfo.date.maxPrice);
-        this.min = Number(getSearchNewInfo.date.minPrice);
-        this.maxs = Number(getSearchNewInfo.date.maxHall);
-        this.mins = Number(getSearchNewInfo.date.minHall);
-        this.values2[1] = this.maxs;
-        this.values2[0] = this.mins;
-        this.values[0] = this.min;
-        this.values[1] = this.max;
+      const { place_id } = this.$route.query;
+      if (!place_id) return;
+      const lang = this._i18n.locale;
+      const responseData = (await this.$api.article.getProgramesByPlaceid({ place_id, lang })).data;
+      const { placeInfo, programes } = responseData || {};
+      if (placeInfo?.longitude && placeInfo?.latitude) {
+        this.placeInfo = placeInfo;
       }
-      this.getListNew();
-    },
-    async getListNew(page = 1) {
-      this.isLoading = true;
-      const params = {
-        page,
-        pageSize: 10,
-        expressing: this.value2,
-        lowPrice: this.values[0] ? this.values[0] : this.min - 1,
-        maxPrice:
-          this.values[1] != this.marks[0]
-            ? this.values[1]
-            : this.marks[100] + 1,
-        province: this.quyuC,
-        minHall: this.values2[0] ? this.values2[0] : this.marks2[0],
-        maxHall:
-          this.values2[1] != this.values2[0] ? this.values2[1] : this.maxs + 1,
-        search: this.$route.query.val ? this.$route.query.val : ""
-      };
-      try {
-        const getListNewInfo = (await this.$api.article.getListnew(params)).data;
-        if (getListNewInfo.code == 0) {
-          this.newInfoList = getListNewInfo.data.newHousingList;
-          this.maxPage = getListNewInfo.data.maxPage;
-          this.page = params.page;
-        }
-      } finally {
-        this.isLoading = false;
+      if (Array.isArray(programes)) {
+        const { minPrice, maxPrice, typologyOptionKeys } = handleProgrames(programes, this.TypologyOption);
+        this.maxPrice = maxPrice;
+        this.minPrice = minPrice;
+        this.priceRange = [ minPrice, maxPrice ];
+        this.typologyOptions = typologyOptionKeys
+          .map(key => this.TypologyOption.find(it => it.value === key)).filter(Boolean);
+        this.programList = programes;
       }
     },
-    async getsas() {
-      const getCityInfo = (await this.$api.article.getRegionalNew()).data;
-      if (getCityInfo.code == 0) {
-        this.cities = getCityInfo.data.spreads;
-      }
-    }
   },
 };
+
+function handleProgrames (programes, TypologyOption) {
+  let minPrice = 0, maxPrice = 0, typologyOptionKeySet = new Set();
+  const date = new Date(), curYear = date.getFullYear(),
+    month = date.getMonth() + 1,
+    quarter = Math.ceil(month / 3);
+  for (const it of programes) {
+    const { availablePropertiesMaxPrice: max, availablePropertiesMinPrice: min, typologies } = it;
+    setCompletionStatusFlag(it, curYear, quarter);
+    if (max > maxPrice) maxPrice = max;
+    if (minPrice === 0) minPrice = min;
+    else if (min < minPrice) minPrice = min;
+    if (Array.isArray(typologies)) {
+      const translatedTypologies = [];
+      for (let typology of typologies) {
+        typology = typology.toLowerCase();
+        const config = TypologyOptionConfig.find(config => typology.includes(config.incluedKey));
+        if (config) {
+          typologyOptionKeySet.add(config.incluedKey);
+          translatedTypologies.push(TypologyOption.find(it => it.value === config.incluedKey)?.label);
+        }
+      }
+      it.translatedTypologies = translatedTypologies.filter(Boolean);
+    }
+  }
+  return { minPrice, maxPrice, typologyOptionKeys: Array.from(typologyOptionKeySet) };
+}
+
+function setCompletionStatusFlag (item, curYear, curQuarter) {
+  if (item.delivered)
+    return (item.completionFlag = CompletionStatusKey.DELIVERED);
+  if (item.deliveryQuarter) {
+    const [ year, quarter ] = item.deliveryQuarter?.split('T').map(it => Number(it)) ?? [];
+    if (year < curYear) item.completionFlag = CompletionStatusKey.DELIVERED;
+    else if (year === curYear) {
+      if (quarter < curQuarter) item.completionFlag = CompletionStatusKey.DELIVERED;
+      else item.completionFlag = CompletionStatusKey.SIX_MONTH;
+    } else {
+      if (year - curYear < 2) item.completionFlag = CompletionStatusKey.SIX_TWELVE_MONTH;
+      else if (year - curYear > 3) item.completionFlag = CompletionStatusKey.MORE_THAN_TWO_YEAR;
+      else item.completionFlag = CompletionStatusKey.ONE_TWO_YEAR;
+    }
+  }
+}
+
+const CompletionStatusKey = {
+  SIX_MONTH: 'SIX_MONTH',
+  SIX_TWELVE_MONTH: 'SIX_TWELVE_MONTH',
+  ONE_TWO_YEAR: 'ONE_TWO_YEAR',
+  MORE_THAN_TWO_YEAR: 'MORE_THAN_TWO_YEAR',
+  DELIVERED: 'DELIVERED',
+}
+
+const CompletionStatusOptionConfig = [
+  { key: CompletionStatusKey.SIX_MONTH, I18NKey: 'COMPLETION_STATUS_OPTION_TO_SIX_MONTHS' },
+  { key: CompletionStatusKey.SIX_TWELVE_MONTH, I18NKey: 'COMPLETION_STATUS_OPTION_SIX_TO_TWELVE_MONTHS' },
+  { key: CompletionStatusKey.ONE_TWO_YEAR, I18NKey: 'COMPLETION_STATUS_OPTION_ONE_TO_TWO_YEARS' },
+  { key: CompletionStatusKey.MORE_THAN_TWO_YEAR, I18NKey: 'COMPLETION_STATUS_OPTION_MORE_THAN_TWO_YEARS' },
+  { key: CompletionStatusKey.DELIVERED, I18NKey: 'COMPLETION_STATUS_OPTION_DELIVERED' }
+];
+
+// we filter the input if includes the key
+const TypologyOptionConfig = [
+  { incluedKey: 'studio', I18NKey: 'TYPOLOGY_OPTION_LABEL_STUDIO' },
+  { incluedKey: 't1', I18NKey: 'TYPOLOGY_OPTION_LABEL_T1' },
+  { incluedKey: 't2', I18NKey: 'TYPOLOGY_OPTION_LABEL_T2' },
+  { incluedKey: 't3', I18NKey: 'TYPOLOGY_OPTION_LABEL_T3' },
+  { incluedKey: 't3 bis', I18NKey: 'TYPOLOGY_OPTION_LABEL_T3_BIS' },
+  { incluedKey: 't4', I18NKey: 'TYPOLOGY_OPTION_LABEL_T4' },
+  { incluedKey: 't5', I18NKey: 'TYPOLOGY_OPTION_LABEL_T5' },
+  { incluedKey: 't6', I18NKey: 'TYPOLOGY_OPTION_LABEL_T6' },
+  { incluedKey: 'maison t6', I18NKey: 'TYPOLOGY_OPTION_LABEL_MAISON_T6' },
+  { incluedKey: 'maison individuelle', I18NKey: 'TYPOLOGY_OPTION_LABEL_MAISON_INDIVIDUELEL' },
+  { incluedKey: 'maison', I18NKey: 'TYPOLOGY_OPTION_LABEL_MAISON' },
+  { incluedKey: 'villa', I18NKey: 'TYPOLOGY_OPTION_LABEL_VILLA' },
+  { incluedKey: 'duplex', I18NKey: 'TYPOLOGY_OPTION_LABEL_DUPLEX' },
+  { incluedKey: 'triplex', I18NKey: 'TYPOLOGY_OPTION_LABEL_TRIPLEX' },
+  { incluedKey: 'box', I18NKey: 'TYPOLOGY_OPTION_LABEL_BOX' },
+  { incluedKey: 'parking', I18NKey: 'TYPOLOGY_OPTION_LABEL_PARKING' },
+  { incluedKey: 'appartement', I18NKey: 'TYPOLOGY_OPTION_LABEL_APPARTEMENT' },
+  { incluedKey: 'bureau', I18NKey: 'TYPOLOGY_OPTION_LABEL_BUREAU' },
+  { incluedKey: 'commercial', I18NKey: 'TYPOLOGY_OPTION_LABEL_COMMERCIAL' },
+  { incluedKey: 'chambre', I18NKey: 'TYPOLOGY_OPTION_LABEL_CHAMBRE' },
+  { incluedKey: 'suite', I18NKey: 'TYPOLOGY_OPTION_LABEL_SUITE' },
+  { incluedKey: 'unité vie', I18NKey: 'TYPOLOGY_OPTION_LABEL_SUITE' },
+  { incluedKey: 'cellier', I18NKey: 'TYPOLOGY_OPTION_LABEL_CELLIER' },
+]
 </script>
 
 <style lang="scss" scoped>
