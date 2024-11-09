@@ -16,15 +16,25 @@
               :latitude="placeInfo.latitude"
               :longitude="placeInfo.longitude"
               :init-zoom="11"
+              :points="mapPoints"
+              :active-point-idx="activePointIdx"
+              @pointSelect="pointSelectHandler"
             ></jump-map>
+          </template>
+          <template v-else>
+            <el-skeleton-item variant="rect" style="width: 240px; height: 240px;" />
           </template>
         </div>
       </div>
       <div class="rights" style="padding-top:51px;">
-        <p class="tit">{{ $t("message.global.method") }}</p>
-        <div class="priceLabel" style="width:140px" @click.stop="togglePriceSlide">
-          <span>
-            <span style="font-size: 18px;">
+        <template v-if="dataLoading">
+          <el-skeleton :rows="12" />
+        </template>
+        <template v-else>
+          <p class="tit">{{ $t("message.global.method") }}</p>
+          <!-- Price range slider -->
+          <div class="priceLabel" @click="priceSlideVis = true" v-popover:popover>
+            <span style="font-size: 12px;">
               {{ $t("message.global.price") }}
             </span>
             <img
@@ -32,66 +42,77 @@
               alt=""
               style="position: absolute;top: 50%; right: 20px;"
             />
-          </span>
-          <div class="slideKids" v-show="priceSlideVis">
-            <el-slider v-model="priceRange" :max="maxPrice" :min="minPrice" range>
-            </el-slider>
+          </div>
+          <el-popover
+            ref="popover"
+            placement="right"
+            width="220"
+            trigger="click"
+          >
+            <el-slider v-model="priceRange" :max="maxPrice" :min="minPrice" range @input="priceSlideChangeHandler"></el-slider>
             <p style="overflow:hidden">
               <span style="float:left;"> {{ fmoney(priceRange[0], 1) }} </span>
               <span style="float:right;">{{ fmoney(priceRange[1], 1) }}</span>
             </p>
-            <div class="butss" @click.stop="togglePriceSlide">
-              {{ $t("message.global.sure") }}
+          </el-popover>
+          <!-- Compleyion status select -->
+          <el-select
+            multiple
+            class="secF"
+            style="border-left: 1px solid #ccc;"
+            v-model="completionStatusArr"
+            :placeholder="$t('message.NEW_LIST.ALL_COMPLETION_STATUS')"
+          >
+            <el-option v-for="it in CompletionStatusOption" :key="it.value" :label="it.label" :value="it.value"></el-option>
+          </el-select>
+          <!-- Typology select 房型选择 -->
+          <el-select
+            multiple
+            class="secF"
+            style="border-left: 1px solid #ccc;"
+            v-model="selectedTypologies"
+            :placeholder="$t('message.NEW_LIST.ALL_TYPOLOGY_LABEL')"
+          >
+            <el-option v-for="it in typologyOptions" :key="it.value" :label="it.label" :value="it.value"></el-option>
+          </el-select>
+          <!-- Programe List -->
+          <div
+            v-for="(itemss, index) in filteredProgramList"
+            :key="index"
+            class="list-item"
+            :class="{ active: index === activePointIdx }"
+            @click="selectItem(itemss, index)"
+            ref="programItem"
+          >
+            <el-image :src="itemss.images[0]" :lazy="true">
+              <div slot="error" class="image-slot">
+                <i class="el-icon-picture-outline"></i>
+              </div>
+            </el-image>
+            <div class="right-list-item">
+              <div v-if="itemss.deliveryQuarter">
+                <span class="tag">{{ itemss.deliveryQuarter }}</span>
+              </div>
+              <div class="title">{{ itemss.estate_name }}</div>
+              <div class="info-row">
+                <img :src="img.dingwei" alt="" />
+                <span class="info">{{ itemss.zip_code }}/{{ itemss.city }}</span>
+              </div>
+              <div class="info-row">
+                <img :src="img.homeS" alt="" />
+                <span class="info">
+                  {{ itemss.translatedTypologies.join(',') }}
+                </span>
+              </div>
+              <div class="price-range">{{ itemss.availablePropertiesMinPrice }}€ - {{ itemss.availablePropertiesMaxPrice }}€</div>
+              <div class="link-btn">
+                <el-button icon="el-icon-position" circle @click="listItemClickhandler(itemss)"></el-button>
+              </div>
             </div>
           </div>
-        </div>
-        <el-select
-          multiple
-          class="secF"
-          style="border-left: 1px solid #ccc;"
-          v-model="completionStatusArr"
-          :placeholder="$t('message.NEW_LIST.ALL_COMPLETION_STATUS')"
-        >
-          <el-option v-for="it in CompletionStatusOption" :key="it.value" :label="it.label" :value="it.value"></el-option>
-        </el-select>
-        <el-select
-          multiple
-          class="secF"
-          style="border-left: 1px solid #ccc;"
-          v-model="selectedTypologies"
-          :placeholder="$t('message.NEW_LIST.ALL_TYPOLOGY_LABEL')"
-        >
-          <el-option v-for="it in typologyOptions" :key="it.value" :label="it.label" :value="it.value"></el-option>
-        </el-select>
-        <!-- Programe List -->
-        <div v-for="(itemss, inde) in programList" :key="inde" @click="toDetail(itemss)" class="listNews">
-          <img :src="itemss.images[0]" class="leftImg" alt="" />
-          <div class="rightLisT">
-            <p>
-              <span class="tag oneNo">{{ itemss.taxArea }}</span>
-              <span class="tag NOtwo">{{ itemss.deliveryQuarter }}</span>
-            </p>
-            <p class="RIghtTit">{{ itemss.estate_name }}</p>
-            <p>
-              <img :src="img.dingwei" alt="" />
-              &nbsp;
-              <span class="citiyes">{{ itemss.zip_code }}/{{ itemss.city }}</span>
-            </p>
-            <p>
-              <img :src="img.homeS" alt="" />
-              &nbsp;
-              <span class="citiyes">
-                {{ itemss.translatedTypologies.join(',') }}
-              </span>
-            </p>
-            <p class="prisesInd">{{ itemss.availablePropertiesMinPrice }}€ - {{ itemss.availablePropertiesMaxPrice }}€</p>
-            <p class="btnBottom">
-              <span v-for="(itea, k) in itemss.tags" :key="k" class="tag">{{ itea }}</span>
-            </p>
-          </div>
-        </div>
-        <p v-show="isLoading">Loading...</p>
-        <p v-show="finished">{{ $t('message.global.noMore') }}</p>
+          <p v-show="isLoading">Loading...</p>
+          <p v-show="finished">{{ $t('message.global.noMore') }}</p>
+        </template>
       </div>
     </div>
   </div>
@@ -107,6 +128,9 @@ import titles from "~/assets/image/titles.jpg";
 import homeS from "~/assets/image/homeS.png";
 import { fmoney, scrollListener } from '../utils';
 import JumpMap from '../components/jumpMap.vue';
+import { TypologyOptionConfig } from '../common/config';
+import { Lazyload } from "vant";
+
 export default {
   name: "newList",
   middleware: "responsive",
@@ -134,15 +158,18 @@ export default {
   },
   data() {
     return {
+      dataLoading: true,
       placeInfo: null,
-      priceRange: ["", ""],
+      priceRange: [0, 0],
       priceSlideVis: false,
       completionStatusArr: [],
       typologyOptions: [],
       selectedTypologies: [],
       maxPrice: 0,
       minPrice: 0,
-      programList: [],
+      allProgramList: [],
+      filteredProgramList: [],
+      activePointIdx: -1,
       page: 1,
       maxPage: 1,
       isLoading: false
@@ -151,11 +178,33 @@ export default {
   computed: {
     finished () {
       return this.page >= this.maxPage;
+    },
+    mapPoints () {
+      return this.filteredProgramList.map((it, idx) => {
+        const { longitude, latitude } = it;
+        // const content = translatedTypologies.join(',');
+        return { idx, longitude, latitude };
+      });
     }
+  },
+  watch: {
+    completionStatusArr (statusArr) {
+      this.activePointIdx = -1;
+      this.filteredProgramList =
+        filterProgrammeListByConditions(this.allProgramList, this.priceRange, statusArr, this.selectedTypologies);
+    },
+    selectedTypologies (typologies) {
+      this.activePointIdx = -1;
+      this.filteredProgramList =
+        filterProgrammeListByConditions(this.allProgramList, this.priceRange, this.completionStatusArr, typologies);
+    },
   },
   created() {
     this.fmoney = fmoney;
-    this.placeText = this.$route.query.place_text;
+    const { place_text, city_name, lat, lng } = this.$route.query;
+    this.placeText = place_text || city_name;
+    if (lat && lng)
+      this.placeInfo = { name: city_name, latitude: Number(lat), longitude: Number(lng) };
     this.img = { titles, dingwei, pulldow, homeS};
     this.CompletionStatusOption =
       CompletionStatusOptionConfig.map(({ key, I18NKey }) => ({ value:key, label: this.$t(`message.NEW_LIST.${I18NKey}`) }));
@@ -163,7 +212,7 @@ export default {
       .map(({ incluedKey, I18NKey }) => ({ value: incluedKey, incluedKey, label: this.$t(`message.NEW_LIST.${I18NKey}`) }));
   },
   mounted () {
-    this.getSearchNew();
+    if (process.client) this.getSearchNew();
     // this.__scrollCbk = () =>
     //   !this.finished && scrollListener(() => this.getListNew(this.page + 1));
     // window.addEventListener('scroll', this.__scrollCbk);
@@ -178,17 +227,32 @@ export default {
     hides() {
       this.priceSlideVis = false;
     },
-    toDetail(item) {
-      this.$router.push({
-        path: "/newDetails",
-        query: {}
-      });
+    selectItem(item, index) {
+      this.activePointIdx = index;
+    },
+    priceSlideChangeHandler () {
+      this.activePointIdx = -1;
+      clearTimeout(this.__priceRangeChangeTimeout);
+      this.__priceRangeChangeTimeout = setTimeout(() => {
+        this.filteredProgramList =
+          filterProgrammeListByConditions(this.allProgramList, this.priceRange, this.completionStatusArr, this.selectedTypologies);
+      }, 500);
+    },
+    pointSelectHandler (idx) {
+      const itemEls = this.$refs.programItem;
+      if (!Array.isArray(itemEls)) return;
+      const el = itemEls[idx];
+      if (!el) return;
+      this.activePointIdx = idx;
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
     },
     async getSearchNew() {
-      const { place_id } = this.$route.query;
-      if (!place_id) return;
+      this.dataLoading = true;
+      this.activePointIdx = -1;
+      const { place_id, city_name } = this.$route.query;
+      if (!place_id && !city_name) return;
       const lang = this._i18n.locale;
-      const responseData = (await this.$api.article.getProgramesByPlaceid({ place_id, lang })).data;
+      const responseData = (await this.$api.article.searchProgramesByCity({ place_id, lang, city_name })).data;
       const { placeInfo, programes } = responseData || {};
       if (placeInfo?.longitude && placeInfo?.latitude) {
         this.placeInfo = placeInfo;
@@ -200,11 +264,23 @@ export default {
         this.priceRange = [ minPrice, maxPrice ];
         this.typologyOptions = typologyOptionKeys
           .map(key => this.TypologyOption.find(it => it.value === key)).filter(Boolean);
-        this.programList = programes;
+        this.allProgramList = programes;
+        this.filteredProgramList = programes.slice();
       }
+      this.dataLoading = false;
     },
+    listItemClickhandler ({ zip_code, name_id, city, estate_name }) {
+      this.$router.push({ path: '/newDetails', query: { zip_code, name_id, city, estate_name } });
+    }
   },
 };
+
+function shortenPrice (price) {
+  if (price > 99999) {
+    return (price / 100000).toFixed(1) + 'M';
+  }
+  return (price / 1000).toFixed(0) + 'K';
+}
 
 function handleProgrames (programes, TypologyOption) {
   let minPrice = 0, maxPrice = 0, typologyOptionKeySet = new Set();
@@ -250,6 +326,26 @@ function setCompletionStatusFlag (item, curYear, curQuarter) {
   }
 }
 
+function filterProgrammeListByConditions (programes, priceRange, selectedCompletionStatusArr, selectedTypologies) {
+  let ret = programes.slice();
+  if (Array.isArray(priceRange)) {
+    const [ min, max ] = priceRange;
+    ret = ret.filter(({ availablePropertiesMinPrice: minP, availablePropertiesMaxPrice: maxP }) =>
+      !(maxP < min) && !(minP > max)
+    );
+  }
+  if (selectedCompletionStatusArr?.length) {
+    ret = ret.filter(it => selectedCompletionStatusArr.includes(it.completionFlag));
+  }
+  if (selectedTypologies?.length) {
+    ret = ret.filter(({ typologies }) => {
+      typologies = typologies.map(it => it.toLowerCase());
+      return typologies.some(it => selectedTypologies.some(itt => it.includes(itt)));
+    });
+  }
+  return ret;
+}
+
 const CompletionStatusKey = {
   SIX_MONTH: 'SIX_MONTH',
   SIX_TWELVE_MONTH: 'SIX_TWELVE_MONTH',
@@ -266,32 +362,6 @@ const CompletionStatusOptionConfig = [
   { key: CompletionStatusKey.DELIVERED, I18NKey: 'COMPLETION_STATUS_OPTION_DELIVERED' }
 ];
 
-// we filter the input if includes the key
-const TypologyOptionConfig = [
-  { incluedKey: 'studio', I18NKey: 'TYPOLOGY_OPTION_LABEL_STUDIO' },
-  { incluedKey: 't1', I18NKey: 'TYPOLOGY_OPTION_LABEL_T1' },
-  { incluedKey: 't2', I18NKey: 'TYPOLOGY_OPTION_LABEL_T2' },
-  { incluedKey: 't3', I18NKey: 'TYPOLOGY_OPTION_LABEL_T3' },
-  { incluedKey: 't3 bis', I18NKey: 'TYPOLOGY_OPTION_LABEL_T3_BIS' },
-  { incluedKey: 't4', I18NKey: 'TYPOLOGY_OPTION_LABEL_T4' },
-  { incluedKey: 't5', I18NKey: 'TYPOLOGY_OPTION_LABEL_T5' },
-  { incluedKey: 't6', I18NKey: 'TYPOLOGY_OPTION_LABEL_T6' },
-  { incluedKey: 'maison t6', I18NKey: 'TYPOLOGY_OPTION_LABEL_MAISON_T6' },
-  { incluedKey: 'maison individuelle', I18NKey: 'TYPOLOGY_OPTION_LABEL_MAISON_INDIVIDUELEL' },
-  { incluedKey: 'maison', I18NKey: 'TYPOLOGY_OPTION_LABEL_MAISON' },
-  { incluedKey: 'villa', I18NKey: 'TYPOLOGY_OPTION_LABEL_VILLA' },
-  { incluedKey: 'duplex', I18NKey: 'TYPOLOGY_OPTION_LABEL_DUPLEX' },
-  { incluedKey: 'triplex', I18NKey: 'TYPOLOGY_OPTION_LABEL_TRIPLEX' },
-  { incluedKey: 'box', I18NKey: 'TYPOLOGY_OPTION_LABEL_BOX' },
-  { incluedKey: 'parking', I18NKey: 'TYPOLOGY_OPTION_LABEL_PARKING' },
-  { incluedKey: 'appartement', I18NKey: 'TYPOLOGY_OPTION_LABEL_APPARTEMENT' },
-  { incluedKey: 'bureau', I18NKey: 'TYPOLOGY_OPTION_LABEL_BUREAU' },
-  { incluedKey: 'commercial', I18NKey: 'TYPOLOGY_OPTION_LABEL_COMMERCIAL' },
-  { incluedKey: 'chambre', I18NKey: 'TYPOLOGY_OPTION_LABEL_CHAMBRE' },
-  { incluedKey: 'suite', I18NKey: 'TYPOLOGY_OPTION_LABEL_SUITE' },
-  { incluedKey: 'unité vie', I18NKey: 'TYPOLOGY_OPTION_LABEL_SUITE' },
-  { incluedKey: 'cellier', I18NKey: 'TYPOLOGY_OPTION_LABEL_CELLIER' },
-]
 </script>
 
 <style lang="scss" scoped>
@@ -334,13 +404,9 @@ const TypologyOptionConfig = [
       }
     }
   }
-  .lefts,
-  .rights {
+  .lefts, .rights {
     display: inline-block;
     width: 600px;
-  }
-  .rights {
-    overflow: hidden;
   }
   .lefts {
     height: 560px;
@@ -349,65 +415,78 @@ const TypologyOptionConfig = [
   .rights {
     float: right;
     box-sizing: border-box;
+    overflow: hidden;
     .tit {
       font-size: 26px;
       color: #000;
       padding: 14px;
       font-weight: 600;
     }
-    .listNews {
+    .list-item {
       display: flex;
       align-items: center;
-      padding: 5px 0;
+      margin: 5px 0;
       border-bottom: 1px solid #ccc;
-      .leftImg {
+      &.active {
+        border: 3px solid blue;
+      }
+      .el-image {
         flex: unset;
         width: 221px;
-        max-height: 137px;
+        height: 137px;
       }
-      .rightLisT {
+      .right-list-item {
         flex: 1;
         margin-left: 5px;
-        p {
-          line-height: 1.5;
+        position: relative;
+        div {
+          margin-bottom: 6px;
+        }
+        .info-row {
+          display: flex;
+          align-items: center;
           img {
             width: 12px;
+            margin-right: .6em;
           }
-          .citiyes {
+          .info {
             font-size: 14px;
             color: #373737;
-            font-weight: bold;
           }
         }
         .tag {
           display: inline-block;
           font-size: 12px;
           color: #fff;
-          padding: 0 2px;
+          padding: 2px;
+          background-color: #234cd3;
         }
         .oneNo {
           background-color: #6ac078;
         }
-        .NOtwo {
-          background-color: #234cd3;
-        }
-        .RIghtTit {
+        .title {
           color: #000;
           font-size: 16px;
           font-weight: 600;
         }
-        .btnBottom {
-          .tag {
-            background-color: #bbb;
-            color: #000;
-            font-size: 14px;
-          }
+        .link-btn {
+          position: absolute;
+          z-index: 10;
+          right: 5px;
+          top: 50%;
+          transform: translateY(-50%);
+          visibility: hidden;
         }
-        .prisesInd {
+        .price-range {
           display: block;
           font-size: 16px;
           color: #ff5e5e;
           font-weight: bold;
+        }
+        &:hover {
+          .link-btn {
+            visibility: visible;
+          }
         }
       }
       .rightImg {
@@ -421,8 +500,7 @@ const TypologyOptionConfig = [
       background-color: #fff;
       position: relative;
       display: inline-block;
-      width: 80px;
-      // border:1px solid #ddd;
+      width: 140px;
       background-color: #e9e9e9;
       vertical-align: top;
       line-height: 34px;
@@ -469,7 +547,7 @@ const TypologyOptionConfig = [
     border-right: 1px solid #ccc;
     .el-input__inner {
       text-align: center;
-      font-size: 18px;
+      font-size: 12px;
       border: 0px;
       background-color: #e9e9e9;
       vertical-align: bottom;
@@ -522,5 +600,15 @@ const TypologyOptionConfig = [
   .el-icon-date:before {
     font-size: 0;
   }
+}
+.image-slot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  font-size: 30px;
+  background: #f5f7fa;
+  color: #909399;
 }
 </style>

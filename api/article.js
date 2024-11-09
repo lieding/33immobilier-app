@@ -193,8 +193,8 @@ const article = {
   getRate() {
     return axios.get('/calculator/getRate');
   },
-  getProgramesByPlaceid (params) {
-    return axios.get('/search-programmes-by-placeid', { params });
+  searchProgramesByCity (params) {
+    return axios.get('/search-programes-by-city', { params });
   }
 };
 

@@ -165,7 +165,7 @@
 import rem from "~/common/rem.js";
 import Header from "~/components/mIndex/head.vue";
 import Footer from "~/components/mIndex/footer.vue";
-var echarts = require("echarts");
+
 export default {
   name: "",
   middleware: "responsive",
@@ -275,57 +275,9 @@ export default {
             { value: Number(this.L), itemStyle: { color: "#1B9AFB" } },
             { value: Number(this.S), itemStyle: { color: "#F4A436" } }
           ];
-          //console.log(echarts);
-          setTimeout(() => {
-            if (process.client) {
-              var myChart = echarts.init(document.querySelector(".echart"));
-              myChart.setOption({
-                legend: {
-                  orient: "vertical",
-                  x: "left",
-                  data: ["首付金额", "利息金额", "贷款金额"]
-                },
-                series: [
-                  {
-                    type: "pie",
-                    radius: ["50%", "70%"],
-                    center: ["35%", "60%"],
-                    labelLine: {
-                      normal: {
-                        show: false
-                      }
-                    },
-                    data: this.echarts
-                  }
-                ]
-              });
-            }
-          }, 100);
         }
       });
-      // setTimeout(() => {
-      //   var myChart = echarts.init(document.querySelector(".echart"));
-      //   myChart.setOption({
-      //     legend: {
-      //       orient: "vertical",
-      //       x: "left",
-      //       data: ["首付金额", "利息金额", "贷款金额"]
-      //     },
-      //     series: [
-      //       {
-      //         type: "pie",
-      //         radius: ["50%", "70%"],
-      //         center : ['25%', '60%'],
-      //         labelLine: {
-      //           normal: {
-      //             show: false
-      //           }
-      //         },
-      //         data: this.echarts
-      //       }
-      //     ]
-      //   });
-      // }, 100);
+
     }
   }
 };

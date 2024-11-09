@@ -370,8 +370,7 @@ import rem from "~/common/rem.js";
 import List from '../components/mIndex/list.vue'
 import Header from '../components/mIndex/head.vue'
 import Footer from '../components/mIndex/footer.vue'
-import { BASE_API } from "../api" 
-var echarts = require('echarts');
+import { BASE_API } from "../api"
 
 export default {
        name: '',
@@ -430,8 +429,7 @@ export default {
             ListBottom:[],//下列
             promoteList:[],//推荐房源
             picList:[],//图片列表
-            echarts:[],//echarts图
-             rate:'30',//负债率
+            rate:'30',//负债率
             apport:'0',//首付金额
             revenus:'3000',//月净收入
             M:'',//月还款金额
@@ -454,24 +452,20 @@ export default {
                getRate: [], //贷款利率
             getRateList: [],
             galleryIndex: null
-        } 
+        }
     },
     mounted(){
-        rem();
-           this.$api.article.getRate().then(res => {
-            if (res.data.code == 0) {
-                this.getRateList = res.data.data;
-                this.getRate = Object.keys(res.data.data);
-                //console.log(this.getRate);
-                this.interesrate = res.data.data["25"];
-            }
-       });
-        this.$nextTick(function(){
-            // var myChart = echarts.init(document.querySelector(".echart"));
-            // myChart.setOption(this.orgOptions)
-        })
-          this.Onlist();
-         
+      rem();
+          this.$api.article.getRate().then(res => {
+          if (res.data.code == 0) {
+              this.getRateList = res.data.data;
+              this.getRate = Object.keys(res.data.data);
+              //console.log(this.getRate);
+              this.interesrate = res.data.data["25"];
+          }
+      });
+      this.Onlist();
+
   },
   methods: {
       Oninput(){
@@ -514,11 +508,11 @@ export default {
               }
           })
           this.Url = BASE_API.jsp + "/app/map/jumpMap?lat="+ res.data.data.latitude +'&lng=' +res.data.data.longitude
-          
+
         this.W = this.ListTop.length * 2 +'rem'
           this.promoteList = res.data.data.promoteList
             this.picList = res.data.data.picList
-          
+
       });
       },
        onpackUp(){
@@ -536,7 +530,7 @@ export default {
             this.$api.article.loanCapability(params).then(res => {
                     this.M = res.data.data.M
                     // this.A = res.data.data.A
-                    // this.s = res.data.data.S 
+                    // this.s = res.data.data.S
                     // this.L = res.data.data.L
                     this.reckenList = res.data.data.reckenList
             });
@@ -551,41 +545,12 @@ export default {
                 }else{
                    this.mothey = res.data.data.M
                     this.A = res.data.data.A
-                    this.S = res.data.data.S 
+                    this.S = res.data.data.S
                     this.L = res.data.data.L
                     //console.log(this.A,this.L,this.S)
-                    this.echarts=[{value:Number(this.A),itemStyle:{color:"#7ECF34"}},
-                                 {value:Number(this.L),itemStyle:{color:"#1B9AFB"}},
-                                 {value:Number(this.S),itemStyle:{color:"#F4A436"}}]
-                    //console.log(echarts)
                 }
-
-                    setTimeout(() => {
-                            if (process.client) {
-
-                        var myChart = echarts.init(document.querySelector(".echart"));
-                        myChart.setOption({
-                                legend: {
-                                    orient: 'vertical',
-                                    x: 'left',
-                                    data:['首付金额','利息金额','贷款金额']
-                                },
-                            series: [
-                                {
-                                    type:'pie',
-                                    radius: ['50%', '70%'],
-                                    labelLine: {
-                                        normal: {
-                                            show: false
-                                        }
-                                    },
-                                    data:this.echarts
-                                }
-                            ]
-                        })  }              
-              }, 100);
             });
-           
+
         },
         // 联系我们
         OncontactUs(){
@@ -600,7 +565,7 @@ export default {
            this.interpret = !this.interpret
         },
        Onshare(smt){
-            let list={  
+            let list={
                 types:'second_hand',
                 type:this.$t("message.global.second-hand"),
                 id:this.id,
@@ -630,10 +595,10 @@ export default {
             query: list
         });
         }
-   },
+  },
    onMap(value){
-           window.location.href = value
-     },
+    window.location.href = value
+  },
 }
 </script>
 <style lang="scss">
@@ -710,7 +675,7 @@ export default {
             line-height:.18rem;
         }
        }
-    
+
    }
   .AR{
       position: absolute;
@@ -723,7 +688,7 @@ export default {
       position: absolute;
       top: 0.5rem;
        right: 0.16rem;
-   
+
    }
    .hr{
         border:none;
@@ -770,7 +735,7 @@ export default {
         color: #ff5e5e;
         line-height: 0.28rem;
         margin: 0.13rem 0 0.12rem 0;
-     }  
+     }
      .unit{
         margin-left: 0.03rem;
         font-size:.13rem;
@@ -795,9 +760,9 @@ export default {
             height: .15rem;
         }
         span{
-          margin-right: .1rem;  
+          margin-right: .1rem;
         }
-     } 
+     }
      .consultants{
         height:.28rem;
         font-size:.2rem;
@@ -810,7 +775,7 @@ export default {
     /* 房产顾问 */
     .estates{
         margin: 0  0.12rem;
- 
+
       .broker_box{
           padding: 0.11rem 0.15rem 0.09rem 0.04rem;
           height:3.73rem;
@@ -825,7 +790,7 @@ export default {
             .attestation{
                 position: absolute;
                 right: 0.2rem;
-                
+
                 p{
                     height:.23rem;
                     background:rgba(248,248,248,1);
@@ -846,12 +811,12 @@ export default {
                 }
 
             }
-               
+
                 .img{
                     width:.62rem;
                     height:.62rem;
                     border-radius: 50%;
-                    padding: 0.07rem 0.08rem 0 0.06rem 
+                    padding: 0.07rem 0.08rem 0 0.06rem
                 }
                 .name{
                     padding-top: 0.1rem;
@@ -893,14 +858,14 @@ export default {
                }
             }
             .drug{
-                
+
                 .van-cell-group{
                     height: .28rem;
                 }
                 .van-cell{
-                   padding: 0.03rem 0.1rem 
+                   padding: 0.03rem 0.1rem
                 }
-              
+
             }
             .van-field__label{
                     font-size:.12rem;
@@ -908,7 +873,7 @@ export default {
                     line-height:.23rem;
                 }
                 .van-field__control{
-                    
+
                      font-size:.12rem;
                     color:rgba(167,167,167,1);
                     line-height:.23rem;
@@ -924,7 +889,7 @@ export default {
             .btn{
                   margin: 0.03rem 0.11rem;
                   padding: 0 0.5rem;
-                //   float: right; 
+                //   float: right;
             }
         }
     // 楼盘介绍
@@ -1005,14 +970,14 @@ export default {
 
      }
     }
-   
+
     // 还款计算
-    
+
     .repay{
         .repay_p{
              height:.18rem;
              font-size:.13rem;
-             color:rgba(42,42,42,1);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+             color:rgba(42,42,42,1);
              line-height:.18rem;
              padding:0.12rem 0 0.09rem 0
          }
@@ -1026,7 +991,7 @@ export default {
         .van-field__control{
              height: .2rem  !important;
              font-size:.13rem;
-             color:rgba(42,42,42,1);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+             color:rgba(42,42,42,1);
              line-height:.18rem;
         }
         .van-ellipsis{
@@ -1035,7 +1000,7 @@ export default {
                 top: -0.1rem;
                 height:.18rem;
                 font-size:.13rem;
-                color:rgba(42,42,42,1);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+                color:rgba(42,42,42,1);
                 line-height:.18rem;
         }
         .van-dropdown-menu{
@@ -1068,7 +1033,7 @@ export default {
             right: .8rem;
         }
      }
-    
+
      .loans{
         //  height:1.97rem;
          background:rgba(249,249,249,1);
@@ -1097,11 +1062,11 @@ export default {
              height:.20rem;
              font-size:.14rem;
              color:rgba(134,134,134,1);
-             line-height:.2rem; 
+             line-height:.2rem;
             }
      }
-    
-    }                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+
+    }
  .echart_p{
          position: absolute;
          top: .5rem;
@@ -1110,7 +1075,7 @@ export default {
          font-weight:500;
          color:rgba(119,119,119,1);
          line-height:.2rem;
-         .green{ 
+         .green{
              width:.12rem;
              height:.12rem;
              display: inline-block;
@@ -1131,7 +1096,7 @@ export default {
              border-radius: 50%;
              background:rgba(244,164,54,1);
          }
-         
+
      }
       .btn_us{
                 width: 1.34rem;
@@ -1158,6 +1123,6 @@ export default {
         background: #e9e9e9;
         border: none;
         width: 3.5rem !important;
-    }  
+    }
 }
 </style>

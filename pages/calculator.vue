@@ -4,7 +4,7 @@
     <div class="headline centerS">
       <span>{{ $t("message.global.home") }}</span> /
       <span>{{ $t("message.global.instrument") }}</span>
-      <promoteLists />
+      <calculator />
     </div>
     <Footer />
   </div>
@@ -12,15 +12,14 @@
 <script>
 import Header from "~/components/pcIndex/header.vue";
 import Footer from "~/components/pcIndex/foot.vue";
-import promoteLists from "~/components/pcIndex/promoteList.vue";
-// import Footer from "~/components/mIndex/footer.vue";
-// var echarts = require("echarts");
+import Calculator from "~/components/pcIndex/calculator.vue";
+
 export default {
   middleware: "responsive",
   components: {
     Header,
     Footer,
-    promoteLists
+    Calculator
   },
   head() {
     return {

@@ -275,7 +275,7 @@
       </div>
     </div>
     <div class="centerS">
-      <jisuan />
+      <calculator />
     </div>
     <div class="centerS" style="margin-top:20px;" v-show="promoteList.length">
       <div style="font-size:32px;font-weight:600;">
@@ -316,11 +316,6 @@
               {{ item.promoteBedRoomNum }} {{ $t("message.global.CH") }}
             </span>
           </div>
-          <!-- <div style="padding-top:5px;">
-                        <span style="display:inline-block;padding:1px 7px;font-size:10px;color:#fff;background-color:#BFBFBF;margin-left:10px;">LMNP</span>
-                        <span style="display:inline-block;padding:1px 7px;font-size:10px;color:#fff;background-color:#BFBFBF;margin-left:10px;">PINEL</span>
-                        <span style="display:inline-block;padding:1px 7px;font-size:10px;color:#fff;background-color:#BFBFBF;margin-left:10px;">TVA20%</span>
-          </div>-->
           <div
             style="font-size:16px;color:#FF5E5E;padding-left:10px;padding-top:3px;"
           >
@@ -440,7 +435,7 @@
 <script>
 import headers from "~/components/pcIndex/header.vue";
 import foots from "~/components/pcIndex/foot.vue";
-import jisuan from "~/components/pcIndex/promoteList";
+import Calculator from "~/components/pcIndex/calculator.vue";
 
 import phone from "~/assets/image/phone.png";
 // import proVip from '../assets/image/proVip.png'
@@ -460,7 +455,7 @@ export default {
   components: {
     headers,
     foots,
-    jisuan
+    Calculator
   },
   head() {
     return {

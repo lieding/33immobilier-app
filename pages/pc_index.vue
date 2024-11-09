@@ -1,44 +1,34 @@
 <template>
-  <div id="index" :style="backs">
+  <div id="index" :style="{ backgroundImage: backgroundImage }">
     <!-- 头 -->
     <headers :vas="true"></headers>
     <div class="character">{{ $t("message.global.Apartment") }}</div>
-    <div class="centerSs indexCent">
+    <div class="centerSs main-section">
       <!-- 中 -->
       <div class="listSmall">
         <span
-          :class="{ listSmallT: true, emphasis: label == 1 ? true : false }"
-          @click="theKey(1)"
+          :class="{ listSmallT: true, emphasis: searchMode === SearchMode.NewPrograme }"
+          @click="toggleSearchMode(SearchMode.NewPrograme)"
         >{{ $t("message.global.NewHouse") }}</span>
-        <!-- <span
-          :class="{ listSmallT: true, emphasis: label == 2 ? true : false }"
-          @click="theKey(2)"
-        >{{ $t("message.global.second-hand") }}</span> -->
         <span
-          :class="{ listSmallT: true, emphasis: label == 3 ? true : false }"
-          @click="theKey(3)"
-        >{{ $t("message.global.tenement") }}</span>
+          :class="{ listSmallT: true, emphasis: searchMode === SearchMode.SecondHand }"
+          @click="toggleSearchMode(SearchMode.SecondHand)"
+        >{{ $t("message.global.second-hand") }}</span>
       </div>
-      <div class="searchHou">
+      <div class="city-search-wrapper">
         <el-autocomplete
           v-model="searchVal"
-          class="inputElem"
           :placeholder="$t('message.global.Where')"
           :trigger-on-focus="false"
           :fetch-suggestions="queryCity"
           @select="queryCityHandler"
         ></el-autocomplete>
-        <!-- <span class="searchBtn">
-          <img
-            style="width:26px;height:26px;margin-right:6px;"
-            src="~/assets/image/sousuo.png"
-            alt
-          />
-          {{ $t("message.global.seek") }}
-        </span> -->
+        <el-button type="primary" icon="el-icon-search" class="search-button" :loading="loadingPointInfo" @click="searchBtnHandler">
+          {{ $t("message.PAGE_INDEX.SELECT_CITY") }}
+        </el-button>
       </div>
       <div class="cardLs">
-        <div style="float:left;" @click="RoutingHop('/essaydetails', 3)">
+        <div style="float:left;" @click="routerChange('/essaydetails', 3)">
           <img src="~/assets/image/searchHouse.png" alt />
           <span style="display:inline-block;padding-left:30px;">
             <p style="font-weight:600;">
@@ -49,7 +39,7 @@
             </p>
           </span>
         </div>
-        <div style="float:right;" @click="RoutingHop('/sellers')">
+        <div style="float:right;" @click="routerChange('/sellers')">
           <img src="~/assets/image/houses.png" alt />
           <span style="display:inline-block;padding-left:30px;">
             <p style="font-weight:600;">{{ $t("message.global.want") }}</p>
@@ -63,7 +53,7 @@
       <div class="newHoB">
         <div class="secondTit">
           <span class="secondL">{{ $t("message.global.Newbuilding") }}</span>
-          <span class="secondR" @click="RoutingHop('/newList', false)">{{
+          <span class="secondR" @click="routerChange('/newList', false)">{{
             $t("message.global.examine")
           }}</span>
         </div>
@@ -71,7 +61,7 @@
         <div class="newHoList">
           <div
             class="NewLi"
-            @click="RoutingHop('/newDetails', { zip_code: item.zip_code, name_id: item.name_id, estate_name: item.estate_name, city: item.city })"
+            @click="routerChange('/newDetails', { zip_code: item.zip_code, name_id: item.name_id, estate_name: item.estate_name, city: item.city })"
             v-for="(item, index) in homePageIn.newHousings"
             :key="index"
             :class="[index == 3 ? 'marginRigh' : '']"
@@ -103,7 +93,7 @@
       <!-- <div class="secondHoB">
         <div class="secondTit">
           <span class="secondL">{{ $t("message.global.ordapartment") }}</span>
-          <span class="secondR" @click="RoutingHop('/anyEs', false)">{{
+          <span class="secondR" @click="routerChange('/anyEs', false)">{{
             $t("message.global.AllNewHomes")
           }}</span>
         </div>
@@ -116,7 +106,7 @@
           >
             <img
               class="newHoImg"
-              @click="RoutingHop('/seconHandHous', items.id)"
+              @click="routerChange('/seconHandHous', items.id)"
               :src="items.showUrl"
               alt
             />
@@ -146,13 +136,11 @@
       <div class="rentingHoB">
         <div class="secondTit">
           <span class="secondL">{{ $t("message.global.handpick") }}</span>
-          <span class="secondR" @click="RoutingHop('/rentHouseList', true)">{{
-            $t("message.global.Allhand")
-          }}</span>
+          <span class="secondR" @click="routerChange('/rentHouseList', true)">{{ $t("message.global.Allhand") }}</span>
         </div>
         <div class="newHoList">
           <div
-            @click="RoutingHop('/renting', items.id)"
+            @click="routerChange('/renting', items.id)"
             class="NewLi"
             v-for="(items, index) in homePageIn.rentings"
             :key="index"
@@ -163,25 +151,16 @@
                 <span
                   class="provinces"
                   style="font-weight:600;font-size:11px;"
-                  >{{
-                    items.rentType
-                      ? $t("message.global.joint")
-                      : $t("message.global.grouping")
-                  }}</span
                 >
+                  {{ items.rentType ? $t("message.global.joint") : $t("message.global.grouping") }}
+                </span>
               </span>
               <img class="newHoImg" :src="items.showUrl" alt />
               <p class="newHoTit">{{ items.title }}</p>
               <p class="newHoPr">{{ items.province }} {{ items.city }}</p>
               <div class="tallylis">
-                <span class="tally">{{
-                  items.source
-                    ? $t("message.global.Personal")
-                    : $t("message.global.Intermediary")
-                }}</span>
-                <span class="tally" v-if="!items.isSchools">{{
-                  $t("message.global.jinxuexiao")
-                }}</span>
+                <span class="tally">{{ items.source ? $t("message.global.Personal") : $t("message.global.Intermediary") }}</span>
+                <span class="tally" v-if="!items.isSchools">{{ $t("message.global.jinxuexiao") }}</span>
               </div>
               <div class="newPrice">{{ items.total }} €</div>
             </div>
@@ -193,9 +172,7 @@
       <div class="agencylis centerSs">
         <div class="agencyLisTit">
           <span class="secondL">{{ $t("message.global.property") }}</span>
-          <span class="secondR" @click="RoutingHop('/broker', true)">{{
-            $t("message.global.economics")
-          }}</span>
+          <span class="secondR" @click="routerChange('/broker', true)">{{ $t("message.global.economics") }}</span>
         </div>
         <div class="titleLis">
           <span class="ListSty">{{ $t("message.global.counselor") }}</span>
@@ -224,41 +201,20 @@
       <div class="centerSs">
         <img class="Joinimg" :src="img.pcBroker" alt />
         <span class="JoinTex">{{ $t("message.global.middleman") }}</span>
-        <span class="JoinBut" @click="clickChange">
+        <span class="JoinBut" @click="openContactDialog">
           <img :src="img.pcPerson" alt />
           {{ $t("message.global.join") }}
         </span>
       </div>
     </div>
     <!-- 房价走势 -->
-    <!-- <div class="partner centerSs">
-      <span>{{ $t("message.global.trust") }}</span>
-      <p>{{ $t("message.global.pionner") }}</p>
-      <p>{{ $t("message.global.Courtier") }}</p>
-      <img style="margin-top: 20px;width:1200px;" :src="img.pcss" alt />
-      <span>{{ $t("message.global.trend") }}</span>
-      <p style="text-align:center;font-size:22px;color:#2B2B2B;">
-        {{ $t("message.global.transaction") }}
-      </p>
-      <p style="text-align:center;font-size:22px;color:#2B2B2B;">
-        {{ $t("message.global.Administration") }}
-      </p>
-      <p class="echartss" style="overflow:hidden">
-        <el-select style="float:right;height:30px;" v-model="value" placeholder>
-          <el-option
-            v-for="item in returnList"
-            :key="item"
-            :label="item"
-            :value="item"
-          ></el-option>
-        </el-select>
-      </p>
-      <div class="echart" style="width: 1100px;height:525px;"></div>
-    </div> -->
+    <client-only>
+      <trend-chart />
+    </client-only>
     <foots></foots>
     <el-dialog
       :title="$t('message.global.join')"
-      :visible.sync="dialogVisible"
+      :visible.sync="contactDialogVis"
       width="40%"
       center
     >
@@ -268,6 +224,9 @@
           {{ $t("message.global.contactPhone") }}:{{ systemInfo.phone }}
         </span>
       </div>
+    </el-dialog>
+    <el-dialog :title="$t('message.PAGE_INDEX.SELECT_CITY')" :visible.sync="selectCityDialoVis" center width="75%">
+      <leaflet-map :points="newProgramePoints" :visible="selectCityDialoVis" :marker-grouped="true" @pointSelect="programeCityPointSelectHandler" />
     </el-dialog>
   </div>
 </template>
@@ -288,14 +247,21 @@ import pcBroker from "~/assets/image/pcBroker.png";
 import pcPerson from "~/assets/image/pcPerson.png";
 import pcss from "~/assets/image/logo_promoteur.png";
 
-var echarts = require("echarts");
+import TrendChart  from '../components/PcIndex/trendChart.vue';
+import LeafletMap from '../components/leafletMap.vue';
+import { parseRawCsv } from '../utils/csv';
+
 const gmapApiKey = process.env['33IMMO_GOOGLE_MAPS_API_KEY'];
+
+const SearchMode = { NewPrograme: 'NewPrograme', SecondHand: 'SecondHand' };
 
 export default {
   name: "index",
   components: {
     foots,
-    headers
+    headers,
+    TrendChart,
+    LeafletMap,
   },
   middleware: "responsive",
   head() {
@@ -317,34 +283,33 @@ export default {
   },
   data() {
     return {
-      dialogVisible: false,
+      contactDialogVis: false,
+      selectCityDialoVis: false,
+      loadingPointInfo: false,
+      newProgramePoints: null,
+      programInfoByCity: null,
       systemInfo: {},
-      returnList: [],
-      homeTrendList: [],
-      img: {
-        // 图片集合
-        title: logoT,
-        sellersT: sellersT,
-        backgroundI: backgroundI,
-        searchBtPn: searchBtPn,
-        leftCard: leftCard,
-        rightCard: rightCard,
-        pcBroker: pcBroker,
-        pcPerson: pcPerson,
-        pcss: pcss
-      },
-      backs: {
-        //  背景
-        background: "url(" + backgroundI + ")",
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "100% 767px"
-      },
-      label: 1, // 标记 选择租房买房
+      searchMode: SearchMode.NewPrograme, // 标记 选择租房买房
       searchVal: "", // 搜索绑定
-      index: 1, // 绑定
       homePageIn: [], // 主页数据,
       gmapAutocompleteService: null,
     };
+  },
+  created () {
+    this.SearchMode = SearchMode;
+    this.img = {
+      // 图片集合
+      title: logoT,
+      sellersT,
+      backgroundI,
+      searchBtPn,
+      leftCard,
+      rightCard,
+      pcBroker,
+      pcPerson,
+      pcss
+    };
+    this.backgroundImage = `url("${backgroundI}")`;
   },
   mounted () {
     this.queryIndexPageInfo(); // 获取主页信息
@@ -353,13 +318,32 @@ export default {
       ?.then(() => this.gmapAutocompleteService = new window.google.maps.places.AutocompleteService());
   },
   methods: {
-    clickChange() {
-      this.dialogVisible = true;
+    searchBtnHandler () {
+      if (this.searchMode === SearchMode.NewPrograme) {
+        if (this.newProgramePoints) return this.selectCityDialoVis = true;
+        this.loadingPointInfo = true;
+        fetch('https://raw.githubusercontent.com/mingzemicco/33immo-config/refs/heads/main/program-city-distribution.csv')
+          .then(res => res.text())
+          .then(txt => parseRawCsv(txt, ','))
+          .then(parsed => {
+            this.newProgramePoints = transformNewProgramPoints(parsed);
+            this.selectCityDialoVis = true;
+          })
+          .catch(console.error)
+          .finally(() => this.loadingPointInfo = false);
+      }
     },
-    theKey(val) {
-      if (val == this.label) return;
-      //console.log(1);
-      this.label = val;
+    programeCityPointSelectHandler (point) {
+      const { city: city_name, lat, lng } = point ?? {};
+      if (!city_name) return;
+      this.$router.push({ path: `/newList?city_name=${city_name}&lat=${lat}&lng=${lng}` });
+    },
+    openContactDialog() {
+      this.contactDialogVis = true;
+    },
+    toggleSearchMode(val) {
+      if (val == this.searchMode) return;
+      this.searchMode = val;
     },
     async queryIndexPageInfo() {
       const res = await this.$api.article.getHomePageInfo();
@@ -368,12 +352,9 @@ export default {
       if (getHomePageInfo.system)
         this.systemInfo = getHomePageInfo.system;
     },
-    RoutingHop(smt, flag = undefined) {
+    routerChange(smt, flag = undefined) {
       const query = typeof flag === 'object' ? flag : { flag };
-      this.$router.push({
-        path: smt,
-        query,
-      });
+      this.$router.push({ path: smt, query });
     },
     queryCity(queryString, cb) {
       if (!queryString) return cb([]);
@@ -402,11 +383,27 @@ export default {
     },
   },
 };
+
+function transformNewProgramPoints (parsed) {
+  const { header, rows } = parsed ?? {};
+  if (!header || !rows) return;
+  return rows.map(({ city, count, latitude, longitude, region_id }) => {
+    return {
+      lat: latitude,
+      lng: longitude,
+      city,
+      title: count?.toString() ?? '',
+      groupCondition: region_id
+    };
+  });
+}
 </script>
 
 <style lang="scss" scoped>
 #index {
   text-align: left;
+  background-repeat: no-repeat;
+  background-size: 100% 767px;
   //  中
   .character {
     text-align: center;
@@ -417,8 +414,7 @@ export default {
     margin-top: 100px;
     font-size: 80px;
   }
-  .indexCent {
-    // padding-top:167px;
+  .main-section {
     .listSmall {
       margin-top: 28px;
       background-color: #212739;
@@ -437,37 +433,24 @@ export default {
         background-color: #212739;
       }
     }
-    .searchHou {
-      box-sizing: border-box;
+    .city-search-wrapper {
+      display: flex;
+      align-items: center;
       width: 1100px;
-      height: 139px;
+      padding: 32px 30px 22px;
       background-color: #212739;
-      padding-top: 45px;
-      padding-left: 70px;
-      .inputElem {
-        box-sizing: border-box;
-        width: 745px;
+      .el-autocomplete {
+        flex: 1;
         height: 62px;
         vertical-align: middle;
         font-size: 22px;
       }
-      .searchBtn {
-        box-sizing: border-box;
+      .el-button {
         margin-left: 20px;
-        display: inline-block;
-        width: 186px;
         height: 62px;
         background-color: #234cd3;
-        line-height: 62px;
-        cursor: pointer;
-        text-align: center;
         font-size: 22px;
-        vertical-align: top;
-        color: #fff;
-        img {
-          vertical-align: middle;
-        }
-        // vertical-align: middle;
+        border: unset;
       }
     }
     .cardLs {

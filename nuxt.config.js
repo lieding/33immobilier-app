@@ -36,10 +36,18 @@ export default {
         content: "website"
       }
     ],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
+    link: [
+      { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
+      { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css' },
+      { rel: 'stylesheet', href: 'https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css' },
+      { rel: 'stylesheet', href: 'https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css' },
+    ],
     script: [
       { src: "https://cdn.jsdelivr.net/npm/qrcodejs2@0.0.2/qrcode.min.js" },
       { src: "https://accounts.google.com/gsi/client" },
+      { src: 'https://cdn.canvasjs.com/canvasjs.min.js' },
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js' },
+      { src: 'https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js' },
       // { src: "https://unpkg.com/blueimp-gallery@2.27.0/js/blueimp-gallery.js" }
     ]
   },

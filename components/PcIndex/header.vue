@@ -33,7 +33,7 @@
       <span class="divide" @click="RoutingHop('/encyclopedia', true)">
         <span>{{ $t("message.global.encyclopedia") }}</span>
       </span>
-      <span class="divide" @click="RoutingHop('/promoteLists', true)">
+      <span class="divide" @click="RoutingHop('/calculator', true)">
         <span>{{ $t("message.global.instrument") }}</span>
       </span>
       <!-- <span class="divide" @click="RoutingHop('/serve', true)">

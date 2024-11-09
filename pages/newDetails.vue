@@ -33,7 +33,6 @@
             </el-carousel-item>
           </el-carousel>
         </div>
-        <!-- 地图 -->
       </div>
       <div class="rightBody">
         <div class="ContentPakeAge">
@@ -43,15 +42,14 @@
           </p>
           <p class="block">
             <!-- <span style="background-color:#6AC078;padding:3px 8px;">PINEL减税</span> -->
-            <span style="background-color:#234CD3;padding:3px 8px;">{{
-              getPostListingData.deliveryQuarter
-            }}</span>
+            <span style="background-color:#234CD3;padding:3px 8px;">
+              {{ getPostListingData.deliveryQuarter }}
+            </span>
             <span
               style="background-color:#BFBFBF;padding:2px 3px; float:right;"
               v-for="(itemA, index) in getPostListingData.tags"
               :key="index"
-              >{{ itemA }}</span
-            >
+            >{{ itemA }}</span>
           </p>
           <p class="smJf">
             {{ $t("message.global.completionDate") }}：
@@ -59,15 +57,25 @@
           </p>
           <p class="smJf">
             {{ $t("message.global.HouseNumber") }}：
-            <span>{{ getPostListingData.propertiesCount }}</span>
+            <span>{{ getPostListingData.availablePropertiesCount ?? getPostListingData.propertiesCount }}</span>
           </p>
           <p class="smJf">
             {{ $t("message.global.measures") }}：
-            <span>{{ getPostListingData.taxCuts }}</span>
+            <el-tooltip v-for="it in getPostListingData.laws" :key="it" placement="top-end" effect="light" :content="getTranslatedLawItem(it)">
+              <el-tag>{{ it }}</el-tag>
+            </el-tooltip>
           </p>
           <p class="smJf">
             {{ $t("message.global.jianshuiuquyu") }}：
-            <span>{{ getPostListingData.taxArea }}</span>
+            <template v-if="translatedTaxArea">
+              <span>{{ getPostListingData.taxArea }}</span>
+              <el-tooltip placement="top" effect="light" :content="translatedTaxArea">
+                <i class="el-icon-info" />
+              </el-tooltip>
+            </template>
+            <template v-else>
+              <span>{{ getPostListingData.taxArea }}</span>
+            </template>
           </p>
           <p class="smJf">
             {{ $t("message.global.deductibility") }}：
@@ -75,19 +83,11 @@
           </p>
           <p class="smJf">
             {{ $t("message.global.Inventor") }}：
-            <span
-              >{{ getPostListingData.zip_code }}/{{
-                getPostListingData.city
-              }}</span
-            >
+            <span>{{ getPostListingData.zip_code }}/{{getPostListingData.city}}</span>
           </p>
           <p class="smJf">
             {{ $t("message.global.range") }}：
-            <span
-              >{{ getPostListingData.minHall }} -
-              {{ getPostListingData.maxHall }}
-              {{ $t("message.global.pieces") }}</span
-            >
+            <el-tag v-for="it in translatedTypologies" :key="it" type="success" size="mini">{{ it }}</el-tag>
           </p>
         </div>
         <div class="counselor">
@@ -115,30 +115,18 @@
             </div>
             <br /><br /><br /><br />
             <p class="icons" style="margin-top:10px;text-align:right;">
-              <span @click="ck(1)"
-                ><img :src="img.phone" alt="" />
-                {{
-                  ft1
-                    ? getPostListingData.brokerTelPhone
-                    : $t("message.global.connection")
-                }}</span
-              >
-              <span @click="ck(2)"
-                ><img :src="img.email" alt="" />
-                {{
-                  ft2
-                    ? getPostListingData.brokerEmail
-                    : $t("message.global.mail")
-                }}</span
-              >
-              <span @click="ck(3)"
-                ><img :src="img.wxInd" alt="" />
-                {{
-                  ft3
-                    ? getPostListingData.wxNumber
-                    : $t("message.global.lishibuluo")
-                }}</span
-              >
+              <span @click="ck(1)">
+                <img :src="img.phone" alt="" />
+                {{ ft1 ? getPostListingData.brokerTelPhone : $t("message.global.connection") }}
+              </span>
+              <span @click="ck(2)">
+                <img :src="img.email" alt="" />
+                {{ ft2 ? getPostListingData.brokerEmail : $t("message.global.mail") }}
+              </span>
+              <span @click="ck(3)">
+                <img :src="img.wxInd" alt="" />
+                {{ ft3 ? getPostListingData.wxNumber : $t("message.global.lishibuluo") }}
+              </span>
             </p>
           </div>
         </div>
@@ -180,6 +168,7 @@
           :interactive="false"
           :need-circle="true"
           :need-center-logo="true"
+          :show-nav="true"
         ></jump-map>
       </div>
       <div v-if="getPostListingData.isOpenVR && getPostListingData.vrAddress">
@@ -261,7 +250,7 @@
       </el-table>
     </div>
     <div class="centerS">
-      <promote-list></promote-list>
+      <calculator></calculator>
     </div>
     <div class="centerS" style="margin-top:20px;" v-show="promoteList.length">
       <div style="font-size:32px;font-weight:600;">
@@ -460,7 +449,7 @@
 <script>
 import headers from "~/components/pcIndex/header.vue";
 import foots from "~/components/pcIndex/foot.vue";
-import PromoteList from "~/components/pcIndex/promoteList.vue";
+import Calculator from "~/components/pcIndex/calculator.vue";
 
 import wxInd from "~/assets/image/wxInd.png";
 import phone from "~/assets/image/phone.png";
@@ -497,14 +486,15 @@ import wifiH from "~/assets/image/picSzg/wifiH.png";
 import DefaultAvatar from '~/assets/image/avatar.svg';
 
 import JumpMap from '~/components/jumpMap.vue';
+import { TypologyOptionConfig } from '../common/config';
 
 export default {
-  name: "seconHandHous",
+  name: "newDetails",
   middleware: "responsive",
   components: {
     headers,
     foots,
-    PromoteList,
+    Calculator,
     JumpMap,
   },
   asyncData ({ route }) {
@@ -536,53 +526,58 @@ export default {
       ft1: false,
       ft2: false,
       ft3: false,
-      img: {
-        location,
-        apartment,
-        bed,
-        time,
-        size,
-        authentication,
-        visitCard,
-        proVip,
-        phone,
-        airG,
-        airH,
-        bedG,
-        bedH,
-        chairsG,
-        chairsH,
-        chestG,
-        heatG,
-        heatH,
-        ovenG,
-        ovenH,
-        refrigG,
-        refrigH,
-        televisG,
-        televisH,
-        washerG,
-        washerH,
-        wifiG,
-        wifiH,
-        email,
-        wxInd,
-        DefaultAvatar
-      },
       inputs: "",
       getPostListingData: {},
       apartmentList: [],
       agent: "",
       roomInc: [],
       promoteList: [],
+      translatedTypologies: [],
       dialogVisible: false,
       tableData: [],
       qianlan: false,
-      galleryIndex: null
+      galleryIndex: null,
+      translatedTaxArea: null,
+    };
+  },
+  created () {
+    this.getTranslatedLawItem = (law) => this.$t(`message.PROGRAME_DETAIL.LAW_ITEM["${law}"]`);
+    this.img = {
+      location,
+      apartment,
+      bed,
+      time,
+      size,
+      authentication,
+      visitCard,
+      proVip,
+      phone,
+      airG,
+      airH,
+      bedG,
+      bedH,
+      chairsG,
+      chairsH,
+      chestG,
+      heatG,
+      heatH,
+      ovenG,
+      ovenH,
+      refrigG,
+      refrigH,
+      televisG,
+      televisH,
+      washerG,
+      washerH,
+      wifiG,
+      wifiH,
+      email,
+      wxInd,
+      DefaultAvatar
     };
   },
   mounted () {
-    this.queryDetail();
+    if (process.client) this.queryDetail();
   },
   methods: {
     async queryDetail () {
@@ -590,7 +585,7 @@ export default {
       const { zip_code, name_id } = this.$route.query;
       try {
         const res = await this.$api.article.getInfoNewHous({ zip_code, name_id, lang });
-        const { properties, promoteList, } = res.data;
+        const { properties, typologies, taxArea } = res.data;
         if (Array.isArray(properties)) {
           for (const it of properties) {
             it.price = it.prices?.[0]?.price;
@@ -599,10 +594,20 @@ export default {
             it.profitability = it.prices?.[0]?.profitability;
           }
         }
+        this.TypologyI18NConfig = TypologyOptionConfig.map(({ incluedKey, I18NKey }) =>
+          ({ incluedKey, label: this.$t(`message.NEW_LIST.${I18NKey}`) })
+        );
+        const translatedTypologies = typologies
+          .map(it => it.toLowerCase())
+          .map(it => this.TypologyI18NConfig.find(itt => it.includes(itt.incluedKey))?.label)
+          .filter(Boolean);
+        const translatedTaxArea =
+          taxArea ? this.$t(`message.PROGRAME_DETAIL.TAX_AREA.${taxArea.toUpperCase()}`) : null;
         Object.assign(this, {
           getPostListingData: res.data,
           tableData: properties,
-          promoteList: promoteList ?? [],
+          translatedTypologies,
+          translatedTaxArea,
         });
       } catch (e) {
         console.error('query detail: ', e);

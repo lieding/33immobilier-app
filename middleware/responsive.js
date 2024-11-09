@@ -21,7 +21,7 @@ export default function({ route, isDesktop, redirect }) {
       case "/blogs":
         return redirect("/encrolopedia");
       case "/instrument":
-        return redirect("/promoteLists");
+        return redirect("/calculator");
       case "/service":
         return redirect("/serve");
       case "/InRegardTo":
@@ -53,7 +53,7 @@ export default function({ route, isDesktop, redirect }) {
         return redirect("/agentList");
       case "/encrolopedia":
         return redirect("/blogs");
-      case "/promoteLists":
+      case "/calculator":
         return redirect("/instrument");
       case "/serve":
         return redirect("/service");

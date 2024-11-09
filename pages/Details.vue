@@ -455,7 +455,6 @@ import Footer from "~/components/mIndex/footer.vue";
 import list from "~/components/mIndex/list.vue";
 import { BASE_API } from "~/api"
 
-var echarts = require("echarts");
 export default {
   name: "Details",
   middleware: "responsive",
@@ -529,23 +528,6 @@ export default {
   },
   mounted() {
     rem();
-    // this.$api.article.getRate().then(res => {
-    //   if (res.data.code == 0) {
-    //     this.getRateList = res.data.data;
-    //     this.getRate = Object.keys(res.data.data);
-    //     //console.log(this.getRate);
-    //     this.interesrate = res.data.data["25"];
-    //   }
-    // });
-    // if (this.mothey) {
-    //   this.$nextTick(function() {
-    //     //console.log(document.querySelector(".echart"))
-    //     if (process.client) {
-    //       var myChart = echarts.init(document.querySelector(".echart"));
-    //       myChart.setOption(this.orgOptions);
-    //     }
-    //   });
-    // }
     this.Onlist();
   },
   methods: {
@@ -627,57 +609,8 @@ export default {
               { value: Number(this.L), itemStyle: { color: "#1B9AFB" } },
               { value: Number(this.S), itemStyle: { color: "#F4A436" } }
             ];
-            //console.log(echarts)
           }
-          setTimeout(() => {
-            if (process.client) {
-              var myChart = echarts.init(document.querySelector(".echart"));
-              myChart.setOption({
-                legend: {
-                  orient: "vertical",
-                  x: "left",
-                  data: ["首付金额", "利息金额", "贷款金额"]
-                },
-                series: [
-                  {
-                    type: "pie",
-                    radius: ["50%", "70%"],
-                    center: ["25%", "60%"],
-                    labelLine: {
-                      normal: {
-                        show: false
-                      }
-                    },
-                    data: this.echarts
-                  }
-                ]
-              });
-            }
-          }, 100);
         });
-        // setTimeout(() => {
-        //     var myChart = echarts.init(document.querySelector(".echart"));
-        //     myChart.setOption({
-        //         legend: {
-        //             orient: 'vertical',
-        //             x: 'left',
-        //             data:['首付金额','利息金额','贷款金额']
-        //         },
-        //     series: [
-        //         {
-        //             type:'pie',
-        //             radius: ['50%', '70%'],
-        //             center : ['25%', '60%'],
-        //             labelLine: {
-        //                 normal: {
-        //                     show: false
-        //                 }
-        //             },
-        //             data:this.echarts
-        //         }
-        //     ]
-        //   })
-        // }, 100);
       }
     },
     onMap(value) {

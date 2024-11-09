@@ -275,7 +275,6 @@
 import rem from "~/common/rem.js";
 import Header from "~/components/mIndex/header.vue";
 import Footer from "~/components/mIndex/footer.vue";
-var echarts = require("echarts");
 
 export default {
   components: {
@@ -308,16 +307,11 @@ export default {
       brokerList: [], //经纪人
       system: [], //立即加入
       returnList: [], //所有走势图
-      homeTrendList: [], //echarts
+      homeTrendList: [],
       value: "Paris 1",
       show: false,
       value1: "new",
       ipt: ""
-      // option1: [
-      //   { text: "new", value:  "new" },
-      //   { text: "second_hand", value: "second_hand" },
-      //   { text: "租房", value: "租房" }
-      // ]
     };
   },
   watch: {
