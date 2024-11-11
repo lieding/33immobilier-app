@@ -1,5 +1,5 @@
-import I18N from "./i18n";
-import dotenv from 'dotenv';
+const I18N = require("./i18n");
+const dotenv = require('dotenv');
 
 dotenv.config();
 
