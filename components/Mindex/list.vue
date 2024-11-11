@@ -46,11 +46,11 @@
             </p>
 
             <p class="money" v-if="type=='new'">
-              {{item.promoteLowPrice}}{{$t("message.global.rise")}} - {{item.promoteMaxPrice}}{{$t("message.global.rise")}}
+              {{item.promoteLowPrice}}{{$t("message.global.euro")}} - {{item.promoteMaxPrice}}{{$t("message.global.euro")}}
               <span></span>
             </p>
             <p class="money" v-else-if="type == 'second_hand'">
-              {{item.promoteTotal}} {{$t("message.global.rise")}}
+              {{item.promoteTotal}} {{$t("message.global.euro")}}
               <span
                 style="font-size:.12rem;color:rgba(172,172,172,1);"
               >{{item.promoteUnit}}€/{{$t("message.global.square")}}</span>
@@ -58,12 +58,12 @@
             <p
               class="money"
               v-else-if="type == '租房'"
-            >{{item.promoteTotal}} {{$t("message.global.rise")}}</p>
+            >{{item.promoteTotal}} {{$t("message.global.euro")}}</p>
           </div>
         </diV>
         <!-- <div >
             <div class="image">
-                <img src="~/assets/image/newhouse.png" class="list-img">  
+                <img src="~/assets/image/newhouse.png" class="list-img">
                 <span class="list-font">Cogedim</span>
             </div>
             <p class="font">

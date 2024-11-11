@@ -81,7 +81,7 @@
             <img :src="getPostListingData.huXingUrl" alt="" />
           </div>
           <div class="houseTop">
-            {{ $t("message.global.modelDetails") }}
+            {{ $t("message.global.PROPERTY_DETAILS") }}
           </div>
           <el-table
             :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
@@ -318,7 +318,7 @@
           </div>
           <div style="margin-bottom:10px">
             <el-input
-              :placeholder="$t('message.global.YourMessage')"
+              :placeholder="$t('message.global.EMAIL_ADDRESS')"
               prefix-icon="el-icon-message"
               v-model="input3"
             ></el-input>
@@ -443,7 +443,7 @@
             </span>
           </p>
           <p>
-            {{ $t("message.global.Inventor") }}：
+            {{ $t("message.global.LOCATION") }}：
             <span>{{ getPostListingData.city }}</span>
           </p>
           <p>
@@ -557,7 +557,7 @@ export default {
         },
         {
           name: "og:image",
-          content: this.getPostListingData.pics?.[0] ?? '' 
+          content: this.getPostListingData.pics?.[0] ?? ''
         }
       ]
     };
@@ -769,7 +769,7 @@ async function query (queryFn, id) {
   *zoom: 1; /*ie6清除浮动的方式 *号只有IE6-IE7执行，其他浏览器不执行*/
 }
 .secondBod {
-  
+
   .headline {
     padding-top: 10px;
     color: #000;

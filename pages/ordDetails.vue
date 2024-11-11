@@ -55,7 +55,7 @@
     <hr class="hr" />
     <!-- 房产顾问 -->
     <div class="estates" v-if="agent">
-      <p class="consultants">{{$t("message.global.counselor")}}</p>
+      <p class="consultants">{{$t("message.global.CONSULTANT")}}</p>
       <div class="broker_box">
         <div class="broker">
           <img :src="agent.brokerAvatar" alt class="img" />
@@ -115,7 +115,7 @@
             <van-cell-group>
               <van-field
               v-model="ipt3"
-              :placeholder="$t('message.global.YourMessage')"
+              :placeholder="$t('message.global.EMAIL_ADDRESS')"
               left-icon="envelop-o"
               />
             </van-cell-group>
@@ -166,7 +166,7 @@
         <span
           class="packUp"
           @click="onpackUp"
-        >{{IspackUp?$t("message.global.seeMore"):$t("message.global.shouqi")}}</span>
+        >{{IspackUp?$t("message.global.seeMore"):$t("message.global.SEE_LESS")}}</span>
       </div>
     </div>
     <hr class="hr" />
@@ -215,7 +215,7 @@
     <hr class="hr" />
     <!-- 贷款能力计算 -->
     <div class="estates">
-      <span class="consultants">{{$t("message.global.calculation")}}</span>
+      <span class="consultants">{{$t("message.global.LOAN_CAPABILITY_CALCULATION")}}</span>
       <div class="repay">
         <p class="repay_p">{{$t("message.global.onnetincome")}}</p>
         <van-cell-group>
@@ -223,27 +223,27 @@
           v-model="revenus"
           label="€"
           label-width=".15rem"
-          :placeholder="$t('message.global.qingshuru')"
+          :placeholder="$t('message.global.PLEASE_ENTER')"
           type="Number"
           />
         </van-cell-group>
-        <p class="repay_p">{{$t("message.global.calculation")}}</p>
+        <p class="repay_p">{{$t("message.global.LOAN_CAPABILITY_CALCULATION")}}</p>
         <van-cell-group>
           <van-field
           v-model="apport"
           label="€"
           label-width=".15rem"
-          :placeholder="$t('message.global.qingshuru')"
+          :placeholder="$t('message.global.PLEASE_ENTER')"
           type="Number"
           />
         </van-cell-group>
-        <p class="repay_p">{{$t("message.global.liability")}} {{$t("message.global.Canfill")}}</p>
+        <p class="repay_p">{{$t("message.global.DEBT_RATIO")}} {{$t("message.global.DEBT_BURDEN")}}</p>
         <van-cell-group>
           <van-field
           v-model="rate"
           label="%"
           label-width=".2rem"
-          :placeholder="$t('message.global.qingshuru')"
+          :placeholder="$t('message.global.PLEASE_ENTER')"
           type="Number"
           />
         </van-cell-group>
@@ -252,15 +252,15 @@
         <van-button type="info" class="btn_i" @click="oncapacity">{{$t("message.global.calculate")}}</van-button>
       </div>
       <p class="monthly" v-if="M">
-        {{$t("message.global.highest")}}
+        {{$t("message.global.MAXIMUM_MONTHLY_REPAYMENT_AMOUNT")}}
         <span class="money">{{M}}€</span>
       </p>
       <div class="loans" v-if="M">
-        <p class="loans_p">{{$t("message.global.Youcanloan")}}</p>
+        <p class="loans_p">{{$t("message.global.LOAN_AMOUNT_CALCULATION")}}</p>
         <table>
           <tr>
-            <th>{{$t("message.global.loanPeriod")}}</th>
-            <th>{{$t("message.global.annual")}}</th>
+            <th>{{$t("message.global.LOAN_PERIOD")}}</th>
+            <th>{{$t("message.global.ANNUAL_INTEREST_RATE")}}</th>
             <th>{{$t("message.global.amount")}}</th>
           </tr>
         </table>
@@ -284,7 +284,7 @@
           v-model="loan"
           label="€"
           label-width=".15rem"
-          :placeholder="$t('message.global.qingshuru')"
+          :placeholder="$t('message.global.PLEASE_ENTER')"
           type="Number"
           />
         </van-cell-group>
@@ -296,17 +296,17 @@
           label="€"
           label-width=".15rem"
           style=" vertical-align: middle"
-          :placeholder="$t('message.global.qingshuru')"
+          :placeholder="$t('message.global.PLEASE_ENTER')"
           type="Number"
           />
         </van-cell-group>
-        <p class="repay_p">{{$t("message.global.loaninterest")}}</p>
+        <p class="repay_p">{{$t("message.global.LOAN_INTEREST_RATE")}}</p>
         <van-cell-group>
           <van-field
           v-model="interesrate"
           label="%"
           label-width=".2rem"
-          :placeholder="$t('message.global.qingshuru')"
+          :placeholder="$t('message.global.PLEASE_ENTER')"
           type="Number"
           />
         </van-cell-group>
@@ -322,7 +322,7 @@
         <van-button type="info" class="btn_i" @click="onrepay">{{$t("message.global.calculate")}}</van-button>
       </div>
       <p class="monthly" v-if="mothey">
-        {{$t("message.global.highest")}}
+        {{$t("message.global.MAXIMUM_MONTHLY_REPAYMENT_AMOUNT")}}
         <span class="money">{{mothey}}</span>
       </p>
       <!-- echarts -->
@@ -335,7 +335,7 @@
           </p>
           <p>
             <span class="blue"></span>
-            {{$t("message.global.Interestamount")}} € {{L}}
+            {{$t("message.global.INTEREST_AMOUNT")}} € {{L}}
           </p>
           <p>
             <span class="orgin"></span>
@@ -354,7 +354,7 @@
       type="info"
       size="large"
       @click="Onord('/ordIssue')"
-    >{{$t("message.global.woyaomaifang")}}</van-button>
+    >{{$t("message.global.SELLING_APPLICATION")}}</van-button>
     <Footer />
     <gallery
         :images="picList"

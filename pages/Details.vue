@@ -2,9 +2,9 @@
 <template>
   <div>
     <client-only>
-      <Header :title="$t('message.global.xingfangxiangqing')" />
+      <Header :title="$t('message.global.NEW_PROGRAME_DETAIL')" />
       <div>
-        <div class="video" @click="dialogVisible = true">
+        <div class="images" @click="dialogVisible = true">
           <van-swipe
             :autoplay="3000"
             @change="onChange"
@@ -15,91 +15,46 @@
             </van-swipe-item>
           </van-swipe>
         </div>
-        <img
-          src="~/assets/image/VRlogo.gif"
-          alt
-          class="AR"
-          @click="onMap(data.vrAddress)"
-          v-show="data.vrAddress"
-        />
-        <img
-          src="~/assets/image/share.png"
-          alt
-          class="share"
-          @click="Onshare('/dialog')"
-        />
-        <div>
-          <img
-            src="~/assets/image/shipin.png"
-            alt
-            class="video_S"
-            @click="onMap(data.videoUlr)"
-            v-show="data.videoUlr"
-          />
-          <!-- <p class="video_btn">
-                <span class="VR" @click="onMap(data.vrAddress)">VR</span>
-                <span class="price">图片</span>
-          </p>-->
-          <div class="custom-indicator" slot="indicator">
-            {{ current + 1 }}/{{ picList.length }}
-          </div>
-        </div>
       </div>
-      <div class="details">
-        <p class="detalis_title">{{ data.estate }}</p>
-        <p class="details_province">{{ data.province }}/{{ data.city }}</p>
+      <div class="programe-detail">
+        <p class="detail-title">{{ programeDetail.estate_name }}</p>
+        <p class="detail-region">{{ programeDetail.zip_code }}/{{ programeDetail.city }}</p>
         <p class="item">
-          <span class="tax font" v-if="data.taxCuts">{{ data.taxCuts }}</span>
-          <span class="check font" v-if="data.expressing">{{
-            data.expressing
-          }}</span>
-          <span
-            class="itemize font1"
-            v-for="(item, index) in tags"
-            :key="index"
-            >{{ item }}</span
-          >
+          <span class="check font" v-if="programeDetail.deliveryQuarter">{{ programeDetail.deliveryQuarter }}</span>
+          <span class="itemize font1" v-for="(it) in translatedTypologies" :key="it">{{ it }}</span>
         </p>
-        <p class="price">{{ data.lowprice }}€ - {{ data.maxPrice }}€</p>
+        <p class="price">{{ programeDetail.availablePropertiesMinPrice }}€ - {{ programeDetail.availablePropertiesMaxPrice }}€</p>
         <p class="hand">
           <span class="time">{{ $t("message.global.completionDate") }} ：</span>
-          {{ data.expressing }}
+          {{ programeDetail.deliveryQuarter }}
         </p>
         <p class="hand">
-          <span class="time">{{ $t("message.global.HouseNumber") }} ：</span>
-          {{ data.homesNum }}
+          <span class="time">{{ $t("message.global.PROPERTIES_COUNT") }} ：</span>
+          {{ programeDetail.availablePropertiesCount }}
         </p>
         <p class="hand">
           <span class="time">{{ $t("message.global.measures") }} ：</span>
-          {{ data.taxCuts }}
+          {{ translatedLaws }}
         </p>
         <p class="hand">
-          <span class="time">{{ $t("message.global.jianshuiuquyu") }} ：</span>
-          {{ data.taxCutsArea }}
+          <span class="time">{{ $t("message.global.TAX_AREA") }} ：</span>
+          {{ translatedTaxArea }}
         </p>
         <p class="hand">
-          <span class="time">{{ $t("message.global.deductibility") }} ：</span>
-          {{ data.taxCutsQuota }}
-        </p>
-        <p class="hand">
-          <span class="time">{{ $t("message.global.Inventor") }} ：</span>
-          {{ data.province }}/{{ data.city }}
-        </p>
-        <p class="hand">
-          <span class="time">{{ $t("message.global.range") }} ：</span>
-          {{ data.minHall }} - {{ data.maxHall }}{{ $t("message.global.P") }}
+          <span class="time">{{ $t("message.global.LOCATION") }} ：</span>
+          {{ programeDetail.zip_code }}/{{ programeDetail.city }}
         </p>
       </div>
       <hr class="hr" />
       <!-- 房产顾问 -->
       <div class="estates">
-        <p class="consultants">{{ $t("message.global.counselor") }}</p>
+        <p class="consultants">{{ $t("message.global.CONSULTANT") }}</p>
         <div class="broker_box">
           <div class="broker">
-            <img :src="data.brokerAvatar" alt class="img" />
+            <img :src="brokerInfo.brokerAvatar" alt class="img" />
             <div>
-              <p class="name">{{ data.brokerName }}</p>
-              <p class="agent">{{ data.brokerJob }}</p>
+              <p class="name">{{ brokerInfo.brokerName }}</p>
+              <p class="agent">{{ brokerInfo.brokerJob }}</p>
             </div>
             <div class="attestation">
               <p>
@@ -118,58 +73,49 @@
           </div>
           <hr />
           <div class="num">
-            <p class="phone" v-if="data.brokerTelPhone">
+            <p class="phone" v-if="brokerInfo.brokerTelPhone">
               <img src="~/assets/image/phone1.png" alt class="margin" />
-              {{ data.brokerTelPhone }}
+              {{ brokerInfo.brokerTelPhone }}
             </p>
             <p>
-              <span class="wx" v-if="data.wxNumber"
-                >{{ $t("message.global.WXWach") }}:{{ data.wxNumber }}</span
-              >
-              <span class="yx" v-if="data.brokerEmail"
-                >{{ $t("message.global.mail") }}：{{ data.brokerEmail }}</span
-              >
+              <span class="wx" v-if="brokerInfo.wxNumber">{{ $t("message.global.WXWach") }}:{{ data.wxNumber }}</span>
+              <span class="yx" v-if="brokerInfo.brokerEmail">{{ $t("message.global.mail") }}：{{ brokerInfo.brokerEmail }}</span>
             </p>
           </div>
           <div class="quiz">
             <div class="drug">
               <van-cell-group>
                 <van-field
-                  v-model="ipt1"
+                  v-model="contactForm.name"
                   :placeholder="$t('message.global.YourName')"
                   left-icon="contact"
                 />
               </van-cell-group>
-
               <van-cell-group>
                 <van-field
-                  v-model="ipt3"
+                  v-model="contactForm.phone"
                   :placeholder="$t('message.global.YourPhone')"
-                  oninput="value=value.replace(/[^\d]/g,'')"
                   left-icon="phone-o"
                 />
               </van-cell-group>
               <van-cell-group>
                 <van-field
-                  v-model="ipt2"
-                  :placeholder="$t('message.global.YourMessage')"
+                  v-model="contactForm.mail"
+                  :placeholder="$t('message.global.EMAIL_ADDRESS')"
                   left-icon="envelop-o"
                 />
               </van-cell-group>
             </div>
             <van-cell-group>
               <van-field
-                :value="ipt4"
-                v-model="ipt4"
+                v-model="contactForm.message"
                 type="textarea"
                 :placeholder="$t('message.global.LeaveYourMessage')"
                 autosize
                 :border="false"
               />
             </van-cell-group>
-            <van-button type="primary" class="btn_us" @click="OncontactUs">{{
-              $t("message.global.woyaotiwen")
-            }}</van-button>
+            <van-button type="primary" class="btn_us" @click="OncontactUs">{{ $t("message.global.woyaotiwen") }}</van-button>
           </div>
         </div>
       </div>
@@ -178,267 +124,77 @@
       <div class="estates pack">
         <div class="top">
           <div>
-            <span class="consultants">{{ $t("message.global.premises") }}</span>
-            <span class="interpret" v-if="interpret" @click="oninterpret">
-              {{ $t("message.global.interpret") }}
-            </span>
-            <span class="interpret" v-else @click="oninterpret">翻译法语</span>
-          </div>
-          <div class="download interpret" @click="onMap(data.brochure)">
-            <img src="~/assets/image/download.png" alt />
-            {{ $t("message.global.brochure") }}
+            <span class="consultants">{{ $t("message.global.PROGRAME_DESC") }}</span>
           </div>
         </div>
         <div
-          :class="IspackUp ? 'synopsisno' : 'synopsis'"
-          v-if="!interpret"
-          style="white-space: pre-line;"
-        >
-          {{ data.introduceCn }}
-        </div>
-        <div
-          :class="IspackUp ? 'synopsisno' : 'synopsis'"
-          v-else
-          style="white-space: pre-line;"
-        >
-          {{ data.introduceFr }}
-        </div>
+          :class="displayMoreDesc ? 'synopsisno' : 'synopsis'"
+          style="white-space:pre-line;"
+          v-html="programeDetail.description"
+        ></div>
         <div>
-          <span class="packUp" @click="onpackUp">{{
-            IspackUp
-              ? $t("message.global.seeMore")
-              : $t("message.global.shouqi")
-          }}</span>
+          <span class="packUp" @click="toggleDisplayMore">
+            {{ displayMoreDesc ? $t("message.global.seeMore") : $t("message.global.SEE_LESS") }}
+          </span>
         </div>
       </div>
       <hr class="hr" />
       <!-- 楼盘位置 -->
       <div class="estates">
         <span class="consultants">{{ $t("message.global.position") }}</span>
-        <p class="province">{{ data.estateAddress }}</p>
+        <p class="province">{{ programeDetail.address }}</p>
         <div class="map">
-          <iframe :src="Url" frameborder="0"></iframe>
+          <jump-map
+            v-if="programeDetail.latitude && programeDetail.longitude"
+            :latitude="programeDetail.latitude"
+            :longitude="programeDetail.longitude"
+            :interactive="false"
+            :need-circle="true"
+            :need-center-logo="true"
+          ></jump-map>
         </div>
       </div>
       <hr class="hr" />
       <!-- 户型详情 -->
-      <div class="estates" v-show="aparementList.length != 0">
-        <span class="consultants">{{ $t("message.global.modelDetails") }}</span>
+      <div class="estates" v-show="properties.length != 0">
+        <span class="consultants">{{ $t("message.global.PROPERTY_DETAILS") }}</span>
         <div class="swipe">
-          <!-- <div class="swipe_div"> -->
-          <div v-for="(info, index) in aparementList" :key="index">
+          <div v-for="(info, index) in properties" :key="index">
             <p class="hand">
               <span class="time">{{ $t("message.global.chamberID") }} ：</span>
               {{ info.number }}
             </p>
             <p class="hand">
               <span class="time">{{ $t("message.global.DoorMode") }} ：</span>
-              {{ info.roomNum }}
+              {{ info.translatedTypology }}
             </p>
             <p class="hand">
-              <span class="time">{{ $t("message.global.usableArea") }} ：</span>
-              {{ info.area }}
+              <span class="time">{{ $t("message.global.USABLE_AREA") }} ：</span>
+              {{ info.surface }}
             </p>
             <p class="hand">
-              <span class="time">{{ $t("message.global.level") }} ：</span>
+              <span class="time">{{ $t("message.global.FLOOR") }} ：</span>
               {{ info.floor }}
             </p>
             <p class="hand">
               <span class="time">{{ $t("message.global.price") }} ：</span>
-              {{ info.price }}
+              {{ info.price }}€
             </p>
             <p class="hand">
-              <span class="time"
-                >{{ $t("message.global.averagePrice") }} ：</span
-              >
-              {{ info.averagePrice }}
-            </p>
-            <p class="hand">
-              <span class="time">{{ $t("message.global.RAROC") }} ：</span>
-              {{ info.rewards }}
-            </p>
-            <p class="hand" @click="onMap(info.vrAddress)">
-              <span class="time">{{ $t("message.global.floorPlan") }}：</span>
-              <span
-                style="border-bottom: 1px solid blue; color:rgba(34,75,215,1);"
-                >2D</span
-              >
-            </p>
-            <p class="hand">
-              <span class="time">{{ $t("message.global.condition") }}：</span>
-              {{ State(info.state) }}
-            </p>
-            <p
-              class="relation"
-              @click="connectUs('./content', info.apartmentId)"
-            >
-              {{ $t("message.global.connectUs") }}
-            </p>
-            <!-- </div> -->
-          </div>
-        </div>
-
-        <hr class="hr" style />
-      </div>
-
-      <!-- 贷款能力计算 -->
-      <div class="estates">
-        <span class="consultants">{{ $t("message.global.calculation") }}</span>
-        <div class="repay">
-          <p class="repay_p">{{ $t("message.global.onnetincome") }}</p>
-          <van-cell-group>
-            <van-field
-              v-model="revenus"
-              label="€"
-              label-width=".15rem"
-              :placeholder="$t('message.global.qingshuru')"
-              type="Number"
-            />
-          </van-cell-group>
-          <p class="repay_p">{{ $t("message.global.calculation") }}</p>
-          <van-cell-group>
-            <van-field
-              v-model="apport"
-              label="€"
-              label-width=".15rem"
-              :placeholder="$t('message.global.qingshuru')"
-              type="Number"
-            />
-          </van-cell-group>
-          <p class="repay_p">
-            {{ $t("message.global.liability") }}
-            {{ $t("message.global.Canfill") }}
-          </p>
-          <van-cell-group>
-            <van-field
-              v-model="rate"
-              label="%"
-              label-width=".15rem"
-              :placeholder="$t('message.global.qingshuru')"
-              type="Number"
-            />
-          </van-cell-group>
-        </div>
-        <div class="btn">
-          <van-button type="info" class="btn_i" @click="oncapacity">{{
-            $t("message.global.calculate")
-          }}</van-button>
-        </div>
-        <p class="monthly" v-if="M">
-          {{ $t("message.global.highest") }}
-          <span class="money">{{ M }}€</span>
-        </p>
-        <div class="loans" v-if="M">
-          <p class="loans_p">{{ $t("message.global.Youcanloan") }}</p>
-          <table>
-            <tr>
-              <th>{{ $t("message.global.loanPeriod") }}</th>
-              <th>{{ $t("message.global.annual") }}</th>
-              <th>{{ $t("message.global.capacity") }}</th>
-            </tr>
-          </table>
-
-          <table v-for="(item, index) in reckenList" :key="index">
-            <tr>
-              <td>{{ item.year }} {{ $t("message.global.ans") }}</td>
-              <td>{{ item.retes }}%</td>
-              <td>{{ item.money }}€</td>
-            </tr>
-          </table>
-        </div>
-      </div>
-      <hr class="hr" />
-      <!-- 还贷计算 -->
-      <div class="estates">
-        <span class="consultants">{{
-          $t("message.global.loancalculate")
-        }}</span>
-        <div class="repay">
-          <p class="repay_p">{{ $t("message.global.Housing") }}</p>
-          <van-cell-group>
-            <van-field
-              v-model="loan"
-              label="€"
-              label-width=".15rem"
-              :placeholder="$t('message.global.qingshuru')"
-              type="Number"
-            />
-          </van-cell-group>
-          <p class="repay_p">{{ $t("message.global.payment") }}</p>
-          <van-cell-group>
-            <van-field
-              v-model="downapport"
-              @input="Oninput"
-              label="€"
-              label-width=".15rem"
-              :placeholder="$t('message.global.qingshuru')"
-              type="Number"
-            />
-          </van-cell-group>
-          <p class="repay_p">{{ $t("message.global.particular") }}</p>
-          <el-select v-model="year">
-            <el-option
-              v-for="item in getRate"
-              :key="item"
-              :label="item"
-              :value="item"
-            ></el-option>
-          </el-select>
-          <p class="repay_p">{{ $t("message.global.loaninterest") }}</p>
-          <van-cell-group>
-            <van-field
-              v-model="interesrate"
-              label="%"
-              label-width=".2rem"
-              :placeholder="$t('message.global.qingshuru')"
-              type="Number"
-            />
-          </van-cell-group>
-
-          <!-- <van-dropdown-menu>
-                    <van-dropdown-item v-model="year" :options="option1" />
-          </van-dropdown-menu>-->
-        </div>
-        <div class="btn">
-          <van-button type="info" class="btn_i" @click="onrepay">{{
-            $t("message.global.calculate")
-          }}</van-button>
-        </div>
-        <p class="monthly" v-if="mothey">
-          {{ $t("message.global.highest") }}
-          <span class="money">{{ mothey }}</span>
-        </p>
-        <!-- echarts -->
-        <div v-if="mothey" class="canvas">
-          <div class="echart"></div>
-          <div class="echart_p">
-            <p>
-              <span class="green"></span>
-              {{ $t("message.global.payment") }} € {{ A }}
-            </p>
-            <p>
-              <span class="blue"></span>
-              {{ $t("message.global.Interestamount") }} € {{ L }}
-            </p>
-            <p>
-              <span class="orgin"></span>
-              {{ $t("message.global.loans") }} € {{ S }}
+              <span class="time">{{ $t("message.global.ROI") }} ：</span>
+              {{ info.profitability }}%
             </p>
           </div>
         </div>
-        <div class="loanse" @click="Onclick">
-          {{ $t("message.global.minimum") }}
-        </div>
+        <hr class="hr" />
       </div>
+      <Calculator />
       <hr class="hr" />
-
       <div class="estates" v-if="promoteList">
         <span class="consultants">{{ $t("message.global.Recommended") }}</span>
         <list :promoteList="promoteList" type="new" />
       </div>
-      <van-button type="info" size="large" @click="Onord('/ordIssue')">{{
-        $t("message.global.woyaomaifang")
-      }}</van-button>
+      <van-button type="info" size="large" @click="toOrderIssuePage">{{$t("message.global.SELLING_APPLICATION")}}</van-button>
       <Footer />
       <gallery
         :images="picList"
@@ -448,12 +204,15 @@
     </client-only>
   </div>
 </template>
+
 <script>
 import rem from "~/common/rem.js";
 import Header from "~/components/mIndex/head.vue";
 import Footer from "~/components/mIndex/footer.vue";
-import list from "~/components/mIndex/list.vue";
-import { BASE_API } from "~/api"
+import List from "~/components/mIndex/list.vue";
+import JumpMap from '~/components/jumpMap.vue';
+import { TypologyOptionConfig } from '../common/config';
+import Calculator from '../components/Mindex/calculator.vue';
 
 export default {
   name: "Details",
@@ -461,228 +220,110 @@ export default {
   components: {
     Header,
     Footer,
-    list
+    List,
+    JumpMap,
+    Calculator,
   },
   head() {
+    const { estate_name, city } = this.$route.query;
     return {
-      title: `${this.data.estate} | ${this.data.city}`,
+      title: `${estate_name} (${city})`,
       meta: [
         {
           name: "description",
-          content: `${this.data.estate} | ${this.data.city}`
+          content: `${estate_name} (${city})`
         },
         {
           name: "keywords",
-          content: `法国新房,法国楼盘,买房投资,买房减税,PINEL减税,LMNP减税,VEFA,Logement neuf,${this.data.estate},${this.data.city}`
+          content: `法国新房,法国楼盘,买房投资,买房减税,PINEL减税,LMNP减税,VEFA,Logement neuf,${estate_name},${city}`
         },
-        {
-          name: "og:image",
-          content: this.data.picUrl
-        }
       ]
     };
   },
-  watch: {
-    year(val) {
-      this.interesrate = this.getRateList[val];
-    }
-  },
   data() {
     return {
-      value: 0,
+      programeDetail: {},
       dialogVisible: false,
-      ipt1: "", //您的姓名
-      ipt2: "", //您的电话
-      ipt3: "", //您的邮箱
-      ipt4: "", //您的信息
-      rate: "30", //负债率
-      apport: "0", //首付金额
-      revenus: "3000", //月净收入
-      M: "", //月还款金额
-      A: "", //首付
-      L: "", //贷款利息
-      S: "", //贷款手机金额
-      mothey: "", //还贷计算月还款金额
-      reckenList: [], //可贷款
-      loan: "300000", //房屋金额
-      downapport: "0", //首付金额
-      year: "25", //贷款年限
+      contactForm: {
+        name: '',
+        phone: '',
+        mail: '',
+        message: '',
+      },
       picList: [], //图片集合
-      tags: [],
-
-      phone: "", //平台电话
-      interesrate: "", //贷款利率
       promoteList: [], //推荐房源
-      aparementList: [], //户型集合
-      id: this.$route.query.id, //房屋id
-      interpret: true,
-      false: false,
-      IspackUp: true,
-      data: "",
-      Url: "",
-      current: 0,
-      getRate: [], //贷款利率
-      getRateList: [],
-      galleryIndex: null
+      properties: [], //户型集合
+      displayMoreDesc: true,
+      brokerInfo: {},
+      swipeIdx: 0,
+      galleryIndex: null,
+      translatedTypologies: [],
+      translatedTaxArea: '',
+      translatedLaws: '',
     };
   },
   mounted() {
     rem();
-    this.Onlist();
+    if (process.client) this.queryDetail();
   },
   methods: {
-    Oninput() {
-      if (Number(this.downapport) > Number(this.loan)) {
-        this.downapport = this.loan;
+    async queryDetail () {
+      const lang = this._i18n.locale;
+      const { zip_code, name_id } = this.$route.query;
+      this.TypologyI18NConfig = TypologyOptionConfig.map(({ incluedKey, I18NKey }) =>
+        ({ incluedKey, label: this.$t(`message.NEW_LIST.${I18NKey}`) })
+      );
+      try {
+        const res = await this.$api.article.getInfoNewHous({ zip_code, name_id, lang });
+        const { properties, typologies, taxArea, laws } = res.data;
+        if (Array.isArray(properties)) {
+          for (const it of properties) {
+            it.price = it.prices?.[0]?.price;
+            it.rentPrice = it.prices?.[0]?.monthlyRent;
+            it.planLink = it.plan?.url;
+            it.profitability = it.prices?.[0]?.profitability;
+            it.translatedTypology = this.TypologyI18NConfig.find(itt =>
+              it.typology?.toLowerCase().includes(itt.incluedKey))?.label
+          }
+        }
+        const translatedTypologies = typologies
+          .map(it => it.toLowerCase())
+          .map(it => this.TypologyI18NConfig.find(itt => it.includes(itt.incluedKey))?.label)
+          .filter(Boolean);
+        const translatedTaxArea =
+          taxArea ? this.$t(`message.PROGRAME_DETAIL.TAX_AREA.${taxArea.toUpperCase()}`) : null;
+        const translatedLaws = laws.map(it => this.$t(`message.PROGRAME_DETAIL.LAW_ITEM["${it}"]`)).join(',')
+        Object.assign(this, {
+          programeDetail: res.data,
+          picList: res.data.images,
+          properties,
+          translatedTypologies,
+          translatedTaxArea,
+          translatedLaws,
+        });
+      } catch (e) {
+        console.error('query detail: ', e);
       }
     },
     onChange(index) {
-      this.current = index;
+      this.swipeIdx = index;
     },
-    Onclick() {
-      this.$router.push("./content");
+    toggleDisplayMore() {
+      this.displayMoreDesc = !this.displayMoreDesc;
     },
-    State(val) {
-      if (val == 1) {
-        return this.$t("message.global.beReserved");
-      } else if (val == 2) {
-        return this.$t("message.global.beenSold");
-      } else {
-        return this.$t("message.global.CanBuy");
-      }
-    },
-    Onlist() {
-      let params = { id: this.id };
-      this.$api.article.getInfoNewHous(params).then(res => {
-        const data = res.data.data;
-        if (!data) return;
-        this.data = data;
-        const { picList, system: { phone }, tags, promoteList, longitude, latitude, aparementList } = data;
-        this.picList = picList;
-        this.phone = phone;
-        this.tags = tags;
-        this.promoteList = promoteList;
-        this.aparementList = aparementList;
-        this.Url =
-          `${BASE_API.jsp}/app/map/jumpMap?lat=` + latitude +
-          "&lng=" + longitude;
-      });
-    },
-    onpackUp() {
-      this.IspackUp = !this.IspackUp;
-    },
-    oncapacity() {
-      //获取月还款金额和可贷款
-      let params = {
-        revenus: this.revenus,
-        rate: this.rate,
-        apport: this.apport
-      };
-      this.$api.article.loanCapability(params).then(res => {
-        this.M = res.data.data.M;
-        this.reckenList = res.data.data.reckenList;
-      });
-    },
-    onrepay() {
-      // 获取还贷计算
-      if (this.loan < this.downapport) {
-        this.$toast.message("111");
-      } else {
-        let params = {
-          year: this.year,
-          rate: this.interesrate,
-          apport: this.downapport,
-          loan: this.loan
-        };
-        this.$api.article.repayALoan(params).then(res => {
-          if (res.data.code == 500) {
-            alert(res.msg);
-            this.mothey = "";
-          } else {
-            this.mothey = res.data.data.M;
-            this.A = res.data.data.A;
-            this.S = res.data.data.S;
-            this.L = res.data.data.L;
-            //console.log(this.A,this.L,this.S)
-            this.echarts = [
-              { value: Number(this.A), itemStyle: { color: "#7ECF34" } },
-              { value: Number(this.L), itemStyle: { color: "#1B9AFB" } },
-              { value: Number(this.S), itemStyle: { color: "#F4A436" } }
-            ];
-          }
-        });
-      }
-    },
-    onMap(value) {
-      window.location.href = value;
-    },
-    // 联系我们
     OncontactUs() {
-      //console.log(this.ipt4)
-      let params = {
-        email: this.ipt2,
-        phone: this.ipt3,
-        content: this.ipt4,
-        userName: this.ipt1
-      };
+      let params = { ...this.contactForm };
       this.$api.article.contactUs(params).then(res => {
         this.$toast(res.data.msg);
       });
     },
-    // 翻译中文
-    oninterpret() {
-      this.interpret = !this.interpret;
-    },
-    // 分享
-    connectUs(val, Idx, id) {
-      this.$router.push({
-        path: val,
-        query: {
-          apartmentId: Idx,
-          id: this.id
-        }
-      });
-    },
-    Onshare(smt) {
-      //console.log(this.data.estate)
-      let agent = {
-        brokerName: this.data.brokerName,
-        brokerEmail: this.data.brokerEmail,
-        brokerPhone: this.data.brokerTelPhone
-      };
-      let list = {
-        id: this.id,
-        types: "new",
-        type: this.$t("message.global.NewHouse"),
-        estate: this.data.estate,
-        province: this.data.province,
-        city: this.data.city,
-        minHall: this.data.minHall,
-        maxHall: this.data.maxHall,
-        lowprice: this.data.lowprice,
-        maxPrice: this.data.maxPrice,
-        expressing: this.data.expressing,
-        estateAddress: this.data.estateAddress,
-        brokerName: this.data.brokerName,
-        brokerEmail: this.data.brokerEmail,
-        brokerPhone: this.data.brokerTelPhone,
-        introduceFr: this.data.introduceFr,
-        agent: agent
-      };
-      this.$router.push({
-        path: smt,
-        query: list
-      });
-    },
-    Onord(value) {
-      this.$router.push({
-        path: value,
-        query: { type: "second_hand" }
-      });
+    toOrderIssuePage() {
+      this.$router.push({ path: '/ordIssue', query: { type: "second_hand" } });
     }
   }
 };
 </script>
+
 <style lang="scss" scoped>
 .dialog {
   img {
@@ -718,68 +359,12 @@ div {
   }
 }
 
-.video {
+.images {
   height: 2.14rem;
   position: relative;
   img {
     height: 2.14rem;
     width: 100%;
-  }
-}
-.AR {
-  position: absolute;
-  top: 15%;
-  left: 30%;
-  width: 1.5rem;
-}
-.share {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.2rem;
-}
-.video_S {
-  position: absolute;
-  width: 0.3rem;
-  height: 0.3rem;
-  top: 2.2rem;
-  left: 0.1rem;
-}
-.custom-indicator {
-  position: absolute;
-  top: 2.35rem;
-  left: 80%;
-  width: 0.49rem;
-  height: 0.2rem;
-  background: rgba(0, 0, 0, 1);
-  border-radius: 0.1rem;
-  opacity: 0.64;
-  font-size: 0.12rem;
-  text-align: center;
-  color: rgba(255, 255, 255, 1);
-}
-.video_btn {
-  position: absolute;
-  top: 2.25rem;
-  left: 40%;
-  .VR {
-    width: 0.37rem;
-    height: 0.2rem;
-    background: #234cd3;
-    border-radius: 0.1rem;
-    padding: 0 0.1rem;
-    font-size: 0.12rem;
-    color: rgba(255, 255, 255, 1);
-    margin-right: 0.1rem;
-  }
-  .price {
-    width: 0.37rem;
-    height: 0.2rem;
-    padding: 0 0.1rem;
-    background: rgba(255, 255, 255, 1);
-    border-radius: 10px;
-    font-size: 0.12rem;
-    color: rgba(66, 66, 66, 1);
-    line-height: 0.2rem;
   }
 }
 .hr {
@@ -792,16 +377,6 @@ th,
 td {
   border: none !important;
 }
-.btn {
-  height: 0.4rem;
-  margin: 0.1rem;
-  .btn_i {
-    float: right;
-    width: 1.1rem;
-    background: rgba(35, 77, 212, 1);
-    border-radius: 0.06rem;
-  }
-}
 .btn_us {
   float: right;
   height: 0.4rem;
@@ -812,26 +387,24 @@ td {
   margin-bottom: 0.3rem;
   background: rgba(35, 76, 211, 1);
 }
-/* 标题 */
-.detalis_title {
-  //    height:.28rem;
-  width: 70%;
-  font-size: 0.2rem;
-  font-weight: 600;
-  color: rgba(0, 0, 0, 1);
-  line-height: 0.28rem;
-  margin: 0.07rem 0 0.03rem;
-}
-.details_province {
-  height: 0.17rem;
-  font-size: 0.12rem;
-  color: rgba(177, 177, 177, 1);
-  line-height: 0.17rem;
-  margin-bottom: 0.11rem;
-}
-.details {
+.programe-detail {
   position: relative;
   margin-left: 0.12rem;
+  .detail-title {
+    width: 70%;
+    font-size: 0.2rem;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 1);
+    line-height: 0.28rem;
+    margin: 0.07rem 0 0.03rem;
+  }
+  .detail-region {
+    height: 0.17rem;
+    font-size: 0.12rem;
+    color: rgba(177, 177, 177, 1);
+    line-height: 0.17rem;
+    margin-bottom: 0.11rem;
+  }
 }
 .tax {
   height: 0.26rem;
@@ -896,7 +469,6 @@ td {
 /* 房产顾问 */
 .estates {
   margin: 0 0.12rem;
-
   .broker_box {
     padding: 0.11rem 0.15rem 0.09rem 0.04rem;
     height: 3.73rem;
@@ -977,11 +549,6 @@ td {
         float: right;
       }
     }
-    // .quiz{
-    //     font-size:.12rem;
-    //     color:rgba(167,167,167,1);
-    //     line-height:.17rem;
-    // }
     .drug {
       .van-cell-group {
         height: 0.28rem;
@@ -1009,12 +576,6 @@ td {
       padding: 0 0.5rem;
       float: right;
     }
-  }
-  // 楼盘介绍
-  .interpret {
-    font-size: 0.13rem;
-    color: rgba(35, 76, 211, 1);
-    line-height: 0.18rem;
   }
   .download {
     img {
@@ -1048,55 +609,20 @@ td {
   }
   .map {
     height: 3rem;
+    width: 100%;
     margin-top: 0.05rem;
   }
-  iframe {
-    width: 100%;
-    height: 3rem;
-  }
-  // 户型详情
-  // .van-swipe-item{
-  //     width:1.6rem;
-  //     background:rgba(255,255,255,1);
-  //     box-shadow:0px .01rem .18rem 0px rgba(0,0,0,0.11);
-  // }
   .swipe {
     margin-top: 0.05rem;
-    // overflow-x: auto;
     white-space: nowrap; //阻止文本换行
     overflow: auto; //设置溢出可滚动
-    //   .swipe_div{
-    //       width: 100rem;
     div {
       width: 1.68rem;
       display: inline-block; //设置属性（元素间不换行）
       box-shadow: 0px 1px 18px 0px rgba(0, 0, 0, 0.11);
-      //     box-shadow: 0.1rem 0.1rem 0.1rem 0.1rem rgba(0.11, 0.11, 0.11, 0.11);
-      //    box-shadow:.1rem .1rem .1rem 0px rgba(0,0,0,0.11);
       padding: 0.1rem;
       margin: 0.08rem;
-      // }
     }
-
-    //  .swipe_details{
-    //     width:1.31rem;
-    //     height:2.60rem;
-    //     background:rgba(255,255,255,1);
-    //     box-shadow:0px .01rem .18rem 0px rgba(0,0,0,0.11);
-    //     float: left;
-    //     margin-right: 0.1rem;
-    //     padding: .06rem 0 0 .09rem;
-    //     .time{
-    //         color: #BABABA;
-    //         font-size:.12rem;
-    //         line-height: .2rem;
-    //     }
-    //     .hand{
-    //         color:#000000;
-    //         font-size: .12rem;
-    //          line-height: .2rem;
-    //     }
-    //  }
   }
   .relation {
     text-align: center;
@@ -1105,101 +631,11 @@ td {
     color: rgba(34, 75, 215, 1);
     line-height: 0.18rem;
   }
-  // 还款计算
-
-  .repay {
-    .repay_p {
-      height: 0.18rem;
-      font-size: 0.13rem;
-      color: rgba(42, 42, 42, 1);
-      line-height: 0.18rem;
-      padding: 0.12rem 0 0.09rem 0;
-    }
-    .van-cell-group {
-      height: 0.37rem;
-      background: rgba(233, 233, 233, 1);
-    }
-    .van-cell {
-      background: none;
-    }
-    .van-field__control {
-      height: 0.2rem;
-      font-size: 0.13rem;
-      color: rgba(42, 42, 42, 1);
-      line-height: 0.18rem;
-    }
-    .van-ellipsis {
-      position: absolute;
-      right: 2.5rem;
-      top: -0.1rem;
-      height: 0.18rem;
-      font-size: 0.13rem;
-      color: rgba(42, 42, 42, 1);
-      line-height: 0.18rem;
-    }
-    .van-dropdown-menu {
-      height: 0.37rem;
-      background: rgba(233, 233, 233, 1);
-    }
-    .van-dropdown-menu__title {
-      left: 1.4rem;
-    }
-  }
-  .monthly {
-    padding: 0.19rem 0.2rem 0.15rem 0.11rem;
-    font-size: 0.17rem;
-    color: rgba(0, 0, 0, 1);
-    line-height: 0.24rem;
-  }
   .money {
     padding-left: 0.2rem;
     font-weight: 500;
     color: rgba(255, 94, 94, 1);
   }
-  .canvas {
-    position: relative;
-  }
-
-  .echart {
-    height: 1.55rem;
-    background: rgba(249, 249, 249, 1);
-    div {
-      right: 0.8rem;
-    }
-  }
-
-  .loans {
-    //  height:1.97rem;
-    background: rgba(249, 249, 249, 1);
-    .loans_p {
-      height: 0.25rem;
-      font-size: 0.18rem;
-      font-weight: 500;
-      color: rgba(41, 41, 41, 1);
-      line-height: 0.25rem;
-      padding: 0.03rem 0 0.09rem 0.08rem;
-    }
-    table {
-      width: 100%;
-    }
-    th {
-      width: 33.3%;
-      height: 0.17rem;
-      font-size: 0.12rem;
-      font-weight: 500;
-      color: rgba(41, 41, 41, 1);
-      line-height: 0.17rem;
-    }
-    td {
-      text-align: center;
-      height: 0.2rem;
-      font-size: 0.14rem;
-      color: rgba(134, 134, 134, 1);
-      line-height: 0.2rem;
-      width: 33.3%;
-    }
-  }
-
   .top {
     display: flex;
     justify-content: space-between;
@@ -1207,47 +643,6 @@ td {
     span {
       display: inline-block;
     }
-  }
-}
-.loanse {
-  height: 0.4rem;
-  background: rgba(131, 159, 248, 1);
-  border-radius: 0.05rem;
-  font-size: 0.2rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 1);
-  line-height: 0.4rem;
-  text-align: center;
-  margin-top: 0.3rem;
-}
-.echart_p {
-  position: absolute;
-  top: 0.5rem;
-  right: 0;
-  font-size: 0.14rem;
-  font-weight: 500;
-  color: rgba(119, 119, 119, 1);
-  line-height: 0.2rem;
-  .green {
-    width: 0.12rem;
-    height: 0.12rem;
-    display: inline-block;
-    border-radius: 50%;
-    background: rgba(126, 207, 52, 1);
-  }
-  .blue {
-    width: 0.12rem;
-    height: 0.12rem;
-    display: inline-block;
-    border-radius: 50%;
-    background: rgba(27, 154, 251, 1);
-  }
-  .orgin {
-    width: 0.12rem;
-    height: 0.12rem;
-    display: inline-block;
-    border-radius: 50%;
-    //              background:rgba(244,164,54,1);
   }
 }
 </style>
@@ -1265,24 +660,6 @@ td {
   }
   .van-swipe {
     top: 16%;
-  }
-}
-.repay {
-  .el-select:hover .el-input__inner {
-    background: #e9e9e9;
-    border: none;
-  }
-  .el-input__inner {
-    height: 0.37rem;
-    background: #e9e9e9;
-  }
-  .el-input {
-    position: relative;
-    font-size: 14px;
-    height: 0.37rem;
-    background: #e9e9e9;
-    border: none;
-    width: 3.5rem !important;
   }
 }
 .drug {

@@ -23,7 +23,7 @@
           <van-cell-group>
             <van-field
               v-model="ipt3"
-              :placeholder="$t('message.global.YourMessage')"
+              :placeholder="$t('message.global.EMAIL_ADDRESS')"
               left-icon="envelop-o"
             />
           </van-cell-group>

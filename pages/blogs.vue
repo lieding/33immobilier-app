@@ -4,7 +4,7 @@
       <Header :title="$t('message.global.encyclopedia')" />
       <div class="pedia" style="width: 95%;">
         <el-input
-          :placeholder="$t('message.global.qingshuru')"
+          :placeholder="$t('message.global.PLEASE_ENTER')"
           v-model="value"
           prefix-icon="el-icon-search"
           @change="onTypeChange"

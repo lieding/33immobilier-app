@@ -23,3 +23,27 @@ export const TypologyOptionConfig = [
   { incluedKey: 'unité vie', I18NKey: 'TYPOLOGY_OPTION_LABEL_SUITE' },
   { incluedKey: 'cellier', I18NKey: 'TYPOLOGY_OPTION_LABEL_CELLIER' },
 ];
+
+export const SearchMode = {
+  NewPrograme: 'NewPrograme',
+  SecondHand: 'Secondhand',
+  Renting: 'Renting',
+};
+
+export const CsvUrlConfig = {
+  ProgramCityDistribution: 'https://raw.githubusercontent.com/mingzemicco/33immo-config/refs/heads/main/program-city-distribution.csv',
+}
+
+export function transformNewProgramPoints (parsed) {
+  const { header, rows } = parsed ?? {};
+  if (!header || !rows) return;
+  return rows.map(({ city, count, latitude, longitude, region_id }) => {
+    return {
+      lat: latitude,
+      lng: longitude,
+      city,
+      title: count?.toString() ?? '',
+      groupCondition: region_id
+    };
+  });
+}

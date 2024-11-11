@@ -15,7 +15,7 @@
         </div>
         <div style="margin-bottom:30px">
           <el-input
-            :placeholder="$t('message.global.YourMessage')"
+            :placeholder="$t('message.global.EMAIL_ADDRESS')"
             prefix-icon="el-icon-message"
             v-model="input23"
           ></el-input>

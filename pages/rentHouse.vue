@@ -92,7 +92,7 @@
               <div class="text">
                 <p class="text-title">{{ item.title }}</p>
                 <p class="sort">{{ item.province }}/{{ item.city }}</p>
-                <p class="money">{{ item.total }}{{ $t("message.global.rise") }}</p>
+                <p class="money">{{ item.total }}{{ $t("message.global.euro") }}</p>
                 <p class="font">
                   <span class="itemize">
                     {{

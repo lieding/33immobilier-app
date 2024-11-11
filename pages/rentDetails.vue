@@ -41,7 +41,7 @@
                 {{data.acreage}}{{$t("message.global.square")}}
             </span>
         </p>
-      
+
     </div>
     <hr class="hr"/>
     <div class="estates">
@@ -87,7 +87,7 @@
               <img src="~/assets/image/download3_3.png" alt="">
                 <p style="text-decoration: line-through; color: #E5E5E5;">{{$t("message.global.calorifier")}}</p>
           </div>
-          
+
             <div v-if="data.isBed">
               <img src="~/assets/image/download_8.png" alt="">
                 <p>{{$t("message.global.bed")}}</p>
@@ -152,7 +152,7 @@
         </div>
         <hr>
         <div class="quiz">
-          <div class="drug"> 
+          <div class="drug">
             <van-cell-group>
               <van-field
                 v-model="ipt1"
@@ -170,11 +170,11 @@
             <van-cell-group>
               <van-field
                 v-model="ipt3"
-                :placeholder='$t("message.global.YourMessage")'
+                :placeholder='$t("message.global.EMAIL_ADDRESS")'
                 left-icon="envelop-o"
               />
             </van-cell-group>
-          </div>  
+          </div>
           <van-cell-group>
             <van-field
               v-model="ipt4"
@@ -200,9 +200,9 @@
       <div :class="IspackUp?'synopsisno':'synopsis'" v-else  style="white-space: pre-line;">{{data.introduceFr}}</div>
       <div>
         <span class="packUp" @click="onpackUp">
-          {{IspackUp?$t("message.global.seeMore"):$t("message.global.shouqi")}}
+          {{IspackUp?$t("message.global.seeMore"):$t("message.global.SEE_LESS")}}
         </span>
-      </div> 
+      </div>
     </div>
     <hr class="hr"/>
     <!-- 楼盘位置 -->
@@ -235,7 +235,7 @@
       <List :promoteList ="promoteList" type="租房"/>
     </div>
     <van-button type="info" size="large" @click="Onord('/ordIssue')" style="margin-bottom:.2rem">
-      {{$t("message.global.woyaomaifang")}}
+      {{$t("message.global.SELLING_APPLICATION")}}
     </van-button>
     <Footer/>
     <gallery
@@ -312,7 +312,7 @@ export default {
           { text: 'new', value: 0 },
           { text: '新款商品', value: 1 },
           { text: '活动商品', value: 2 }
-      ],       
+      ],
       galleryIndex: null
     };
   },
@@ -332,7 +332,7 @@ export default {
           if (longitude && latitude) {
             this.mapIframeSrc = `${BASE_API.jsp}/app/map/jumpMap?lat=${latitude}&lng=${longitude}`;
           }
-        } 
+        }
       });
     },
     onpackUp(){
@@ -356,7 +356,7 @@ export default {
       this.interpret = !this.interpret;
     },
     Onshare(smt){
-      let list = {  
+      let list = {
         types:'租房',
         type:this.$t("message.global.tenement"),
         id:this.id,

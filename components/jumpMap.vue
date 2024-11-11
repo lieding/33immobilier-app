@@ -73,6 +73,14 @@ export default {
       if (!Array.isArray(points)) return;
       if (points[oldIdx]) points[oldIdx].content.style.color = InitialMarkerSvgColor;
       if (points[idx]) points[idx].content.style.color = 'red';
+    },
+    latitude () {
+      clearTimeout(this.__changeCenterTimeout);
+      this.__changeCenterTimeout = setTimeout(changeCenter.bind(this), 500);
+    },
+    longitude () {
+      clearTimeout(this.__changeCenterTimeout);
+      this.__changeCenterTimeout = setTimeout(changeCenter.bind(this), 500);
     }
   },
   methods: {
@@ -164,6 +172,15 @@ export default {
     }
   },
 }
+
+function changeCenter () {
+  const mapInst = this.__mapInst;
+  if (!mapInst) return;
+  const lat = Number(this.latitude), lng = Number(this.longitude);
+  if (!lat || !lng) return;
+  mapInst.setCenter({ lat, lng });
+}
+
 const InitialMarkerSvgColor = '#048881';
 const svgContent = `
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="24" height="24" viewBox="0 0 256 256" xml:space="preserve" fill="currentColor" style="color:${InitialMarkerSvgColor}">

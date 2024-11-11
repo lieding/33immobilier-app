@@ -86,7 +86,7 @@
           style="margin-top:10px;text-align:center;height:20px;font-size:12px;"
         >
           <span class="quanbuQY" @click="allCi">{{
-            qbqy ? $t("message.global.allquyu") : $t("message.global.shouqi")
+            qbqy ? $t("message.global.allquyu") : $t("message.global.SEE_LESS")
           }}</span>
         </div>
       </div>

@@ -56,7 +56,7 @@
             <span>{{ getPostListingData.deliveryQuarter }}</span>
           </p>
           <p class="smJf">
-            {{ $t("message.global.HouseNumber") }}：
+            {{ $t("message.global.PROPERTIES_COUNT") }}：
             <span>{{ getPostListingData.availablePropertiesCount ?? getPostListingData.propertiesCount }}</span>
           </p>
           <p class="smJf">
@@ -66,7 +66,7 @@
             </el-tooltip>
           </p>
           <p class="smJf">
-            {{ $t("message.global.jianshuiuquyu") }}：
+            {{ $t("message.global.TAX_AREA") }}：
             <template v-if="translatedTaxArea">
               <span>{{ getPostListingData.taxArea }}</span>
               <el-tooltip placement="top" effect="light" :content="translatedTaxArea">
@@ -82,7 +82,7 @@
             <span>{{ getPostListingData.taxCutsQuota }}</span>
           </p>
           <p class="smJf">
-            {{ $t("message.global.Inventor") }}：
+            {{ $t("message.global.LOCATION") }}：
             <span>{{ getPostListingData.zip_code }}/{{getPostListingData.city}}</span>
           </p>
           <p class="smJf">
@@ -90,9 +90,9 @@
             <el-tag v-for="it in translatedTypologies" :key="it" type="success" size="mini">{{ it }}</el-tag>
           </p>
         </div>
-        <div class="counselor">
+        <div class="CONSULTANT">
           <p style="text-align:center;font-size:22px;font-weight:600;">
-            {{ $t("message.global.counselor") }}
+            {{ $t("message.global.CONSULTANT") }}
           </p>
           <div class="plank">
             <div style="float:left;position:relative;">
@@ -135,18 +135,8 @@
     <div class="centerS contentS">
       <p class="titles">
         <span style="font-size:32px;margin-right:10px;font-weight:600;">{{
-          $t("message.global.premises")
+          $t("message.global.PROGRAME_DESC")
         }}</span>
-        <span
-          @click="interpretP"
-          style="font-size:16px;color:#234CD3;cursor: pointer;"
-        >
-          {{
-            interpret
-              ? $t("message.global.interpret")
-              : $t("message.global.interpret")
-          }}</span
-        >
         <span
           style="font-size:20px;color:#fff;float:right;background-color:#027AFF;padding:8px 20px;cursor: pointer"
           @click="downX(getPostListingData.brochure)"
@@ -162,7 +152,7 @@
       </p>
       <div style="border: 1px solid #ccc;height:500px;width:1200px">
         <jump-map
-          v-if="getPostListingData.description"
+          v-if="getPostListingData.latitude && getPostListingData.longitude"
           :latitude="getPostListingData.latitude"
           :longitude="getPostListingData.longitude"
           :interactive="false"
@@ -171,25 +161,9 @@
           :show-nav="true"
         ></jump-map>
       </div>
-      <div v-if="getPostListingData.isOpenVR && getPostListingData.vrAddress">
-        <p
-          class="titles"
-          style="margin-top:10px;font-weight:600;padding-bottom:10px;"
-        >
-          <span style="font-size:32px;margin-right:10px;">{{
-            $t("message.global.theoretical")
-          }}</span>
-        </p>
-        <iframe
-          height="500px"
-          width="1200px"
-          :src="getPostListingData.vrAddress"
-          frameborder="0"
-        ></iframe>
-      </div>
       <p class="titles" style="margin-top:10px;padding-bottom:20px;">
         <span style="font-size:32px;margin-right:10px;font-weight:600;">{{
-          $t("message.global.modelDetails")
+          $t("message.global.PROPERTY_DETAILS")
         }}</span>
       </p>
       <el-table
@@ -207,11 +181,11 @@
         ></el-table-column>
         <el-table-column
           prop="surface"
-          :label="$t('message.global.usableArea')"
+          :label="$t('message.global.USABLE_AREA')"
         ></el-table-column>
         <el-table-column
           prop="floor"
-          :label="$t('message.global.level')"
+          :label="$t('message.global.FLOOR')"
         ></el-table-column>
         <el-table-column
           prop="price"
@@ -227,16 +201,11 @@
         ></el-table-column>
         <el-table-column
           prop="profitability"
-          :label="$t('message.global.RAROC')"
+          :label="$t('message.global.ROI')"
         ></el-table-column>
         <el-table-column :label="$t('message.global.floorPlan')">
           <template slot-scope="scope">
             <el-link :href="scope.planLink" target="'_blank'">Plan</el-link>
-          </template>
-        </el-table-column>
-        <el-table-column :label="$t('message.global.condition')">
-          <template slot-scope="scope">
-            <span>{{ pdstate(scope.row.state) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="data" :label="$t('message.global.connectUs')">
@@ -396,7 +365,7 @@
             {{ $t("message.global.Describing") }}：<div v-html="getPostListingData.description"></div>
           </p>
           <p>
-            {{ $t("message.global.Inventor") }}：
+            {{ $t("message.global.LOCATION") }}：
             <span>{{ getPostListingData.city }}</span>
           </p>
           <p>
@@ -650,9 +619,6 @@ export default {
         this.ft3 = true;
       }
     },
-    interpretP() {
-      this.interpret = !this.interpret;
-    },
     handleClose(done) {
       this.$refs.qrcode.innerHTML = null;
       done();
@@ -678,15 +644,6 @@ export default {
         this.get(flags);
         document.body.scrollTop = 0;
         document.documentElement.scrollTop = 0;
-      }
-    },
-    pdstate(val) {
-      if (val == 1) {
-        return this.$t("message.global.beReserved");
-      } else if (val == 2) {
-        return this.$t("message.global.beenSold");
-      } else if (val == 0) {
-        return this.$t("message.global.CanBuy");
       }
     },
     // 判断对象是否为空
@@ -948,7 +905,7 @@ export default {
         }
       }
     }
-    .counselor {
+    .CONSULTANT {
       margin-top: 10px;
       padding-bottom: 10px;
       padding-left: 10px;

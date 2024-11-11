@@ -2,29 +2,31 @@
   <div class="row">
     <client-only>
       <Header />
-      <!-- <hr class="title_hr"/> -->
       <!-- logo图 -->
       <img src="~/assets/image/index.png" alt class="logo" />
       <!-- 搜索框 -->
-      <div class="block flex">
-        <div class="flex block_1">
+      <div class="search-bar flex">
+        <div class="flex mode-select">
           <van-dropdown-menu class="opn">
-            <van-dropdown-item v-model="value1" :options="$t('message.index.option1')" />
+            <van-dropdown-item v-model="searchMode" :options="$t('message.index.SEARCH_MODE')" />
           </van-dropdown-menu>
         </div>
-        <div class="flex block_2">
-          <img src="~/assets/image/Search Icon.png" class="Icon" @click="OnsearchGoods" />
+        <div class="flex input-bar">
+          <img src="~/assets/image/Search Icon.png" class="search-icon" />
           <input
+            v-model="searchInput"
+            class="searchInput"
             type="serch"
             :placeholder="$t('message.global.Where')"
-            class="ipt"
-            @keypress="searchGoods"
-            v-model="ipt"
+            @click="searchInputClickHandler"
           />
+          <div class="suggestion-popup" :class="{ active: suggestionPopupActive }">
+            <div v-for="it in searchSuggestions" :key="it.value" class="suggestion-item" @click="suggestionClickHandler(it)">{{ it.value }}</div>
+          </div>
         </div>
       </div>
       <!-- 多分类 -->
-      <ul class="list">
+      <ul class="icon-bar">
         <router-link :to="{ path: '/newhouse', query: { house: 'new' } }" tag="li">
           <img src="~/assets/image/newhouse.png" class="list_img" />
           <p>{{ $t("message.global.NewHouse") }}</p>
@@ -50,7 +52,7 @@
           <p>{{ $t("message.global.Saas") }}</p>
         </router-link> -->
       </ul>
-      <ul class="entry">
+      <ul class="articles">
         <router-link :to="{ path: '/instrument' }" tag="li">
           <img src="~/assets/image/blue.png" class="entry_img" />
           <p>{{ $t("message.global.capacity") }}</p>
@@ -72,125 +74,30 @@
       <div class="newhouse">
         <div class="font width">
           <span class="title">{{ $t("message.global.Newbuilding") }}</span>
-          <router-link
+          <!-- <router-link
             :to="{ path: '/newhouse', query: { house: 'new' } }"
             class="watch"
-          >{{ $t("message.global.examine") }}</router-link>
+          >{{ $t("message.global.SEE_ALL_PROGRAMES") }}</router-link> -->
         </div>
-        <!-- router.push({name: 'applename', query: {color: 'red' }}) -->
-
         <p class="detail">{{ $t("message.global.precedence") }}</p>
-        <ul class="new_list">
+        <ul class="new-list">
           <router-link
-            :to="{ path: '/Details', query: { id: item.id } }"
-            v-for="(item, index) in newHousings"
+            :to="{ path: '/Details', query: { zip_code: item.zip_code, name_id: item.name_id, estate_name: item.estate_name, city: item.city } }"
+            v-for="(item, index) in homePageInfo.newHousings"
             :key="index"
             tag="li"
           >
-            <div class="img">
-              <img :src="item.images[0]" class="new_img" />
+            <div class="image-wrapper">
+              <img :src="item.images[0]" class="image" />
               <span class="year">{{ item.deliveryQuarter }}</span>
-              <span class="num">
-                <span class="city">{{ item.zip_code }}</span>
-                <span class="citynum">{{ item.city }}</span>
-              </span>
             </div>
-
-            <div class="text">
-              <p class="text-title">{{ item.name }}</p>
-              <p class="sort">{{ item.availablePropertiesCount }} {{ $t("message.global.pieces") }}</p>
-              <p class="font">
-                <span class="itemize" v-for="(items, index) in item.tags" :key="index">{{ items }}</span>
-              </p>
-              <p class="money">{{ item.availablePropertiesMinPrice }}{{ $t("message.global.rise") }}</p>
-            </div>
-          </router-link>
-        </ul>
-      </div>
-      <hr class="hr" />
-      <!-- 二手房 -->
-      <!-- <div class="newhouse">
-        <div class="font width">
-          <span class="title">{{ $t("message.global.ordapartment") }}</span>
-          <router-link
-            :to="{ path: '/newhouse', query: { house: 'second_hand' } }"
-            class="watch"
-          >{{ $t("message.global.AllNewHomes") }}</router-link>
-        </div>
-        <ul class="new_list">
-          <router-link
-            :to="{ path: '/ordDetails', query: { id: item.id } }"
-            tag="li"
-            v-for="(item, index) in homesList"
-            :key="index"
-          >
-            <div class="img">
-              <img :src="item.showUrl" class="new_img" />
-            </div>
-            <div class="text">
-              <p class="text-title">{{ item.title }}</p>
-              <p class="sort">{{ item.bigProvince }}/{{ item.province }}</p>
-              <p class="font">
-                <span class="itemize">{{ item.roomNum }}{{ $t("message.global.chamber") }}</span>
-                <span class="itemize">{{ item.bedRoomNum }}{{ $t("message.global.crouch") }}</span>
-                <span class="itemize">{{ item.acreage }}{{ $t("message.global.square") }}</span>
-              </p>
-              <p class="font">
-                <span class="money">{{ item.total }}{{ $t("message.global.rise") }}</span>
-                <span class="average">{{ item.unit }}{{ $t("message.global.square€") }}</span>
-              </p>
-            </div>
-          </router-link>
-        </ul>
-      </div> -->
-      <!-- <hr class="hr" /> -->
-      <!-- 租房 -->
-      <div class="newhouse">
-        <div class="font width">
-          <span class="title">{{ $t("message.global.handpick") }}</span>
-          <router-link :to="{ path: '/rentHouse' }" class="watch">
-            {{
-            $t("message.global.Allhand")
-            }}
-          </router-link>
-        </div>
-        <ul class="new_list">
-          <router-link
-            :to="{ path: '/rentDetails', query: { id: item.id } }"
-            tag="li"
-            v-for="(item, index) in rentings"
-            :key="index"
-          >
-            <div class="img">
-              <img :src="item.showUrl" class="new_img" />
-              <span class="num">
-                <span class="city">
-                  {{
-                  item.rentType
-                  ? $t("message.global.sublease")
-                  : $t("message.global.entireTenancy")
-                  }}
-                </span>
-              </span>
-            </div>
-            <div class="text">
-              <p class="text-title">{{ item.title }}</p>
-              <p class="sort">{{ item.province }}/{{ item.city }}</p>
-              <p class="font">
-                <span class="itemize">
-                  {{
-                  item.source
-                  ? $t("message.global.Personal")
-                  : $t("message.global.Intermediary")
-                  }}
-                </span>
-                <span class="itemize" v-show="item.isSchools == '0'">
-                  {{
-                  $t("message.global.jinxuexiao")
-                  }}
-                </span>
-              </p>
-              <p class="money">{{ item.total }}{{ $t("message.global.rise") }}</p>
+            <div class="right-section">
+              <div class="title">{{ item.estate_name }}</div>
+              <div class="info">{{ item.zip_code }} / {{ item.city }}</div>
+              <div class="info">{{ item.availablePropertiesCount || item.propertiesCount }} {{ $t("message.PAGE_INDEX.PROPERTIES_LEFT") }}</div>
+              <div class="price">
+                {{ item.availablePropertiesMinPrice }}€
+              </div>
             </div>
           </router-link>
         </ul>
@@ -207,7 +114,7 @@
           </router-link>
         </div>
         <p class="detail" style=" margin-bottom:0.07rem;">
-          {{ $t("message.global.counselor") }}&nbsp;&nbsp;&nbsp;{{
+          {{ $t("message.global.CONSULTANT") }}&nbsp;&nbsp;&nbsp;{{
           $t("message.global.ZeroFee")
           }}&nbsp;&nbsp; {{ $t("message.global.bilingualism") }}
         </p>
@@ -219,7 +126,6 @@
             </div>
             <div class="swipe_text">
               <p class="swipe_title">{{ item.brokerName }}</p>
-              <!-- <p class="swipe_sort">1-5 pièces</p> -->
               <p class="swipe_sort">{{ item.brokerJob }}</p>
               <p class="swipe_tel">{{ item.brokerTelPhone }}</p>
             </div>
@@ -237,7 +143,6 @@
             {{ $t("message.global.jiaru") }}
           </span>
         </div>
-        <!-- <img  src="~/assets/image/agent.png" class="swipe_image" /> -->
       </div>
       <hr class="hr" />
       <!-- 我们的合作伙伴 -->
@@ -250,21 +155,6 @@
         <img src="~/assets/image/logo_promoteur.png" class="partner_image" />
       </div>
       <hr class="hr" />
-      <!-- 房价走势 -->
-      <div class="newhouse trend">
-        <div class="font">
-          <span class="title">{{ $t("message.global.trend") }}</span>
-        </div>
-        <p class="trend_p">
-          <el-select v-model="value" placeholder="请选择">
-            <el-option v-for="(item, index) in returnList" :key="index" :label="item" :value="item"></el-option>
-          </el-select>
-        </p>
-        <!-- <div style="widht:3.46rem;height:4rem;"> -->
-        <div class="echart" v-if="homeTrendList"></div>
-        <!-- </div> -->
-      </div>
-      <hr class="hr" />
       <!-- 底部 -->
       <Footer />
     </client-only>
@@ -275,6 +165,8 @@
 import rem from "~/common/rem.js";
 import Header from "~/components/mIndex/header.vue";
 import Footer from "~/components/mIndex/footer.vue";
+import { gmapApiLoader } from '../common/gmapApiLoader';
+import { SearchMode } from '../common/config';
 
 export default {
   components: {
@@ -301,81 +193,48 @@ export default {
   },
   data() {
     return {
+      homePageInfo: {},
       newHousings: [], //新房
       homesList: [], //二手房
       rentings: [], //租房
       brokerList: [], //经纪人
       system: [], //立即加入
-      returnList: [], //所有走势图
-      homeTrendList: [],
       value: "Paris 1",
       show: false,
-      value1: "new",
-      ipt: ""
+      searchMode: SearchMode.NewPrograme,
+      searchInput: "",
+      searchSuggestions: [],
+      suggestionPopupActive: false,
     };
   },
-  watch: {
-    value(val) {
-      this.ByRegion();
+  mounted() {
+    if (!process.client) return;
+    rem();
+    this.queryIndexPageInfo();
+    const lang = this._i18n.locale;
+    gmapApiLoader(lang)
+      ?.then(() => this.gmapAutocompleteService = new window.google.maps.places.AutocompleteService());
+    this.__popupCanceEvListener = () => {
+      this.suggestionPopupActive = false;
+      window.removeEventListener('click', this.__popupCanceEvListener);
     }
   },
-  mounted() {
-    rem();
-    // this.ByRegion();
-    //   所有走势图
-    // this.$api.article.trendRegion().then(res => {
-    //   this.returnList = res.data.data.returnList;
-    // });
-    this.$api.article.getHomePageInfo().then(res => {
-      this.newHousings = res.data.newHousings; //新房
-      //this.homesList = res.data.data.homesList; //二手房
-      //this.rentings = res.data.data.rentings; //租房
-      //this.brokerList = res.data.data.brokerList; //经纪人
-      //this.system = res.data.data.system; //立即加入
-    });
+  watch: {
+    searchInput (input) {
+      if (input.length < 2) {
+        this.searchSuggestions = [];
+        this.suggestionPopupActive = false;
+        return;
+      }
+      searchCities.call(this, input)
+        .then(suggestions => {
+          this.searchSuggestions = suggestions;
+          this.suggestionPopupActive = true;
+          window.addEventListener('click', this.__popupCanceEvListener, true);
+        });
+    },
   },
   methods: {
-    // 点击搜索框
-    OnsearchGoods() {
-      if (this.value1 == "new") {
-        this.$router.push({
-          path: "/newhouse",
-          query: { house: "new", ipt: this.ipt }
-        });
-      } else if (this.value1 == "second_hand") {
-        this.$router.push({
-          path: "/newhouse",
-          query: { house: "second_hand", ipt: this.ipt }
-        });
-      } else {
-        this.$router.push({
-          path: "/rentHouse",
-          query: { type: "租房", ipt: this.ipt }
-        });
-      }
-    },
-    searchGoods(event) {
-      if (event.keyCode == 13) {
-        //如果按的是enter键 13是enter
-        event.preventDefault(); //禁止默认事件（默认是换行）
-        if (this.value1 == "new") {
-          this.$router.push({
-            path: "/newhouse",
-            query: { house: "new", ipt: this.ipt }
-          });
-        } else if (this.value1 == "second_hand") {
-          this.$router.push({
-            path: "/newhouse",
-            query: { house: "second_hand", ipt: this.ipt }
-          });
-        } else {
-          this.$router.push({
-            path: "/rentHouse",
-            query: { house: "租房", ipt: this.ipt }
-          });
-        }
-      }
-    },
     goRouter(smt) {
       let list = {
         type: "经纪人",
@@ -386,20 +245,63 @@ export default {
         query: list
       });
     },
-    ByRegion() {
-      let params = { homeTrendRegion: this.value };
-      let createTime = [];
-      let homeTrendPrice = [];
-      this.$api.article.getTrendByRegion(params).then(res => {
-        this.homeTrendList = res.data.data.homeTrendList;
-        res.data.data.homeTrendList.map(item => {
-          createTime.push(item.homeTrendQuarter);
-          homeTrendPrice.push(item.homeTrendPrice);
+    suggestionClickHandler(suggestion) {
+      const searchMode = this.searchMode;
+      if (searchMode == SearchMode.NewPrograme) {
+        const { place_id, place_text } = suggestion;
+        if (!place_id || !place_text) return;
+        this.$router.push({ path: "/newhouse", query: { searchMode, place_id, place_text } });
+      } else if (searchMode == SearchMode.SecondHand) {
+        this.$router.push({
+          path: "/newhouse",
+          query: { searchMode, searchInput: this.searchInput }
         });
-      });
-    }
+      } else {
+        this.$router.push({
+          path: "/rentHouse",
+          query: { searchMode, searchInput: this.searchInput }
+        });
+      }
+    },
+    searchInputClickHandler () {
+      if (this.searchSuggestions?.length) {
+        this.suggestionPopupActive = true;
+        window.addEventListener('click', this.__popupCanceEvListener, true);
+      }
+    },
+    async queryIndexPageInfo() {
+      const res = await this.$api.article.getHomePageInfo();
+      const getHomePageInfo = res.data;
+      this.homePageInfo = getHomePageInfo;
+      if (getHomePageInfo.system)
+        this.systemInfo = getHomePageInfo.system;
+    },
   }
 };
+
+/**
+ * @param {string} input
+*/
+function searchCities (input) {
+  const autocomplete = this.gmapAutocompleteService;
+  if (!autocomplete) return Promise.resolve([]);
+  return autocomplete.getPlacePredictions({
+    input,
+    componentRestrictions: {
+      country: ['FRA'],
+    },
+    types: ["(cities)"],
+  }).then(res => {
+    const predictions = res.predictions;
+    if (!Array.isArray(predictions)) return [];
+    const list = predictions.map(({ structured_formatting, place_id }) => {
+      const { main_text, secondary_text } = structured_formatting;
+      return { value: main_text, place_id, place_text: main_text };
+    });
+    return list;
+  });
+}
+
 </script>
 <style lang="scss">
 .trend_p {
@@ -429,10 +331,7 @@ export default {
   background-color: #c2c2c2;
   margin: 0;
 }
-.new_list {
-  margin-top: 0.1rem;
-}
-.block {
+.search-bar {
   position: absolute;
   top: 2.15rem;
   margin: 0 0.18rem 0 0.18rem;
@@ -442,6 +341,35 @@ export default {
   bottom: 0.2rem;
   z-index: 1;
   box-shadow: 0px 2px 11px 0px rgba(0, 0, 0, 0.11);
+  .mode-select {
+    padding-right: 0.15rem;
+    background: white;
+  }
+  .input-bar {
+    padding: 0.09rem 0;
+    position: relative;
+    .suggestion-popup {
+      visibility: hidden;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      transform: translateY(105%);
+      width: 100%;
+      box-sizing: border-box;
+      padding: .1rem .16rem .08rem;
+      box-shadow: 0px 2px 11px 0px rgba(0, 0, 0, 0.11);
+      min-height: .6rem;
+      border-radius: 8px;
+      background-color: #fff;
+      &.active {
+        visibility: visible;
+      }
+      .suggestion-item {
+        margin-bottom: .12rem;
+        color: #666;
+      }
+    }
+  }
 }
 .swipe_text {
   padding: 0.05rem;
@@ -450,14 +378,6 @@ export default {
 .width {
   width: 100%;
   margin-bottom: 0.2rem;
-}
-.block_1 {
-  padding-right: 0.15rem;
-
-  background: white;
-}
-.block_2 {
-  padding: 0.09rem 0;
 }
 .flex {
   display: flex;
@@ -477,59 +397,55 @@ export default {
 .van-ellipsis {
   color: rgba(38, 38, 38, 1);
 }
-.xiala {
-  width: 0.09rem;
-  height: 0.05rem;
-}
-.Icon {
+.search-icon {
   width: 0.16rem;
   height: 0.16rem;
   padding: 0.03rem 0.15rem;
   border-left: 1px solid #8888;
 }
-.ipt {
+.searchInput {
   border: none;
   width: 2rem;
   font-size: 0.13rem;
 }
-.list {
+.icon-bar {
   font-size: 0.15rem;
   width: 100%;
   margin-top: 0.2rem;
-}
-.list li {
-  float: left;
-  text-align: center;
-  width: 33.33%;
-  margin-bottom: 0.05rem;
+  li {
+    float: left;
+    text-align: center;
+    width: 33.33%;
+    margin-bottom: 0.05rem;
+  }
 }
 .list_img {
   width: 0.49rem;
   height: 0.5rem;
 }
-.entry li {
-  text-align: center;
-  width: 24%;
-  position: relative;
-}
-.entry {
+.articles {
   font-size: 0.12rem;
   height: 0.75rem;
   display: flex;
   width: 100%;
+  li {
+    text-align: center;
+    width: 24%;
+    position: relative;
+  }
+  p {
+    position: absolute;
+    bottom: 0.35rem;
+    left: 0.13rem;
+    font-size: 0.12rem;
+    font-weight: 600;
+    color: rgba(40, 40, 40, 0.76);
+    line-height: 0.17rem;
+  }
 }
 .entry_img {
   width: 1.04rem;
   height: 0.75rem;
-}
-.entry p {
-  position: absolute;
-  bottom: 0.35rem;
-  left: 0.13rem;
-  font-size: 0.12rem;
-  font-weight: 600;
-  color: rgba(40, 40, 40, 0.76);
-  line-height: 0.17rem;
 }
 .title {
   font-size: 0.2rem;
@@ -555,14 +471,7 @@ export default {
   font-size: 16px;
   padding-bottom: 0.1rem;
 }
-.text-title {
-  font-size: 0.16rem;
-  font-weight: 600;
-  color: rgba(80, 80, 80, 1);
-  text-shadow: 0px 2px 3px rgba(255, 255, 255, 0.5);
-  min-height: .35rem;
-}
-.sort {
+.info {
   font-size: 0.13rem;
   font-weight: 600;
   color: rgba(168, 168, 168, 1);
@@ -577,39 +486,6 @@ export default {
   margin-right: 0.06rem;
   padding: 0 0.1rem;
 }
-.money {
-  font-size: 0.16rem;
-  font-weight: 600;
-  color: rgba(255, 94, 94, 1);
-}
-.year {
-  height: 0.24rem;
-  background: rgba(35, 76, 211, 1);
-  border-radius: 0px 0px 0px 13px;
-  font-size: 0.12rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 1);
-  position: absolute;
-  top: 0rem;
-  right: 0;
-  padding: 0 0.1rem;
-}
-.num {
-  /* width:0.38rem; */
-  height: 0.17rem;
-  /* background:rgba(106,192,120,1); */
-  border-radius: 1px;
-  font-size: 0.12rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 1);
-  position: absolute;
-  top: 0.75rem;
-
-  left: 0;
-  /* left: 0.05rem; */
-  overflow: hidden;
-  /* padding: 0 .1rem; */
-}
 .city {
   background: rgba(106, 192, 120, 1);
   margin: 0 0.03rem;
@@ -620,29 +496,52 @@ export default {
   color: rgba(255, 255, 255, 1);
   line-height: 0.13rem;
 }
-.new_img {
-  width: 1.44rem;
-  height: 0.98rem;
-}
-.img {
-  // width: 1.44rem;
-  height: 0.98rem;
-  position: relative;
-
-  margin-right: 0.11rem;
-}
-// .swipe{
 .swipe > first-child {
   width: 1.44rem;
 }
-// }
-
-.new_list li {
-  display: flex;
-  padding-top: 0.11rem;
-}
-.text p {
-  line-height: 1.25;
+.new-list {
+  margin-top: 0.1rem;
+  li {
+    display: flex;
+    padding-top: 0.11rem;
+    .image-wrapper {
+      height: 0.98rem;
+      position: relative;
+      margin-right: 0.11rem;
+      .image {
+        width: 1.44rem;
+        height: 0.98rem;
+      }
+      .year {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: .03rem .03rem .02rem .1rem;
+        background: rgba(35, 76, 211, 1);
+        border-radius: 0px 0px 0px 13px;
+        font-size: 0.12rem;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 1);
+      }
+    }
+    .right-section {
+      & > div {
+        margin-bottom: .03rem;
+      }
+      .title {
+        line-height: initial;
+        font-size: 0.14rem;
+        font-weight: 600;
+        color: rgba(80, 80, 80, 1);
+        text-shadow: 0px 2px 3px rgba(255, 255, 255, 0.5);
+      }
+      .price {
+        font-size: 0.16rem;
+        font-weight: 600;
+        color: rgba(255, 94, 94, 1);
+      }
+    }
+  }
 }
 .average {
   font-size: 0.12rem;
@@ -741,28 +640,6 @@ export default {
   width: 3.52rem;
   height: 1.7rem;
   margin-top: 0.12rem;
-}
-.echart {
-  /* width: 6.29rem; */
-  height: 2rem;
-}
-
-.echart {
-  height: 2rem;
-}
-/* 房价走势 */
-.trend {
-  position: relative;
-}
-
-.trend_p {
-  position: absolute;
-  bottom: 1.8rem;
-  right: 0;
-  z-index: 2;
-  input {
-    height: 0.3rem;
-  }
 }
 .el-dropdown-menu {
   overflow: scroll;

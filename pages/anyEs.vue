@@ -258,16 +258,12 @@ import dingwei from "~/assets/image/dingwei.png";
 
 import baseUrl from "~/api/base.js";
 
-import Treeselect from "@riophae/vue-treeselect";
-import "@riophae/vue-treeselect/dist/vue-treeselect.css";
-
 export default {
   name: "anyEs",
   middleware: "responsive",
   components: {
     headers,
     foots,
-    Treeselect
   },
   head() {
     return {

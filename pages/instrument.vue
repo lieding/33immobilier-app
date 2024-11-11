@@ -4,7 +4,7 @@
       <Header :title="$t('message.global.instrument')" />
       <div class="offer">
         <P :class="isbtn ? 'P_btn' : 'P_onbtn'" @click="Onclick">
-          {{ $t("message.global.calculation") }}
+          {{ $t("message.global.LOAN_CAPABILITY_CALCULATION") }}
         </P>
         <p :class="isbtn ? 'P_onbtn' : 'P_btn'" @click="Onclick">
           {{ $t("message.global.Calculator") }}
@@ -12,7 +12,7 @@
       </div>
       <!-- 贷款能力计算器 -->
       <div class="estates" v-if="isbtn">
-        <span class="consultants">{{ $t("message.global.calculation") }}</span>
+        <span class="consultants">{{ $t("message.global.LOAN_CAPABILITY_CALCULATION") }}</span>
         <div class="repay">
           <p class="repay_p">{{ $t("message.global.onnetincome") }}</p>
           <van-cell-group>
@@ -20,7 +20,7 @@
               v-model="revenus"
               label="€"
               label-width=".15rem"
-              :placeholder="$t('message.global.qingshuru')"
+              :placeholder="$t('message.global.PLEASE_ENTER')"
               type="Number"
             />
           </van-cell-group>
@@ -30,20 +30,20 @@
               v-model="apport"
               label="€"
               label-width=".15rem"
-              :placeholder="$t('message.global.qingshuru')"
+              :placeholder="$t('message.global.PLEASE_ENTER')"
               type="Number"
             />
           </van-cell-group>
           <p class="repay_p">
-            {{ $t("message.global.liability")
-            }}{{ $t("message.global.Canfill") }}
+            {{ $t("message.global.DEBT_RATIO")
+            }}{{ $t("message.global.DEBT_BURDEN") }}
           </p>
           <van-cell-group>
             <van-field
               v-model="rate"
               label="%"
               label-width=".2rem"
-              :placeholder="$t('message.global.qingshuru')"
+              :placeholder="$t('message.global.PLEASE_ENTER')"
               type="Number"
             />
           </van-cell-group>
@@ -54,15 +54,15 @@
           </van-button>
         </div>
         <p class="monthly" v-if="M">
-          {{ $t("message.global.highest") }}
+          {{ $t("message.global.MAXIMUM_MONTHLY_REPAYMENT_AMOUNT") }}
           <span class="money">{{ M }}€</span>
         </p>
         <div class="loans" v-if="M">
-          <p class="loans_p">{{ $t("message.global.Youcanloan") }}</p>
+          <p class="loans_p">{{ $t("message.global.LOAN_AMOUNT_CALCULATION") }}</p>
           <table>
             <tr>
-              <th>{{ $t("message.global.loanPeriod") }}</th>
-              <th>{{ $t("message.global.annual") }}</th>
+              <th>{{ $t("message.global.LOAN_PERIOD") }}</th>
+              <th>{{ $t("message.global.ANNUAL_INTEREST_RATE") }}</th>
               <th>{{ $t("message.global.amount") }}</th>
             </tr>
           </table>
@@ -88,7 +88,7 @@
               v-model="loan"
               label="€"
               label-width=".15rem"
-              :placeholder="$t('message.global.qingshuru')"
+              :placeholder="$t('message.global.PLEASE_ENTER')"
               type="Number"
             />
           </van-cell-group>
@@ -99,23 +99,23 @@
               @input="Oninput"
               label="€"
               label-width=".15rem"
-              :placeholder="$t('message.global.qingshuru')"
+              :placeholder="$t('message.global.PLEASE_ENTER')"
               type="Number"
             />
           </van-cell-group>
-          <p class="repay_p">{{ $t("message.global.loaninterest") }}</p>
+          <p class="repay_p">{{ $t("message.global.LOAN_INTEREST_RATE") }}</p>
           <van-cell-group>
             <van-field
               label="%"
               label-width=".2rem"
               v-model="interesrate"
-              :placeholder="$t('message.global.qingshuru')"
+              :placeholder="$t('message.global.PLEASE_ENTER')"
               type="Number"
             />
           </van-cell-group>
           <p class="repay_p">{{ $t("message.global.particular") }}</p>
           <!-- <van-cell-group>
-                <van-field v-model="year"  :placeholder='$t("message.global.qingshuru")' type="Number"/>
+                <van-field v-model="year"  :placeholder='$t("message.global.PLEASE_ENTER")' type="Number"/>
           </van-cell-group>-->
           <el-select v-model="year">
             <el-option
@@ -132,7 +132,7 @@
           </van-button>
         </div>
         <p class="monthly" v-if="mothey">
-          {{ $t("message.global.highest") }}
+          {{ $t("message.global.MAXIMUM_MONTHLY_REPAYMENT_AMOUNT") }}
           <span class="money">{{ mothey }}€</span>
         </p>
         <!-- echarts -->
@@ -145,7 +145,7 @@
             </p>
             <p>
               <span class="blue"></span>
-              {{ $t("message.global.Interestamount") }} € {{ L }}
+              {{ $t("message.global.INTEREST_AMOUNT") }} € {{ L }}
             </p>
             <p>
               <span class="orgin"></span>

@@ -1,9 +1,11 @@
 import { Loader } from "@googlemaps/js-api-loader";
 
-export function gmapApiLoader (apiKey, language) {
+const gmapApiKey = process.env['33IMMO_GOOGLE_MAPS_API_KEY'];
+
+export function gmapApiLoader (language) {
   if (window.google?.maps?.places) return;
   const loader = new Loader({
-    apiKey,
+    apiKey: gmapApiKey,
     language,
     libraries: ["places"],
     authReferrerPolicy: "origin",

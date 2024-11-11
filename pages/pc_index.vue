@@ -54,7 +54,7 @@
         <div class="secondTit">
           <span class="secondL">{{ $t("message.global.Newbuilding") }}</span>
           <span class="secondR" @click="routerChange('/newList', false)">{{
-            $t("message.global.examine")
+            $t("message.global.SEE_ALL_PROGRAMES")
           }}</span>
         </div>
         <p class="characterP">{{ $t("message.global.precedence") }}</p>
@@ -62,7 +62,7 @@
           <div
             class="NewLi"
             @click="routerChange('/newDetails', { zip_code: item.zip_code, name_id: item.name_id, estate_name: item.estate_name, city: item.city })"
-            v-for="(item, index) in homePageIn.newHousings"
+            v-for="(item, index) in homePageInfo.newHousings"
             :key="index"
             :class="[index == 3 ? 'marginRigh' : '']"
           >
@@ -84,7 +84,7 @@
               }}</span>
             </div>
             <div class="newPrice">
-              {{ item.availablePropertiesMinPrice }} {{ $t("message.global.rise") }}
+              {{ item.availablePropertiesMinPrice }} {{ $t("message.global.euro") }}
             </div>
           </div>
         </div>
@@ -100,7 +100,7 @@
         <div class="newHoList">
           <div
             class="NewLi"
-            v-for="(items, index) in homePageIn.homesList"
+            v-for="(items, index) in homePageInfo.homesList"
             :key="index"
             :class="[index == 3 ? 'marginRigh' : '']"
           >
@@ -142,7 +142,7 @@
           <div
             @click="routerChange('/renting', items.id)"
             class="NewLi"
-            v-for="(items, index) in homePageIn.rentings"
+            v-for="(items, index) in homePageInfo.rentings"
             :key="index"
             :class="[index == 3 ? 'marginRigh' : '']"
           >
@@ -175,14 +175,14 @@
           <span class="secondR" @click="routerChange('/broker', true)">{{ $t("message.global.economics") }}</span>
         </div>
         <div class="titleLis">
-          <span class="ListSty">{{ $t("message.global.counselor") }}</span>
+          <span class="ListSty">{{ $t("message.global.CONSULTANT") }}</span>
           <span class="ListSty">{{ $t("message.global.ZeroFee") }}</span>
           <span class="ListSty">{{ $t("message.global.bilingualism") }}</span>
         </div>
         <div
           class="agencyLiCar"
           :class="[index == 2 ? 'marginR0' : '']"
-          v-for="(item, index) in homePageIn.brokerList"
+          v-for="(item, index) in homePageInfo.brokerList"
           :key="index"
         >
           <div class="leftCarA">
@@ -226,7 +226,7 @@
       </div>
     </el-dialog>
     <el-dialog :title="$t('message.PAGE_INDEX.SELECT_CITY')" :visible.sync="selectCityDialoVis" center width="75%">
-      <leaflet-map :points="newProgramePoints" :visible="selectCityDialoVis" :marker-grouped="true" @pointSelect="programeCityPointSelectHandler" />
+      <leaflet-map :mobile="false" :points="newProgramePoints" :visible="selectCityDialoVis" :marker-grouped="true" @pointSelect="programeCityPointSelectHandler" />
     </el-dialog>
   </div>
 </template>
@@ -250,8 +250,7 @@ import pcss from "~/assets/image/logo_promoteur.png";
 import TrendChart  from '../components/PcIndex/trendChart.vue';
 import LeafletMap from '../components/leafletMap.vue';
 import { parseRawCsv } from '../utils/csv';
-
-const gmapApiKey = process.env['33IMMO_GOOGLE_MAPS_API_KEY'];
+import { CsvUrlConfig, transformNewProgramPoints } from '../common/config';
 
 const SearchMode = { NewPrograme: 'NewPrograme', SecondHand: 'SecondHand' };
 
@@ -291,7 +290,7 @@ export default {
       systemInfo: {},
       searchMode: SearchMode.NewPrograme, // 标记 选择租房买房
       searchVal: "", // 搜索绑定
-      homePageIn: [], // 主页数据,
+      homePageInfo: [], // 主页数据,
       gmapAutocompleteService: null,
     };
   },
@@ -314,7 +313,7 @@ export default {
   mounted () {
     this.queryIndexPageInfo(); // 获取主页信息
     let lang = this._i18n.locale;
-    gmapApiLoader(gmapApiKey, lang)
+    gmapApiLoader(lang)
       ?.then(() => this.gmapAutocompleteService = new window.google.maps.places.AutocompleteService());
   },
   methods: {
@@ -322,7 +321,7 @@ export default {
       if (this.searchMode === SearchMode.NewPrograme) {
         if (this.newProgramePoints) return this.selectCityDialoVis = true;
         this.loadingPointInfo = true;
-        fetch('https://raw.githubusercontent.com/mingzemicco/33immo-config/refs/heads/main/program-city-distribution.csv')
+        fetch(CsvUrlConfig.ProgramCityDistribution)
           .then(res => res.text())
           .then(txt => parseRawCsv(txt, ','))
           .then(parsed => {
@@ -348,7 +347,7 @@ export default {
     async queryIndexPageInfo() {
       const res = await this.$api.article.getHomePageInfo();
       const getHomePageInfo = res.data;
-      this.homePageIn = getHomePageInfo;
+      this.homePageInfo = getHomePageInfo;
       if (getHomePageInfo.system)
         this.systemInfo = getHomePageInfo.system;
     },
@@ -384,19 +383,7 @@ export default {
   },
 };
 
-function transformNewProgramPoints (parsed) {
-  const { header, rows } = parsed ?? {};
-  if (!header || !rows) return;
-  return rows.map(({ city, count, latitude, longitude, region_id }) => {
-    return {
-      lat: latitude,
-      lng: longitude,
-      city,
-      title: count?.toString() ?? '',
-      groupCondition: region_id
-    };
-  });
-}
+
 </script>
 
 <style lang="scss" scoped>

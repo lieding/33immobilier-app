@@ -245,7 +245,7 @@
           </div>
           <div style="margin-bottom:10px">
             <el-input
-              :placeholder="$t('message.global.YourMessage')"
+              :placeholder="$t('message.global.EMAIL_ADDRESS')"
               prefix-icon="el-icon-message"
               v-model="input3"
             ></el-input>
@@ -373,7 +373,7 @@
           </p>
           <!-- unit -->
           <p>
-            {{ $t("message.global.Inventor") }}：
+            {{ $t("message.global.LOCATION") }}：
             <span>{{ getPostListingData.privince }}</span>
           </p>
           <p>

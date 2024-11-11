@@ -3,7 +3,7 @@
     <!-- <headers :class="{colors:flag}"></headers> -->
     <div>
       <div class="loans">
-        <div class="loansTop">{{ $t("message.global.calculation") }}</div>
+        <div class="loansTop">{{ $t("message.global.LOAN_CAPABILITY_CALCULATION") }}</div>
         <div class="calculate">
           <div class="counter">
             <p>{{ $t("message.global.onnetincome") }}</p>
@@ -26,8 +26,8 @@
               <i slot="suffix" class="el-input__icon">€</i>
             </el-input>
             <p>
-              {{ $t("message.global.liability") }}
-              {{ $t("message.global.Canfill") }}
+              {{ $t("message.global.DEBT_RATIO") }}
+              {{ $t("message.global.DEBT_BURDEN") }}
             </p>
             <el-input
               @input="gbs"
@@ -44,16 +44,16 @@
           </div>
           <div class="rightSs" v-if="reckenList.length">
             <span style="font-size:20px;color:#000;font-weight:600;">{{
-              $t("message.global.highest")
+              $t("message.global.MAXIMUM_MONTHLY_REPAYMENT_AMOUNT")
             }}</span>
             <span style="font-size:20px;color:#FF5E5E;">{{ prise1 }}€</span>
             <div class="botS">
-              <p>{{ $t("message.global.Youcanloan") }}</p>
+              <p>{{ $t("message.global.LOAN_AMOUNT_CALCULATION") }}</p>
               <div class="tabs">
                 <table>
                   <tr>
-                    <th>{{ $t("message.global.loanPeriod") }}</th>
-                    <th>{{ $t("message.global.annual") }}</th>
+                    <th>{{ $t("message.global.LOAN_PERIOD") }}</th>
+                    <th>{{ $t("message.global.ANNUAL_INTEREST_RATE") }}</th>
                     <th>{{ $t("message.global.capacity") }}</th>
                   </tr>
                 </table>
@@ -96,7 +96,7 @@
             </el-input>
             <p>{{ $t("message.global.particular") }}</p>
             <!-- <el-input class="" type="Number" v-model="listS.year" placeholder="">
-                                 <i slot="suffix" class="el-input__icon">{{$t("message.global.annual")}}</i>
+                                 <i slot="suffix" class="el-input__icon">{{$t("message.global.ANNUAL_INTEREST_RATE")}}</i>
             </el-input>-->
             <el-select
               v-model="listS.year"
@@ -110,7 +110,7 @@
                 :value="item"
               ></el-option>
             </el-select>
-            <p>{{ $t("message.global.loaninterest") }}</p>
+            <p>{{ $t("message.global.LOAN_INTEREST_RATE") }}</p>
             <el-input
               class="inputs"
               type="Number"
@@ -147,7 +147,7 @@
                 <span
                   style="width:16px;height:16px;display:inline-block;background-color:#1B9AFB;border-radius:8px;vertical-align: middle;"
                 ></span>
-                {{ $t("message.global.Interestamount") }} :
+                {{ $t("message.global.INTEREST_AMOUNT") }} :
                 <span style="color:#FF5E5E"
                   >{{ fmoney(repayALoanList.L, 0) }} €</span
                 >

@@ -1,6 +1,6 @@
 <template>
   <client-only>
-    <div id="leaflet-map"></div>
+    <div id="leaflet-map" :class="{ mobile: mobile, pc: !mobile }"></div>
   </client-only>
 </template>
 
@@ -37,6 +37,10 @@ export default {
     markerGrouped: {
       type: Boolean,
       default: false
+    },
+    mobile: {
+      required: true,
+      type: Boolean,
     }
   },
   watch: {
@@ -114,9 +118,18 @@ function initMap (wrapperId) {
 </script>
 
 <style lang="css" scoped>
-#leaflet-map {
+.pc {
   width: 100%;
   max-height: 75vh;
   height: 600px;
+}
+.mobile {
+  width: 100%;
+  height: 100%;
+}
+</style>
+<style lang="css">
+.mobile .leaflet-control-container {
+  font-size: 12px;
 }
 </style>

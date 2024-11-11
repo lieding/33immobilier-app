@@ -3,7 +3,7 @@
     <client-only>
       <Header :title="$t('message.global.Platform')" />
       <van-search
-        :placeholder="$t('message.global.qingshuru')"
+        :placeholder="$t('message.global.PLEASE_ENTER')"
         v-model="value"
         @change="onVal"
       />

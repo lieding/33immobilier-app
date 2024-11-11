@@ -80,7 +80,7 @@
             {{ listList.maxHall }}
           </p>
 
-          <!-- <p v-if="listList.expressing">{{$t("message.global.annual")}}：{{listList.year}}</p> -->
+          <!-- <p v-if="listList.expressing">{{$t("message.global.ANNUAL_INTEREST_RATE")}}：{{listList.year}}</p> -->
           <p v-if="listList.expressing">
             {{ $t("message.global.completionDate") }} ：{{
               listList.expressing

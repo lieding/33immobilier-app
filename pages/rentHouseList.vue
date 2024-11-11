@@ -32,7 +32,7 @@
                 {{
                   qbqy
                     ? $t("message.global.allquyu")
-                    : $t("message.global.shouqi")
+                    : $t("message.global.SEE_LESS")
                 }}
               </span>
             </div>

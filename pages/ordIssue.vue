@@ -32,7 +32,7 @@
               <div>
                 <p>{{$t("message.global.BedroomArea")}}</p>
                 <el-input
-                  :placeholder="$t('message.global.qingshuru')"
+                  :placeholder="$t('message.global.PLEASE_ENTER')"
                   v-model="item.roomArea"
                   type="text"
                   oninput="value=value.replace(/[^\d]/g,'')"
@@ -79,12 +79,12 @@
               </div>
               <div>
                 <p>{{$t("message.global.constellation")}}</p>
-                <el-input :placeholder="$t('message.global.qingshuru')" v-model="item.zodiac"></el-input>
+                <el-input :placeholder="$t('message.global.PLEASE_ENTER')" v-model="item.zodiac"></el-input>
               </div>
               <div>
                 <p>{{$t("message.global.price")}}</p>
                 <el-input
-                  :placeholder="$t('message.global.qingshuru')"
+                  :placeholder="$t('message.global.PLEASE_ENTER')"
                   v-model="item.roomPrice"
                   oninput="value=value.replace(/[^\d]/g,'')"
                 >
@@ -150,7 +150,7 @@
           <p v-if="type=='second_hand'">{{$t("message.global.tradingValue")}}</p>
           <p v-if="type=='租房'">{{$t("message.global.RentalPrices")}}</p>
           <el-input
-            :placeholder="$t('message.global.qingshuru')"
+            :placeholder="$t('message.global.PLEASE_ENTER')"
             v-model="total"
             oninput="value=value.replace(/[^\d]/g,'')"
           >
@@ -161,12 +161,12 @@
           <p>{{$t("message.global.Describing")}}</p>
           <el-input
             type="textarea"
-            :placeholder="$t('message.global.qingshuru')"
+            :placeholder="$t('message.global.PLEASE_ENTER')"
             v-model="introduceCn"
             maxlength="30"
           ></el-input>
           <p>{{$t("message.global.VRlink")}}</p>
-          <el-input :placeholder="$t('message.global.qingshuru')" v-model="vrAddress"></el-input>
+          <el-input :placeholder="$t('message.global.PLEASE_ENTER')" v-model="vrAddress"></el-input>
         </div>
         <div class="room">
           <p>{{$t("message.global.HousingPictures")}}</p>
@@ -242,7 +242,7 @@
               <div>
                 <p>{{$t("message.global.drawingRoom")}}{{$t("message.global.proportion")}}</p>
                 <el-input
-                  :placeholder="$t('message.global.qingshuru')"
+                  :placeholder="$t('message.global.PLEASE_ENTER')"
                   v-model="item.area"
                   oninput="value=value.replace(/[^\d]/g,'')"
                 >
@@ -288,7 +288,7 @@
               <div>
                 <p>{{$t("message.global.BedroomArea")}}</p>
                 <el-input
-                  :placeholder="$t('message.global.qingshuru')"
+                  :placeholder="$t('message.global.PLEASE_ENTER')"
                   v-model="item.area"
                   oninput="value=value.replace(/[^\d]/g,'')"
                 >
@@ -334,7 +334,7 @@
               <div>
                 <p>{{$t("message.global.kitchen")}}{{$t("message.global.proportion")}}</p>
                 <el-input
-                  :placeholder="$t('message.global.qingshuru')"
+                  :placeholder="$t('message.global.PLEASE_ENTER')"
                   v-model="item.area"
                   oninput="value=value.replace(/[^\d]/g,'')"
                 >
@@ -383,7 +383,7 @@
               <div>
                 <p>{{$t("message.global.showerRoom")}}{{$t("message.global.proportion")}}</p>
                 <el-input
-                  :placeholder="$t('message.global.qingshuru')"
+                  :placeholder="$t('message.global.PLEASE_ENTER')"
                   v-model="item.area"
                   oninput="value=value.replace(/[^\d]/g,'')"
                 >
@@ -450,7 +450,7 @@
               </div>
               <div>
                 <el-input
-                  :placeholder="$t('message.global.qingshuru')"
+                  :placeholder="$t('message.global.PLEASE_ENTER')"
                   v-model="item.money"
                   oninput="value=value.replace(/[^\d]/g,'')"
                 >
@@ -477,7 +477,7 @@
               </div>
               <div>
                 <el-input
-                  :placeholder="$t('message.global.qingshuru')"
+                  :placeholder="$t('message.global.PLEASE_ENTER')"
                   v-model="item.money"
                   oninput="value=value.replace(/[^\d]/g,'')"
                 >
@@ -631,26 +631,26 @@
         <div>
           <p>{{$t("message.global.contactName")}}</p>
           <el-input
-            :placeholder="$t('message.global.qingshuru')"
+            :placeholder="$t('message.global.PLEASE_ENTER')"
             prefix-icon="el-icon-search"
             v-model="contactName"
           ></el-input>
           <p>{{$t("message.global.contactEmil")}}</p>
           <el-input
-            :placeholder="$t('message.global.qingshuru')"
+            :placeholder="$t('message.global.PLEASE_ENTER')"
             prefix-icon="el-icon-search"
             v-model="contactEmail"
           ></el-input>
           <p>{{$t("message.global.contactPhone")}}</p>
           <el-input
-            :placeholder="$t('message.global.qingshuru')"
+            :placeholder="$t('message.global.PLEASE_ENTER')"
             oninput="value=value.replace(/[^\d]/g,'')"
             prefix-icon="el-icon-search"
             v-model="contactPhone"
           ></el-input>
           <p>{{$t("message.global.contactWX")}}</p>
           <el-input
-            :placeholder="$t('message.global.qingshuru')"
+            :placeholder="$t('message.global.PLEASE_ENTER')"
             oninput="value=value.replace(/[\u4e00-\u9fa5]/ig,'')"
             prefix-icon="el-icon-search"
             v-model="contactWX"
