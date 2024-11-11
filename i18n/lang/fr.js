@@ -1,4 +1,4 @@
-export default {
+ module.exports = {
   message: {
     hello: "yoyo",
     global: {

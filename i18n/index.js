@@ -1,7 +1,7 @@
-import fr from "./lang/fr";
-import zh from "./lang/zh";
+const fr = require("./lang/fr");
+const zh = require("./lang/zh");
 
-export default {
+module.exports = {
   locales: [
     {
       code: "fr",
