@@ -207,9 +207,9 @@
 
 <script>
 import rem from "~/common/rem.js";
-import Header from "~/components/mIndex/head.vue";
-import Footer from "~/components/mIndex/footer.vue";
-import List from "~/components/mIndex/list.vue";
+import Header from "~/components/Mindex/head.vue";
+import Footer from "~/components/Mindex/footer.vue";
+import List from "~/components/Mindex/list.vue";
 import JumpMap from '~/components/jumpMap.vue';
 import { TypologyOptionConfig } from '../common/config';
 import Calculator from '../components/Mindex/calculator.vue';

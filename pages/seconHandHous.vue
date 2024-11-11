@@ -433,9 +433,9 @@
 </template>
 
 <script>
-import headers from "~/components/pcIndex/header.vue";
-import foots from "~/components/pcIndex/foot.vue";
-import Calculator from "~/components/pcIndex/calculator.vue";
+import headers from "~/components/PcIndex/header.vue";
+import foots from "~/components/PcIndex/foot.vue";
+import Calculator from "~/components/PcIndex/calculator.vue";
 
 import phone from "~/assets/image/phone.png";
 // import proVip from '../assets/image/proVip.png'

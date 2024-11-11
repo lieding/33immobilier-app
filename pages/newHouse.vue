@@ -199,8 +199,8 @@
 
 <script>
 import rem from "~/common/rem.js";
-import Header from "~/components/mIndex/head.vue";
-import Footer from "~/components/mIndex/footer.vue";
+import Header from "~/components/Mindex/head.vue";
+import Footer from "~/components/Mindex/footer.vue";
 import RangeSlider from '../components/Mindex/rangeSlider.vue';
 import { fmoney } from '../utils';
 import { SearchMode } from '../common/config';

@@ -163,8 +163,8 @@
 
 <script>
 import rem from "~/common/rem.js";
-import Header from "~/components/mIndex/header.vue";
-import Footer from "~/components/mIndex/footer.vue";
+import Header from "~/components/Mindex/header.vue";
+import Footer from "~/components/Mindex/footer.vue";
 import { gmapApiLoader } from '../common/gmapApiLoader';
 import { SearchMode } from '../common/config';
 

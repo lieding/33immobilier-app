@@ -10,9 +10,9 @@
   </div>
 </template>
 <script>
-import Header from "~/components/pcIndex/header.vue";
-import Footer from "~/components/pcIndex/foot.vue";
-import Calculator from "~/components/pcIndex/calculator.vue";
+import Header from "~/components/PcIndex/header.vue";
+import Footer from "~/components/PcIndex/foot.vue";
+import Calculator from "~/components/PcIndex/calculator.vue";
 
 export default {
   middleware: "responsive",

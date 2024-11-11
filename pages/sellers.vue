@@ -613,8 +613,8 @@
 </template>
 
 <script>
-import headers from "~/components/pcIndex/header.vue";
-import foots from "~/components/pcIndex/foot.vue";
+import headers from "~/components/PcIndex/header.vue";
+import foots from "~/components/PcIndex/foot.vue";
 import addLis from "~/assets/image/addLis.png";
 import airG from "~/assets/image/picSzg/airG.png";
 import airH from "~/assets/image/picSzg/airH.png";

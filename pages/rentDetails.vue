@@ -210,7 +210,7 @@
       <span class="consultants">{{$t("message.global.locationwz")}}</span>
       <span class="province" >{{ data.province }} /{{ data.bigProvince }}</span>
       <div class="map" v-if="mapIframeSrc">
-        <iframe :src=mapIframeSrc frameborder="0" style="100%"></iframe>
+        <iframe :src=mapIframeSrc frameborder="0"></iframe>
       </div>
     </div>
     <hr class="hr"/>
@@ -248,18 +248,18 @@
 </template>
 <script>
 import rem from "~/common/rem.js";
-import List from '../components/mIndex/list.vue'
-import Header from '../components/mIndex/head.vue'
-import Footer from '../components/mIndex/footer.vue';
+import List from '../components/Mindex/list.vue'
+import Header from '../components/Mindex/head.vue'
+import Footer from '../components/Mindex/footer.vue';
 import { BASE_API } from '../api'
 
 export default {
   name: '',
   middleware: "responsive",
   components:{
-  Header,
-  List,
-  Footer
+    Header,
+    List,
+    Footer
   },
   watch: {
       '$route' (to, from) {

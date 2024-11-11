@@ -233,8 +233,8 @@
 
 <script>
 // 引入
-import foots from "~/components/pcIndex/foot.vue";
-import headers from "~/components/pcIndex/header.vue";
+import foots from "~/components/PcIndex/foot.vue";
+import headers from "~/components/PcIndex/header.vue";
 import { gmapApiLoader } from '../common/gmapApiLoader';
 // 引入图片
 import searchBtPn from "~/assets/image/searchBut.png";

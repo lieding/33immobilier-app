@@ -1,10 +1,10 @@
 
-const Rate = process.env['33IMMO_PROMOTE_RATE'];
-const SevenRate = process.env['33IMMO_PROMOTE_SEVEN_RATE'];
-const TenRate = process.env['33IMMO_PROMOTE_TEN_RATE'];
-const FiftenRate = process.env['33IMMO_PROMOTE_FIFTEN_RATE'];
-const TwentyRate = process.env['33IMMO_PROMOTE_TWENTY_RATE'];
-const TwentyfiveRate = process.env['33IMMO_PROMOTE_TWENTYFIVE_RATE'];
+const Rate = process.env['IMMO_PROMOTE_RATE'];
+const SevenRate = process.env['IMMO_PROMOTE_SEVEN_RATE'];
+const TenRate = process.env['IMMO_PROMOTE_TEN_RATE'];
+const FiftenRate = process.env['IMMO_PROMOTE_FIFTEN_RATE'];
+const TwentyRate = process.env['IMMO_PROMOTE_TWENTY_RATE'];
+const TwentyfiveRate = process.env['IMMO_PROMOTE_TWENTYFIVE_RATE'];
 
 export function loadRate () {
   return [Rate, SevenRate, TenRate, FiftenRate, TwentyRate, TwentyfiveRate].map(it => Number(it) ?? 0);

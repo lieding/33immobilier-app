@@ -242,8 +242,8 @@
 </template>
 
 <script>
-import headers from "~/components/pcIndex/header.vue";
-import foots from "~/components/pcIndex/foot.vue";
+import headers from "~/components/PcIndex/header.vue";
+import foots from "~/components/PcIndex/foot.vue";
 
 import pulldow from "~/assets/image/pullDow.png";
 import proVip from "~/assets/image/proVip.png";

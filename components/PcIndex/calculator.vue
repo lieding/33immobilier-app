@@ -152,8 +152,8 @@
 </template>
 
 <script>
-import headers from "~/components/pcIndex/header.vue";
-import foots from "~/components/pcIndex/foot.vue";
+import headers from "~/components/PcIndex/header.vue";
+import foots from "~/components/PcIndex/foot.vue";
 import { fmoney } from '../../utils';
 import { loadRate, creditInterface, loanInterface,  } from '../../utils/calculator';
 

@@ -186,8 +186,8 @@
 </template>
 
 <script>
-import headers from "~/components/pcIndex/header.vue";
-import foots from "~/components/pcIndex/foot.vue";
+import headers from "~/components/PcIndex/header.vue";
+import foots from "~/components/PcIndex/foot.vue";
 
 import proVip from "~/assets/image/proVip.png";
 import visitCard from "~/assets/image/visitCard.png";

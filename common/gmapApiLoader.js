@@ -1,6 +1,6 @@
 import { Loader } from "@googlemaps/js-api-loader";
 
-const gmapApiKey = process.env['33IMMO_GOOGLE_MAPS_API_KEY'];
+const gmapApiKey = process.env['IMMO_GOOGLE_MAPS_API_KEY'];
 
 export function gmapApiLoader (language) {
   if (window.google?.maps?.places) return;

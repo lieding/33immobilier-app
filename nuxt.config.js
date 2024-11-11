@@ -4,10 +4,10 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const EnvConfig = process.env;
-const Env33IMMO = {};
+const EnvIMMO = {};
 for (const [k, v] of Object.entries(EnvConfig)) {
-  if (k.startsWith('33IMMO')) {
-    Env33IMMO[k] = v;
+  if (k.startsWith('IMMO')) {
+    EnvIMMO[k] = v;
   }
 }
 
@@ -51,7 +51,7 @@ export default {
       // { src: "https://unpkg.com/blueimp-gallery@2.27.0/js/blueimp-gallery.js" }
     ]
   },
-  env: Env33IMMO,
+  env: EnvIMMO,
   /*
    ** Customize the progress-bar color
    */
