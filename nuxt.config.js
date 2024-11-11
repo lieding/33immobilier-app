@@ -1,7 +1,7 @@
 const I18N = require("./i18n");
-//const dotenv = require('dotenv');
+const dotenv = require('dotenv');
 
-//dotenv.config();
+dotenv.config();
 
 const EnvConfig = process.env;
 const EnvIMMO = {};
