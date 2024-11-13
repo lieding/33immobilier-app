@@ -32,7 +32,7 @@
             <el-slider v-model="value" range :max="maxPrice" :min="minPrice" @change="onCost"></el-slider>
             <van-button type="info" @click="Onprice" class="btn_i">
               {{
-              $t("message.global.sure")
+              $t("message.global.CONFIRM")
               }}
             </van-button>
           </van-dropdown-item>

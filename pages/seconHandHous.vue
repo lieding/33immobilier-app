@@ -96,7 +96,7 @@
               <!-- <div></div> -->
               <div class="houseListTop">{{ item.room }}</div>
               <div class="houseProportion">
-                {{ $t("message.global.proportion") }}：
+                {{ $t("message.global.SURFACE") }}：
                 <span>{{ item.area }}</span>
               </div>
               <div class="houseOrientation">
@@ -366,7 +366,7 @@
             </span>
           </p>
           <p>
-            {{ $t("message.global.proportion") }}：
+            {{ $t("message.global.SURFACE") }}：
             <span>
               {{ getPostListingData.acreage }}{{ $t("message.global.square") }}
             </span>

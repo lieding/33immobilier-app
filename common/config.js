@@ -1,3 +1,5 @@
+import { fmoney } from '../utils';
+
 export const TypologyOptionConfig = [
   { incluedKey: 'studio', I18NKey: 'TYPOLOGY_OPTION_LABEL_STUDIO' },
   { incluedKey: 't1', I18NKey: 'TYPOLOGY_OPTION_LABEL_T1' },
@@ -34,6 +36,10 @@ export const CsvUrlConfig = {
   ProgramCityDistribution: 'https://raw.githubusercontent.com/mingzemicco/33immo-config/refs/heads/main/program-city-distribution.csv',
 }
 
+export const JsonConfig = {
+  NationCodeFlag: 'https://gist.githubusercontent.com/devhammed/78cfbee0c36dfdaa4fce7e79c0d39208/raw/494967e8ae71c9fed70650b35dd96e9273fa3344/countries.json',
+}
+
 export function transformNewProgramPoints (parsed) {
   const { header, rows } = parsed ?? {};
   if (!header || !rows) return;
@@ -47,3 +53,33 @@ export function transformNewProgramPoints (parsed) {
     };
   });
 }
+
+export function extractProgramProperty (property) {
+
+  const { typology, surface, number, prices } = property;
+  const price = prices?.[0]?.price;
+  return [
+    {
+      label: this.$t('message.NEW_LIST.ALL_TYPOLOGY_LABEL'),
+      text: this.TypologyI18NConfig?.find(itt => typology?.toLowerCase().includes(itt.incluedKey))?.label ?? ''
+    },
+    {
+      label: this.$t('message.global.SURFACE'),
+      text: surface ? surface + 'm²' : ''
+    },
+    {
+      label: this.$t('message.global.chamberNum'),
+      text: number ?? ''
+    },
+    {
+      label: this.$t('message.global.price'),
+      text: price ? fmoney(price, 0) + '€' : '',
+    }
+  ]
+}
+
+export const PostApplicationMode = {
+  PROGRAME_PROPERTY: 'PROGRAME_PROPERTY',
+  SECOND_HAND: 'SECOND_HAND',
+  JOIN: 'JOIN'
+};

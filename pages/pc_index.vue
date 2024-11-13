@@ -53,9 +53,6 @@
       <div class="newHoB">
         <div class="secondTit">
           <span class="secondL">{{ $t("message.global.Newbuilding") }}</span>
-          <span class="secondR" @click="routerChange('/newList', false)">{{
-            $t("message.global.SEE_ALL_PROGRAMES")
-          }}</span>
         </div>
         <p class="characterP">{{ $t("message.global.precedence") }}</p>
         <div class="newHoList">
@@ -168,74 +165,35 @@
         </div>
       </div>
     </div>
-    <div class="agency">
-      <div class="agencylis centerSs">
-        <div class="agencyLisTit">
-          <span class="secondL">{{ $t("message.global.property") }}</span>
-          <span class="secondR" @click="routerChange('/broker', true)">{{ $t("message.global.economics") }}</span>
-        </div>
-        <div class="titleLis">
-          <span class="ListSty">{{ $t("message.global.CONSULTANT") }}</span>
-          <span class="ListSty">{{ $t("message.global.ZeroFee") }}</span>
-          <span class="ListSty">{{ $t("message.global.bilingualism") }}</span>
-        </div>
-        <div
-          class="agencyLiCar"
-          :class="[index == 2 ? 'marginR0' : '']"
-          v-for="(item, index) in homePageInfo.brokerList"
-          :key="index"
-        >
-          <div class="leftCarA">
-            <img :src="item.brokerAvatar" alt />
-            <img class="proAgent" src="~/assets/image/proAgent.png" alt />
-          </div>
-          <div class="rightCarA">
-            <p class="rightName">{{ item.brokerName }}</p>
-            <p class="attestation">{{ item.brokerJob }}&nbsp;</p>
-            <p class="NumberP">{{ item.brokerTelPhone }}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="joinMe">
+    <div class="join-me">
       <div class="centerSs">
-        <img class="Joinimg" :src="img.pcBroker" alt />
-        <span class="JoinTex">{{ $t("message.global.middleman") }}</span>
-        <span class="JoinBut" @click="openContactDialog">
+        <img class="join-img" :src="img.pcBroker" alt />
+        <span class="join-text">{{ $t("message.global.JOIN_AND_BECOME_AGENT") }}</span>
+        <span class="join-but" @click="openContactDialog">
           <img :src="img.pcPerson" alt />
           {{ $t("message.global.join") }}
         </span>
       </div>
     </div>
-    <!-- 房价走势 -->
     <client-only>
+      <!-- 房价走势 -->
       <trend-chart />
+      <el-dialog :title="$t('message.PAGE_INDEX.SELECT_CITY')" :visible.sync="selectCityDialoVis" center width="75%">
+        <leaflet-map :mobile="false" :points="newProgramePoints" :visible="selectCityDialoVis" :marker-grouped="true" @pointSelect="programeCityPointSelectHandler" />
+      </el-dialog>
+      <contact-dialog
+        :visible="contactDialogVis"
+        :titles="[]"
+        :confirm-btn-loading="postjoinApplicationLoading"
+        @close="contactDialogVis = false"
+        @confirm="contactDialogConfirmHandler"
+      />
     </client-only>
     <foots></foots>
-    <el-dialog
-      :title="$t('message.global.join')"
-      :visible.sync="contactDialogVis"
-      width="40%"
-      center
-    >
-      <div>
-        <!-- <img :src="systemInfo.qrCode" alt=""> contactPhone  -->
-        <span style="font-size:20px;color:#000;">
-          {{ $t("message.global.contactPhone") }}:{{ systemInfo.phone }}
-        </span>
-      </div>
-    </el-dialog>
-    <el-dialog :title="$t('message.PAGE_INDEX.SELECT_CITY')" :visible.sync="selectCityDialoVis" center width="75%">
-      <leaflet-map :mobile="false" :points="newProgramePoints" :visible="selectCityDialoVis" :marker-grouped="true" @pointSelect="programeCityPointSelectHandler" />
-    </el-dialog>
   </div>
 </template>
 
 <script>
-// 引入
-import foots from "~/components/PcIndex/foot.vue";
-import headers from "~/components/PcIndex/header.vue";
-import { gmapApiLoader } from '../common/gmapApiLoader';
 // 引入图片
 import searchBtPn from "~/assets/image/searchBut.png";
 import logoT from "~/assets/image/logoT.png";
@@ -246,11 +204,15 @@ import leftCard from "~/assets/image/left.png";
 import pcBroker from "~/assets/image/pcBroker.png";
 import pcPerson from "~/assets/image/pcPerson.png";
 import pcss from "~/assets/image/logo_promoteur.png";
-
+// 引入
+import foots from "~/components/PcIndex/foot.vue";
+import headers from "~/components/PcIndex/header.vue";
+import { gmapApiLoader } from '../common/gmapApiLoader';
 import TrendChart  from '../components/PcIndex/trendChart.vue';
 import LeafletMap from '../components/leafletMap.vue';
 import { parseRawCsv } from '../utils/csv';
-import { CsvUrlConfig, transformNewProgramPoints } from '../common/config';
+import { CsvUrlConfig, transformNewProgramPoints, PostApplicationMode } from '../common/config';
+import ContactDialog from '../components/PcIndex/ContactDialog.vue';
 
 const SearchMode = { NewPrograme: 'NewPrograme', SecondHand: 'SecondHand' };
 
@@ -261,6 +223,7 @@ export default {
     headers,
     TrendChart,
     LeafletMap,
+    ContactDialog,
   },
   middleware: "responsive",
   head() {
@@ -284,13 +247,13 @@ export default {
     return {
       contactDialogVis: false,
       selectCityDialoVis: false,
+      postjoinApplicationLoading: false,
       loadingPointInfo: false,
       newProgramePoints: null,
       programInfoByCity: null,
-      systemInfo: {},
       searchMode: SearchMode.NewPrograme, // 标记 选择租房买房
       searchVal: "", // 搜索绑定
-      homePageInfo: [], // 主页数据,
+      homePageInfo: {}, // 主页数据,
       gmapAutocompleteService: null,
     };
   },
@@ -311,13 +274,17 @@ export default {
     this.backgroundImage = `url("${backgroundI}")`;
   },
   mounted () {
-    this.queryIndexPageInfo(); // 获取主页信息
-    let lang = this._i18n.locale;
-    gmapApiLoader(lang)
-      ?.then(() => this.gmapAutocompleteService = new window.google.maps.places.AutocompleteService());
+    if (process.client) {
+      this.queryIndexPageInfo(); // 获取主页信息
+      let lang = this._i18n.locale;
+      gmapApiLoader(lang)
+        ?.then(() => this.gmapAutocompleteService = new window.google.maps.places.AutocompleteService());
+    }
   },
   methods: {
     searchBtnHandler () {
+      gmapApiLoader(lang)
+        ?.then(() => this.gmapAutocompleteService = new window.google.maps.places.AutocompleteService());
       if (this.searchMode === SearchMode.NewPrograme) {
         if (this.newProgramePoints) return this.selectCityDialoVis = true;
         this.loadingPointInfo = true;
@@ -340,16 +307,25 @@ export default {
     openContactDialog() {
       this.contactDialogVis = true;
     },
+    contactDialogConfirmHandler (contact) {
+      this.postjoinApplicationLoading = true;
+      const lang = this._i18n.locale;
+      this.$api.article.postApplication({ mode: PostApplicationMode.JOIN, lang, contact })
+        .then(() => {
+          this.contactDialogVis = false;
+          this.$notify({ title: 'Success', message: this.$t('message.global.APPLICATION_POSTED_SUCCESS'), type: 'success' });
+        })
+        .catch(console.error)
+        .finally(() => this.postjoinApplicationLoading = false);
+    },
     toggleSearchMode(val) {
       if (val == this.searchMode) return;
       this.searchMode = val;
     },
     async queryIndexPageInfo() {
       const res = await this.$api.article.getHomePageInfo();
-      const getHomePageInfo = res.data;
-      this.homePageInfo = getHomePageInfo;
-      if (getHomePageInfo.system)
-        this.systemInfo = getHomePageInfo.system;
+      const homePageInfo = res.data;
+      this.homePageInfo = homePageInfo;
     },
     routerChange(smt, flag = undefined) {
       const query = typeof flag === 'object' ? flag : { flag };
@@ -382,7 +358,6 @@ export default {
     },
   },
 };
-
 
 </script>
 
@@ -428,7 +403,6 @@ export default {
       background-color: #212739;
       .el-autocomplete {
         flex: 1;
-        height: 62px;
         vertical-align: middle;
         font-size: 22px;
       }
@@ -598,118 +572,24 @@ export default {
       }
     }
   }
-  .agency {
-    margin-top: 41px;
-    background-color: #f6f8fc;
-    width: 100%;
-    height: 379px;
-    box-sizing: border-box;
-    .agencylis {
-      .agencyLisTit {
-        overflow: hidden;
-        line-height: 36px;
-        padding-top: 36px;
-        .secondL {
-          float: left;
-          font-size: 36px;
-          vertical-align: middle;
-          color: #000;
-          font-weight: 700;
-        }
-        .secondR {
-          float: right;
-          font-size: 20px;
-          color: #234cd3;
-          vertical-align: middle;
-          cursor: pointer;
-        }
-      }
-      .titleLis {
-        overflow: hidden;
-        padding-top: 18px;
-        padding-bottom: 28px;
-        .ListSty {
-          float: left;
-          color: #a3a3a3;
-          font-size: 20px;
-          margin-right: 48px;
-        }
-      }
-      .marginR0 {
-        margin-right: 0 !important;
-      }
-      .agencyLiCar {
-        background-color: #fff;
-        width: 317px;
-        height: 156px;
-        box-sizing: border-box;
-        padding: 24px 15px;
-        display: inline-block;
-        margin-right: 73px;
-        .leftCarA {
-          float: left;
-          position: relative;
-          // width: 20%;
-          img {
-            width: 103px;
-            height: 103px;
-            border-radius: 50%;
-          }
-          .proAgent {
-            position: absolute;
-            width: 35px;
-            height: 19px;
-            bottom: -7px;
-            left: 50%;
-            margin-left: -18px;
-            border-radius: 0;
-          }
-        }
-        .rightCarA {
-          float: right;
-          width: 56%;
-          height: 100%;
-          .rightName {
-            color: #000000;
-            font-size: 18px;
-          }
-          .attestation {
-            font-size: 14px;
-            color: #838383;
-            overflow: hidden;
-            display: -webkit-box; //将对象作为弹性伸缩盒子模型显示;
-            text-overflow: ellipsis; //溢出部分用省略号代替
-            -webkit-line-clamp: 2; //设置文本显示两行
-            white-space: normal;
-            -webkit-box-orient: vertical;
-          }
-          .NumberP {
-            margin-top: 4px;
-            color: #0433ff;
-            font-size: 16px;
-          }
-        }
-      }
-    }
-  }
-  .joinMe {
+  .join-me {
     background-color: #234cd3;
     height: 220px;
     width: 100%;
     padding: 35px 24px;
     box-sizing: border-box;
-    .Joinimg {
+    .join-img {
       width: 118px;
       height: 136px;
       vertical-align: middle;
     }
-    .JoinTex {
+    .join-text {
       color: #fff;
       font-size: 32px;
       vertical-align: middle;
       margin-left: 20px;
     }
-    .JoinBut {
+    .join-but {
       cursor: pointer;
       margin-top: 46px;
       float: right;
@@ -747,9 +627,13 @@ export default {
 }
 </style>
 <style lang="scss">
-.echartss {
-  .el-input--suffix .el-input__inner {
-    height: 30px;
+.city-search-wrapper {
+  .el-autocomplete {
+    .el-input {
+      input {
+        height: 60px;
+      }
+    }
   }
 }
 </style>

@@ -1,28 +1,21 @@
 <template>
   <div class="seconHandHous">
-    <headers :class="{ colors: flag }"></headers>
+    <headers class="colors"></headers>
     <div class="centerS secondBod clearfix">
       <div class="headline">
         <span>{{ $t("message.global.home") }}</span> /
-        <span>{{ $t("message.global.newdetailsXq") }}</span>
+        <span>{{ $t("message.global.PROGRAME_DETAIL") }}</span>
       </div>
       <div class="oductions">
         {{ $t("message.global.premisess") }}:
-        {{ getPostListingData.estate_name }}
-        <span
-          style="float:right;color:#B9B9B9;font-size:18px;font-weight:400;cursor: pointer;"
-          @click="handleOpen"
-        >
-          <img style="width:20px;" src="~/assets/image/wxInd.png" alt="" />
-          {{ $t("message.global.WeChat") }}
-        </span>
+        {{ programeInfo.estate_name }}
       </div>
       <div class="leftBody">
-        <!-- // 轮播图 -->
+        <!-- 轮播图 -->
         <div class="slideshow">
           <el-carousel :interval="5000" height="404px" arrow="always">
             <el-carousel-item
-              v-for="(item, i) in getPostListingData.images"
+              v-for="(item, i) in programeInfo.images"
               :key="i"
             >
               <div
@@ -35,100 +28,59 @@
         </div>
       </div>
       <div class="rightBody">
-        <div class="ContentPakeAge">
+        <div class="content-package">
           <p class="prises">
-            {{ getPostListingData.availablePropertiesMinPrice }}€ —
-            {{ getPostListingData.availablePropertiesMaxPrice }}€
+            {{ programeInfo.availablePropertiesMinPrice }}€ —
+            {{ programeInfo.availablePropertiesMaxPrice }}€
           </p>
           <p class="block">
-            <!-- <span style="background-color:#6AC078;padding:3px 8px;">PINEL减税</span> -->
             <span style="background-color:#234CD3;padding:3px 8px;">
-              {{ getPostListingData.deliveryQuarter }}
+              {{ programeInfo.deliveryQuarter }}
             </span>
             <span
               style="background-color:#BFBFBF;padding:2px 3px; float:right;"
-              v-for="(itemA, index) in getPostListingData.tags"
+              v-for="(itemA, index) in programeInfo.tags"
               :key="index"
             >{{ itemA }}</span>
           </p>
           <p class="smJf">
             {{ $t("message.global.completionDate") }}：
-            <span>{{ getPostListingData.deliveryQuarter }}</span>
+            <span>{{ programeInfo.deliveryQuarter }}</span>
           </p>
           <p class="smJf">
             {{ $t("message.global.PROPERTIES_COUNT") }}：
-            <span>{{ getPostListingData.availablePropertiesCount ?? getPostListingData.propertiesCount }}</span>
+            <span>{{ programeInfo.availablePropertiesCount ?? programeInfo.propertiesCount }}</span>
           </p>
           <p class="smJf">
             {{ $t("message.global.measures") }}：
-            <el-tooltip v-for="it in getPostListingData.laws" :key="it" placement="top-end" effect="light" :content="getTranslatedLawItem(it)">
+            <el-tooltip v-for="it in programeInfo.laws" :key="it" placement="top-end" effect="light" :content="getTranslatedLawItem(it)">
               <el-tag>{{ it }}</el-tag>
             </el-tooltip>
           </p>
           <p class="smJf">
             {{ $t("message.global.TAX_AREA") }}：
             <template v-if="translatedTaxArea">
-              <span>{{ getPostListingData.taxArea }}</span>
+              <span>{{ programeInfo.taxArea }}</span>
               <el-tooltip placement="top" effect="light" :content="translatedTaxArea">
                 <i class="el-icon-info" />
               </el-tooltip>
             </template>
             <template v-else>
-              <span>{{ getPostListingData.taxArea }}</span>
+              <span>{{ programeInfo.taxArea }}</span>
             </template>
           </p>
           <p class="smJf">
             {{ $t("message.global.deductibility") }}：
-            <span>{{ getPostListingData.taxCutsQuota }}</span>
+            <span>{{ programeInfo.taxCutsQuota }}</span>
           </p>
           <p class="smJf">
             {{ $t("message.global.LOCATION") }}：
-            <span>{{ getPostListingData.zip_code }}/{{getPostListingData.city}}</span>
+            <span>{{ programeInfo.zip_code }}/{{programeInfo.city}}</span>
           </p>
           <p class="smJf">
             {{ $t("message.global.range") }}：
             <el-tag v-for="it in translatedTypologies" :key="it" type="success" size="mini">{{ it }}</el-tag>
           </p>
-        </div>
-        <div class="CONSULTANT">
-          <p style="text-align:center;font-size:22px;font-weight:600;">
-            {{ $t("message.global.CONSULTANT") }}
-          </p>
-          <div class="plank">
-            <div style="float:left;position:relative;">
-              <img
-                style="border-radius:50%;"
-                :src="getPostListingData.brokerAvatar || img.DefaultAvatar"
-                alt=""
-              />
-              <img
-                style="position:absolute;bottom:0px;left:50%;margin-left:-18px;width:28px;height:15px;"
-                src="~/assets/image/proAgent.png"
-                alt=""
-              />
-            </div>
-            <div style="float:left; overflow:hidden">
-              <p style="margin-top:10px;">
-                {{ getPostListingData.brokerName }}
-              </p>
-              <p style="margin-top:10px;">{{ getPostListingData.brokerJob }}</p>
-            </div>
-            <br /><br /><br /><br />
-            <p class="icons" style="margin-top:10px;text-align:right;">
-              <span @click="ck(1)">
-                <img :src="img.phone" alt="" />
-                {{ ft1 ? getPostListingData.brokerTelPhone : $t("message.global.connection") }}
-              </span>
-              <span @click="ck(2)">
-                <img :src="img.email" alt="" />
-                {{ ft2 ? getPostListingData.brokerEmail : $t("message.global.mail") }}
-              </span>
-              <span @click="ck(3)">
-                <img :src="img.wxInd" alt="" />
-                {{ ft3 ? getPostListingData.wxNumber : $t("message.global.lishibuluo") }}
-              </span>
-            </p>
-          </div>
         </div>
       </div>
     </div>
@@ -137,24 +89,20 @@
         <span style="font-size:32px;margin-right:10px;font-weight:600;">{{
           $t("message.global.PROGRAME_DESC")
         }}</span>
-        <span
-          style="font-size:20px;color:#fff;float:right;background-color:#027AFF;padding:8px 20px;cursor: pointer"
-          @click="downX(getPostListingData.brochure)"
-        >{{ $t("message.global.brochure") }}</span>
       </p>
-      <p style="margin-top: 10px; white-space: pre-line;">
-        <div v-html="getPostListingData.description"></div>
+      <p style="margin-top: 10px; white-space:pre-line;">
+        <div v-html="programeInfo.description"></div>
       </p>
       <p class="titles" style="margin-top:10px;">
         <span style="font-size:32px;margin-right:10px;font-weight:600;">
-          {{ $t("message.global.position") }}：{{ getPostListingData.address }}
+          {{ $t("message.global.position") }}：{{ programeInfo.address }}
         </span>
       </p>
       <div style="border: 1px solid #ccc;height:500px;width:1200px">
         <jump-map
-          v-if="getPostListingData.latitude && getPostListingData.longitude"
-          :latitude="getPostListingData.latitude"
-          :longitude="getPostListingData.longitude"
+          v-if="programeInfo.latitude && programeInfo.longitude"
+          :latitude="programeInfo.latitude"
+          :longitude="programeInfo.longitude"
           :interactive="false"
           :need-circle="true"
           :need-center-logo="true"
@@ -191,10 +139,6 @@
           prop="price"
           :label="$t('message.global.price')"
         ></el-table-column>
-        <!-- <el-table-column
-          prop="averagePrice"
-          :label="$t('message.global.averagePrice')"
-        ></el-table-column> -->
         <el-table-column
           prop="rentPrice"
           :label="$t('message.global.estimate')"
@@ -208,12 +152,12 @@
             <el-link :href="scope.planLink" target="'_blank'">Plan</el-link>
           </template>
         </el-table-column>
-        <el-table-column prop="data" :label="$t('message.global.connectUs')">
+        <el-table-column prop="data" :label="$t('message.global.CONTACT_US')">
           <template slot-scope="scope">
             <span
               style="color:#224BD7;cursor: pointer;text-decoration:underline;"
-              @click="routerGos(scope.row.apartmentId)"
-            >{{ $t("message.global.connectUs") }}</span>
+              @click="propertyItemClickhandler(scope.row)"
+            >{{ $t("message.global.CONTACT_US") }}</span>
           </template>
         </el-table-column>
       </el-table>
@@ -225,8 +169,8 @@
       <div style="font-size:32px;font-weight:600;">
         {{ $t("message.global.Recommended") }}
       </div>
-      <div class="housingResourceL">
-        <div class="houseReq" v-for="(item, index) in promoteList" :key="index">
+      <div class="recommendation-section">
+        <div class="recommendation-item" v-for="(item, index) in promoteList" :key="index">
           <div style="position:relative;">
             <img
               @click="routerGo(item.promoteId)"
@@ -267,17 +211,15 @@
           <div style="padding-top:5px;">
             <img
               style="width:13px;height:15px;padding-left:10px;vertical-align: middle;"
-              :src="img.location"
+              src="~/assets/image/dingwei.png"
               alt=""
             />&nbsp;
-            <span style="font-size:14px;color:#A1A1A1;vertical-align: middle;"
-              >{{ item.promoteProvince }}/{{ item.promoteCity }}</span
-            >
+            <span style="font-size:14px;color:#A1A1A1;vertical-align: middle;">{{ item.promoteProvince }}/{{ item.promoteCity }}</span>
           </div>
           <div style="padding-top:5px;">
             <img
               style="width:13px;height:15px;padding-left:10px;vertical-align: middle;"
-              :src="img.apartment"
+              src="~/assets/image/apartment.png"
               alt=""
             />&nbsp;
             <span style="font-size:14px;color:#A1A1A1;vertical-align: middle;"
@@ -290,8 +232,7 @@
               v-for="(tags, i) in item.tags"
               :key="i"
               style="display:inline-block;padding:3px 7px;font-size:10px;color:#fff;background-color:#BFBFBF;margin-left:10px;"
-              >{{ tags }}</span
-            >
+            >{{ tags }}</span>
           </div>
           <div
             style="font-size:16px;
@@ -305,112 +246,20 @@
         </div>
       </div>
     </div>
-    <!--  concentUs  -->
-    <el-dialog
-      title=""
-      :visible.sync="dialogVisible"
-      width="1148px"
-      :before-close="handleClose"
-    >
-      <!-- <span>这是一段信息</span> -->
-      <div style="overflow:hidden">
-        <div
-          style="float:left;width:556px;height:400px;text-align:center;box-sizing:border-box;padding:20px;"
-        >
-          <span
-            style="font-size:30px;color:#000;margin-bottom:30px;display:inline-block;"
-            >{{ $t("message.global.scan") }}</span
-          >
-          <div id="qrcode" ref="qrcode"></div>
-        </div>
-        <div
-          class="absc"
-          style="float:left;width:532px;height:400px;border:2px solid #979797;border-radius:20px;box-sizing:border-box;padding-top:30px;padding-left:40px;font-size:22px;"
-        >
-          <p>
-            {{ $t("message.global.HousingTypes") }}：
-            <span>{{ $t("message.global.NewHouse") }}</span>
-          </p>
-          <p class="huodian">
-            {{ $t("message.global.subject") }}：<span>{{
-              getPostListingData.estate_name
-            }}</span>
-          </p>
-          <p class="huodian">
-            {{ $t("message.global.position") }}：<span>{{
-              getPostListingData.address
-            }}</span>
-          </p>
-          <!-- estateAddress -->
-          <p>
-            {{ $t("message.global.price") }}：
-            <span
-              >{{ getPostListingData.availablePropertiesMinPrice }} €-
-              {{ getPostListingData.availablePropertiesMaxPrice }}€</span
-            >
-          </p>
-          <p>
-            {{ $t("message.global.range") }}：
-            <span
-              >{{ getPostListingData.minHall }} - {{ getPostListingData.maxHall
-              }}{{ $t("message.global.P") }}</span
-            >
-          </p>
-          <p>
-            {{ $t("message.global.completionDate") }}：
-            <span>{{ getPostListingData.deliveryQuarter }}</span>
-          </p>
-          <!-- <p>房源链接：<span>{{ getPostListingData.city }}</span></p> -->
-          <p class="huodian">
-            {{ $t("message.global.Describing") }}：<div v-html="getPostListingData.description"></div>
-          </p>
-          <p>
-            {{ $t("message.global.LOCATION") }}：
-            <span>{{ getPostListingData.city }}</span>
-          </p>
-          <p>
-            {{ $t("message.global.property") }}：
-            <span>{{ getPostListingData.brokerName }}</span>
-          </p>
-          <p>
-            {{ $t("message.global.post") }}：
-            <span>{{ getPostListingData.brokerEmail }}</span>
-          </p>
-          <p>
-            {{ $t("message.global.contactPhone") }}：
-            <span>{{ getPostListingData.brokerTelPhone }}</span>
-          </p>
-        </div>
-        <textarea
-          style="z-index:-10000;font-size:0;border:1px solid #fff;"
-          id="input"
-        ></textarea>
-        <div
-          :class="{ qianlan: qianlan }"
-          style="float:right;
-            width:254px;
-            height:64px;
-            background-color:#ADD8E6;
-            margin-right:20px;
-            line-height:64px;
-            text-align:center;
-            font-size:21px;
-            color:#fff;
-            cursor: pointer;
-            margin-top:10px;border-radius:5px;"
-          @click="consf"
-        >
-          {{ $t("message.global.fuzhi") }}
-        </div>
-      </div>
-    </el-dialog>
     <foots></foots>
     <client-only>
       <gallery
-        :images="getPostListingData.images"
+        :images="programeInfo.images"
         :index="galleryIndex"
         @close="galleryIndex = null"
       ></gallery>
+      <contact-dialog
+        :visible="contactDialogVisible"
+        :titles="contactDialogTitles"
+        :confirm-btn-loading="postApplicationLoading"
+        @close="contactDialogVisible = false"
+        @confirm="contactFormConfirmHandler"
+      />
     </client-only>
   </div>
 </template>
@@ -420,42 +269,9 @@ import headers from "~/components/PcIndex/header.vue";
 import foots from "~/components/PcIndex/foot.vue";
 import Calculator from "~/components/PcIndex/calculator.vue";
 
-import wxInd from "~/assets/image/wxInd.png";
-import phone from "~/assets/image/phone.png";
-import email from "~/assets/image/email.png";
-import proVip from "~/assets/image/proVip.png";
-import visitCard from "~/assets/image/visitCard.png";
-import authentication from "~/assets/image/authentication.png";
-import size from "~/assets/image/size.png";
-import time from "~/assets/image/time.png";
-import bed from "~/assets/image/bed.png";
-import apartment from "~/assets/image/apartment.png";
-import location from "~/assets/image/dingwei.png";
-
-import airG from "~/assets/image/picSzg/airG.png";
-import airH from "~/assets/image/picSzg/airH.png";
-import bedG from "~/assets/image/picSzg/bedG.png";
-import bedH from "~/assets/image/picSzg/bedH.png";
-import chairsG from "~/assets/image/picSzg/chairsG.png";
-import chairsH from "~/assets/image/picSzg/chairsH.png";
-import chestG from "~/assets/image/picSzg/chestG.png";
-import chestH from "~/assets/image/picSzg/chestH.png";
-import heatG from "~/assets/image/picSzg/heatG.png";
-import heatH from "~/assets/image/picSzg/heatH.png";
-import ovenG from "~/assets/image/picSzg/ovenG.png";
-import ovenH from "~/assets/image/picSzg/ovenH.png";
-import refrigG from "~/assets/image/picSzg/refrigG.png";
-import refrigH from "~/assets/image/picSzg/refrigH.png";
-import televisG from "~/assets/image/picSzg/televisG.png";
-import televisH from "~/assets/image/picSzg/televisH.png";
-import washerG from "~/assets/image/picSzg/washerG.png";
-import washerH from "~/assets/image/picSzg/washerH.png";
-import wifiG from "~/assets/image/picSzg/wifiG.png";
-import wifiH from "~/assets/image/picSzg/wifiH.png";
-import DefaultAvatar from '~/assets/image/avatar.svg';
-
 import JumpMap from '~/components/jumpMap.vue';
-import { TypologyOptionConfig } from '../common/config';
+import ContactDialog from '../components/PcIndex/ContactDialog.vue';
+import { TypologyOptionConfig, extractProgramProperty, PostApplicationMode } from '../common/config';
 
 export default {
   name: "newDetails",
@@ -465,14 +281,10 @@ export default {
     foots,
     Calculator,
     JumpMap,
-  },
-  asyncData ({ route }) {
-    return {
-      getPostListingData: route.query,
-    }
+    ContactDialog,
   },
   head() {
-    const { estate_name, city } = this.getPostListingData;
+    const { estate_name, city } = this.$route.query;
     return {
       title: `${estate_name} (${city})`,
       meta: [
@@ -489,61 +301,19 @@ export default {
   },
   data() {
     return {
-      input2: "",
-      flag: true,
-      interpret: true,
-      ft1: false,
-      ft2: false,
-      ft3: false,
-      inputs: "",
-      getPostListingData: {},
-      apartmentList: [],
-      agent: "",
-      roomInc: [],
+      programeInfo: {},
       promoteList: [],
       translatedTypologies: [],
-      dialogVisible: false,
+      contactDialogVisible: false,
+      contactDialogTitles: [],
       tableData: [],
-      qianlan: false,
       galleryIndex: null,
       translatedTaxArea: null,
+      postApplicationLoading: false,
     };
   },
   created () {
     this.getTranslatedLawItem = (law) => this.$t(`message.PROGRAME_DETAIL.LAW_ITEM["${law}"]`);
-    this.img = {
-      location,
-      apartment,
-      bed,
-      time,
-      size,
-      authentication,
-      visitCard,
-      proVip,
-      phone,
-      airG,
-      airH,
-      bedG,
-      bedH,
-      chairsG,
-      chairsH,
-      chestG,
-      heatG,
-      heatH,
-      ovenG,
-      ovenH,
-      refrigG,
-      refrigH,
-      televisG,
-      televisH,
-      washerG,
-      washerH,
-      wifiG,
-      wifiH,
-      email,
-      wxInd,
-      DefaultAvatar
-    };
   },
   mounted () {
     if (process.client) this.queryDetail();
@@ -573,70 +343,13 @@ export default {
         const translatedTaxArea =
           taxArea ? this.$t(`message.PROGRAME_DETAIL.TAX_AREA.${taxArea.toUpperCase()}`) : null;
         Object.assign(this, {
-          getPostListingData: res.data,
+          programeInfo: res.data,
           tableData: properties,
           translatedTypologies,
           translatedTaxArea,
         });
       } catch (e) {
         console.error('query detail: ', e);
-      }
-    },
-    routerGos(val) {
-      this.$router.push({
-        path: "/concentUs",
-        query: {
-          apartmentId: val,
-          id: this.$route.query.flag
-        }
-      });
-    },
-    // 小方法
-    consf() {
-      if (process.client) {
-        const ass = document.querySelector(".absc").innerText;
-        var input = document.getElementById("input");
-        input.value = ass;
-        input.select();
-        document.execCommand("Copy");
-        this.qianlan = true;
-        this.$message({
-          showClose: true,
-          message: "success",
-          type: "success"
-        });
-      }
-    },
-    goTwoD(address) {
-      window.open(address, "_blank");
-    },
-    ck(val) {
-      if (val == 1) {
-        this.ft1 = true;
-      } else if (val == 2) {
-        this.ft2 = true;
-      } else if (val == 3) {
-        this.ft3 = true;
-      }
-    },
-    handleClose(done) {
-      this.$refs.qrcode.innerHTML = null;
-      done();
-    },
-    handleOpen() {
-      this.dialogVisible = true;
-      this.$nextTick(() => {
-        this.qrcode();
-      });
-    },
-    qrcode() {
-      if (process.client) {
-        let P = window.location.protocol + "//" + window.location.hostname;
-        let qrcode = new QRCode("qrcode", {
-          width: 220, // 设置宽度
-          height: 220, // 设置高度
-          text: P + "/Details" + "?id=" + this.getPostListingData.id
-        });
       }
     },
     routerGo(flags) {
@@ -646,16 +359,25 @@ export default {
         document.documentElement.scrollTop = 0;
       }
     },
-    // 判断对象是否为空
-    isEmptyObject(obj) {
-      for (let key in obj) {
-        return true;
-      }
-      return false;
+    propertyItemClickhandler (property) {
+      this.contactDialogTitles = extractProgramProperty.call(this, property);
+      this.contactDialogVisible = true;
+      this.__selectedProperty = property;
     },
-    downX(urls) {
-      // window.location.href = urls
-      window.open(urls, "_blank");
+    contactFormConfirmHandler (contact) {
+      const property = this.__selectedProperty;
+      if (!property) return;
+      const propertyId = property.id, programeId = this.programeInfo.id;
+      if (!programeId || !propertyId) return;
+      this.postApplicationLoading = true;
+      const lang = this._i18n.locale;
+      this.$api.article.postApplication({ mode: PostApplicationMode.PROGRAME_PROPERTY, lang, contact, programeId, propertyId })
+        .then(() => {
+          this.contactDialogVisible = false;
+          this.$notify({ title: 'Success', message: this.$t('message.global.APPLICATION_POSTED_SUCCESS'), type: 'success' });
+        })
+        .catch(console.error)
+        .finally(() => this.postApplicationLoading = false);
     }
   }
 };
@@ -668,15 +390,6 @@ export default {
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
-}
-#qrcode {
-  display: inline-block;
-  img {
-    width: 232px;
-    height: 232px;
-    background-color: #fff; //设置白色背景色
-    padding: 6px; // 利用padding的特性，挤出白边
-  }
 }
 .colors {
   color: #000 !important;
@@ -726,170 +439,17 @@ export default {
         background-color: #d3dce6;
       }
     }
-    // 地图
-    .atlas {
-      padding-top: 40px;
-      .atlasTop {
-        .noO {
-          font-size: 32px;
-          font-weight: 700;
-          vertical-align: middle;
-        }
-        img {
-          vertical-align: middle;
-          width: 18px;
-          height: 21px;
-        }
-        .noT {
-          vertical-align: middle;
-          font-size: 20px;
-        }
-      }
-    }
-    // 房屋
-    .synopsis {
-      padding-top: 40px;
-      .synopsisTop {
-        .synopsisjj {
-          vertical-align: middle;
-          color: #000;
-          font-weight: 700;
-          font-size: 32px;
-        }
-        .translate {
-          font-size: 20px;
-          vertical-align: middle;
-          color: #234cd3;
-        }
-      }
-      .synopsisBod {
-        font-size: 16px;
-        color: #464646;
-        padding-top: 20px;
-      }
-    }
-    //详情
-    .houseDetails {
-      padding-top: 30px;
-      overflow: hidden;
-      .houseTop {
-        font-size: 32px;
-        font-weight: 700;
-        color: #000;
-      }
-      .houseSec {
-        img {
-          width: 701px;
-          height: 302px;
-        }
-      }
-      .introduce {
-        .houseListLa {
-          border: 2px solid #d9d9d9;
-          width: 309px;
-          height: 160px;
-          margin: 13px;
-          padding: 13px;
-          box-sizing: border-box;
-          float: left;
-          .houseListTop {
-            color: #262626;
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 10px;
-          }
-          .houseProportion {
-            font-size: 24px;
-            color: #262626;
-            margin-bottom: 3px;
-            span {
-              color: #acacac;
-              font-weight: 400;
-            }
-          }
-          .houseOrientation {
-            font-size: 24px;
-            color: #262626;
-            // font-weight: 700;
-            span {
-              color: #acacac;
-              font-weight: 400;
-            }
-          }
-        }
-      }
-    }
-    // 虚拟看房
-    .seeApartment {
-      .apartmentTop {
-        font-size: 32px;
-        color: #000;
-        font-weight: 700;
-        padding-top: 20px;
-      }
-    }
-    // 贷款
-    .loans {
-      .loansTop {
-        font-size: 32px;
-        color: #000;
-        font-weight: 700;
-        padding-top: 18px;
-      }
-      .calculate {
-        overflow: hidden;
-        padding: 12px;
-        box-sizing: border-box;
-        .counter {
-          width: 331px;
-          height: 293px;
-          box-shadow: 0px 4px 12px 4px rgba(0, 0, 0, 0.13);
-          box-sizing: border-box;
-          padding: 15px;
-          p {
-            margin: 10px 0;
-            font-size: 14px;
-            color: #2a2a2a;
-          }
-          .buttonInput {
-            background-color: #234dd4;
-            width: 110px;
-            height: 40px;
-            border-radius: 6px;
-            float: right;
-            color: #fff;
-            font-size: 20px;
-            line-height: 40px;
-            text-align: center;
-            margin: 20px;
-            cursor: pointer;
-          }
-        }
-      }
-      .downSm {
-        height: 57px;
-        background-color: #839ff8;
-        border-radius: 24px;
-        font-size: 24px;
-        color: #fff;
-        line-height: 57px;
-        text-align: center;
-        margin-top: 30px;
-        cursor: pointer;
-      }
-    }
   }
   .rightBody {
     float: right;
     width: 455px;
-    .ContentPakeAge {
+    .content-package {
       box-shadow: 0px 2px 26px 0px rgba(0, 0, 0, 0.11);
       padding: 9px 20px;
       .prises {
         font-size: 26px;
         font-weight: 600;
         color: #ff5e5e;
-        //    overflow: hidden;
         display: inline-block;
         white-space: nowrap;
         width: 100%;
@@ -905,36 +465,6 @@ export default {
         }
       }
     }
-    .CONSULTANT {
-      margin-top: 10px;
-      padding-bottom: 10px;
-      padding-left: 10px;
-      box-shadow: 0px 2px 26px 0px rgba(0, 0, 0, 0.11);
-      .plank {
-        overflow: hidden;
-        div {
-          img {
-            width: 87px;
-            height: 86px;
-            margin-right: 10px;
-          }
-        }
-        .icons {
-          span {
-            display: inline-block;
-            padding: 3px;
-            background-color: #f7f7f7;
-            margin-right: 15px;
-          }
-          img {
-            width: 15px;
-            //    height:15px;
-            vertical-align: middle;
-            margin-right: 0px;
-          }
-        }
-      }
-    }
     .smJf {
       margin-top: 6px;
       color: #bababa;
@@ -946,34 +476,16 @@ export default {
     }
   }
 }
-.housingResourceL {
+.recommendation-section {
   margin-bottom: 20px;
   padding-top: 30px;
-  .houseReq {
+  .recommendation-item {
     width: 244px;
     height: 285px;
     display: inline-block;
     margin-right: 56px;
     box-sizing: border-box;
     box-shadow: 0px 2px 14px 0px rgba(0, 0, 0, 0.12);
-  }
-}
-.chairsNd {
-  padding-top: 10px;
-  span {
-    display: inline-block;
-    text-align: center;
-    width: 48px;
-    margin: 0 16px;
-    margin-bottom: 10px;
-    img {
-      width: 31px;
-      height: 23px;
-    }
-  }
-  .sizeClo {
-    text-decoration: line-through;
-    color: #bcbcbc;
   }
 }
 .contentS {
@@ -994,9 +506,6 @@ export default {
 }
 .clearfix {
   *zoom: 1; /*ie6清除浮动的方式 *号只有IE6-IE7执行，其他浏览器不执行*/
-}
-.qianlan {
-  background-color: #234dd4 !important;
 }
 </style>
 <style lang="scss">

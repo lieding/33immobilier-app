@@ -26,11 +26,6 @@
             $t("message.global.tenement")
             }}
           </router-link>
-          <router-link :to="{ path: '/agentList' }" tag="li">
-            {{
-            $t("message.global.agent")
-            }}
-          </router-link>
           <router-link :to="{ path: '/blogs' }" tag="li">
             {{
             $t("message.global.encyclopedia")
@@ -74,31 +69,18 @@
     </div>
   </div>
 </template>
+
 <script>
 export default {
   props: ["title"],
   name: "",
-  data() {
-    return {};
-  },
-  mounted() {},
-  created() {
-    // if (localStorage.lang) {
-    //   this.$i18n.locale = localStorage.lang;
-    // }
-  },
   methods: {
     changeLocale(locale) {
       this.$i18n.setLocaleCookie(locale);
       this.$router.push(this.switchLocalePath(locale));
     },
-    Onrouter() {
-      window.location.href = "http://www.milliome.com";
-    },
     Onleft() {
-      // location.href=document.referrer;
       this.$router.go(-1);
-      // go history (-1)
     }
   }
 };

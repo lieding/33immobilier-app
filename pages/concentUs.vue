@@ -50,7 +50,7 @@
                 margin-top:28px;
                 "
           @click="contactUs"
-        >{{ $t("message.global.sure") }}</div>
+        >{{ $t("message.global.CONFIRM") }}</div>
       </div>
       <!-- <div style="height:60px;font-size:20px;color:#fff;background-color:rgb(36,84,218);margin-top:25px;text-align:center;line-height:60px; cursor: pointer;">发送消息</div> -->
     </div>

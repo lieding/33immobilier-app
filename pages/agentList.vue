@@ -62,7 +62,6 @@
                 src="~/assets/image/wx.png"
                 alt
                 class="email"
-                @click="goRouter('/dialog', item.wxNumber)"
               />
             </p>
           </div>

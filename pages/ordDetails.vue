@@ -12,7 +12,7 @@
         </van-swipe>
       </div>
       <!--<img src="~/assets/image/VRlogo.gif" alt="" class="AR" @click="onMap(data.vrAddress)" v-show="data.vrAddress">-->
-      <img src="~/assets/image/share.png" alt class="share" @click="Onshare('/dialog')" />
+      <img src="~/assets/image/share.png" alt class="share" />
       <div>
         <!-- <img src="~/assets/image/shipin.png" alt="" class="video_S" @click="onMap(data.videoUlr)" v-show="data.videoUlr"> -->
         <!-- <p class="video_btn">
@@ -175,7 +175,7 @@
       <span class="consultants">{{$t("message.global.posi")}}</span>
       <span class="province">{{data.bigProvince}}/{{data.privince}}</span>
       <div class="map">
-        <iframe :src="Url" frameborder="0" style="100%"></iframe>
+        <iframe :src="Url" frameborder="0"></iframe>
       </div>
     </div>
     <hr class="hr" />
@@ -188,7 +188,7 @@
           <div class="houseType_delails">
             <p class="houseType_conter">{{item.room}}</p>
             <p class="houseType_conter">
-              {{$t("message.global.proportion")}}：
+              {{$t("message.global.SURFACE")}}：
               <span>{{item.area}}</span>
             </p>
             <p class="houseType_conter">
@@ -201,7 +201,7 @@
           <div class="houseType_delails">
             <p class="houseType_conter">{{items.room}}</p>
             <p class="houseType_conter">
-              {{$t("message.global.proportion")}}:
+              {{$t("message.global.SURFACE")}}:
               <span>{{items.area}}</span>
             </p>
             <p class="houseType_conter">

@@ -26,7 +26,7 @@
         <span
           @click.stop="popUp1"
           style="display:inline-block;width:100%;height:100%;"
-          >{{ $t("message.global.proportion") }}
+          >{{ $t("message.global.SURFACE") }}
           <img
             :src="img.pulldow"
             alt=""
@@ -43,7 +43,7 @@
             >
           </p>
           <div class="butss" @click.stop="popUp1">
-            {{ $t("message.global.sure") }}
+            {{ $t("message.global.CONFIRM") }}
           </div>
         </div>
       </div>
@@ -65,7 +65,7 @@
             <span style="float:right;">{{ fmoney(values[1], 1) }}€</span>
           </p>
           <div class="butss" @click.stop="popUpT1">
-            {{ $t("message.global.sure") }}
+            {{ $t("message.global.CONFIRM") }}
           </div>
         </div>
       </div>

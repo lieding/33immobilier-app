@@ -11,7 +11,7 @@
         </van-swipe>
       </div>
       <img src="~/assets/image/VRlogo.gif" alt="" class="AR" @click="onMap(data.vrAddress)" v-show="data.isOpenVr=='1'">
-      <img src="~/assets/image/share.png" alt="" class="share" @click="Onshare('/dialog')">
+      <img src="~/assets/image/share.png" alt="" class="share">
       <div>
         <div class="custom-indicator" slot="indicator" >
           {{ current + 1 }}/{{picList.length}}

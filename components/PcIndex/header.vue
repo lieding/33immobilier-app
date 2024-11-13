@@ -27,9 +27,9 @@
       <span class="divide" @click="RoutingHop('/rentHouseList', true)">
         <span>{{ $t("message.global.tenement") }}</span>
       </span>
-      <span class="divide" @click="RoutingHop('/broker', true)">
+      <!-- <span class="divide" @click="RoutingHop('/broker', true)">
         <span>{{ $t("message.global.agent") }}</span>
-      </span>
+      </span> -->
       <span class="divide" @click="RoutingHop('/encyclopedia', true)">
         <span>{{ $t("message.global.encyclopedia") }}</span>
       </span>
@@ -72,7 +72,7 @@
         </div>
       </el-popover>
     </div>
-    <div class="login-btn-wrapper">
+    <!-- <div class="login-btn-wrapper">
       <span v-if="curAuthInfo" style="font-size:20px">
         <img
           style="width:16px;vertical-align:middle;"
@@ -98,7 +98,7 @@
           {{ $t("message.global.login") }}
         </span>
       </nuxt-link>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -135,9 +135,6 @@ export default {
           flag: flag
         }
       });
-    },
-    Onrouter() {
-      window.location.href = "http://www.milliome.com";
     },
     changeLocale(locale) {
       this.frOrCn = locale === 'fr';

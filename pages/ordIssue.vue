@@ -42,7 +42,7 @@
               </div>
               <div>
                 <p>{{$t("message.global.orientation")}}</p>
-                <el-select v-model="item.direction" :placeholder="$t('message.global.qingxuanze')">
+                <el-select v-model="item.direction" :placeholder="$t('message.global.PLEASE_SELECT')">
                   <!-- <el-option
                                     v-for="item in orientation"
                                     :key="item.value"
@@ -69,7 +69,7 @@
               </div>
               <div>
                 <p>{{$t("message.global.gender")}}</p>
-                <el-select v-model="item.gender" :placeholder="$t('message.global.qingxuanze')">
+                <el-select v-model="item.gender" :placeholder="$t('message.global.PLEASE_SELECT')">
                   <el-option :label="$t('message.global.man')" :value="$t('message.global.man')"></el-option>
                   <el-option
                     :label="$t('message.global.woman')"
@@ -102,7 +102,7 @@
 
         <div class="details">
           <div>
-            <p>{{$t("message.global.proportion")}}</p>
+            <p>{{$t("message.global.SURFACE")}}</p>
             <el-input v-model="acreage" oninput="value=value.replace(/[^\d]/g,'')">
               <template slot="append">{{$t("message.global.square")}}</template>
             </el-input>
@@ -240,7 +240,7 @@
             <p>{{$t("message.global.drawingRoom")}}</p>
             <div class="details" v-for="(item,index) in drawingList" :key="index">
               <div>
-                <p>{{$t("message.global.drawingRoom")}}{{$t("message.global.proportion")}}</p>
+                <p>{{$t("message.global.drawingRoom")}}{{$t("message.global.SURFACE")}}</p>
                 <el-input
                   :placeholder="$t('message.global.PLEASE_ENTER')"
                   v-model="item.area"
@@ -253,7 +253,7 @@
                 <p>{{$t("message.global.orientation")}}</p>
                 <el-select
                   v-model="item.orientation"
-                  :placeholder="$t('message.global.qingxuanze')"
+                  :placeholder="$t('message.global.PLEASE_SELECT')"
                 >
                   <!-- <el-option
                                      v-for="item in orientation"
@@ -299,7 +299,7 @@
                 <p>{{$t("message.global.orientation")}}</p>
                 <el-select
                   v-model="item.orientation"
-                  :placeholder="$t('message.global.qingxuanze')"
+                  :placeholder="$t('message.global.PLEASE_SELECT')"
                 >
                   <!-- <el-option
                                      v-for="item in orientation"
@@ -332,7 +332,7 @@
             <p>{{$t("message.global.kitchen")}}</p>
             <div class="details" v-for="(item,index) in kitchenList" :key="index">
               <div>
-                <p>{{$t("message.global.kitchen")}}{{$t("message.global.proportion")}}</p>
+                <p>{{$t("message.global.kitchen")}}{{$t("message.global.SURFACE")}}</p>
                 <el-input
                   :placeholder="$t('message.global.PLEASE_ENTER')"
                   v-model="item.area"
@@ -345,7 +345,7 @@
                 <p>{{$t("message.global.orientation")}}</p>
                 <el-select
                   v-model="item.orientation"
-                  :placeholder="$t('message.global.qingxuanze')"
+                  :placeholder="$t('message.global.PLEASE_SELECT')"
                 >
                   <!-- <el-option
                                      v-for="item in orientation"
@@ -381,7 +381,7 @@
             <p>{{$t("message.global.showerRoom")}}</p>
             <div class="details" v-for="(item,index) in showerList" :key="index">
               <div>
-                <p>{{$t("message.global.showerRoom")}}{{$t("message.global.proportion")}}</p>
+                <p>{{$t("message.global.showerRoom")}}{{$t("message.global.SURFACE")}}</p>
                 <el-input
                   :placeholder="$t('message.global.PLEASE_ENTER')"
                   v-model="item.area"
@@ -394,7 +394,7 @@
                 <p>{{$t("message.global.orientation")}}</p>
                 <el-select
                   v-model="item.orientation"
-                  :placeholder="$t('message.global.qingxuanze')"
+                  :placeholder="$t('message.global.PLEASE_SELECT')"
                 >
                   <!-- <el-option
                                      v-for="item in orientation"
@@ -491,7 +491,7 @@
             <p>{{$t("message.global.sellingTime")}}</p>
             <el-select
               v-model="wishSellingTime"
-              :placeholder="$t('message.global.qingxuanze')"
+              :placeholder="$t('message.global.PLEASE_SELECT')"
               class="select"
             >
               <el-option

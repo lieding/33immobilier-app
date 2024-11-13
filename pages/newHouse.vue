@@ -28,18 +28,18 @@
           ref="item2"
         >
           <range-slider :modelValue.sync="priceRange" :min-value="minPrice" :max-value="maxPrice" @change="priceRangeChangeHandler" />
-          <van-button type="info" @click="toggleDropdownMenu('item2')" class="btn-i">{{ $t("message.global.sure") }}</van-button>
+          <van-button type="info" @click="toggleDropdownMenu('item2')" class="btn-i">{{ $t("message.global.CONFIRM") }}</van-button>
         </van-dropdown-item>
       </van-dropdown-menu>
       <!-- 面积 -->
       <van-dropdown-menu v-if="isSecondHand">
         <van-dropdown-item
           class="dropdown-slider"
-          :title="$t('message.global.proportion')"
+          :title="$t('message.global.SURFACE')"
           ref="item5"
         >
           <div class="section">
-            {{ $t("message.global.proportion") }} : {{ acreage[0] }}m² — {{ acreage[1] }}m²
+            {{ $t("message.global.SURFACE") }} : {{ acreage[0] }}m² — {{ acreage[1] }}m²
           </div>
           <el-slider
             v-model="acreage"
@@ -49,7 +49,7 @@
             @change="onAcreage"
           ></el-slider>
           <van-button type="info" @click="toggleDropdownMenu('item5')" class="btn-i">
-            {{ $t("message.global.sure") }}
+            {{ $t("message.global.CONFIRM") }}
           </van-button>
         </van-dropdown-item>
       </van-dropdown-menu>

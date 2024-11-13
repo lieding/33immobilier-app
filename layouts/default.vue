@@ -300,11 +300,10 @@ textarea {
 //form  input 样式
 .el-input__inner {
   color: #333;
-  height: 36px;
-  background: rgba(255, 255, 255, 1);
+  // height: 36px;
   border: 1px solid rgba(226, 226, 226, 1);
   border-radius: 6px;
-  line-height: 36px;
+  // line-height: 36px;
 }
 
 /*-------------弹窗--------样式---------*/
@@ -316,7 +315,6 @@ textarea {
   .el-textarea__inner {
     border: 1px solid rgba(237, 237, 237, 1);
     color: #333;
-    background: #f7f7f7;
   }
 }
 //弹窗标题
@@ -425,10 +423,6 @@ input[type="number"] {
   margin: 0 auto;
   width: 1300px;
 }
-.el-input__inner {
-  border-radius: 0;
-  height: 62px;
-}
 .el-carousel__arrow {
   height: 84px !important;
   border-radius: 0;
@@ -452,26 +446,6 @@ input[type="number"] {
     background-color: rgba(233, 233, 233, 1);
   }
 }
-.broker {
-  .el-input__inner {
-    border-radius: 0;
-    height: 54px;
-    background-color: rgba(233, 233, 233, 1);
-    font-size: 18px;
-  }
-  .el-textarea__inner {
-    background-color: rgba(233, 233, 233, 1);
-  }
-  .el-icon-s-custom:before,
-  .el-icon-message:before,
-  .el-icon-phone:before {
-    color: blue;
-  }
-  .el-textarea__inner {
-    height: 180px !important;
-    font-size: 18px;
-  }
-}
 .selectSm {
   .el-input__inner {
     height: 36px !important;
@@ -493,7 +467,6 @@ input[type="number"] {
     height: 36px !important;
     width: 800px;
     font-size: 18px;
-    background-color: #fff;
   }
   .el-input {
     margin-left: 10%;

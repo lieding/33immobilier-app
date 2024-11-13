@@ -72,7 +72,7 @@
           <!-- 面积 -->
 
           <p v-if="listList.acreage">
-            {{ $t("message.global.proportion") }} ：{{ listList.acreage
+            {{ $t("message.global.SURFACE") }} ：{{ listList.acreage
             }}{{ $t("message.global.square") }}
           </p>
           <p v-if="listList.minHall">
@@ -113,7 +113,7 @@
             {{ $t("message.global.fuzhi") }}
           </p>
           <p class="tag-read" @click="Onclick" v-if="type == '经纪人'">
-            {{ $t("message.global.sure") }}
+            {{ $t("message.global.CONFIRM") }}
           </p>
           <!-- <img src="~/assets/image/btn.png" alt="" class="tag-read" :data-clipboard-text="list" @click="copy" ></div>  -->
         </div>

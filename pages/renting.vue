@@ -97,7 +97,7 @@
             <el-table-column
               align="center"
               prop="roomArea"
-              :label="$t('message.global.proportion')"
+              :label="$t('message.global.SURFACE')"
             ></el-table-column>
             <el-table-column
               align="center"
@@ -437,7 +437,7 @@
             <span>{{ getPostListingData.total }}</span>
           </p>
           <p>
-            {{ $t("message.global.proportion") }}：
+            {{ $t("message.global.SURFACE") }}：
             <span
               >{{ getPostListingData.acreage }}{{ $t("message.global.square") }}
             </span>

@@ -134,7 +134,7 @@
       </div>
       <div class="details">
         <div class="lists">
-          <p>{{ $t("message.global.proportion") }}</p>
+          <p>{{ $t("message.global.SURFACE") }}</p>
           <el-input placeholder type="Number" v-model="info.acreage">
             <template slot="append">{{ $t("message.global.square") }}</template>
           </el-input>
@@ -275,7 +275,7 @@
           <div>
             <div style="margin-top:10px;" v-for="(itemsa, inds) in drawingList" :key="inds">
               <div style="display:inline-block;widht:80px;vertical-align: top;">
-                <p>{{ $t("message.global.proportion") }}</p>
+                <p>{{ $t("message.global.SURFACE") }}</p>
                 <el-input placeholder type="Number" v-model="itemsa.area">
                   <template slot="append">
                     {{
@@ -311,7 +311,7 @@
           <div>
             <div style="margin-top:10px;" v-for="(itemsa, inds) in kitchenList" :key="inds">
               <div style="display:inline-block;widht:80px;vertical-align: top;">
-                <p>{{ $t("message.global.proportion") }}</p>
+                <p>{{ $t("message.global.SURFACE") }}</p>
                 <el-input placeholder type="Number" v-model="itemsa.area">
                   area
                   <template slot="append">
@@ -348,7 +348,7 @@
           <div>
             <div style="margin-top:10px;" v-for="(itemsa, inds) in bedRoomList" :key="inds">
               <div style="display:inline-block;widht:80px;vertical-align: top;">
-                <p>{{ $t("message.global.proportion") }}</p>
+                <p>{{ $t("message.global.SURFACE") }}</p>
                 <el-input placeholder type="Number" v-model="itemsa.area">
                   <template slot="append">
                     {{
@@ -384,7 +384,7 @@
           <div>
             <div style="margin-top:10px;" v-for="(itemsa, inds) in showersList" :key="inds">
               <div style="display:inline-block;widht:80px;vertical-align: top;">
-                <p>{{ $t("message.global.proportion") }}</p>
+                <p>{{ $t("message.global.SURFACE") }}</p>
                 <el-input placeholder type="Number" v-model="itemsa.area">
                   <template slot="append">
                     {{

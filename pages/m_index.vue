@@ -39,10 +39,6 @@
           <img src="~/assets/image/house.png" class="list_img" />
           <p>{{ $t("message.global.tenement") }}</p>
         </router-link>
-        <router-link :to="{ path: '/agentList' }" tag="li">
-          <img src="~/assets/image/peoper.png" class="list_img" />
-          <p>{{ $t("message.global.agent") }}</p>
-        </router-link>
         <router-link :to="{ path: '/blogs' }" tag="li">
           <img src="~/assets/image/baidu.png" class="list_img" />
           <p>{{ $t("message.global.encyclopedia") }}</p>
@@ -52,7 +48,7 @@
           <p>{{ $t("message.global.Saas") }}</p>
         </router-link> -->
       </ul>
-      <ul class="articles">
+      <ul class="article-links">
         <router-link :to="{ path: '/instrument' }" tag="li">
           <img src="~/assets/image/blue.png" class="entry_img" />
           <p>{{ $t("message.global.capacity") }}</p>
@@ -102,49 +98,19 @@
           </router-link>
         </ul>
       </div>
-      <hr class="hr" />
       <!-- 专业房产顾问 -->
       <div class="newhouse">
-        <div class="font width">
-          <span class="title">{{ $t("message.global.property") }}</span>
-          <router-link :to="{ path: '/agentList' }" tag="li" class="watch">
-            {{
-            $t("message.global.economics")
-            }}
-          </router-link>
-        </div>
-        <p class="detail" style=" margin-bottom:0.07rem;">
-          {{ $t("message.global.CONSULTANT") }}&nbsp;&nbsp;&nbsp;{{
-          $t("message.global.ZeroFee")
-          }}&nbsp;&nbsp; {{ $t("message.global.bilingualism") }}
-        </p>
-        <van-swipe :loop="false" :width="180" :height="78" :show-indicators="false">
-          <van-swipe-item v-for="(item, index) in brokerList" :key="index" class="swipe">
-            <div class="swipe_pro">
-              <img :src="item.brokerAvatar" class="swipe_img" />
-              <p class="swipe_P">PRO</p>
-            </div>
-            <div class="swipe_text">
-              <p class="swipe_title">{{ item.brokerName }}</p>
-              <p class="swipe_sort">{{ item.brokerJob }}</p>
-              <p class="swipe_tel">{{ item.brokerTelPhone }}</p>
-            </div>
-          </van-swipe-item>
-        </van-swipe>
-        <div class="swipe_image">
+        <div class="join-us-bar">
           <img src="~/assets/image/pcBroker.png" alt />
           <span style="margin-right: .1rem;">
-            {{
-            $t("message.global.middleman")
-            }}
+            {{ $t("message.global.JOIN_AND_BECOME_AGENT") }}
           </span>
-          <span @click="goRouter('/dialog')" class="text_img">
+          <span class="text_img" @click.stop="startContact">
             <img src="~/assets/image/pcPerson.png" alt style="margin-right: .05rem;" />
-            {{ $t("message.global.jiaru") }}
+            {{ $t("message.global.JOIN_IMMEDIATELY") }}
           </span>
         </div>
       </div>
-      <hr class="hr" />
       <!-- 我们的合作伙伴 -->
       <div class="newhouse">
         <div class="font width">
@@ -157,6 +123,13 @@
       <hr class="hr" />
       <!-- 底部 -->
       <Footer />
+      <contact-popup
+        :visible="contactPopupVis"
+        :titles="[]"
+        :confirm-btn-loading="contactBtnLoading"
+        @close="contactPopupVis = false"
+        @confirm="contactConfirmHandler"
+      />
     </client-only>
   </div>
 </template>
@@ -165,13 +138,16 @@
 import rem from "~/common/rem.js";
 import Header from "~/components/Mindex/header.vue";
 import Footer from "~/components/Mindex/footer.vue";
+import { Notify } from 'vant';
 import { gmapApiLoader } from '../common/gmapApiLoader';
-import { SearchMode } from '../common/config';
+import ContactPopup from '../components/Mindex/contactPopup.vue';
+import { SearchMode, PostApplicationMode } from '../common/config';
 
 export default {
   components: {
     Header,
-    Footer
+    Footer,
+    ContactPopup,
   },
   middleware: "responsive",
   head() {
@@ -197,14 +173,12 @@ export default {
       newHousings: [], //新房
       homesList: [], //二手房
       rentings: [], //租房
-      brokerList: [], //经纪人
-      system: [], //立即加入
-      value: "Paris 1",
-      show: false,
       searchMode: SearchMode.NewPrograme,
       searchInput: "",
       searchSuggestions: [],
       suggestionPopupActive: false,
+      contactPopupVis: false,
+      contactBtnLoading: false,
     };
   },
   mounted() {
@@ -235,16 +209,6 @@ export default {
     },
   },
   methods: {
-    goRouter(smt) {
-      let list = {
-        type: "经纪人",
-        phone: this.system.phone
-      };
-      this.$router.push({
-        path: smt,
-        query: list
-      });
-    },
     suggestionClickHandler(suggestion) {
       const searchMode = this.searchMode;
       if (searchMode == SearchMode.NewPrograme) {
@@ -269,13 +233,25 @@ export default {
         window.addEventListener('click', this.__popupCanceEvListener, true);
       }
     },
+    contactConfirmHandler (contact) {
+      const lang = this._i18n.locale;
+      this.contactBtnLoading = true;
+      this.$api.article.postApplication({ mode: PostApplicationMode.JOIN, lang, contact })
+        .then(() => {
+          this.contactPopupVis = false;
+          Notify({ type: 'success', message: this.$t('message.global.APPLICATION_POSTED_SUCCESS') });
+        })
+        .catch(console.error)
+        .finally(() => this.contactBtnLoading = false);
+    },
     async queryIndexPageInfo() {
       const res = await this.$api.article.getHomePageInfo();
-      const getHomePageInfo = res.data;
-      this.homePageInfo = getHomePageInfo;
-      if (getHomePageInfo.system)
-        this.systemInfo = getHomePageInfo.system;
+      const homePageInfo = res.data;
+      this.homePageInfo = homePageInfo;
     },
+    startContact () {
+      this.contactPopupVis = true;
+    }
   }
 };
 
@@ -371,10 +347,6 @@ function searchCities (input) {
     }
   }
 }
-.swipe_text {
-  padding: 0.05rem;
-  max-width: 48%;
-}
 .width {
   width: 100%;
   margin-bottom: 0.2rem;
@@ -423,7 +395,7 @@ function searchCities (input) {
   width: 0.49rem;
   height: 0.5rem;
 }
-.articles {
+.article-links {
   font-size: 0.12rem;
   height: 0.75rem;
   display: flex;
@@ -451,7 +423,6 @@ function searchCities (input) {
   font-size: 0.2rem;
   font-weight: 600;
   line-height: 0.28rem;
-  // padding: 0;
   color: rgba(0, 0, 0, 0.76);
 }
 .watch {
@@ -476,28 +447,10 @@ function searchCities (input) {
   font-weight: 600;
   color: rgba(168, 168, 168, 1);
 }
-.itemize {
-  /* width:0.45rem; */
-  height: 0.18rem;
-  background: rgba(191, 191, 191, 1);
-  font-size: 0.11rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 1);
-  margin-right: 0.06rem;
-  padding: 0 0.1rem;
-}
 .city {
   background: rgba(106, 192, 120, 1);
   margin: 0 0.03rem;
   padding: 0 0.01rem;
-}
-.citynum {
-  font-size: 0.09rem;
-  color: rgba(255, 255, 255, 1);
-  line-height: 0.13rem;
-}
-.swipe > first-child {
-  width: 1.44rem;
 }
 .new-list {
   margin-top: 0.1rem;
@@ -543,67 +496,7 @@ function searchCities (input) {
     }
   }
 }
-.average {
-  font-size: 0.12rem;
-  color: rgba(172, 172, 172, 1);
-  line-height: 0.17rem;
-  margin-left: 0.07rem;
-}
-.van-swipe-item {
-  // width:1.8rem !important;
-  height: 0.78rem;
-  background: rgba(255, 255, 255, 1);
-  box-shadow: 0px 0px 4px 2px rgba(191, 191, 191, 0.14);
-  display: flex;
-}
-.swipe_pro {
-  width: 50%;
-}
-.swipe_img {
-  width: 0.51rem;
-  height: 0.5rem;
-  border-radius: 50px;
-  position: absolute;
-  left: 0.1rem;
-}
-.swipe_P {
-  width: 17px;
-  height: 9px;
-  background: rgba(0, 101, 255, 1);
-  border-radius: 1px;
-  font-size: 5px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 1);
-  line-height: 9px;
-  position: absolute;
-  text-align: center;
-  top: 0.45rem;
-  left: 0.28rem;
-}
-.swipe_title {
-  font-size: 0.11rem;
-  font-weight: 600;
-  color: rgba(0, 0, 0, 0.76);
-  line-height: 0.16rem;
-}
-.swipe_sort {
-  font-size: 0.11rem;
-  color: rgba(131, 131, 131, 0.76);
-  line-height: 0.16rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 1.4rem;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-}
-.swipe_tel {
-  font-size: 0.11rem;
-  font-weight: 600;
-  color: rgba(4, 51, 255, 0.76);
-  line-height: 0.16rem;
-}
-.swipe_image {
+.join-us-bar {
   height: 0.66rem;
   box-sizing: border-box;
   padding-top: 0.06rem;
@@ -619,13 +512,11 @@ function searchCities (input) {
     font-size: 0.18rem;
   }
   .text_img {
-    // width:.8rem;
     height: 0.27rem;
     position: absolute;
     right: 0.08rem;
     top: 0.15rem;
     background: rgba(255, 255, 255, 1);
-    // padding:.13rem;
     img {
       width: 0.12rem;
     }
@@ -640,12 +531,5 @@ function searchCities (input) {
   width: 3.52rem;
   height: 1.7rem;
   margin-top: 0.12rem;
-}
-.el-dropdown-menu {
-  overflow: scroll;
-  height: 2rem;
-}
-.el-dropdown {
-  z-index: 2;
 }
 </style>
