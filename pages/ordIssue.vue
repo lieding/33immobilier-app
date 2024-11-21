@@ -669,7 +669,7 @@
 <script>
 import rem from "~/common/rem.js";
 import base from "~/api/base"; // 导入接口域名列表
-import Header from "~/components/Mindex/head.vue";
+import Header from "~/components/Mindex/header.vue";
 import Footer from "~/components/Mindex/footer.vue";
 import axios from "~/common/http";
 

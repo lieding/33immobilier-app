@@ -1,10 +1,9 @@
 <template>
   <div class="concentUs">
-    <headers :class="{ colors: flag }"></headers>
     <div class="centerS" style="height:600px;padding-top:40px;">
       <div
         style="font-size:48px;font-weight:600;padding:27px 0;"
-      >{{ $t("message.global.relation") }}</div>
+      >{{ $t("message.global.CONTACT_US") }}</div>
       <div style="float:left;">
         <div style="margin-bottom:30px">
           <el-input
@@ -54,21 +53,13 @@
       </div>
       <!-- <div style="height:60px;font-size:20px;color:#fff;background-color:rgb(36,84,218);margin-top:25px;text-align:center;line-height:60px; cursor: pointer;">发送消息</div> -->
     </div>
-    <foots></foots>
   </div>
 </template>
 
 <script>
-import headers from "~/components/PcIndex/header.vue";
-import foots from "~/components/PcIndex/foot.vue";
-
 export default {
   name: "concentUs",
   middleware: "responsive",
-  components: {
-    headers,
-    foots
-  },
   head() {
     return {
       title: "联系我们,33immobilier|33找房-法国第一华人找房平台",

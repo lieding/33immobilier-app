@@ -1,23 +1,19 @@
 <template>
-  <div class="newList" @click="hides">
-    <headers
-      style="position:fixed;top:0;left:0;right:0;background-color:#fff;z-index:1000;"
-      :class="{ colors: true, clearfix: true }"
-    ></headers>
-    <div class="centerS rentHouseTop clearfix">
-      <div class="lefts">
-        <div class="headline" style="position:fixed;">
-          <span>{{ $t("message.global.home") }}</span> /
-          <span>{{ $t("message.global.homeList") }}</span>
-        </div>
-        <div class="iframes" style="height:82%;width:42%;">
+  <div class="new-list-page" @click="hides">
+    <el-breadcrumb separator="/">
+      <el-breadcrumb-item><a href="/pc_index">{{ $t("message.global.home") }}</a></el-breadcrumb-item>
+      <el-breadcrumb-item>{{ $t("message.global.homeList") }}</el-breadcrumb-item>
+    </el-breadcrumb>
+    <section class="content flex">
+      <div class="content-left full-h">
+        <div class="map-wrapper full-w full-h">
           <template v-if="placeInfo && placeInfo.longitude && placeInfo.latitude">
             <jump-map
               :latitude="placeInfo.latitude"
               :longitude="placeInfo.longitude"
               :init-zoom="11"
               :points="mapPoints"
-              :active-point-idx="activePointIdx"
+              :active-point-id="activePointId"
               @pointSelect="pointSelectHandler"
             ></jump-map>
           </template>
@@ -26,117 +22,110 @@
           </template>
         </div>
       </div>
-      <div class="rights" style="padding-top:51px;">
+      <div class="content-right flex-column">
         <template v-if="dataLoading">
           <el-skeleton :rows="12" />
         </template>
         <template v-else>
-          <p class="tit">{{ $t("message.global.method") }}</p>
-          <!-- Price range slider -->
-          <div class="priceLabel" @click="priceSlideVis = true" v-popover:popover>
-            <span style="font-size: 12px;">
-              {{ $t("message.global.price") }}
-            </span>
-            <img
-              :src="img.pulldow"
-              alt=""
-              style="position: absolute;top: 50%; right: 20px;"
-            />
-          </div>
-          <el-popover
-            ref="popover"
-            placement="right"
-            width="220"
-            trigger="click"
-          >
-            <el-slider v-model="priceRange" :max="maxPrice" :min="minPrice" range @input="priceSlideChangeHandler"></el-slider>
-            <p style="overflow:hidden">
-              <span style="float:left;"> {{ fmoney(priceRange[0], 1) }} </span>
-              <span style="float:right;">{{ fmoney(priceRange[1], 1) }}</span>
-            </p>
-          </el-popover>
-          <!-- Compleyion status select -->
-          <el-select
-            multiple
-            class="secF"
-            style="border-left: 1px solid #ccc;"
-            v-model="completionStatusArr"
-            :placeholder="$t('message.NEW_LIST.ALL_COMPLETION_STATUS')"
-          >
-            <el-option v-for="it in CompletionStatusOption" :key="it.value" :label="it.label" :value="it.value"></el-option>
-          </el-select>
-          <!-- Typology select 房型选择 -->
-          <el-select
-            multiple
-            class="secF"
-            style="border-left: 1px solid #ccc;"
-            v-model="selectedTypologies"
-            :placeholder="$t('message.NEW_LIST.ALL_TYPOLOGY_LABEL')"
-          >
-            <el-option v-for="it in typologyOptions" :key="it.value" :label="it.label" :value="it.value"></el-option>
-          </el-select>
+          <p class="content-title bold">{{ $t("message.global.method") }}</p>
+          <el-row :gutter="8">
+            <!-- Price range slider -->
+            <el-col :span="6">
+              <div class="price-range-btn full-w pointer micco-select customized" @click="priceSlideVis = true" v-popover:popover>
+                <span class="label">{{ $t("message.global.price") }}</span>
+                <i class="el-icon-arrow-down" />
+              </div>
+            </el-col>
+            <el-popover
+              ref="popover"
+              width="220"
+              trigger="click"
+            >
+              <el-slider v-model="priceRange" :max="maxPrice" :min="minPrice" range @input="priceSlideChangeHandler"></el-slider>
+              <p style="overflow:hidden">
+                <span style="float:left;"> {{ fmoney(priceRange[0], 1) }} </span>
+                <span style="float:right;">{{ fmoney(priceRange[1], 1) }}</span>
+              </p>
+            </el-popover>
+            <!-- Compleyion status select -->
+            <el-col :span="6">
+              <el-select
+                v-model="completionStatusArr"
+                multiple
+                class="micco-select"
+                :placeholder="$t('message.NEW_LIST.ALL_COMPLETION_STATUS')"
+              >
+                <el-option v-for="it in CompletionStatusOption" :key="it.value" :label="it.label" :value="it.value"></el-option>
+              </el-select>
+            </el-col>
+            <!-- Typology select 房型选择 -->
+            <el-col :span="6">
+              <el-select
+                v-model="selectedTypologies"
+                multiple
+                class="micco-select"
+                :placeholder="$t('message.NEW_LIST.ALL_TYPOLOGY_LABEL')"
+              >
+                <el-option v-for="it in typologyOptions" :key="it.value" :label="it.label" :value="it.value"></el-option>
+              </el-select>
+            </el-col>
+          </el-row>
           <!-- Programe List -->
-          <div
-            v-for="(itemss, index) in filteredProgramList"
-            :key="index"
-            class="list-item"
-            :class="{ active: index === activePointIdx }"
-            @click="selectItem(itemss, index)"
-            ref="programItem"
-          >
-            <el-image :src="itemss.images[0]" :lazy="true">
-              <div slot="error" class="image-slot">
-                <i class="el-icon-picture-outline"></i>
-              </div>
-            </el-image>
-            <div class="right-list-item">
-              <div v-if="itemss.deliveryQuarter">
-                <span class="tag">{{ itemss.deliveryQuarter }}</span>
-              </div>
-              <div class="title">{{ itemss.estate_name }}</div>
-              <div class="info-row">
-                <img :src="img.dingwei" alt="" />
-                <span class="info">{{ itemss.zip_code }}/{{ itemss.city }}</span>
-              </div>
-              <div class="info-row">
-                <img :src="img.homeS" alt="" />
-                <span class="info">
-                  {{ itemss.translatedTypologies.join(',') }}
-                </span>
-              </div>
-              <div class="price-range">{{ itemss.availablePropertiesMinPrice }}€ - {{ itemss.availablePropertiesMaxPrice }}€</div>
-              <div class="link-btn">
-                <el-button icon="el-icon-position" circle @click="listItemClickhandler(itemss)"></el-button>
+          <div class="list" id="scroll-wrapper">
+            <div
+              v-for="(itemss) in filteredProgramList"
+              :key="itemss.id"
+              :id="'item-' + itemss.id"
+              class="list-item"
+              :class="{ active: itemss.id === activePointId }"
+              @click="selectItem(itemss)"
+            >
+              <el-image :src="getImage(itemss)" :lazy="true">
+                <div slot="error" class="image-slot">
+                  <i class="el-icon-picture-outline"></i>
+                </div>
+              </el-image>
+              <div class="right-list-item">
+                <div v-if="itemss.deliveryQuarter">
+                  <el-tag size="small" effect="dark">{{ itemss.deliveryQuarter }}</el-tag>
+                </div>
+                <div class="title">{{ itemss.estate_name }}</div>
+                <div class="info-row">
+                  <i class="el-icon-location-outline" />
+                  <span class="info">{{ itemss.zip_code }} / {{ itemss.city }}</span>
+                </div>
+                <div class="info-row">
+                  <i class="el-icon-house" />
+                  <span class="info">
+                    {{ itemss.translatedTypologies.join(',') }}
+                  </span>
+                </div>
+                <div class="price-range">
+                  {{ fmoney(itemss.availablePropertiesMinPrice) }}€ - {{ fmoney(itemss.availablePropertiesMaxPrice) }}€
+                </div>
+                <div class="link-btn">
+                  <el-button icon="el-icon-position" circle @click="listItemClickhandler(itemss)"></el-button>
+                </div>
               </div>
             </div>
+            <el-alert v-show="finished" :title="$t('message.global.noMore')" type="info" center show-icon :closable="false" />
           </div>
-          <p v-show="isLoading">Loading...</p>
-          <p v-show="finished">{{ $t('message.global.noMore') }}</p>
         </template>
       </div>
-    </div>
+    </section>
   </div>
 </template>
 
 <script>
-import headers from "~/components/PcIndex/header.vue";
-import foots from "~/components/PcIndex/foot.vue";
-
-import pulldow from "~/assets/image/pullDow.png";
-import dingwei from "~/assets/image/dingwei.png";
-import titles from "~/assets/image/titles.jpg";
-import homeS from "~/assets/image/homeS.png";
 import { fmoney, scrollListener } from '../utils';
 import JumpMap from '../components/jumpMap.vue';
-import { TypologyOptionConfig } from '../common/config';
+import { TypologyOptionConfig, LocationType, L1AREA_REGIONS, L2AREA_REGION, loadProgramesByRegions } from '../common/config';
 import { filterProgrammeListByConditions, CompletionStatusOptionConfig, handleProgrames } from '../utils/list';
 
 export default {
   name: "newList",
   middleware: "responsive",
   components: {
-    headers,
-    foots,
     JumpMap,
   },
   head() {
@@ -169,10 +158,9 @@ export default {
       minPrice: 0,
       allProgramList: [],
       filteredProgramList: [],
-      activePointIdx: -1,
+      activePointId: '',
       page: 1,
       maxPage: 1,
-      isLoading: false
     };
   },
   computed: {
@@ -180,32 +168,27 @@ export default {
       return this.page >= this.maxPage;
     },
     mapPoints () {
-      return this.filteredProgramList.map((it, idx) => {
-        const { longitude, latitude } = it;
-        // const content = translatedTypologies.join(',');
-        return { idx, longitude, latitude };
+      return this.filteredProgramList.map((it) => {
+        const { longitude, latitude, id } = it;
+        return { id, longitude, latitude };
       });
     }
   },
   watch: {
     completionStatusArr (statusArr) {
-      this.activePointIdx = -1;
+      this.activePointId = '';
       this.filteredProgramList =
         filterProgrammeListByConditions(this.allProgramList, this.priceRange, statusArr, this.selectedTypologies);
     },
     selectedTypologies (typologies) {
-      this.activePointIdx = -1;
+      this.activePointId = '';
       this.filteredProgramList =
         filterProgrammeListByConditions(this.allProgramList, this.priceRange, this.completionStatusArr, typologies);
     },
   },
   created() {
     this.fmoney = fmoney;
-    const { place_text, city_name, lat, lng } = this.$route.query;
-    this.placeText = place_text || city_name;
-    if (lat && lng)
-      this.placeInfo = { name: city_name, latitude: Number(lat), longitude: Number(lng) };
-    this.img = { titles, dingwei, pulldow, homeS};
+    this.setInitialParams();
     this.CompletionStatusOption =
       CompletionStatusOptionConfig.map(({ key, I18NKey }) => ({ value:key, label: this.$t(`message.NEW_LIST.${I18NKey}`) }));
     this.TypologyOption = TypologyOptionConfig
@@ -213,59 +196,87 @@ export default {
   },
   mounted () {
     if (process.client) this.getSearchNew();
-    // this.__scrollCbk = () =>
-    //   !this.finished && scrollListener(() => this.getListNew(this.page + 1));
-    // window.addEventListener('scroll', this.__scrollCbk);
   },
   beforeDestroy () {
-    window.removeEventListener('scroll', this.__scrollCbk);
   },
   methods: {
+    setInitialParams () {
+      const { region_city, lat, lng, location_type } = this.$route.query;
+      this.placeInfo = {
+        region_city,
+        latitude: Number(lat) || null,
+        longitude: Number(lng) || null,
+        locationType: location_type,
+      };
+    },
+    getImage (item) {
+      if (item.image) return item.image;
+      if (Array.isArray(item.images) && item.images.length) return item.images[0];
+      return null;
+    },
     togglePriceSlide() {
       this.priceSlideVis = !this.priceSlideVis;
     },
     hides() {
       this.priceSlideVis = false;
     },
-    selectItem(item, index) {
-      this.activePointIdx = index;
+    selectItem(item) {
+      this.activePointId = item.id;
     },
     priceSlideChangeHandler () {
-      this.activePointIdx = -1;
+      this.activePointId = '';
       clearTimeout(this.__priceRangeChangeTimeout);
       this.__priceRangeChangeTimeout = setTimeout(() => {
         this.filteredProgramList =
           filterProgrammeListByConditions(this.allProgramList, this.priceRange, this.completionStatusArr, this.selectedTypologies);
       }, 500);
     },
-    pointSelectHandler (idx) {
-      const itemEls = this.$refs.programItem;
-      if (!Array.isArray(itemEls)) return;
-      const el = itemEls[idx];
+    pointSelectHandler (id) {
+      this.activePointId = id;
+      const el = this.$el.querySelector('#scroll-wrapper')?.querySelector(`#item-${id}`);
       if (!el) return;
-      this.activePointIdx = idx;
       el.scrollIntoView({ behavior: "smooth", block: "center" });
     },
     async getSearchNew() {
       this.dataLoading = true;
-      this.activePointIdx = -1;
-      const { place_id, city_name } = this.$route.query;
-      if (!place_id && !city_name) return;
+      this.activePointId = '';
+      const { place_id } = this.$route.query, { locationType, region_city } = this.placeInfo;
+      if (!place_id && !region_city) return;
+      if (!place_id && region_city) {
+        const regions = [];
+        if (locationType === LocationType.L1_AREA) {
+          const found = L1AREA_REGIONS[region_city];
+          if (found) regions.push(...found);
+        } else if (locationType === LocationType.L2_AREA) {
+          const found = L2AREA_REGION[region_city];
+          if (found) regions.push(found);
+        }
+        if (regions.length) {
+          return loadProgramesByRegions(regions)
+            .then(programes =>
+              Object.assign(this, setProgrames.call(this, programes))
+            )
+            .finally(() => this.dataLoading = false)
+        }
+      }
+      if (place_id && locationType === LocationType.L2_AREA) {
+        const { placeInfo } = (await this.$api.article.searchPlaceInfoById({ place_id })).data ?? {};
+        if (placeInfo) {
+          this.placeInfo = placeInfo;
+          const regionId = placeInfo.postal_code.substring(0, 2);
+          await loadProgramesByRegions([regionId])
+            .then(programes => Object.assign(this, setProgrames.call(this, programes)))
+        }
+        return this.dataLoading = false;
+      }
       const lang = this._i18n.locale;
-      const responseData = (await this.$api.article.searchProgramesByCity({ place_id, lang, city_name })).data;
+      const responseData = (await this.$api.article.searchProgramesByCity({ place_id, lang, city_name: region_city })).data;
       const { placeInfo, programes } = responseData || {};
       if (placeInfo?.longitude && placeInfo?.latitude) {
-        this.placeInfo = placeInfo;
+        this.placeInfo = { ...this.placeInfo, ...placeInfo };
       }
       if (Array.isArray(programes)) {
-        const { minPrice, maxPrice, typologyOptionKeys } = handleProgrames(programes, this.TypologyOption);
-        this.maxPrice = maxPrice;
-        this.minPrice = minPrice;
-        this.priceRange = [ minPrice, maxPrice ];
-        this.typologyOptions = typologyOptionKeys
-          .map(key => this.TypologyOption.find(it => it.value === key)).filter(Boolean);
-        this.allProgramList = programes;
-        this.filteredProgramList = programes.slice();
+        Object.assign(this, setProgrames.call(this, programes));
       }
       this.dataLoading = false;
     },
@@ -274,6 +285,18 @@ export default {
     }
   },
 };
+
+function setProgrames (programes) {
+  programes = programes.filter(it => it.id.toString() !== 'Infinity');
+  const { minPrice, maxPrice, typologyOptionKeys } = handleProgrames(programes, this.TypologyOption);
+  return {
+    maxPrice, minPrice,
+    priceRange: [ minPrice, maxPrice ],
+    typologyOptions: typologyOptionKeys.map(key => this.TypologyOption.find(it => it.value === key)).filter(Boolean),
+    allProgramList: programes,
+    filteredProgramList: programes.slice(),
+  };
+}
 
 function shortenPrice (price) {
   if (price > 99999) {
@@ -285,242 +308,92 @@ function shortenPrice (price) {
 </script>
 
 <style lang="scss" scoped>
-.clearfix:after {
-  /*伪元素是行内元素 正常浏览器清除浮动方法*/
-  content: "";
-  display: block;
-  height: 0;
-  clear: both;
-  visibility: hidden;
-}
-.clearfix {
-  *zoom: 1; /*ie6清除浮动的方式 *号只有IE6-IE7执行，其他浏览器不执行*/
-}
-.iframes {
-  position: fixed;
-  top: 156px;
-  right: 51%;
-  // min-right:610px;
-}
-.colors {
-  color: #000 !important;
-}
-.newList {
-  // background-color:#e9e9e9;
-  overflow: hidden;
-  .rentHouseTop {
-    // margin-top:100px;
-    padding-top: 100px;
-    // overflow: hidden;
-    .headline {
-      right: 50%;
-      width: 42%;
-      padding-top: 20px;
-      padding-bottom: 10px;
-      color: #000;
-      font-size: 16px;
-      span {
-        cursor: pointer;
-      }
-    }
+.new-list-page {
+  margin: 20px 32px;
+  .content {
+    column-gap: 16px;
+    margin-top: 16px;
+    height: 800px;
+    max-height: 70vh;
   }
-  .lefts, .rights {
-    display: inline-block;
-    width: 600px;
+  .content-left {
+    width: 42%;
   }
-  .lefts {
-    height: 560px;
-    position: relative;
-  }
-  .rights {
-    float: right;
-    box-sizing: border-box;
+  .content-right {
+    flex: 1;
     overflow: hidden;
-    .tit {
-      font-size: 26px;
-      color: #000;
-      padding: 14px;
-      font-weight: 600;
+    .content-title {
+      font-size: 24px;
+      margin: 0 0 16px;
     }
-    .list-item {
-      display: flex;
-      align-items: center;
-      margin: 5px 0;
-      border-bottom: 1px solid #ccc;
-      &.active {
-        border: 3px solid blue;
-      }
-      .el-image {
-        flex: unset;
-        width: 221px;
-        height: 137px;
-      }
-      .right-list-item {
-        flex: 1;
-        margin-left: 5px;
-        position: relative;
-        div {
-          margin-bottom: 6px;
+    .list {
+      flex: 1;
+      overflow-y: auto;
+      .list-item {
+        display: flex;
+        align-items: center;
+        margin: 5px 0;
+        border-bottom: 1px solid #ccc;
+        &.active {
+          border: 3px solid var(--main-blue);
         }
-        .info-row {
-          display: flex;
-          align-items: center;
-          img {
-            width: 12px;
-            margin-right: .6em;
+        .el-image {
+          flex: unset;
+          width: 221px;
+          height: 137px;
+        }
+        .right-list-item {
+          flex: 1;
+          margin-left: 5px;
+          position: relative;
+          div {
+            margin-bottom: 6px;
           }
-          .info {
-            font-size: 14px;
-            color: #373737;
+          .info-row {
+            display: flex;
+            align-items: center;
+            .info {
+              display: inline-block;
+              padding: 1px 0 0 4px;
+              font-size: 14px;
+              color: #373737;
+            }
           }
-        }
-        .tag {
-          display: inline-block;
-          font-size: 12px;
-          color: #fff;
-          padding: 2px;
-          background-color: #234cd3;
-        }
-        .oneNo {
-          background-color: #6ac078;
-        }
-        .title {
-          color: #000;
-          font-size: 16px;
-          font-weight: 600;
-        }
-        .link-btn {
-          position: absolute;
-          z-index: 10;
-          right: 5px;
-          top: 50%;
-          transform: translateY(-50%);
-          visibility: hidden;
-        }
-        .price-range {
-          display: block;
-          font-size: 16px;
-          color: #ff5e5e;
-          font-weight: bold;
-        }
-        &:hover {
+          .title {
+            color: #000;
+            font-size: 16px;
+            font-weight: 600;
+          }
           .link-btn {
-            visibility: visible;
+            position: absolute;
+            z-index: 10;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            visibility: hidden;
+          }
+          .price-range {
+            display: block;
+            font-size: 16px;
+            color: #ff5e5e;
+            font-weight: bold;
+          }
+          &:hover {
+            .link-btn {
+              visibility: visible;
+            }
           }
         }
-      }
-      .rightImg {
-        flex: unset;
-        max-height: 74px;
-      }
-    }
-    .priceLabel {
-      margin-left: 0;
-      border-right: 1px solic #ccc !important;
-      background-color: #fff;
-      position: relative;
-      display: inline-block;
-      width: 140px;
-      background-color: #e9e9e9;
-      vertical-align: top;
-      line-height: 34px;
-      height: 34px;
-      text-align: center;
-      cursor: pointer;
-      img {
-        width: 8px;
-        height: 4px;
-        vertical-align: middle;
-      }
-      .slideKids {
-        position: absolute;
-        top: 60px;
-        left: -81%;
-        width: 288px;
-        height: 118px;
-        background-color: #ccc;
-        padding: 0 30px;
-        background-color: #fff;
-        box-sizing: border-box;
-        padding-top: 10px;
-        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
-      }
-      .butss {
-        width: 60px;
-        height: 32px;
-        background-color: #234cd3;
-        cursor: pointer;
-        float: right;
-        margin-right: 0px;
-        color: #fff;
-        border-radius: 3px;
+        .rightImg {
+          flex: unset;
+          max-height: 74px;
+        }
       }
     }
   }
 }
 </style>
 <style lang="scss">
-.newList {
-  .secF {
-    margin-right: 0 !important;
-    vertical-align: top;
-    border-right: 1px solid #ccc;
-    .el-input__inner {
-      text-align: center;
-      font-size: 12px;
-      border: 0px;
-      background-color: #e9e9e9;
-      vertical-align: bottom;
-    }
-    :-moz-placeholder {
-      /* Mozilla Firefox 4 to 18 */
-      color: #2a2a2a !important;
-    }
-    ::-moz-placeholder {
-      /* Mozilla Firefox 19+ */
-      color: #2a2a2a !important;
-    }
-    input:-ms-input-placeholder,
-    textarea:-ms-input-placeholder {
-      color: #2a2a2a !important;
-    }
-    input::-webkit-input-placeholder,
-    textarea::-webkit-input-placeholder {
-      color: #2a2a2a !important;
-    }
-  }
-
-  .el-input__inner {
-    height: 34px;
-  }
-  .el-input--prefix .el-input__inner {
-    background-color: #e9e9e9;
-    width: 140px;
-  }
-  .el-input {
-    width: 140px !important;
-  }
-
-  :-moz-placeholder {
-    /* Mozilla Firefox 4 to 18 */
-    color: #2a2a2a !important;
-  }
-  ::-moz-placeholder {
-    /* Mozilla Firefox 19+ */
-    color: #2a2a2a !important;
-  }
-  input:-ms-input-placeholder,
-  textarea:-ms-input-placeholder {
-    color: #2a2a2a !important;
-  }
-  input::-webkit-input-placeholder,
-  textarea::-webkit-input-placeholder {
-    color: #2a2a2a !important;
-  }
-  .el-icon-date:before {
-    font-size: 0;
-  }
-}
 .image-slot {
   display: flex;
   justify-content: center;

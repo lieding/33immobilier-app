@@ -1,150 +1,150 @@
 <template>
-  <div class="calculator">
-    <div>
-      <div class="loans">
-        <div class="loansTop">{{ $t("message.global.LOAN_CAPABILITY_CALCULATION") }}</div>
-        <div class="calculate">
-          <div class="counter">
-            <p>{{ $t("message.global.onnetincome") }}</p>
-            <el-input
-              class="inputs"
-              type="number"
-              v-model.number="capabilityForm.monthlyRevenu"
-              placeholder
-            >
-              <i slot="suffix" class="el-input__icon">€</i>
-            </el-input>
-            <p>{{ $t("message.global.payment") }}</p>
-            <el-input
-              class="inputs"
-              type="number"
-              v-model.number="capabilityForm.downPay"
-              placeholder
-            >
-              <i slot="suffix" class="el-input__icon">€</i>
-            </el-input>
-            <p>
-              {{ $t("message.global.DEBT_RATIO") }}
-              {{ $t("message.global.DEBT_BURDEN") }}
-            </p>
-            <el-input
-              @input="capabilityFormRateInutHandler"
-              class="inputs"
-              type="number"
-              v-model.number="capabilityForm.debtRatio"
-              placeholder
-            >
-              <i slot="suffix" class="el-input__icon">%</i>
-            </el-input>
-            <div class="buttonInput" @click="doCalculate">
-              {{ $t("message.global.calculate") }}
-            </div>
+  <div class="calculator loans">
+    <div class="title bold">{{ $t("message.global.LOAN_CAPABILITY_CALCULATION") }}</div>
+    <div class="calculate">
+      <div class="counter">
+        <p>{{ $t("message.global.onnetincome") }}</p>
+        <el-input
+          class="inputs"
+          type="number"
+          v-model.number="capabilityForm.monthlyRevenu"
+          placeholder
+        >
+          <i slot="suffix" class="el-input__icon">€</i>
+        </el-input>
+        <p>{{ $t("message.global.payment") }}</p>
+        <el-input
+          class="inputs"
+          type="number"
+          v-model.number="capabilityForm.downPay"
+          placeholder
+        >
+          <i slot="suffix" class="el-input__icon">€</i>
+        </el-input>
+        <p>
+          {{ $t("message.global.DEBT_RATIO") }}
+          {{ $t("message.global.DEBT_BURDEN") }}
+        </p>
+        <el-input
+          @input="capabilityFormRateInutHandler"
+          class="inputs"
+          type="number"
+          v-model.number="capabilityForm.debtRatio"
+          placeholder
+        >
+          <i slot="suffix" class="el-input__icon">%</i>
+        </el-input>
+        <el-row type="flex" justify="end">
+          <div class="calcaulate-btn white" @click="doCalculate">
+            {{ $t("message.global.calculate") }}
           </div>
-          <div class="rightSs" v-if="reckenList.length">
-            <span style="font-size:20px;color:#000;font-weight:600;">{{
-              $t("message.global.MAXIMUM_MONTHLY_REPAYMENT_AMOUNT")
-            }}</span>
-            <span style="font-size:20px;color:#FF5E5E;">{{ monthlyHighestRepayAmt }}€</span>
-            <div class="botS">
-              <p>{{ $t("message.global.LOAN_AMOUNT_CALCULATION") }}</p>
-              <div class="tabs">
-                <table>
-                  <tr>
-                    <th>{{ $t("message.global.LOAN_PERIOD") }}</th>
-                    <th>{{ $t("message.global.ANNUAL_INTEREST_RATE") }}</th>
-                    <th>{{ $t("message.global.capacity") }}</th>
-                  </tr>
-                </table>
-                <table v-for="(item, index) in reckenList" :key="index">
-                  <tr>
-                    <td>{{ item.year }} {{ $t("message.global.ans") }}</td>
-                    <td>{{ item.retes }} %</td>
-                    <td>{{ fmoney(item.money, 0) }}€</td>
-                  </tr>
-                </table>
-              </div>
-            </div>
+        </el-row>
+      </div>
+      <div class="right-part" v-if="reckenList.length">
+        <span style="font-size:20px;color:#000;font-weight:600;">{{
+          $t("message.global.MAXIMUM_MONTHLY_REPAYMENT_AMOUNT")
+        }}</span>
+        <span style="font-size:20px;color:#FF5E5E;">{{ monthlyHighestRepayAmt }}€</span>
+        <div class="botS">
+          <p>{{ $t("message.global.LOAN_AMOUNT_CALCULATION") }}</p>
+          <div class="tabs">
+            <table>
+              <tr>
+                <th>{{ $t("message.global.LOAN_PERIOD") }}</th>
+                <th>{{ $t("message.global.ANNUAL_INTEREST_RATE") }}</th>
+                <th>{{ $t("message.global.capacity") }}</th>
+              </tr>
+            </table>
+            <table v-for="(item, index) in reckenList" :key="index">
+              <tr>
+                <td>{{ item.year }} {{ $t("message.global.ans") }}</td>
+                <td>{{ item.retes }} %</td>
+                <td>{{ fmoney(item.money, 0) }}€</td>
+              </tr>
+            </table>
           </div>
         </div>
-        <div class="downSm" @click="routerGo">
-          {{ $t("message.global.minimum") }}
-        </div>
-        <div class="loansTop">{{ $t("message.global.loancalculate") }}</div>
-        <div class="calculate">
-          <div class="counter couters" style="height:418px;">
-            <p>{{ $t("message.global.Housing") }}</p>
-            <el-input
-              class="inputs1"
-              type="number"
-              v-model.number="repaymentForm.loan"
-              placeholder
-            >
-              <i slot="suffix" class="el-input__icon">€</i>
-            </el-input>
-            <p>{{ $t("message.global.payment") }}</p>
-            <el-input
-              class="inputs"
-              type="number"
-              v-model.number="repaymentForm.downPay"
-              @input="repayFormDownPayInutHandler"
-              placeholder
-            >
-              <i slot="suffix" class="el-input__icon">€</i>
-            </el-input>
-            <p>{{ $t("message.global.particular") }}</p>
-            <el-select
-              v-model="repaymentForm.year"
-              style="width:305px;"
-              @change="repayFormYearChangeHandler"
-            >
-              <el-option
-                v-for="item in prsLis"
-                :key="item"
-                :label="item"
-                :value="item"
-              ></el-option>
-            </el-select>
-            <p>{{ $t("message.global.LOAN_INTEREST_RATE") }}</p>
-            <el-input
-              class="inputs"
-              type="number"
-              v-model.number="repaymentForm.rate"
-              placeholder
-            >
-              <i slot="suffix" class="el-input__icon">%</i>
-            </el-input>
-            <div class="buttonInput" @click="calculateLoanRepayment">
-              {{ $t("message.global.calculate") }}
-            </div>
+      </div>
+    </div>
+    <!-- <div class="minimum-lona-btn" @click="routerGo">
+      {{ $t("message.global.minimum") }}
+    </div> -->
+    <div class="title bold" style="margin-top: 16px;">{{ $t("message.global.loancalculate") }}</div>
+    <div class="calculate">
+      <div class="counter couters" style="height:418px;">
+        <p>{{ $t("message.global.Housing") }}</p>
+        <el-input
+          class="inputs1"
+          type="number"
+          v-model.number="repaymentForm.loan"
+          placeholder
+        >
+          <i slot="suffix" class="el-input__icon">€</i>
+        </el-input>
+        <p>{{ $t("message.global.payment") }}</p>
+        <el-input
+          class="inputs"
+          type="number"
+          v-model.number="repaymentForm.downPay"
+          @input="repayFormDownPayInutHandler"
+          placeholder
+        >
+          <i slot="suffix" class="el-input__icon">€</i>
+        </el-input>
+        <p>{{ $t("message.global.particular") }}</p>
+        <el-select
+          v-model="repaymentForm.year"
+          style="width:305px;"
+          @change="repayFormYearChangeHandler"
+        >
+          <el-option
+            v-for="item in prsLis"
+            :key="item"
+            :label="item"
+            :value="item"
+          ></el-option>
+        </el-select>
+        <p>{{ $t("message.global.LOAN_INTEREST_RATE") }}</p>
+        <el-input
+          class="inputs"
+          type="number"
+          v-model.number="repaymentForm.rate"
+          placeholder
+        >
+          <i slot="suffix" class="el-input__icon">%</i>
+        </el-input>
+        <el-row type="flex" justify="end">
+          <div class="calcaulate-btn white" @click="calculateLoanRepayment">
+            {{ $t("message.global.calculate") }}
           </div>
-          <div class="rightSs" v-if="loanRepaymentCalRes">
-            <span style="font-size:20px;color:#000;font-weight:600;">{{ $t("message.global.repaymen") }}:</span>
-            <span style="font-size:20px;color:#FF5E5E;">{{ fmoney(repayment, 2) }}€</span>
-            <div id="calculator-loan-repayment-chart" style="width: 331px;height:252px;"></div>
-            <div>
-              <p style="padding-left:20px;">
-                <span
-                  style="width:16px;height:16px;display:inline-block;background-color:#7ECF34;border-radius:8px;vertical-align: middle;"
-                ></span>
-                {{ $t("message.global.payment") }} :
-                <span style="color:#FF5E5E">{{ fmoney(loanRepaymentCalRes.A, 0) }} €</span>
-              </p>
-              <p style="margin-top:10px;padding-left:20px;">
-                <span
-                  style="width:16px;height:16px;display:inline-block;background-color:#1B9AFB;border-radius:8px;vertical-align: middle;"
-                ></span>
-                {{ $t("message.global.INTEREST_AMOUNT") }} :
-                <span style="color:#FF5E5E">{{ fmoney(loanRepaymentCalRes.L, 0) }} €</span>
-              </p>
-              <p style="margin-top:10px;padding-left:20px;">
-                <span
-                  style="width:16px;height:16px;display:inline-block;background-color:#F4A436;border-radius:8px;vertical-align: middle;"
-                ></span>
-                {{ $t("message.global.loans") }} :
-                <span style="color:#FF5E5E">{{ fmoney(loanRepaymentCalRes.S, 0) }} €</span>
-              </p>
-            </div>
-          </div>
+        </el-row>
+      </div>
+      <div class="right-part" v-if="loanRepaymentCalRes">
+        <span style="font-size:20px;color:#000;font-weight:600;">{{ $t("message.global.repaymen") }}:</span>
+        <span style="font-size:20px;color:#FF5E5E;">{{ fmoney(repayment, 2) }}€</span>
+        <div id="calculator-loan-repayment-chart" style="width: 331px;height:252px;"></div>
+        <div>
+          <p style="padding-left:20px;">
+            <span
+              style="width:16px;height:16px;display:inline-block;background-color:#7ECF34;border-radius:8px;vertical-align: middle;"
+            ></span>
+            {{ $t("message.global.payment") }} :
+            <span style="color:#FF5E5E">{{ fmoney(loanRepaymentCalRes.A, 0) }} €</span>
+          </p>
+          <p style="margin-top:10px;padding-left:20px;">
+            <span
+              style="width:16px;height:16px;display:inline-block;background-color:#1B9AFB;border-radius:8px;vertical-align: middle;"
+            ></span>
+            {{ $t("message.global.INTEREST_AMOUNT") }} :
+            <span style="color:#FF5E5E">{{ fmoney(loanRepaymentCalRes.L, 0) }} €</span>
+          </p>
+          <p style="margin-top:10px;padding-left:20px;">
+            <span
+              style="width:16px;height:16px;display:inline-block;background-color:#F4A436;border-radius:8px;vertical-align: middle;"
+            ></span>
+            {{ $t("message.global.loans") }} :
+            <span style="color:#FF5E5E">{{ fmoney(loanRepaymentCalRes.S, 0) }} €</span>
+          </p>
         </div>
       </div>
     </div>
@@ -152,17 +152,11 @@
 </template>
 
 <script>
-import headers from "~/components/PcIndex/header.vue";
-import foots from "~/components/PcIndex/foot.vue";
 import { fmoney } from '../../utils';
 import { loadRate, creditInterface, loanInterface,  } from '../../utils/calculator';
 
 export default {
   name: "calculator",
-  components: {
-    headers,
-    foots
-  },
   data() {
     return {
       reckenList: "",
@@ -201,7 +195,7 @@ export default {
     },
     repayFormDownPayInutHandler() {
       if (this.repaymentForm.downPay > this.repaymentForm.loan) {
-        this.repaymentForm.downPay = this.listrepaymentFormS.loan;
+        this.repaymentForm.downPay = this.repaymentForm.loan;
       }
     },
     capabilityFormRateInutHandler() {
@@ -274,44 +268,31 @@ function drawRepaymentPieChart (compInst) {
 }
 .loans {
   overflow: hidden;
-  .loansTop {
-    font-size: 32px;
-    color: #000;
-    font-weight: 700;
-    padding-top: 18px;
+  .title {
+    font-size: 20px;
+    margin-bottom: 8px;
   }
   .calculate {
-    overflow: hidden;
+    display: flex;
     padding: 12px;
-    box-sizing: border-box;
     .counter {
       width: 331px;
-      float: left;
-      height: 316px;
       box-shadow: 0px 4px 12px 4px rgba(0, 0, 0, 0.13);
-      box-sizing: border-box;
-      padding: 15px;
+      padding: 16px;
       p {
         margin: 10px 0;
         font-size: 14px;
-        color: #2a2a2a;
       }
-      .buttonInput {
-        background-color: #234dd4;
-        width: 110px;
-        height: 40px;
+      .calcaulate-btn {
+        margin: 16px 16px 0 0;
+        padding: 6px 16px;
+        background-color: var(--main-blue);
         border-radius: 6px;
-        float: right;
-        color: #fff;
         font-size: 20px;
-        line-height: 40px;
-        text-align: center;
-        margin: 20px;
         cursor: pointer;
       }
     }
-    .rightSs {
-      float: left;
+    .right-part {
       margin-left: 49px;
       .botS {
         margin-top: 14px;
@@ -347,7 +328,7 @@ function drawRepaymentPieChart (compInst) {
       }
     }
   }
-  .downSm {
+  .minimum-lona-btn {
     height: 57px;
     background-color: #839ff8;
     width: 750px;

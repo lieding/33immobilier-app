@@ -249,7 +249,7 @@
 <script>
 import rem from "~/common/rem.js";
 import List from '../components/Mindex/list.vue'
-import Header from '../components/Mindex/head.vue'
+import Header from '../components/Mindex/header.vue'
 import Footer from '../components/Mindex/footer.vue';
 import { BASE_API } from '../api'
 

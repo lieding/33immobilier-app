@@ -1,6 +1,5 @@
 <template>
   <div class="sellers">
-    <headers :class="{ colors: flag }"></headers>
     <div class="sellersBody centerSss">
       <div class="headline">
         <span>{{ $t("message.global.home") }}</span> /
@@ -608,13 +607,10 @@
         style="float:right;color:#fff;border-radius:7px;width:702px;height:70px;text-align:center;line-height:70px;background-color:#234DD4FF"
       >{{ $t("message.global.AddHousing") }}</div>
     </div>
-    <foots></foots>
   </div>
 </template>
 
 <script>
-import headers from "~/components/PcIndex/header.vue";
-import foots from "~/components/PcIndex/foot.vue";
 import addLis from "~/assets/image/addLis.png";
 import airG from "~/assets/image/picSzg/airG.png";
 import airH from "~/assets/image/picSzg/airH.png";
@@ -641,10 +637,6 @@ import { BASE_API } from '../api'
 export default {
   name: "sellers",
   middleware: "responsive",
-  components: {
-    headers,
-    foots
-  },
   head() {
     return {
       title:

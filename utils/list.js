@@ -45,11 +45,12 @@ export function handleProgrames (programes, TypologyOption) {
     month = date.getMonth() + 1,
     quarter = Math.ceil(month / 3);
   for (const it of programes) {
-    const { availablePropertiesMaxPrice: max, availablePropertiesMinPrice: min, typologies } = it;
+    let { availablePropertiesMaxPrice: max, availablePropertiesMinPrice: min, typologies } = it;
     setCompletionStatusFlag(it, curYear, quarter);
     if (max > maxPrice) maxPrice = max;
     if (minPrice === 0) minPrice = min;
     else if (min < minPrice) minPrice = min;
+    if (typeof typologies === 'string') typologies = typologies.split('|');
     if (Array.isArray(typologies)) {
       const translatedTypologies = [];
       for (let typology of typologies) {
@@ -82,3 +83,5 @@ function setCompletionStatusFlag (item, curYear, curQuarter) {
     }
   }
 }
+
+

@@ -1,6 +1,5 @@
 <template>
   <div class="encyclopedia">
-    <headers :class="{ colors: flag }"></headers>
     <div class="centerS seconBrok">
       <div class="headline">
         <span>主页</span> /
@@ -58,24 +57,16 @@
         </div>
       </div>
     </div>
-    <foots></foots>
   </div>
 </template>
 
 <script>
-import headers from "~/components/PcIndex/header.vue";
-import foots from "~/components/PcIndex/foot.vue";
-
 import title from "~/assets/image/titles.jpg";
 import logoT from "~/assets/image/logoTTT.png";
 
 export default {
   name: "encyclopedia",
   middleware: "responsive",
-  components: {
-    headers,
-    foots
-  },
   head() {
     return {
       title: `${this.outcome.title}`,

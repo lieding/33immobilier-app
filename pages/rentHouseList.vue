@@ -1,6 +1,5 @@
 <template>
   <div class="rentHouseList">
-    <headers :class="{ colors: flag }"></headers>
     <div class="centerS rent-house-top">
       <div class="headline">
         <span>{{ $t("message.global.home") }}</span> /
@@ -12,7 +11,7 @@
             :placeholder="$t('message.global.plec')"
             v-model="input"
           ></el-input>
-          <span @click="queryFirstPage">{{ $t("message.global.seek") }}</span>
+          <span @click="queryFirstPage">{{ $t("message.global.SEARCH") }}</span>
         </div>
         <div class="areaLis quyus">
           <span class="filename">{{ $t("message.global.area") }}</span>
@@ -173,13 +172,10 @@
         </div>
       </div>
     </div>
-    <foots></foots>
   </div>
 </template>
 
 <script>
-import headers from "~/components/PcIndex/header.vue";
-import foots from "~/components/PcIndex/foot.vue";
 import titles from "~/assets/image/titles.jpg";
 import goDown from "~/assets/image/goDown.png";
 import sort from "~/assets/image/sort.png";
@@ -194,10 +190,6 @@ import { scrollListener } from '../utils';
 export default {
   name: "rentHouseList",
   middleware: "responsive",
-  components: {
-    headers,
-    foots
-  },
   head() {
     return {
       title: "法国租房_出租房源_法国租房就上法国33找房",

@@ -1,186 +1,100 @@
 <template>
-  <div id="index" :style="{ backgroundImage: backgroundImage }">
-    <!-- 头 -->
-    <headers :vas="true"></headers>
-    <div class="character">{{ $t("message.global.Apartment") }}</div>
-    <div class="centerSs main-section">
-      <!-- 中 -->
-      <div class="listSmall">
-        <span
-          :class="{ listSmallT: true, emphasis: searchMode === SearchMode.NewPrograme }"
-          @click="toggleSearchMode(SearchMode.NewPrograme)"
-        >{{ $t("message.global.NewHouse") }}</span>
-        <span
-          :class="{ listSmallT: true, emphasis: searchMode === SearchMode.SecondHand }"
-          @click="toggleSearchMode(SearchMode.SecondHand)"
-        >{{ $t("message.global.second-hand") }}</span>
-      </div>
+  <div class="index-page">
+    <div class="flex-column justify-center align-center top">
+      <div class="bold white banner">{{ $t("message.global.INDEX_BANNER") }}</div>
       <div class="city-search-wrapper">
-        <el-autocomplete
-          v-model="searchVal"
-          :placeholder="$t('message.global.Where')"
-          :trigger-on-focus="false"
-          :fetch-suggestions="queryCity"
-          @select="queryCityHandler"
-        ></el-autocomplete>
-        <el-button type="primary" icon="el-icon-search" class="search-button" :loading="loadingPointInfo" @click="searchBtnHandler">
-          {{ $t("message.PAGE_INDEX.SELECT_CITY") }}
-        </el-button>
-      </div>
-      <div class="cardLs">
-        <div style="float:left;" @click="routerChange('/essaydetails', 3)">
-          <img src="~/assets/image/searchHouse.png" alt />
-          <span style="display:inline-block;padding-left:30px;">
-            <p style="font-weight:600;">
-              {{ $t("message.global.reductions") }}
-            </p>
-            <p style="margin-top:5px;font-size:16px;">
-              {{ $t("message.global.enjoy") }}
-            </p>
-          </span>
-        </div>
-        <div style="float:right;" @click="routerChange('/sellers')">
-          <img src="~/assets/image/houses.png" alt />
-          <span style="display:inline-block;padding-left:30px;">
-            <p style="font-weight:600;">{{ $t("message.global.want") }}</p>
-            <p style="font-size:16px;margin-top:5px;">
-              {{ $t("message.global.simpleness") }}
-            </p>
-          </span>
-        </div>
-      </div>
-      <!-- 底-新房楼盘 -->
-      <div class="newHoB">
-        <div class="secondTit">
-          <span class="secondL">{{ $t("message.global.Newbuilding") }}</span>
-        </div>
-        <p class="characterP">{{ $t("message.global.precedence") }}</p>
-        <div class="newHoList">
-          <div
-            class="NewLi"
-            @click="routerChange('/newDetails', { zip_code: item.zip_code, name_id: item.name_id, estate_name: item.estate_name, city: item.city })"
-            v-for="(item, index) in homePageInfo.newHousings"
-            :key="index"
-            :class="[index == 3 ? 'marginRigh' : '']"
+        <client-only>
+          <el-autocomplete
+            v-model="searchVal"
+            :placeholder="$t('message.global.INDEX_SEARCH_PLACEHOLDER')"
+            :trigger-on-focus="false"
+            :fetch-suggestions="queryCity"
+            :debounce="1500"
+            @select="locationAutocompleteSelectHandler"
           >
-            <span class="city">
-              <span class="provinces">{{ item.zip_code }}</span>
-              <span style="text-shadow:2px 2px 3px rgba(0,0,0,0.5);">{{
-                item.city
-              }}</span>
-            </span>
-            <span class="rightFlo">{{ item.deliveryQuarter }}</span>
-            <img class="newHoImg" :src="item.images[0]" alt />
-            <p class="newHoTit">{{ item.name }}</p>
-            <p class="newHoPr">
-              {{ item.availablePropertiesCount }} {{ $t("message.global.pieces") }}
-            </p>
-            <div class="tallylis">
-              <span class="tally" v-for="(tags, i) in item.tags" :key="i">{{
-                tags
-              }}</span>
-            </div>
-            <div class="newPrice">
-              {{ item.availablePropertiesMinPrice }} {{ $t("message.global.euro") }}
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- 底-二手 -->
-      <!-- <div class="secondHoB">
-        <div class="secondTit">
-          <span class="secondL">{{ $t("message.global.ordapartment") }}</span>
-          <span class="secondR" @click="routerChange('/anyEs', false)">{{
-            $t("message.global.AllNewHomes")
-          }}</span>
-        </div>
-        <div class="newHoList">
-          <div
-            class="NewLi"
-            v-for="(items, index) in homePageInfo.homesList"
-            :key="index"
-            :class="[index == 3 ? 'marginRigh' : '']"
-          >
-            <img
-              class="newHoImg"
-              @click="routerChange('/seconHandHous', items.id)"
-              :src="items.showUrl"
-              alt
-            />
-            <p class="newHoTit">{{ items.title }}</p>
-            <p class="newHoPr newHorPrs">
-              {{ items.bigProvince }}&nbsp;{{ items.province }}
-              <span>{{ items.total }}€ &nbsp;</span>
-            </p>
-            <div class="tallylis">
-              <span class="tally" style="color:#505050;font-weight:600;"
-                >{{ items.roomNum }} {{ $t("message.global.P") }}</span
-              >
-              <span class="tally" style="color:#505050;font-weight:600;"
-                >{{ items.bedRoomNum }} {{ $t("message.global.crouch") }}</span
-              >
-              <span class="tally" style="color:#505050;font-weight:600;"
-                >{{ items.acreage }}{{ $t("message.global.square") }}</span
-              >
-              <span class="priseRig"
-                >{{ items.unit }} {{ $t("message.global.square€") }}</span
-              >
-            </div>
-          </div>
-        </div>
-      </div> -->
-      <!-- 底-租房 -->
-      <div class="rentingHoB">
-        <div class="secondTit">
-          <span class="secondL">{{ $t("message.global.handpick") }}</span>
-          <span class="secondR" @click="routerChange('/rentHouseList', true)">{{ $t("message.global.Allhand") }}</span>
-        </div>
-        <div class="newHoList">
-          <div
-            @click="routerChange('/renting', items.id)"
-            class="NewLi"
-            v-for="(items, index) in homePageInfo.rentings"
-            :key="index"
-            :class="[index == 3 ? 'marginRigh' : '']"
-          >
-            <div>
-              <span class="city">
-                <span
-                  class="provinces"
-                  style="font-weight:600;font-size:11px;"
-                >
-                  {{ items.rentType ? $t("message.global.joint") : $t("message.global.grouping") }}
-                </span>
-              </span>
-              <img class="newHoImg" :src="items.showUrl" alt />
-              <p class="newHoTit">{{ items.title }}</p>
-              <p class="newHoPr">{{ items.province }} {{ items.city }}</p>
-              <div class="tallylis">
-                <span class="tally">{{ items.source ? $t("message.global.Personal") : $t("message.global.Intermediary") }}</span>
-                <span class="tally" v-if="!items.isSchools">{{ $t("message.global.jinxuexiao") }}</span>
-              </div>
-              <div class="newPrice">{{ items.total }} €</div>
-            </div>
-          </div>
-        </div>
+            <el-select v-model="searchMode" slot="prepend">
+              <el-option :label="$t('message.global.NewHouse')" :value="SearchMode.NewPrograme"></el-option>
+              <el-option :label="$t('message.global.SECOND_HAND')" :value="SearchMode.SecondHand"></el-option>
+            </el-select>
+            <el-button slot="append" icon="el-icon-right" class="search-btn" circle></el-button>
+          </el-autocomplete>
+        </client-only>
       </div>
     </div>
-    <div class="join-me">
-      <div class="centerSs">
-        <img class="join-img" :src="img.pcBroker" alt />
-        <span class="join-text">{{ $t("message.global.JOIN_AND_BECOME_AGENT") }}</span>
-        <span class="join-but" @click="openContactDialog">
-          <img :src="img.pcPerson" alt />
-          {{ $t("message.global.join") }}
-        </span>
+    <div class="main-section">
+      <div class="section-part section-title bold">{{ $t('message.global.Where') }}</div>
+      <div class="section-part">
+        <index-city-bar @select="moreProgramesClickHandler" />
+      </div>
+      <template v-if="programesGroupedByCities">
+        <div class="section-part section-title bold">
+          {{ $t('message.global.NewHouse') }}
+        </div>
+        <div class="section-part min-mt city-selection flex">
+          <div
+            v-for="it in programesGroupedByCities" :key="it.city"
+            class="item"
+            :class="{ active: activeProgrameCityKey === it.city }"
+            @click="activeProgrameCityKey = it.city"
+          >
+            {{ it.city }}
+          </div>
+        </div>
+        <div class="section-part min-mt cards flex">
+          <div v-for="item in selectedProgrames" :key="item.id" class="item" @click="handleProgrameClickHandler(item)">
+            <img :src="item.image" />
+            <div class="estate-name bold">{{ item.estate_name }}</div>
+            <div class="zipcode-city">{{ item.zip_code }} / {{ item.city }}</div>
+            <div class="price bold">{{ item.price }}</div>
+          </div>
+        </div>
+        <div class="full-w flex justify-center" style="margin-top: 24px;">
+          <div class="blue-button long" @click="moreProgramesClickHandler()">{{ $t('message.PAGE_INDEX.MORE') }}</div>
+        </div>
+      </template>
+      <div class="section-part join-us">
+        <div class="section-title bold">
+          {{ $t('message.global.JOIN_US_TITLE') }}
+        </div>
+        <div class="subtitle">
+          {{ $t('message.global.JOIN_US_SUBTITLE') }}
+        </div>
+        <div class="blue-button" @click="openContactDialog">
+          {{ $t('message.global.CONTACT_US') }}
+        </div>
+      </div>
+      <!-- 房价走势 -->
+      <div class="section-part section-title bold">
+        {{ $t('message.global.TREND_TITLE') }}
+        <div class="sub">{{ $t('message.global.TREND_SUB_TITLE') }}</div>
+      </div>
+      <div class="section-part">
+        <client-only>
+          <trend-chart />
+        </client-only>
+      </div>
+      <div class="section-part sell-rent-banner">
+        <div class="section-title bold white">{{ $t('message.PAGE_INDEX.SELL_RENT_BANNER.TITLE') }}</div>
+        <div class="white subtitle">{{ $t('message.PAGE_INDEX.SELL_RENT_BANNER.SUBTITLE') }}</div>
+        <div class="contact-btn bold" @click="openContactDialog">{{ $t('message.global.CONTACT_US') }}</div>
+        <img class="bg" src="/sell-rent-banner-bg.webp" alt />
+      </div>
+      <div class="section-part section-title bold">
+        {{ $t('message.global.instrument') }}
+      </div>
+      <div class="section-part min-mt">
+        <client-only>
+          <calculator />
+        </client-only>
+      </div>
+      <div class="section-part section-title bold">
+        {{ $t('message.PAGE_INDEX.PARTNER_TITLE') }}
+        <div class="sub">{{ $t('message.PAGE_INDEX.PARTNER_SUBTITLE_1') }}</div>
+        <div class="sub">{{ $t('message.PAGE_INDEX.PARTNER_SUBTITLE_2') }}</div>
+        <img src="/partner.png" />
       </div>
     </div>
     <client-only>
-      <!-- 房价走势 -->
-      <trend-chart />
-      <el-dialog :title="$t('message.PAGE_INDEX.SELECT_CITY')" :visible.sync="selectCityDialoVis" center width="75%">
-        <leaflet-map :mobile="false" :points="newProgramePoints" :visible="selectCityDialoVis" :marker-grouped="true" @pointSelect="programeCityPointSelectHandler" />
-      </el-dialog>
       <contact-dialog
         :visible="contactDialogVis"
         :titles="[]"
@@ -189,41 +103,26 @@
         @confirm="contactDialogConfirmHandler"
       />
     </client-only>
-    <foots></foots>
   </div>
 </template>
 
 <script>
-// 引入图片
-import searchBtPn from "~/assets/image/searchBut.png";
-import logoT from "~/assets/image/logoT.png";
-import sellersT from "~/assets/image/sellers.png";
-import backgroundI from "~/assets/image/backPc.png";
-import rightCard from "~/assets/image/right.png";
-import leftCard from "~/assets/image/left.png";
-import pcBroker from "~/assets/image/pcBroker.png";
-import pcPerson from "~/assets/image/pcPerson.png";
-import pcss from "~/assets/image/logo_promoteur.png";
-// 引入
-import foots from "~/components/PcIndex/foot.vue";
-import headers from "~/components/PcIndex/header.vue";
 import { gmapApiLoader } from '../common/gmapApiLoader';
 import TrendChart  from '../components/PcIndex/trendChart.vue';
-import LeafletMap from '../components/leafletMap.vue';
-import { parseRawCsv } from '../utils/csv';
-import { CsvUrlConfig, transformNewProgramPoints, PostApplicationMode } from '../common/config';
+import { PostApplicationMode } from '../common/config';
 import ContactDialog from '../components/PcIndex/ContactDialog.vue';
-
-const SearchMode = { NewPrograme: 'NewPrograme', SecondHand: 'SecondHand' };
+import Calculator from '../components/PcIndex/calculator.vue';
+import IndexCityBar from '../components/IndexCityBar.vue';
+import { CityRegionGeolocation, loadIndexPageCityProgrames, SearchMode } from '../common/config';
+import { doLocationAutocomplete } from '../common/locationAutocomplete';
 
 export default {
   name: "index",
   components: {
-    foots,
-    headers,
     TrendChart,
-    LeafletMap,
     ContactDialog,
+    Calculator,
+    IndexCityBar,
   },
   middleware: "responsive",
   head() {
@@ -246,64 +145,32 @@ export default {
   data() {
     return {
       contactDialogVis: false,
-      selectCityDialoVis: false,
       postjoinApplicationLoading: false,
-      loadingPointInfo: false,
-      newProgramePoints: null,
-      programInfoByCity: null,
       searchMode: SearchMode.NewPrograme, // 标记 选择租房买房
       searchVal: "", // 搜索绑定
-      homePageInfo: {}, // 主页数据,
       gmapAutocompleteService: null,
+      programesGroupedByCities: null,
+      activeProgrameCityKey: null,
     };
+  },
+  computed: {
+    selectedProgrames () {
+      const arr = this.programesGroupedByCities, key = this.activeProgrameCityKey;
+      return arr.find(it => it.city === key)?.items ?? [];
+    }
   },
   created () {
     this.SearchMode = SearchMode;
-    this.img = {
-      // 图片集合
-      title: logoT,
-      sellersT,
-      backgroundI,
-      searchBtPn,
-      leftCard,
-      rightCard,
-      pcBroker,
-      pcPerson,
-      pcss
-    };
-    this.backgroundImage = `url("${backgroundI}")`;
   },
   mounted () {
     if (process.client) {
       this.queryIndexPageInfo(); // 获取主页信息
-      let lang = this._i18n.locale;
+      const lang = this._i18n.locale;
       gmapApiLoader(lang)
         ?.then(() => this.gmapAutocompleteService = new window.google.maps.places.AutocompleteService());
     }
   },
   methods: {
-    searchBtnHandler () {
-      gmapApiLoader(lang)
-        ?.then(() => this.gmapAutocompleteService = new window.google.maps.places.AutocompleteService());
-      if (this.searchMode === SearchMode.NewPrograme) {
-        if (this.newProgramePoints) return this.selectCityDialoVis = true;
-        this.loadingPointInfo = true;
-        fetch(CsvUrlConfig.ProgramCityDistribution)
-          .then(res => res.text())
-          .then(txt => parseRawCsv(txt, ','))
-          .then(parsed => {
-            this.newProgramePoints = transformNewProgramPoints(parsed);
-            this.selectCityDialoVis = true;
-          })
-          .catch(console.error)
-          .finally(() => this.loadingPointInfo = false);
-      }
-    },
-    programeCityPointSelectHandler (point) {
-      const { city: city_name, lat, lng } = point ?? {};
-      if (!city_name) return;
-      this.$router.push({ path: `/newList?city_name=${city_name}&lat=${lat}&lng=${lng}` });
-    },
     openContactDialog() {
       this.contactDialogVis = true;
     },
@@ -322,306 +189,183 @@ export default {
       if (val == this.searchMode) return;
       this.searchMode = val;
     },
-    async queryIndexPageInfo() {
-      const res = await this.$api.article.getHomePageInfo();
-      const homePageInfo = res.data;
-      this.homePageInfo = homePageInfo;
+    queryIndexPageInfo() {
+      loadIndexPageCityProgrames().then(res => {
+        this.programesGroupedByCities = res;
+        if (res.length)
+          this.activeProgrameCityKey = res[0].city;
+      });
     },
-    routerChange(smt, flag = undefined) {
+    routerChange(path, flag = undefined) {
       const query = typeof flag === 'object' ? flag : { flag };
-      this.$router.push({ path: smt, query });
+      this.$router.push({ path, query });
     },
     queryCity(queryString, cb) {
+      const lang = this._i18n.locale;
+      gmapApiLoader(lang)
+        ?.then(() => this.gmapAutocompleteService = new window.google.maps.places.AutocompleteService());
       if (!queryString) return cb([]);
       const autocomplete = this.gmapAutocompleteService;
       if (!autocomplete) return cb([]);
-      autocomplete.getPlacePredictions({
-        input: queryString,
-        componentRestrictions: {
-          country: ['FRA'],
-        },
-        types: ["(cities)"],
-      }).then(res => {
-        const predictions = res.predictions;
-        if (!Array.isArray(predictions)) return cb([]);
-        const list = predictions.map(({ structured_formatting, place_id }) => {
-          const { main_text, secondary_text } = structured_formatting;
-          return { value: main_text, place_id, place_text: main_text };
-        });
-        cb(list);
-      });
+      doLocationAutocomplete(autocomplete, queryString)
+        .then(list => cb(list))
+        .catch(() => cb([]));
     },
-    queryCityHandler (item) {
-      const { place_text, place_id } = item;
-      if (!place_text || !place_id) return;
-      this.$router.push({ path: `/newList?place_text=${place_text}&place_id=${place_id}` });
+    locationAutocompleteSelectHandler (item) {
+      const { place_text, place_id, type: location_type } = item;
+      if (!place_text || !place_id || !location_type) return;
+      this.routerChange('/newList', { region_city: place_text, place_id, location_type });
     },
+    handleProgrameClickHandler (item) {
+      this.routerChange('/newDetails', { zip_code: item.zip_code, name_id: item.name_id, estate_name: item.estate_name, city: item.city });
+    },
+    moreProgramesClickHandler (ev) {
+      let { city_name, location_type = '' } = ev ?? {};
+      city_name = city_name ?? this.activeProgrameCityKey;
+      if (!city_name) return;
+      const { lat, lng } = CityRegionGeolocation[city_name] ?? {};
+      if (!lat || !lng) return;
+      this.routerChange('/newList', { region_city: city_name, lat, lng, location_type });
+    }
   },
 };
+
 
 </script>
 
 <style lang="scss" scoped>
-#index {
-  text-align: left;
-  background-repeat: no-repeat;
-  background-size: 100% 767px;
-  //  中
-  .character {
-    text-align: center;
-    color: #fff;
-    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
-    height: 160px;
-    line-height: 98px;
-    margin-top: 100px;
-    font-size: 80px;
-  }
-  .main-section {
-    .listSmall {
-      margin-top: 28px;
-      background-color: #212739;
-      display: inline-block;
-      height: 55px;
-      .listSmallT {
-        display: inline-block;
-        background-color: #5b5b5b;
-        font-size: 24px;
-        color: #fff;
-        padding: 0 20px;
-        line-height: 55px;
-        cursor: pointer;
-      }
-      .emphasis {
-        background-color: #212739;
-      }
+.index-page {
+  .top {
+    background-image: url('/index-bg.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 90% center;
+    width: 100%;
+    min-height: 340px;
+    .banner {
+      font-size: 56px;
+      margin-bottom: 36px;
     }
     .city-search-wrapper {
-      display: flex;
-      align-items: center;
-      width: 1100px;
-      padding: 32px 30px 22px;
-      background-color: #212739;
+      width: 500px;
       .el-autocomplete {
-        flex: 1;
-        vertical-align: middle;
-        font-size: 22px;
+        width: 100%;
       }
-      .el-button {
-        margin-left: 20px;
-        height: 62px;
-        background-color: #234cd3;
-        font-size: 22px;
-        border: unset;
-      }
-    }
-    .cardLs {
-      height: 187px;
-      margin-top: 95px;
-      div {
-        box-sizing: border-box;
-        padding-top: 49px;
-        padding-left: 35px;
-        background-color: #234dd4;
-        width: 536px;
-        height: 187px;
-        img {
-          vertical-align: top;
-          width: 90px;
-        }
-        span {
-          color: #fff;
-          font-size: 28px;
-        }
-        p {
-          width: 369px;
-          height: 56px;
-          line-height: 1;
-        }
-      }
-    }
-    // 底-新房楼盘
-    .newHoB,
-    .secondHoB,
-    .rentingHoB {
-      padding-top: 40px;
-      .secondTit {
-        overflow: hidden;
-        .secondL {
-          color: #000;
-          font-size: 36px;
-          font-weight: 700;
-          float: left;
-        }
-        .secondR {
-          color: #234cd3;
-          font-size: 20px;
-          cursor: pointer;
-          float: right;
-        }
-      }
-      .characterP {
-        margin-top: 18px;
-        font-size: 20px;
-        color: #a3a3a3;
-      }
-      .newHoList {
-        margin-top: 31px;
-        .marginRigh {
-          margin-right: 0 !important;
-        }
-        .NewLi {
-          display: inline-block;
-          margin-right: 41px;
-          box-sizing: border-box;
-          position: relative;
-          box-shadow: 0px 2px 14px 0px rgba(0, 0, 0, 0.12);
-          overflow: hidden;
-          width: 244px;
-          height: 241px;
-          .marginRigh {
-            margin-right: 0 !important;
-          }
-          .city {
-            position: absolute;
-            color: #fff;
-            top: 110px;
-            left: 5px;
-            .provinces {
-              display: inline-block;
-              padding: 2px 3px;
-              background-color: #6ac078;
-              border-radius: 3px;
-            }
-          }
-          .rightFlo {
-            right: 0px;
-            top: 0px;
-            background-color: #234cd3;
-            color: #fff;
-            font-size: 12px;
-            line-height: 27px;
-            position: absolute;
-            display: inline-block;
-            height: 27px;
-            padding: 0 13px;
-            border-radius: 0px 0px 0px 18px;
-          }
-          .newHoImg {
-            width: 244px;
-            height: 140px;
-            // padding-left:3px;
-          }
-          .newHoTit {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
-            padding-left: 8px;
-            font-size: 18px;
-            line-height: 18px;
-            margin-top: 3px;
-          }
-          .newHoPr {
-            padding-left: 8px;
-            font-size: 12px;
-            line-height: 18px;
-            margin-top: 3px;
-            span {
-              color: #ff5e5e;
-              float: right;
-              font-size: 16px;
-              font-weight: 600;
-            }
-          }
-          .newHorPrs {
-            margin: 10px 0;
-          }
-          .tallylis {
-            margin-top: 3px;
-            padding-left: 6px;
-            padding-right: 6px;
-            .tally {
-              margin-left: 3px;
-              display: inline-block;
-              background-color: #bfbfbf;
-              font-size: 11px;
-              height: 22px;
-              line-height: 22px;
-              color: #fff;
-              padding: 0 6px;
-            }
-            .priseRig {
-              font-size: 12px;
-              float: right;
-              color: #acacac;
-              vertical-align: middle;
-              line-height: 22px;
-            }
-          }
-          .newPrice {
-            font-size: 16px;
-            color: #ff5e5e;
-            text-align: right;
-            padding-right: 5px;
-            font-weight: 700;
-            margin-top: 5px;
-            margin-bottom: 5px;
-          }
-        }
+      .search-btn {
+        padding: 6px;
+        color: #fff;
+        background: var(--main-blue);
+        margin: 0 6px;
       }
     }
   }
-  .join-me {
-    background-color: #234cd3;
-    height: 220px;
-    width: 100%;
-    padding: 35px 24px;
-    box-sizing: border-box;
-    .join-img {
-      width: 118px;
-      height: 136px;
-      vertical-align: middle;
-    }
-    .join-text {
-      color: #fff;
-      font-size: 32px;
-      vertical-align: middle;
-      margin-left: 20px;
-    }
-    .join-but {
-      cursor: pointer;
-      margin-top: 46px;
-      float: right;
-      font-size: 20px;
-      background-color: #fff;
-      text-align: center;
-      width: 196px;
-      height: 46px;
-      vertical-align: middle;
-      padding: 9px;
-      color: #303440;
+  .main-section {
+    .section-part {
+      max-width: 1200px;
       box-sizing: border-box;
-      img {
-        width: 15px;
-        height: 15px;
-        vertical-align: middle;
+      margin: 56px auto 0;
+      &.min-mt {
+        margin-top: 24px;
       }
+    }
+    .section-title {
+      font-size: 36px;
+      .sub {
+        font-weight: initial;
+        font-size: 16px;
+        font-weight: 300;
+      }
+    }
+  }
+  .city-selection {
+    column-gap: 6px;
+    .item {
+      flex: 1;
+      padding: 6px 0 4px;
+      color: #333;
+      background: #eee;
+      text-align: center;
+      border-radius: 6px;
+      cursor: pointer;
+      &.active {
+        color: var(--white-color);
+        background: var(--main-blue);
+      }
+    }
+  }
+  .cards {
+    column-gap: 6px;
+    .item {
+      flex: 1;
+      > * {
+        margin-bottom: 6px;
+      }
+      img {
+        width: 100%;
+        aspect-ratio: 1;
+        object-fit: cover;
+      }
+      .zipcode-city {
+        font-size: 12px;
+        font-weight: 300;
+      }
+      .price {
+        color: #FE3F3F;
+        font-size: 12px;
+      }
+    }
+  }
+  .join-us {
+    padding: 36px 0 42px 36px;
+    border-radius: 8px;
+    background: linear-gradient(331deg, #FFE4DD 0%, #FFEAE7 23%, #DAF4F8 50%, #BBE5F4 100%);
+    .subtitle {
+      font-size: 18px;
+      font-weight: 400;
+      margin: 20px 0;
+    }
+  }
+  .sell-rent-banner {
+    padding: 128px 0 128px 48px;
+    border-radius: 8px;
+    position: relative;
+    background: var(--main-blue);
+    .bg {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 45%;
+      max-height: 90%;
+      object-fit: cover;
+      object-position: center top;
+    }
+    .contact-btn {
+      width: fit-content;
+      background: #fff;
+      border-radius: 6px;
+      padding: 10px 28px;
+    }
+    .subtitle {
+      margin: 36px 0 18px;
     }
   }
   .partner {
-    span {
-      padding-top: 40px;
-      color: #000;
-      font-size: 36px;
-      font-weight: 700;
-      display: inline-block;
-      padding-bottom: 20px;
+    img {
+      width: 100%;
+      object-fit: contain;
     }
-    p {
-      font-weight: 400;
-      font-size: 20px;
-      color: #a3a3a3;
+  }
+  .blue-button {
+    width: fit-content;
+    color: var(--white-color);
+    border-radius: 6px;
+    border: 1px solid var(--main-blue);
+    background: var(--main-blue);
+    padding: 10px 28px;
+    font-weight: bold;
+    cursor: pointer;
+    &.long {
+      padding: 6px 48px;
     }
   }
 }
@@ -630,8 +374,28 @@ export default {
 .city-search-wrapper {
   .el-autocomplete {
     .el-input {
+      .el-input-group__prepend {
+        border: unset;
+        background: #fff;
+        border-top-left-radius: 16px;
+        border-bottom-left-radius: 16px;
+        .el-select {
+          margin: unset;
+          width: 80px;
+          color: #000;
+          font-weight: bold;
+        }
+      }
       input {
-        height: 60px;
+        height: 48px;
+        border: unset;
+      }
+      .el-input-group__append {
+        border-top-right-radius: 16px;
+        border-bottom-right-radius: 16px;
+        border: unset;
+        background: #fff;
+        padding: unset;
       }
     }
   }

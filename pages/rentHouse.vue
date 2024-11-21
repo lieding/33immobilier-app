@@ -119,7 +119,7 @@
 </template>
 <script>
 import rem from "~/common/rem.js";
-import Header from "~/components/Mindex/head.vue";
+import Header from "~/components/Mindex/header.vue";
 import Footer from "~/components/Mindex/footer.vue";
 import { BASE_API } from '../api';
 import { fmoney } from '../utils';

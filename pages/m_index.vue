@@ -1,13 +1,15 @@
 <template>
-  <div class="row">
-    <client-only>
-      <Header />
+  <div>
+    <div class="top-banner relative">
       <!-- logo图 -->
-      <img src="~/assets/image/index.png" alt class="logo" />
-      <!-- 搜索框 -->
-      <div class="search-bar flex">
+      <img src="/index-bg.png" alt class="logo" />
+      <div class="banner bold absolute white full-w text-center">{{ $t("message.global.INDEX_BANNER") }}</div>
+    </div>
+    <!-- 搜索框 -->
+    <client-only>
+      <div class="search-bar flex absolute">
         <div class="flex mode-select">
-          <van-dropdown-menu class="opn">
+          <van-dropdown-menu class="search-bar-menu-option">
             <van-dropdown-item v-model="searchMode" :options="$t('message.index.SEARCH_MODE')" />
           </van-dropdown-menu>
         </div>
@@ -15,7 +17,7 @@
           <img src="~/assets/image/Search Icon.png" class="search-icon" />
           <input
             v-model="searchInput"
-            class="searchInput"
+            class="search-input"
             type="serch"
             :placeholder="$t('message.global.Where')"
             @click="searchInputClickHandler"
@@ -25,104 +27,82 @@
           </div>
         </div>
       </div>
-      <!-- 多分类 -->
-      <ul class="icon-bar">
-        <router-link :to="{ path: '/newhouse', query: { house: 'new' } }" tag="li">
-          <img src="~/assets/image/newhouse.png" class="list_img" />
-          <p>{{ $t("message.global.NewHouse") }}</p>
-        </router-link>
-        <!-- <router-link :to="{ path: '/newhouse', query: { house: 'second_hand' } }" tag="li">
-          <img src="~/assets/image/ordhouse.png" class="list_img" />
-          <p>{{ $t("message.global.second-hand") }}</p>
-        </router-link> -->
-        <router-link :to="{ path: '/rentHouse' }" tag="li">
-          <img src="~/assets/image/house.png" class="list_img" />
-          <p>{{ $t("message.global.tenement") }}</p>
-        </router-link>
-        <router-link :to="{ path: '/blogs' }" tag="li">
-          <img src="~/assets/image/baidu.png" class="list_img" />
-          <p>{{ $t("message.global.encyclopedia") }}</p>
-        </router-link>
-        <!-- <router-link :to="{ path: '/service' }" tag="li">
-          <img src="~/assets/image/Copy.png" class="list_img" />
-          <p>{{ $t("message.global.Saas") }}</p>
-        </router-link> -->
-      </ul>
-      <ul class="article-links">
-        <router-link :to="{ path: '/instrument' }" tag="li">
-          <img src="~/assets/image/blue.png" class="entry_img" />
-          <p>{{ $t("message.global.capacity") }}</p>
-        </router-link>
-        <router-link :to="{ path: '/instrument' }" tag="li">
-          <img src="~/assets/image/green.png" class="entry_img" />
-          <p>{{ $t("message.global.purchase") }}</p>
-        </router-link>
-        <router-link :to="{ path: '/article', query: { id: 3 } }" tag="li">
-          <img src="~/assets/image/red.png" class="entry_img" />
-          <p>{{ $t("message.global.reductionWhat") }}</p>
-        </router-link>
-        <router-link :to="{ path: '/article', query: { id: 4 } }" tag="li">
-          <img src="~/assets/image/Violet.png" class="entry_img" />
-          <p>{{ $t("message.global.interest") }}</p>
-        </router-link>
-      </ul>
-      <!-- 新房 -->
-      <div class="newhouse">
-        <div class="font width">
-          <span class="title">{{ $t("message.global.Newbuilding") }}</span>
-          <!-- <router-link
-            :to="{ path: '/newhouse', query: { house: 'new' } }"
-            class="watch"
-          >{{ $t("message.global.SEE_ALL_PROGRAMES") }}</router-link> -->
+    </client-only>
+    <div class="section">
+      <div class="section-title" style="margin-bottom: .1rem;">{{ $t('message.global.Where') }}</div>
+      <client-only>
+        <index-city-bar :mobile="true" @select="moreProgramesClickHandler" />
+      </client-only>
+    </div>
+    <!-- 新房 -->
+    <div class="section">
+      <div class="section-title">{{ $t('message.global.NewHouse') }}</div>
+      <div class="subtitle">{{ $t("message.global.precedence") }}</div>
+      <template v-if="programesGroupedByCities">
+        <div class="city-selection flex wrap">
+          <div
+            v-for="it in programesGroupedByCities"
+            :key="it.city"
+            class="item"
+            :class="{ active: activeProgrameCityKey === it.city }"
+            @click="activeProgrameCityKey = it.city"
+          >
+            {{ it.city }}
+          </div>
         </div>
-        <p class="detail">{{ $t("message.global.precedence") }}</p>
         <ul class="new-list">
           <router-link
             :to="{ path: '/Details', query: { zip_code: item.zip_code, name_id: item.name_id, estate_name: item.estate_name, city: item.city } }"
-            v-for="(item, index) in homePageInfo.newHousings"
+            v-for="(item, index) in selectedProgrames"
             :key="index"
             tag="li"
           >
             <div class="image-wrapper">
-              <img :src="item.images[0]" class="image" />
-              <span class="year">{{ item.deliveryQuarter }}</span>
+              <img :src="item.image" class="image" />
+              <span v-if="item.deliveryQuarter" class="top-right-tag">{{ item.deliveryQuarter }}</span>
             </div>
             <div class="right-section">
               <div class="title">{{ item.estate_name }}</div>
               <div class="info">{{ item.zip_code }} / {{ item.city }}</div>
               <div class="info">{{ item.availablePropertiesCount || item.propertiesCount }} {{ $t("message.PAGE_INDEX.PROPERTIES_LEFT") }}</div>
               <div class="price">
-                {{ item.availablePropertiesMinPrice }}€
+                {{ fmoney(item.availablePropertiesMinPrice) }}€ - {{ fmoney(item.availablePropertiesMaxPrice) }}$
               </div>
             </div>
           </router-link>
         </ul>
-      </div>
-      <!-- 专业房产顾问 -->
-      <div class="newhouse">
-        <div class="join-us-bar">
-          <img src="~/assets/image/pcBroker.png" alt />
-          <span style="margin-right: .1rem;">
-            {{ $t("message.global.JOIN_AND_BECOME_AGENT") }}
-          </span>
-          <span class="text_img" @click.stop="startContact">
-            <img src="~/assets/image/pcPerson.png" alt style="margin-right: .05rem;" />
-            {{ $t("message.global.JOIN_IMMEDIATELY") }}
-          </span>
+        <div class="flex-center">
+          <div class="more-btn white bold" @click="moreProgramesClickHandler()">{{ $t('message.PAGE_INDEX.MORE') }}</div>
         </div>
+      </template>
+    </div>
+    <!-- 专业房产顾问 -->
+    <div class="section">
+      <div class="join-us-bar">
+        <img src="/broker.png" alt />
+        <span class="white bold" style="margin-right: .1rem;">
+          {{ $t("message.global.JOIN_AND_BECOME_AGENT") }}
+        </span>
+        <span class="contact-btn inline-block" @click.stop="startContact">
+          {{ $t("message.global.JOIN_IMMEDIATELY") }}
+        </span>
       </div>
-      <!-- 我们的合作伙伴 -->
-      <div class="newhouse">
-        <div class="font width">
-          <span class="title">{{ $t("message.global.ourFri") }}</span>
-        </div>
-        <p class="detail">{{ $t("message.global.pionner") }}</p>
-        <p class="detail">{{ $t("message.global.Courtier") }}</p>
-        <img src="~/assets/image/logo_promoteur.png" class="partner_image" />
-      </div>
-      <hr class="hr" />
-      <!-- 底部 -->
-      <Footer />
+    </div>
+    <div class="section">
+      <div class="section-title">{{ $t('message.global.instrument') }}</div>
+      <client-only>
+        <calculator />
+      </client-only>
+    </div>
+    <!-- 我们的合作伙伴 -->
+    <div class="section partner">
+      <div class="section-title">{{ $t("message.global.ourFri") }}</div>
+      <div class="subtitle">{{ $t("message.global.pionner") }}</div>
+      <div class="subtitle">{{ $t("message.global.Courtier") }}</div>
+      <img src="/partner.png" />
+    </div>
+    <hr class="divider" />
+    <client-only>
       <contact-popup
         :visible="contactPopupVis"
         :titles="[]"
@@ -136,18 +116,18 @@
 
 <script>
 import rem from "~/common/rem.js";
-import Header from "~/components/Mindex/header.vue";
-import Footer from "~/components/Mindex/footer.vue";
 import { Notify } from 'vant';
 import { gmapApiLoader } from '../common/gmapApiLoader';
 import ContactPopup from '../components/Mindex/contactPopup.vue';
-import { SearchMode, PostApplicationMode } from '../common/config';
+import Calculator from '../components/Mindex/calculator.vue';
+import { SearchMode, PostApplicationMode, loadIndexPageCityProgrames, CityRegionGeolocation } from '../common/config';
+import IndexCityBar from '../components/IndexCityBar.vue';
+import { doLocationAutocomplete } from '../common/locationAutocomplete';
+import { fmoney } from '../utils';
 
 export default {
   components: {
-    Header,
-    Footer,
-    ContactPopup,
+    ContactPopup, Calculator, IndexCityBar,
   },
   middleware: "responsive",
   head() {
@@ -169,17 +149,19 @@ export default {
   },
   data() {
     return {
-      homePageInfo: {},
-      newHousings: [], //新房
       homesList: [], //二手房
-      rentings: [], //租房
       searchMode: SearchMode.NewPrograme,
       searchInput: "",
       searchSuggestions: [],
       suggestionPopupActive: false,
       contactPopupVis: false,
       contactBtnLoading: false,
+      programesGroupedByCities: null,
+      activeProgrameCityKey: null,
     };
+  },
+  created () {
+    this.fmoney = fmoney;
   },
   mounted() {
     if (!process.client) return;
@@ -193,14 +175,24 @@ export default {
       window.removeEventListener('click', this.__popupCanceEvListener);
     }
   },
+  computed: {
+    selectedProgrames () {
+      const arr = this.programesGroupedByCities, key = this.activeProgrameCityKey;
+      return arr.find(it => it.city === key)?.items ?? [];
+    }
+  },
   watch: {
     searchInput (input) {
+      gmapApiLoader(lang)
+        ?.then(() => this.gmapAutocompleteService = new window.google.maps.places.AutocompleteService());
       if (input.length < 2) {
         this.searchSuggestions = [];
         this.suggestionPopupActive = false;
         return;
       }
-      searchCities.call(this, input)
+      const service = this.gmapAutocompleteService;
+      if (!service) return;
+      doLocationAutocomplete(service, input)
         .then(suggestions => {
           this.searchSuggestions = suggestions;
           this.suggestionPopupActive = true;
@@ -214,7 +206,7 @@ export default {
       if (searchMode == SearchMode.NewPrograme) {
         const { place_id, place_text } = suggestion;
         if (!place_id || !place_text) return;
-        this.$router.push({ path: "/newhouse", query: { searchMode, place_id, place_text } });
+        this.$router.push({ path: "/newhouse", query: { searchMode, place_id, region_city: place_text } });
       } else if (searchMode == SearchMode.SecondHand) {
         this.$router.push({
           path: "/newhouse",
@@ -244,86 +236,102 @@ export default {
         .catch(console.error)
         .finally(() => this.contactBtnLoading = false);
     },
-    async queryIndexPageInfo() {
-      const res = await this.$api.article.getHomePageInfo();
-      const homePageInfo = res.data;
-      this.homePageInfo = homePageInfo;
+    queryIndexPageInfo() {
+      loadIndexPageCityProgrames().then(res => {
+        this.programesGroupedByCities = res?.slice(0, 5);
+        if (res.length)
+          this.activeProgrameCityKey = res[0].city;
+      });
     },
     startContact () {
       this.contactPopupVis = true;
+    },
+    moreProgramesClickHandler (ev) {
+      let { city_name: region_city, location_type = '' } = ev ?? {};
+      region_city = region_city ?? this.activeProgrameCityKey;
+      if (!region_city) return;
+      const { lat, lng } = CityRegionGeolocation[region_city] ?? {};
+      if (!lat || !lng) return;
+      this.$router.push({ path: '/newhouse', query: { searchMode: SearchMode.NewPrograme, region_city, lat, lng, location_type } });
     }
   }
 };
 
-/**
- * @param {string} input
-*/
-function searchCities (input) {
-  const autocomplete = this.gmapAutocompleteService;
-  if (!autocomplete) return Promise.resolve([]);
-  return autocomplete.getPlacePredictions({
-    input,
-    componentRestrictions: {
-      country: ['FRA'],
-    },
-    types: ["(cities)"],
-  }).then(res => {
-    const predictions = res.predictions;
-    if (!Array.isArray(predictions)) return [];
-    const list = predictions.map(({ structured_formatting, place_id }) => {
-      const { main_text, secondary_text } = structured_formatting;
-      return { value: main_text, place_id, place_text: main_text };
-    });
-    return list;
-  });
-}
-
 </script>
-<style lang="scss">
-.trend_p {
-  .el-input__inner {
-    height: 0.3rem;
-  }
-}
-</style>
-<style scoped lang="scss">
-.hr {
+
+<style lang="scss" scoped>
+.divider {
   border: none;
   height: 0.01rem;
   margin: 0.12rem 0;
   background-color: #ececec;
 }
-.font {
-  font-size: 16px;
+.section {
+  margin: .14rem 0.08rem .06rem;
+  .section-title {
+    font-size: 0.2rem;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.76);
+  }
+  .subtitle {
+    font-size: 0.13rem;
+    color: rgba(126, 126, 126, 0.76);
+  }
 }
-.logo {
-  height: 1.89rem;
-  width: 100%;
-  margin-top: 0.06rem;
-}
-.title_hr {
-  border: none;
-  height: 0.01rem;
-  background-color: #c2c2c2;
-  margin: 0;
+.top-banner {
+  .logo {
+    height: 1.89rem;
+    width: 100%;
+  }
+  .banner {
+    font-size: 22px;
+    top: .25rem;
+    left: 0;
+  }
 }
 .search-bar {
-  position: absolute;
-  top: 2.15rem;
-  margin: 0 0.18rem 0 0.18rem;
+  top: 1.2rem;
+  left: 5%;
   width: 90%;
   height: 0.43rem;
-  background: white;
-  bottom: 0.2rem;
-  z-index: 1;
+  background: #fff;
+  opacity: .9;
+  border-radius: 6px;
   box-shadow: 0px 2px 11px 0px rgba(0, 0, 0, 0.11);
   .mode-select {
-    padding-right: 0.15rem;
-    background: white;
+    padding-right: 0.1rem;
+    .search-bar-menu-option {
+      width: 0.72rem;
+      ::v-deep {
+        .van-dropdown-menu__bar {
+          box-shadow: unset;
+          background-color: transparent;
+          height: .43rem;
+          .van-dropdown-menu__item {
+            .van-dropdown-menu__title {
+              .van-ellipsis {
+                font-size: .16rem;
+              }
+            }
+          }
+        }
+      }
+    }
   }
   .input-bar {
     padding: 0.09rem 0;
     position: relative;
+    .search-icon {
+      width: 0.16rem;
+      height: 0.16rem;
+      padding: 0.03rem 0.15rem;
+      border-left: 1px solid #8888;
+    }
+    .search-input {
+      border: none;
+      width: 2rem;
+      font-size: 0.13rem;
+    }
     .suggestion-popup {
       visibility: hidden;
       position: absolute;
@@ -347,101 +355,6 @@ function searchCities (input) {
     }
   }
 }
-.width {
-  width: 100%;
-  margin-bottom: 0.2rem;
-}
-.flex {
-  display: flex;
-}
-.opn {
-  font-size: 0.13rem;
-  width: 0.72rem;
-  height: 0.43rem;
-  ::v-deep {
-    .van-dropdown-menu__bar {
-      box-shadow: unset;
-      background-color: transparent;
-      height: 43px;
-    }
-  }
-}
-.van-ellipsis {
-  color: rgba(38, 38, 38, 1);
-}
-.search-icon {
-  width: 0.16rem;
-  height: 0.16rem;
-  padding: 0.03rem 0.15rem;
-  border-left: 1px solid #8888;
-}
-.searchInput {
-  border: none;
-  width: 2rem;
-  font-size: 0.13rem;
-}
-.icon-bar {
-  font-size: 0.15rem;
-  width: 100%;
-  margin-top: 0.2rem;
-  li {
-    float: left;
-    text-align: center;
-    width: 33.33%;
-    margin-bottom: 0.05rem;
-  }
-}
-.list_img {
-  width: 0.49rem;
-  height: 0.5rem;
-}
-.article-links {
-  font-size: 0.12rem;
-  height: 0.75rem;
-  display: flex;
-  width: 100%;
-  li {
-    text-align: center;
-    width: 24%;
-    position: relative;
-  }
-  p {
-    position: absolute;
-    bottom: 0.35rem;
-    left: 0.13rem;
-    font-size: 0.12rem;
-    font-weight: 600;
-    color: rgba(40, 40, 40, 0.76);
-    line-height: 0.17rem;
-  }
-}
-.entry_img {
-  width: 1.04rem;
-  height: 0.75rem;
-}
-.title {
-  font-size: 0.2rem;
-  font-weight: 600;
-  line-height: 0.28rem;
-  color: rgba(0, 0, 0, 0.76);
-}
-.watch {
-  font-size: 0.13rem;
-  color: rgba(35, 76, 211, 1);
-  line-height: 0.18rem;
-  float: right;
-  margin-top: 0.03rem;
-}
-.detail {
-  font-size: 0.13rem;
-  color: rgba(126, 126, 126, 0.76);
-  line-height: 0.18rem;
-}
-.newhouse {
-  margin: 0 0.12rem;
-  font-size: 16px;
-  padding-bottom: 0.1rem;
-}
 .info {
   font-size: 0.13rem;
   font-weight: 600;
@@ -453,7 +366,7 @@ function searchCities (input) {
   padding: 0 0.01rem;
 }
 .new-list {
-  margin-top: 0.1rem;
+  margin: 0.1rem 0 .16rem;
   li {
     display: flex;
     padding-top: 0.11rem;
@@ -465,16 +378,16 @@ function searchCities (input) {
         width: 1.44rem;
         height: 0.98rem;
       }
-      .year {
+      .top-right-tag {
         position: absolute;
         top: 0;
         right: 0;
         padding: .03rem .03rem .02rem .1rem;
-        background: rgba(35, 76, 211, 1);
+        background: var(--main-blue);
         border-radius: 0px 0px 0px 13px;
         font-size: 0.12rem;
         font-weight: 600;
-        color: rgba(255, 255, 255, 1);
+        color: var(--white-color);
       }
     }
     .right-section {
@@ -497,39 +410,47 @@ function searchCities (input) {
   }
 }
 .join-us-bar {
-  height: 0.66rem;
-  box-sizing: border-box;
-  padding-top: 0.06rem;
-  width: 100%;
-  position: relative;
-  background: rgba(35, 76, 211, 1);
+  background: var(--main-blue);
   img {
     width: 0.48rem;
     vertical-align: middle;
   }
   span {
-    color: #ffffff;
     font-size: 0.18rem;
   }
-  .text_img {
-    height: 0.27rem;
-    position: absolute;
-    right: 0.08rem;
-    top: 0.15rem;
-    background: rgba(255, 255, 255, 1);
-    img {
-      width: 0.12rem;
-    }
-    padding: 0.03rem 0.05rem;
-    text-align: center;
-    font-size: 12px;
-    color: rgba(48, 52, 64, 1);
-    line-height: 0.27rem;
+  .contact-btn {
+    background: #fff;
+    padding: 0.03rem 0.1rem;
+    font-size: .14rem;
+    border-radius: 6px;
   }
 }
-.partner_image {
-  width: 3.52rem;
-  height: 1.7rem;
-  margin-top: 0.12rem;
+.city-selection {
+  column-gap: 6px;
+  row-gap: 4px;
+  margin-top: .1rem;
+  .item {
+    padding: .06rem .1rem .04rem;
+    color: #333;
+    background: #eee;
+    border-radius: 4px;
+    cursor: pointer;
+    &.active {
+      color: var(--white-color);
+      background: var(--main-blue);
+    }
+  }
+}
+.partner {
+  img {
+    width: 3.52rem;
+    height: 1.7rem;
+    margin-top: 0.12rem;
+  }
+}
+.more-btn {
+  background: var(--main-blue);
+  padding: .06rem .2rem;
+  border-radius: 6px;
 }
 </style>

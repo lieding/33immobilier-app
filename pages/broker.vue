@@ -1,6 +1,5 @@
 <template>
   <div class="broker">
-    <headers :class="{ colors: flag }"></headers>
     <div class="centerS seconBrok">
       <div class="headline">
         <span>
@@ -26,7 +25,7 @@
                         font-size:18px;color:#fff;text-align:center;
                         line-height:36px;vertical-align: top;
                         border:1px solid #214ED4"
-              >{{ $t("message.global.seek") }}</span
+              >{{ $t("message.global.SEARCH") }}</span
             >
           </div>
         </div>
@@ -181,13 +180,10 @@
         </div>
       </div>
     </div>
-    <foots></foots>
   </div>
 </template>
 
 <script>
-import headers from "~/components/PcIndex/header.vue";
-import foots from "~/components/PcIndex/foot.vue";
 
 import proVip from "~/assets/image/proVip.png";
 import visitCard from "~/assets/image/visitCard.png";
@@ -200,10 +196,6 @@ import wxInd from "~/assets/image/wxInd.png";
 export default {
   name: "broker",
   middleware: "responsive",
-  components: {
-    headers,
-    foots
-  },
   head() {
     return {
       title: "法国房产经纪人_法国房产中介",

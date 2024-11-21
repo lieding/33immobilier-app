@@ -44,8 +44,8 @@ export default {
     points: {
       type: Array,
     },
-    activePointIdx: {
-      type: Number,
+    activePointId: {
+      type: String,
     },
     needCircle: {
       type: Boolean,
@@ -68,11 +68,13 @@ export default {
     points() {
       this.refreshPoints();
     },
-    activePointIdx (idx, oldIdx) {
+    activePointId (id, oldId) {
       const points = this.__points;
       if (!Array.isArray(points)) return;
-      if (points[oldIdx]) points[oldIdx].content.style.color = InitialMarkerSvgColor;
-      if (points[idx]) points[idx].content.style.color = 'red';
+      const oldMarker = points.find(it => it.__id === oldId);
+      if (oldMarker) oldMarker.content.style.color = InitialMarkerSvgColor;
+      const marker = points.find(it => it.__id === id);
+      if (marker) marker.content.style.color = 'red';
     },
     latitude () {
       clearTimeout(this.__changeCenterTimeout);
@@ -94,20 +96,19 @@ export default {
       if (this.points?.length) {
         const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
         const parser = new DOMParser();
-        this.__points = this.points.map(({ idx, longitude, latitude }) => {
-          const pinSvg =
-            parser.parseFromString(svgContent, 'image/svg+xml').documentElement;
-          const marker = new AdvancedMarkerElement({
-            map,
-            position: { lat: latitude, lng: longitude },
-            title: (idx + 1).toString(),
-            content: pinSvg,
-          });
-          marker.addListener("click", () => {
-            this.$emit('pointSelect', idx);
-          });
-          return marker;
-        });
+        const points = this.points.slice();
+        const __points = [];
+        const addMarkers = () => {
+          const slice = points.splice(0, 10);
+          const markers = slice.map(({ id, latitude, longitude }) =>
+            addMarker.call(this, id, latitude, longitude, map, AdvancedMarkerElement, parser));
+          __points.push(...markers);
+          if (points.length)
+            requestAnimationFrame(addMarkers)
+          else
+            this.__points = __points;
+        }
+        requestAnimationFrame(addMarkers);
       } else {
         this.__points = null;
       }
@@ -171,6 +172,21 @@ export default {
       return name;
     }
   },
+}
+
+function addMarker (id, latitude, longitude, map, AdvancedMarkerElement, parser) {
+  const pinSvg = parser.parseFromString(svgContent, 'image/svg+xml').documentElement;
+  const marker = new AdvancedMarkerElement({
+    map,
+    position: { lat: latitude, lng: longitude },
+    title: '',
+    content: pinSvg,
+  });
+  marker.__id = id;
+  marker.addListener("click", () => {
+    this.$emit('pointSelect', id);
+  });
+  return marker;
 }
 
 function changeCenter () {

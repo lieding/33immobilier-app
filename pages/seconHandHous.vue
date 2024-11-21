@@ -1,6 +1,5 @@
 <template>
   <div class="seconHandHous">
-    <headers :class="{ colors: flag }"></headers>
     <div class="secondBod centerS clearfix">
       <div class="headline">
         <span>{{ $t("message.global.home") }}</span> /
@@ -347,7 +346,7 @@
         >
           <p>
             {{ $t("message.global.accommodation") }}：
-            <span>{{ $t("message.global.second-hand") }}</span>
+            <span>{{ $t("message.global.SECOND_HAND") }}</span>
           </p>
           <p>
             {{ $t("message.global.subject") }}：
@@ -421,7 +420,6 @@
         </div>
       </div>
     </el-dialog>
-    <foots></foots>
     <client-only>
       <gallery
         :images="getPostListingData.picList"
@@ -433,8 +431,6 @@
 </template>
 
 <script>
-import headers from "~/components/PcIndex/header.vue";
-import foots from "~/components/PcIndex/foot.vue";
 import Calculator from "~/components/PcIndex/calculator.vue";
 
 import phone from "~/assets/image/phone.png";
@@ -453,8 +449,6 @@ export default {
   name: "seconHandHous",
   middleware: "responsive",
   components: {
-    headers,
-    foots,
     Calculator
   },
   head() {

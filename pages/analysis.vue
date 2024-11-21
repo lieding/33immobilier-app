@@ -1,24 +1,19 @@
 <template>
   <div>
-    <Header :class="{ colors: flag }"></Header>
     <div class="headline centerS">
       <span>{{ $t("message.global.home") }}</span> /
       <span>{{ $t("message.global.instrument") }}</span>
       <calculator />
     </div>
-    <Footer />
   </div>
 </template>
+
 <script>
-import Header from "~/components/PcIndex/header.vue";
-import Footer from "~/components/PcIndex/foot.vue";
 import Calculator from "~/components/PcIndex/calculator.vue";
 
 export default {
   middleware: "responsive",
   components: {
-    Header,
-    Footer,
     Calculator
   },
   head() {

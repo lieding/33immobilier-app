@@ -140,7 +140,7 @@
 <script>
 import rem from "~/common/rem.js";
 import { Notify } from 'vant';
-import Header from "~/components/Mindex/head.vue";
+import Header from "~/components/Mindex/header.vue";
 import Footer from "~/components/Mindex/footer.vue";
 import List from "~/components/Mindex/list.vue";
 import JumpMap from '~/components/jumpMap.vue';
@@ -381,13 +381,11 @@ td {
   padding: 0.13rem 0 0.1rem 0;
 }
 .hand {
-  height: 0.22rem;
   font-size: 0.14rem;
   font-weight: 600;
-  line-height: 0.2rem;
-  margin-bottom: 0.03rem;
-  padding-left: 0.1rem;
-  padding-top: 0.01rem;
+  span {
+    font-size: .16rem;
+  }
 }
 .time {
   color: rgba(186, 186, 186, 1);

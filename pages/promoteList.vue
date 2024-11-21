@@ -1,6 +1,5 @@
 <template>
   <div class="promoteList">
-    <!-- <headers :class="{colors:flag}"></headers> -->
     <div>
       <div class="loans">
         <div class="loansTop">{{ $t("message.global.LOAN_CAPABILITY_CALCULATION") }}</div>
@@ -166,21 +165,14 @@
         </div>
       </div>
     </div>
-    <!-- <foots/> -->
   </div>
 </template>
 
 <script>
-import headers from "~/components/PcIndex/header.vue";
-import foots from "~/components/PcIndex/foot.vue";
 
 export default {
   name: "promoteList",
   middleware: "responsive",
-  components: {
-    headers,
-    foots
-  },
   head() {
     return {
       title:

@@ -1,6 +1,5 @@
 <template>
   <div class="seconHandHous">
-    <headers :class="{ colors: flag }"></headers>
     <div class="secondBod centerS clearfix">
       <div class="headline">
         <span>{{ $t("message.global.home") }}</span> /
@@ -490,7 +489,6 @@
         </div>
       </div>
     </el-dialog>
-    <foots></foots>
     <gallery
       :images="getPostListingData.pics"
       :index="galleryIndex"
@@ -500,10 +498,6 @@
 </template>
 
 <script>
-import headers from "~/components/PcIndex/header.vue";
-import foots from "~/components/PcIndex/foot.vue";
-import base from "~/api/base.js";
-
 import phone from "~/assets/image/phone.png";
 import proVip from "~/assets/image/proVip.png";
 import visitCard from "~/assets/image/visitCard.png";

@@ -1,10 +1,9 @@
 <template>
   <div class="serve">
-    <headers :class="{ colors: flag }"></headers>
     <div class="centerS">
       <div class="headline">
         <span>{{ $t("message.global.home") }}</span> /
-        <span>{{ $t("message.global.Saas") }}</span>
+        <span>{{ $t("message.global.SERVICE") }}</span>
       </div>
       <p style="font-size:32px;font-weight:600;margin-top:10px;">
         {{ $t("message.global.fuwureny") }}
@@ -55,21 +54,13 @@
         </div>
       </div>
     </div>
-    <foots></foots>
   </div>
 </template>
 
 <script>
-import headers from "~/components/PcIndex/header.vue";
-import foots from "~/components/PcIndex/foot.vue";
-
 export default {
   name: "sellers",
   middleware: "responsive",
-  components: {
-    headers,
-    foots
-  },
   head() {
     return {
       title:

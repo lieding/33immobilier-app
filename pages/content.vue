@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header :title="$t('message.global.relation')" />
+    <Header :title="$t('message.global.CONTACT_US')" />
     <div>
       <img src="~/assets/image/content.png" alt class="img" />
       <div class="quiz">
@@ -48,7 +48,7 @@
 </template>
 <script>
 import rem from "~/common/rem.js";
-import Header from "~/components/Mindex/head.vue";
+import Header from "~/components/Mindex/header.vue";
 import Footer from "~/components/Mindex/footer.vue";
 export default {
   name: "",

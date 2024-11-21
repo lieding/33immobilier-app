@@ -1,6 +1,5 @@
 <template>
   <div class="seconHandHous">
-    <headers class="colors"></headers>
     <div class="centerS secondBod clearfix">
       <div class="headline">
         <span>{{ $t("message.global.home") }}</span> /
@@ -246,7 +245,6 @@
         </div>
       </div>
     </div>
-    <foots></foots>
     <client-only>
       <gallery
         :images="programeInfo.images"
@@ -265,10 +263,7 @@
 </template>
 
 <script>
-import headers from "~/components/PcIndex/header.vue";
-import foots from "~/components/PcIndex/foot.vue";
 import Calculator from "~/components/PcIndex/calculator.vue";
-
 import JumpMap from '~/components/jumpMap.vue';
 import ContactDialog from '../components/PcIndex/ContactDialog.vue';
 import { TypologyOptionConfig, extractProgramProperty, PostApplicationMode } from '../common/config';
@@ -277,8 +272,6 @@ export default {
   name: "newDetails",
   middleware: "responsive",
   components: {
-    headers,
-    foots,
     Calculator,
     JumpMap,
     ContactDialog,

@@ -1,16 +1,16 @@
 <template>
   <div class="wrapper">
-    <el-tabs type="border-card">
-      <el-tab-pane :label="$t('message.COMPONENT_TREND_CHART.REGION')">
+    <el-tabs v-model="activeTab" type="border-card">
+      <el-tab-pane :label="$t('message.COMPONENT_TREND_CHART.REGION')" :name="Tab.REGION">
         <div id="region-trend-chart" class="chart-wrapper"></div>
       </el-tab-pane>
-      <el-tab-pane :label="$t('message.COMPONENT_TREND_CHART.REGION_PER_METER')">
+      <el-tab-pane :label="$t('message.COMPONENT_TREND_CHART.REGION_PER_METER')" :name="Tab.REGION_PER_METER">
         <div id="region-per-meter-trend-chart" class="chart-wrapper"></div>
       </el-tab-pane>
-      <el-tab-pane :label="$t('message.COMPONENT_TREND_CHART.PARIS_PER_METER')">
+      <el-tab-pane :label="$t('message.COMPONENT_TREND_CHART.PARIS_PER_METER')" :name="Tab.PARIS_PER_METER">
         <div id="paris-per-meter-trend-chart" class="chart-wrapper"></div>
       </el-tab-pane>
-      <el-tab-pane :label="$t('message.COMPONENT_TREND_CHART.LATEST_CITIES')">
+      <el-tab-pane :label="$t('message.COMPONENT_TREND_CHART.LATEST_CITIES')" :name="Tab.LATEST_CITIES">
         <el-radio-group v-model="selectedlatestCitiesType" style="margin-bottom: 30px;">
           <el-radio-button :label="LatestRadioOption.RADIO_LATEST_PARIS">{{ $t("message.COMPONENT_TREND_CHART.RADIO_LATEST_PARIS") }}</el-radio-button>
           <el-radio-button :label="LatestRadioOption.RADIO_LATEST_NEAREST_CITIES">{{ $t("message.COMPONENT_TREND_CHART.RADIO_LATEST_NEAREST_CITIES") }}</el-radio-button>
@@ -31,6 +31,13 @@ const LatestRadioOption = {
   RADIO_LATEST_LARGEST_CITIES: 'RADIO_LATEST_LARGEST_CITIES'
 };
 
+const Tab = {
+  REGION: 'REGION',
+  REGION_PER_METER: 'REGION_PER_METER',
+  PARIS_PER_METER: 'PARIS_PER_METER',
+  LATEST_CITIES: 'LATEST_CITIES',
+}
+
 const LatestCitiesPopulationVenteChartId = 'latest-cities-population-vente-chart';
 const LatestCitiesAppartmentVillaChartId = 'latest-cities-appartment-villa-chart';
 
@@ -38,19 +45,40 @@ const LatestCitiesAppartmentVillaChartId = 'latest-cities-appartment-villa-chart
 export default {
   data () {
     return {
-      latestCitiesSourceData: null,
+      activeTab: Tab.REGION,
       selectedlatestCitiesType: LatestRadioOption.RADIO_LATEST_PARIS,
+      latestCitiesSourceData: null,
+      regionTrendPerMeter: null,
+      parisTrendPerMeter: null,
     };
   },
   created () {
     this.LatestCitiesAppartmentVillaChartId = LatestCitiesAppartmentVillaChartId;
     this.LatestCitiesPopulationVenteChartId = LatestCitiesPopulationVenteChartId;
     this.LatestRadioOption = LatestRadioOption;
+    this.Tab = Tab;
   },
   mounted () {
     if (process.client) this.loadDate();
   },
   watch: {
+    activeTab (tab) {
+      this.$nextTick(() => {
+        if (tab === Tab.REGION_PER_METER && !this.__region_per_meter_chart) {
+          if (this.regionTrendPerMeter)
+            this.__region_per_meter_chart = drawGeneralTrendChart('region-per-meter-trend-chart', this.regionTrendPerMeter);
+        }
+        if (tab === Tab.PARIS_PER_METER && !this.__paris_per_meter_chart) {
+          if (this.parisTrendPerMeter)
+            this.__paris_per_meter_chart = drawGeneralTrendChart('paris-per-meter-trend-chart', this.parisTrendPerMeter);
+        }
+        if (tab === Tab.LATEST_CITIES && !this.__latest_cities_chart) {
+          if (this.latestCitiesSourceData)
+            this.__latest_cities_chart = drawLatestCitiesChart.call(this, LatestCitiesAppartmentVillaChartId,
+              this.latestCitiesSourceData?.DISTRICTS_IN_PARIS);
+        }
+      });
+    },
     selectedlatestCitiesType (type) {
       if (this.latestCitiesSourceData) {
         let rows;
@@ -60,35 +88,40 @@ export default {
           rows = this.latestCitiesSourceData.NEAREST_MUNICIPALITES;
         else if (type === LatestRadioOption.RADIO_LATEST_LARGEST_CITIES)
           rows = this.latestCitiesSourceData.LARGEST_CITIES;
-        updateLatestCitiesChart(this.__latestCitiesChart, rows)
+        updateLatestCitiesChart(this.__latest_cities_chart, rows)
       }
     }
   },
   methods: {
     loadDate () {
-      fetch('https://raw.githubusercontent.com/mingzemicco/33immo-config/refs/heads/main/latest-cities.csv')
-        .then(res => res.text())
-        .then(txt => parseLatestCitiesCsv(txt, ','))
-        .then(parsed => {
-          this.latestCitiesSourceData = parsed;
-          this.__latestCitiesChart =
-            drawLatestCitiesChart.call(this, LatestCitiesAppartmentVillaChartId, parsed.DISTRICTS_IN_PARIS);
-        })
-        .catch(console.error);
       fetch('https://raw.githubusercontent.com/mingzemicco/33immo-config/refs/heads/main/region-trend.csv')
         .then(res => res.text())
         .then(txt => parseRawCsv(txt, ','))
         .then(parsed => drawGeneralTrendChart('region-trend-chart', parsed))
         .catch(console.error);
+      fetch('https://raw.githubusercontent.com/mingzemicco/33immo-config/refs/heads/main/latest-cities.csv')
+        .then(res => res.text())
+        .then(txt => parseLatestCitiesCsv(txt, ','))
+        .then(parsed => {
+          this.latestCitiesSourceData = parsed;
+          // this.__latestCitiesChart = drawLatestCitiesChart.call(this, LatestCitiesAppartmentVillaChartId, parsed.DISTRICTS_IN_PARIS);
+        })
+        .catch(console.error);
       fetch('https://raw.githubusercontent.com/mingzemicco/33immo-config/refs/heads/main/region-trend-per-meter.csv')
         .then(res => res.text())
         .then(txt => parseRawCsv(txt, ','))
-        .then(parsed => drawGeneralTrendChart('region-per-meter-trend-chart', parsed))
+        .then(parsed =>
+          this.regionTrendPerMeter = parsed
+          // drawGeneralTrendChart('region-per-meter-trend-chart', parsed)
+        )
         .catch(console.error);
       fetch('https://raw.githubusercontent.com/mingzemicco/33immo-config/refs/heads/main/paris-trend-per-meter.csv')
         .then(res => res.text())
         .then(txt => parseRawCsv(txt, ','))
-        .then(parsed => drawGeneralTrendChart('paris-per-meter-trend-chart', parsed))
+        .then(parsed => {
+          this.parisTrendPerMeter = parsed;
+          // drawGeneralTrendChart('paris-per-meter-trend-chart', parsed)
+        })
         .catch(console.error);
     }
   }
@@ -172,6 +205,7 @@ function drawGeneralTrendChart (wrapperId, sourceData) {
     },
   });
   chart.render();
+  return chart;
 }
 </script>
 
@@ -182,6 +216,7 @@ function drawGeneralTrendChart (wrapperId, sourceData) {
   box-sizing: border-box;
 }
 .chart-wrapper {
+  width: 100%;
   height: max-content;
   min-height: 400px;
 }

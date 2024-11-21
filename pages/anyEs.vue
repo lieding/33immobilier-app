@@ -1,6 +1,5 @@
 <template>
   <div @click="hides" class="anyEs">
-    <headers :class="{ colors: flag }"></headers>
     <div class="centerS seconBrok">
       <div class="headline">
         <span>{{ $t("message.global.home") }}</span> /
@@ -237,14 +236,10 @@
         </span>
       </div>
     </div>
-    <foots></foots>
   </div>
 </template>
 
 <script>
-import headers from "~/components/PcIndex/header.vue";
-import foots from "~/components/PcIndex/foot.vue";
-
 import pulldow from "~/assets/image/pullDow.png";
 import proVip from "~/assets/image/proVip.png";
 import visitCard from "~/assets/image/visitCard.png";
@@ -261,10 +256,6 @@ import baseUrl from "~/api/base.js";
 export default {
   name: "anyEs",
   middleware: "responsive",
-  components: {
-    headers,
-    foots,
-  },
   head() {
     return {
       title: "法国二手房_巴黎二手房出售买卖信息网-法国33找房",

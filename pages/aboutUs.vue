@@ -1,6 +1,5 @@
 <template>
   <div class="aboutUs">
-    <headers :class="{ colors: flag }"></headers>
     <div class="centerSsss seconBrok">
       <div class="headline">
         <span>{{ $t("message.global.home") }}</span> /
@@ -20,24 +19,16 @@
         </div>
       </div>
     </div>
-    <foots></foots>
   </div>
 </template>
 
 <script>
-import headers from "~/components/PcIndex/header.vue";
-import foots from "~/components/PcIndex/foot.vue";
-
 import title from "~/assets/image/aboutus.png";
 import logoT from "~/assets/image/logoTTT.png";
 
 export default {
   name: "aboutUs",
   middleware: "responsive",
-  components: {
-    headers,
-    foots
-  },
   data() {
     return {
       flag: true,

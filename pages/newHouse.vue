@@ -1,23 +1,18 @@
 <template>
-  <div class="page-wrapper">
-    <Header
-      :title="isNew ? $t('message.global.homeList') : $t('message.global.second-hand')"
-    />
+  <div class="m-list-page-wrapper">
     <!-- 顶部筛选框 -->
     <div :class="isNew ? 'select' : 'section'">
       <!-- 区域 -->
       <van-dropdown-menu class="customized-dropdown-menu">
         <van-dropdown-item
-          :title="cityDoopdownMenuTitle"
-          class="city-dropdown-item"
-          @opened="cityDopdownItemOpenedHandler"
-          @close="leafletMapVis = false"
-          ref="item-city-dropdown"
+          :title="regionCityDropdownMenuTitle"
+          class="region-city-dropdown-item"
+          @open="regionCitySearchBarVis = true"
+          ref="item-region-city-dropdown"
         >
-          <leaflet-map
-            :mobile="true" :points="newProgramePoints" :marker-grouped="true"
-            :visible="leafletMapVis" @pointSelect="cityPointSelectHandler"
-          />
+          <client-only>
+            <region-city-search-bar :visible="regionCitySearchBarVis" :data-loader="regionCityDataLoader" @select="regionCityIndexBarSelectHandler" />
+          </client-only>
         </van-dropdown-item>
       </van-dropdown-menu>
       <!-- 价格 -->
@@ -88,16 +83,18 @@
       </van-dropdown-menu>
     </div>
     <div class="map">
-      <template v-if="placeInfo && placeInfo.longitude && placeInfo.latitude">
-        <jump-map
-          :latitude="placeInfo.latitude"
-          :longitude="placeInfo.longitude"
-          :init-zoom="11"
-          :points="mapPoints"
-          :active-point-idx="activePointIdx"
-          @pointSelect="pointSelectHandler"
-        ></jump-map>
-      </template>
+      <client-only>
+        <template v-if="placeInfo && placeInfo.longitude && placeInfo.latitude">
+          <jump-map
+            :latitude="placeInfo.latitude"
+            :longitude="placeInfo.longitude"
+            :init-zoom="11"
+            :points="mapPoints"
+            :active-point-id="activePointId"
+            @pointSelect="pointSelectHandler"
+          ></jump-map>
+        </template>
+      </client-only>
     </div>
     <div class="sort-title" v-if="isSecondHand">
       <p class="second-hand">{{ $t("message.global.ordHouseapartment") }}</p>
@@ -129,10 +126,10 @@
         <template v-if="isNew">
           <router-link
             :to="{ path: '/Details', query: { id: item.id } }"
-            v-for="(item, index) in filteredNewProgrames"
-            :key="index"
+            v-for="(item) in filteredNewProgrames"
+            :key="item.id"
           >
-            <li class="list-li" ref="programItem" :class="{ active: activePointIdx === index }">
+            <li class="list-li" ref="programItem" :class="{ active: activePointId === item.id }">
               <div class="flex">
                 <div class="img">
                   <van-image :src="item.images[0]" class="cover-image" />
@@ -140,12 +137,12 @@
                 </div>
                 <div class="text">
                   <p class="text_title">{{ item.estate_name }}</p>
-                  <p class="sort">{{ item.zip_code }}/{{ item.city }}</p>
+                  <p class="sort">{{ item.zip_code }} / {{ item.city }}</p>
                   <p class="sort">
                     <van-tag v-for="it in item.translatedTypologies" :key="it" type="primary" size=""medium>{{ it }}</van-tag>
                   </p>
                   <p class="money">
-                    {{ item.availablePropertiesMinPrice }}€ - {{ item.availablePropertiesMaxPrice }}€
+                    {{ fmoney(item.availablePropertiesMinPrice) }}€ - {{ fmoney(item.availablePropertiesMaxPrice) }}€
                   </p>
                 </div>
               </div>
@@ -193,32 +190,26 @@
         <hr class="hr" />
       </van-list>
     </div>
-    <Footer />
   </div>
 </template>
 
 <script>
 import rem from "~/common/rem.js";
-import Header from "~/components/Mindex/head.vue";
-import Footer from "~/components/Mindex/footer.vue";
 import RangeSlider from '../components/Mindex/rangeSlider.vue';
-import { fmoney } from '../utils';
+import { fmoney, searchCityGeolocation } from '../utils';
 import { SearchMode } from '../common/config';
 import JumpMap from '../components/jumpMap.vue';
-import LeafletMap from '../components/leafletMap.vue';
-import { TypologyOptionConfig, CsvUrlConfig, transformNewProgramPoints } from '../common/config';
-import { parseRawCsv } from '../utils/csv';
+import RegionCitySearchBar from '../components/Mindex/regionCitySearchBar.vue';
+import { TypologyOptionConfig, loadProgramesByRegions, LocationType, loadProgrameRegionidCities, L1AREA_REGIONS, L2AREA_REGION } from '../common/config';
 import { filterProgrammeListByConditions, CompletionStatusOptionConfig, handleProgrames } from '../utils/list';
 
 export default {
   name: "",
   middleware: "responsive",
   components: {
-    Header,
-    Footer,
     RangeSlider,
     JumpMap,
-    LeafletMap,
+    RegionCitySearchBar,
   },
   head() {
     return generateHead(this.searchMode);
@@ -226,7 +217,7 @@ export default {
   data() {
     return {
       visible: false,
-      activePointIdx: -1,
+      activePointId: '',
       completionStatus: "",
       minPrice: 0, //价格
       maxPrice: 0, //最大价格
@@ -245,8 +236,7 @@ export default {
       maxPage: 1, //新房的最大页数
       bedRoomNum: "",
       livingRoomNum: "",
-      newProgramePoints: null,
-      leafletMapVis: false,
+      regionCitySearchBarVis: false,
     };
   },
   watch: {
@@ -264,54 +254,44 @@ export default {
     finished () {
       return this.isNew ? true : this.page >= this.maxPage;
     },
-    cityDoopdownMenuTitle () {
+    regionCityDropdownMenuTitle () {
       let text;
       if (this.isNew) {
-        const query = this.$route.query;
-        text = this.placeInfo?.name ?? query.place_text ?? this.$t('message.PAGE_INDEX.SELECT_CITY');
+        text = this.placeInfo?.name ?? this.$t('message.PAGE_INDEX.SELECT_CITY');
       }
       return text?.slice(0, 4) ?? '';
     },
     mapPoints () {
-      return this.filteredNewProgrames?.map((it, idx) => {
-        const { longitude, latitude } = it;
+      return this.filteredNewProgrames?.map((it) => {
+        const { longitude, latitude, id } = it;
         // const content = translatedTypologies.join(',');
-        return { idx, longitude, latitude };
+        return { id, longitude, latitude };
       }) ?? [];
     }
   },
   created() {
     this.fmoney = fmoney;
-    const { searchMode } = this.$route.query;
-    this.searchMode = searchMode;
+    this.setInitialPlaceinfo();
     this.CompletionStatusOption =
       CompletionStatusOptionConfig.map(({ key, I18NKey }) => ({ value:key, text: this.$t(`message.NEW_LIST.${I18NKey}`) }));
     this.TypologyOption = TypologyOptionConfig
       .map(({ incluedKey, I18NKey }) => ({ value: incluedKey, incluedKey, text: this.$t(`message.NEW_LIST.${I18NKey}`) }));
+    this.regionCityDataLoader = loadProgrameRegionidCities;
   },
   mounted() {
     rem();
     if (process.client) this.queryList();
   },
   methods: {
-    cityDopdownItemOpenedHandler () {
-      if (this.isNew) {
-        if (this.newProgramePoints) return this.leafletMapVis = true;
-        fetch(CsvUrlConfig.ProgramCityDistribution)
-          .then(res => res.text()).then(txt => parseRawCsv(txt, ','))
-          .then(parsed => {
-            this.newProgramePoints = transformNewProgramPoints(parsed);
-            this.leafletMapVis = true;
-          })
-          .catch(console.error)
-      }
-    },
-    cityPointSelectHandler (point) {
-      const { city, lng, lat } = point;
-      this.toggleDropdownMenu('item-city-dropdown');
-      if (!city || !lng || !lat) return;
-      this.placeInfo = { name: city, latitude: lat, longitude: lng };
-      this.queryList();
+    setInitialPlaceinfo () {
+      const { searchMode, region_city, lat, lng, location_type } = this.$route.query;
+      this.searchMode = searchMode;
+      this.placeInfo = {
+        name: region_city,
+        latitude: Number(lat) || null,
+        longitude: Number(lng) || null,
+        locationType: location_type
+      };
     },
     OnRank(val) {
     },
@@ -320,20 +300,36 @@ export default {
     //  面积
     onAcreage(value) {
     },
+    regionCityIndexBarSelectHandler ({ locationType, ...params }) {
+      this.toggleDropdownMenu('item-region-city-dropdown');
+      if (locationType === LocationType.L2_AREA) {
+        const { name, latitude, longitude } = params;
+        this.placeInfo = { ...this.placeInfo, lat: Number(latitude) || null, lng: Number(longitude) || null, name, locationType };
+        this.queryList();
+      } else if (locationType === LocationType.LOCALITY) {
+        const { name, regionId } = params;
+        searchCityGeolocation(name, regionId)
+          .then(({ latitude, longitude }) => Object.assign(this.placeInfo, { latitude, longitude }))
+          .finally(() => {
+            this.placeInfo = { ...this.placeInfo, name, locationType };
+            this.queryList();
+          });
+      }
+    },
     priceRangeChangeHandler (range) {
-      this.activePointIdx = -1;
+      this.activePointId = '';
       if (this.isNew) {
         this.filteredNewProgrames =
           filterProgrammeListByConditions(this.newProgrames, range, [this.completionStatus], [this.selectedTypology]);
       }
     },
     selectedTypologyChangeHandler (selectedTypology) {
-      this.activePointIdx = -1;
+      this.activePointId = '';
       this.filteredNewProgrames =
         filterProgrammeListByConditions(this.newProgrames, this.priceRange, [this.completionStatus], [selectedTypology]);
     },
     completionStatusChangeHandler(status) {
-      this.activePointIdx = -1;
+      this.activePointId = '';
       this.filteredNewProgrames =
         filterProgrammeListByConditions(this.newProgrames, this.priceRange, [status], [this.selectedTypology]);
     },
@@ -342,52 +338,84 @@ export default {
       if (el) el.toggle?.();
     },
     pointSelectHandler (idx) {
-      const itemEls = this.isNew ? this.$refs.programItem : [];
-      if (!Array.isArray(itemEls)) return;
-      const el = itemEls[idx];
-      if (!el) return;
-      this.activePointIdx = idx;
-      el.scrollIntoView({ behavior: "smooth", block: "center" });
+      // const itemEls = this.isNew ? this.$refs.programItem : [];
+      // if (!Array.isArray(itemEls)) return;
+      // const el = itemEls[idx];
+      // if (!el) return;
+      // this.activePointId = idx;
+      // el.scrollIntoView({ behavior: "smooth", block: "center" });
     },
-    // 列表
-    queryList(initial = true) {
+    async queryList(initial = true) {
       let page = this.page;
       const lang = this._i18n.locale;
       if (initial) {
         page = 1;
         this.secondHousingList = [];
-        this.newProgrames = []; //新房
+        this.newProgrames = [];
+        this.filteredNewProgrames = [];
       } else {
         page++;
       }
       let params = { page, lang };
       this.isLoading = true;
       if (this.isNew) {
-        const { place_id } = this.$route.query;
-        const { name: city_name } = this.placeInfo ?? {};
-        if (city_name) params = { ...params, city_name };
-        else params = { ...params, place_id };
+        const { place_id } = this.$route.query, { name: region_city, locationType } = this.placeInfo;
+        if (!place_id && region_city) {
+          const regions = [];
+          if (locationType === LocationType.L1_AREA) {
+            const found = L1AREA_REGIONS[region_city];
+            if (found) regions.push(...found);
+          } else if (locationType === LocationType.L2_AREA) {
+            const found = L2AREA_REGION[region_city];
+            if (found) regions.push(found);
+          }
+          if (regions.length) {
+            return loadProgramesByRegions(regions)
+              .then(programes =>
+                Object.assign(this, setProgrames(programes, this.TypologyOption))
+              )
+              .finally(() => this.isLoading = false)
+          }
+        }
+        if (place_id && locationType === LocationType.L2_AREA) {
+          const { placeInfo } = (await this.$api.article.searchPlaceInfoById({ place_id })).data ?? {};
+          if (placeInfo) {
+            this.placeInfo = placeInfo;
+            const regionId = placeInfo.postal_code.substring(0, 2);
+            await loadProgramesByRegions([regionId])
+              .then(programes => Object.assign(this, setProgrames(programes, this.TypologyOption)))
+          }
+          return this.isLoading = false;
+        }
+        if (place_id) params = { ...params, place_id };
+        else if (region_city) params = { ...params, city_name: region_city };
         this.$api.article.searchProgramesByCity(params).then(res => {
           const { placeInfo, programes } = res.data;
-          if (placeInfo && !city_name) this.placeInfo = placeInfo;
+          if (placeInfo && place_id) this.placeInfo = placeInfo;
           if (Array.isArray(programes)) {
-            const { minPrice, maxPrice, typologyOptionKeys } = handleProgrames(programes, this.TypologyOption);
-            this.maxPrice = maxPrice;
-            this.minPrice = minPrice;
-            this.priceRange = [ minPrice, maxPrice ];
-            this.typologyOptions = typologyOptionKeys
-              .map(key => this.TypologyOption.find(it => it.value === key)).filter(Boolean);
-            this.newProgrames = programes;
-            this.filteredNewProgrames = programes.slice();
+            Object.assign(this, setProgrames(programes, this.TypologyOption));
           }
           // this.maxPage = maxPage;
           this.page = params.page;
-        }).finally(() => this.isLoading = false);
+        })
+          .catch(console.error)
+          .finally(() => this.isLoading = false);
       } else if (this.isSecondHand) {
       }
     }
   },
 };
+
+function setProgrames (programes, TypologyOption) {
+  const { minPrice, maxPrice, typologyOptionKeys } = handleProgrames(programes, TypologyOption);
+  return {
+    minPrice, maxPrice, priceRange: [ minPrice, maxPrice ],
+    typologyOptions: typologyOptionKeys
+      .map(key => TypologyOption.find(it => it.value === key)).filter(Boolean),
+    newProgrames: programes.slice(),
+    filteredNewProgrames: programes.slice(),
+  }
+}
 
 function generateHead (searchMode) {
   if (searchMode === SearchMode.NewPrograme) {
@@ -426,7 +454,7 @@ function generateHead (searchMode) {
 </script>
 
 <style lang="scss" scoped>
-.page-wrapper {
+.m-list-page-wrapper {
   display: flex;
   flex-direction: column;
   font-size: 16px;
@@ -454,18 +482,13 @@ function generateHead (searchMode) {
 }
 .map {
   height: 3.24rem;
-  margin: 0 0.13rem 0.11rem 0.13rem;
+  margin-bottom: .11rem;
 }
 .unit {
   font-size: 0.12rem;
   color: rgba(172, 172, 172, 1);
   line-height: 0.17rem;
   padding-left: 0.1rem;
-}
-.order_title {
-  font-size: 0.2rem;
-  font-weight: 600;
-  line-height: 0.28rem;
 }
 .van-pull-refresh__track {
   margin-bottom: 0.25rem;
@@ -492,46 +515,6 @@ function generateHead (searchMode) {
     text-align: center;
   }
 }
-.sorter {
-  font-size: 0.13rem;
-  color: rgba(35, 76, 211, 1);
-  line-height: 0.18rem;
-  float: right;
-}
-.list {
-  font-size: 0.15rem;
-  width: 100%;
-  height: 1.5rem;
-}
-.list li {
-  float: left;
-  text-align: center;
-  width: 33.33%;
-  margin-bottom: 0.05rem;
-}
-.list_img {
-  width: 0.49rem;
-  height: 0.5rem;
-}
-.entry li {
-  float: left;
-  text-align: center;
-  width: 24%;
-  position: relative;
-}
-.entry {
-  font-size: 0.12rem;
-  height: 0.75rem;
-}
-.entry_img {
-  width: 1.04rem;
-  height: 0.75rem;
-}
-.entry p {
-  position: absolute;
-  bottom: 0.4rem;
-  right: 0.5rem;
-}
 .title {
   font-size: 0.2rem;
   font-weight: 600;
@@ -542,15 +525,6 @@ function generateHead (searchMode) {
   color: rgba(35, 76, 211, 1);
   line-height: 0.18rem;
   float: right;
-}
-.detail {
-  font-size: 0.13rem;
-  color: rgba(126, 126, 126, 0.76);
-  line-height: 0.18rem;
-}
-.newhouse {
-  margin: 0 0.12rem;
-  padding-bottom: 0.1rem;
 }
 .text_title {
   font-size: 0.16rem;
@@ -626,9 +600,6 @@ function generateHead (searchMode) {
     display: flex;
   }
 }
-.flex {
-  padding-top: 0.11rem;
-}
 .text p {
   padding-bottom: 0.04rem;
 }
@@ -641,19 +612,10 @@ function generateHead (searchMode) {
   width: 0.28rem;
   height: 0.28rem;
 }
-.list-font {
-  height: 0.22rem;
-  font-size: 0.16rem;
-  font-weight: 600;
-  color: rgba(5, 5, 5, 1);
-  line-height: 0.22rem;
-  position: relative;
-  bottom: 0.08rem;
-}
 .list-li {
-  padding: 0 0 0 0.1rem;
+  padding: 0 0 6px 0.1rem;
   &.active {
-    border: 2px solid rgb(35, 77, 212);
+    border: 2px solid var(--main-blue);
   }
 }
 .van-popup {
@@ -673,14 +635,17 @@ function generateHead (searchMode) {
   border-radius: 0.06rem;
 }
 </style>
-<style lang="scss">
+<style>
 .van-popup {
   padding-top: 0.3rem;
 }
-.city-dropdown-item .van-dropdown-item__content {
+.region-city-dropdown-item .van-dropdown-item__content {
   height: 100%;
   max-height: unset;
   box-sizing: border-box;
   padding: 0 .02rem .03rem;
+}
+.m-list-page-wrapper .select .van-dropdown-menu .van-dropdown-menu__bar .van-dropdown-menu__title .van-ellipsis {
+  font-size: .14rem;
 }
 </style>

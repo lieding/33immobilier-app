@@ -368,7 +368,7 @@
 <script>
 import rem from "~/common/rem.js";
 import List from '../components/Mindex/list.vue'
-import Header from '../components/Mindex/head.vue'
+import Header from '../components/Mindex/header.vue'
 import Footer from '../components/Mindex/footer.vue'
 import { BASE_API } from "../api"
 
@@ -567,7 +567,7 @@ export default {
        Onshare(smt){
             let list={
                 types:'second_hand',
-                type:this.$t("message.global.second-hand"),
+                type:this.$t("message.global.SECOND_HAND"),
                 id:this.id,
                  estate:this.data.title,
                 province:this.data.province,

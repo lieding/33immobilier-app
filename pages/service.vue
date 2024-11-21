@@ -1,7 +1,7 @@
 <template>
   <div class="service">
     <client-only>
-      <Header :title="$t('message.global.Saas')" />
+      <Header :title="$t('message.global.SERVICE')" />
       <van-tabs @click="onClick">
         <van-tab :title="$t('message.global.zhuangxiu')">
           <div class="decorate" v-for="(item, index) in mapList" :key="index">
@@ -88,7 +88,7 @@
 </template>
 <script>
 import rem from "~/common/rem.js";
-import Header from "~/components/Mindex/head.vue";
+import Header from "~/components/Mindex/header.vue";
 import Footer from "~/components/Mindex/footer.vue";
 export default {
   middleware: "responsive",

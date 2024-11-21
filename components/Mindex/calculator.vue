@@ -2,7 +2,7 @@
   <div>
     <!-- 贷款能力计算 -->
     <div class="section">
-      <span class="section-title">{{ $t("message.global.LOAN_CAPABILITY_CALCULATION") }}</span>
+      <div class="section-title full-w text-center">{{ $t("message.global.LOAN_CAPABILITY_CALCULATION") }}</div>
       <div class="repay">
         <p class="field-label">{{ $t("message.global.onnetincome") }}</p>
         <van-cell-group>
@@ -38,8 +38,8 @@
           />
         </van-cell-group>
       </div>
-      <div class="btn">
-        <van-button type="info" class="btn-i" @click="doCalculate">{{$t("message.global.calculate")}}</van-button>
+      <div class="btn flex">
+        <van-button type="info" size="small" class="btn-i" @click="doCalculate">{{$t("message.global.calculate")}}</van-button>
       </div>
       <p class="monthly" v-if="monthlyCapableRepayment">
         {{ $t("message.global.MAXIMUM_MONTHLY_REPAYMENT_AMOUNT") }}
@@ -66,7 +66,7 @@
     <hr class="hr" />
     <!-- 还贷计算 -->
     <div class="section">
-      <span class="section-title">{{ $t("message.global.loancalculate") }}</span>
+      <div class="section-title full-w text-center">{{ $t("message.global.loancalculate") }}</div>
       <div class="repay">
         <p class="field-label">{{ $t("message.global.Housing") }}</p>
         <van-cell-group>
@@ -105,8 +105,8 @@
           />
         </van-cell-group>
       </div>
-      <div class="btn">
-        <van-button type="info" class="btn-i" @click="calculateLoanRepayment">{{$t("message.global.calculate")}}</van-button>
+      <div class="btn flex">
+        <van-button type="info" size="small" class="btn-i" @click="calculateLoanRepayment">{{$t("message.global.calculate")}}</van-button>
       </div>
       <p class="monthly" v-if="M">
         {{ $t("message.global.MAXIMUM_MONTHLY_REPAYMENT_AMOUNT") }}
@@ -114,9 +114,6 @@
       </p>
       <div v-if="M" class="repay-result">
         <div class="chart-wrapper" id="calculator-loan-repayment-chart"></div>
-      </div>
-      <div class="minimum-interest-btn" @click="toContentPage">
-        {{ $t("message.global.minimum") }}
       </div>
     </div>
   </div>
@@ -172,9 +169,6 @@ export default {
       if (this.repaymentForm.downpay > this.repaymentForm.loan) {
         this.repaymentForm.downpay = this.repaymentForm.loan;
       }
-    },
-    toContentPage() {
-      this.$router.push("./content");
     },
     doCalculate() {
       let { monthlyRevenu, debtRatio, downPay } = this.capabilityForm;
@@ -240,6 +234,7 @@ function drawRepaymentPieChart (compInst) {
   }
   .van-cell {
     background: none;
+    padding: .06rem .1rem;
   }
   .van-field__control {
     height: 0.2rem;
@@ -264,18 +259,16 @@ function drawRepaymentPieChart (compInst) {
   }
 }
 .section-title {
-  font-size: 0.2rem;
-  font-weight: 600;
+  font-size: 0.16rem;
   color: rgba(0, 0, 0, 0.76);
   margin-right: 0.1rem;
 }
 .btn {
-  height: 0.4rem;
-  margin: 0.1rem;
+  margin: 0.1rem 0;
+  justify-content: flex-end;
   .btn-i {
-    float: right;
     width: 1.1rem;
-    background: rgba(35, 77, 212, 1);
+    background: var(--main-blue);
     border-radius: 0.06rem;
   }
 }
@@ -321,17 +314,6 @@ function drawRepaymentPieChart (compInst) {
     height: 1.55rem;
     background: rgba(249, 249, 249, 1);
   }
-}
-.minimum-interest-btn {
-  height: 0.4rem;
-  background: rgba(131, 159, 248, 1);
-  border-radius: 0.05rem;
-  font-size: 0.2rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 1);
-  line-height: 0.4rem;
-  text-align: center;
-  margin-top: 0.3rem;
 }
 </style>
 <style lang="scss">

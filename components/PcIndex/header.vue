@@ -1,77 +1,42 @@
 <template>
-  <div class="titles">
-    <div class="lefts" @click="RoutingHop('/pc_index', true)">
-      <img
-        class="logs"
-        v-show="vas"
-        src="~/assets/image/white.png"
-        alt="logos"
-      />
-      <img
-        class="logs"
-        v-show="!vas"
-        src="~/assets/image/black.png"
-        alt="logos"
-      />
+  <header class="flex justify-between">
+    <div class="left-part" @click="RoutingHop('/pc_index', true)">
     </div>
     <div class="routes">
-      <span class="divide" @click="RoutingHop('/pc_index', true)">
-        <span>{{ $t("message.global.home") }}</span>
+      <span class="route-item" :class="{ active: currentRouteKey === RouteKey.Search }" @click="select(RouteKey.Search)">
+        <i class="el-icon-search" />
+        <span class="label">{{ $t("message.global.SEARCH") }}</span>
       </span>
-      <span class="divide" @click="RoutingHop('/newList', true)">
-        <span>{{ $t("message.global.NewHouse") }}</span>
+      <span class="route-item" :class="{ active: currentRouteKey === RouteKey.Analysis }" @click="select(RouteKey.Analysis)">
+        <i class="el-icon-finished" />
+        <span class="label">{{ $t("message.global.ANALYSIS") }}</span>
       </span>
-      <!-- <span class="divide" @click="RoutingHop('/anyEs', true)">
-        <span>{{ $t("message.global.second-hand") }}</span>
-      </span> -->
-      <span class="divide" @click="RoutingHop('/rentHouseList', true)">
-        <span>{{ $t("message.global.tenement") }}</span>
+      <span class="route-item" :class="{ active: currentRouteKey === RouteKey.My }" @click="select(RouteKey.My)">
+        <i class="el-icon-user" />
+        <span class="label">{{ $t("message.global.MY") }}</span>
       </span>
-      <!-- <span class="divide" @click="RoutingHop('/broker', true)">
-        <span>{{ $t("message.global.agent") }}</span>
-      </span> -->
-      <span class="divide" @click="RoutingHop('/encyclopedia', true)">
-        <span>{{ $t("message.global.encyclopedia") }}</span>
-      </span>
-      <span class="divide" @click="RoutingHop('/calculator', true)">
-        <span>{{ $t("message.global.instrument") }}</span>
-      </span>
-      <!-- <span class="divide" @click="RoutingHop('/serve', true)">
-        <span>{{ $t("message.global.Saas") }}</span>
-      </span> -->
-      <span class="divide" @click="RoutingHop('/aboutUs', true)">
-        <span>{{ $t("message.global.regards") }}</span>
-      </span>
-      <!-- <span class="Buttons" @click="RoutingHop('/sellers', true)"><img :src="imgs.sellersT" alt=""></span> -->
-      <span class="divide backC" @click="RoutingHop('/sellers', true)">
-        <img src="~/assets/image/houseAD.png" alt />
-        &nbsp;{{ $t("message.global.rental") }}
-      </span>
-      <!--  -->
+      <div v-popover:popover class="pointer route-item lang-switcher-popup-trigger">
+        <img :src="langSwitchImgSrc" />
+        <span class="label">{{ isFr ? "中文" : "FR" }}</span>
+      </div>
     </div>
-    <div class="lang-switcher-wrapper">
-      <el-popover width="200" trigger="hover">
-        <p
-          @click="changeLocale('zh')"
-          class="lang-switcher-popup"
-        >
-          <img src="~/assets/image/chinese.png" alt />
-          {{ $t("message.global.Chinese") }}
-        </p>
-        <p
-          @click="changeLocale('fr')"
-          class="lang-switcher-popup"
-        >
-          <img src="~/assets/image/french.png" alt />
-          {{ $t("message.global.French") }}
-        </p>
-        <div class="lang-switcher-popup-trigger" slot="reference">
-          {{ frOrCn ? "Français" : "中文" }}
-          <img v-show="vas" src="~/assets/image/sortW.png" alt />
-          <img v-show="!vas" src="~/assets/image/sort.png" alt />
-        </div>
-      </el-popover>
-    </div>
+    <el-popover width="40" trigger="click" ref="popover">
+      <div
+        @click="changeLocale('zh')"
+        class="flex align-center pointer lang-switcher-popup"
+      >
+        <img src="/chinese.png" alt />
+        <span>{{ $t("message.global.Chinese") }}</span>
+      </div>
+      <div
+        @click="changeLocale('fr')"
+        class="flex align-center pointer lang-switcher-popup"
+        style="margin-bottom: unset;"
+      >
+        <img src="/french.png" alt />
+        <span>FR</span>
+      </div>
+    </el-popover>
     <!-- <div class="login-btn-wrapper">
       <span v-if="curAuthInfo" style="font-size:20px">
         <img
@@ -99,108 +64,93 @@
         </span>
       </nuxt-link>
     </div> -->
-  </div>
+  </header>
 </template>
 
 <script>
-import logoT from "~/assets/image/logoT.png";
-import sellersT from "~/assets/image/sellers.png";
-import sort from "~/assets/image/sort.png";
 import { createNamespacedHelpers } from 'vuex'
 const { mapGetters } = createNamespacedHelpers('auth');
 
+const RouteKey = {
+  Search: 'Search',
+  Like: 'Like',
+  Analysis: 'Analysis',
+  My: 'My',
+}
+
 export default {
-  name: "foots",
-  data() {
-    const frOrCn = this.$i18n.locale === 'fr';
+  name: "headers",
+  data () {
     return {
-      imgs: {
-        title: logoT,
-        sellersT: sellersT,
-        sort: sort
-      },
-      flag: false,
-      frOrCn,
-    };
+      currentRouteKey: RouteKey.Search,
+    }
   },
-  props: ["vas"],
   computed: {
+    langSwitchImgSrc () {
+      if (this.isFr) return '/chinese.png';
+      return '/french.png';
+    },
     ...mapGetters(['curAuthInfo']),
   },
+  created () {
+    this.isFr = this._i18n.locale === 'fr';
+    this.RouteKey = RouteKey;
+  },
+  mounted () {
+    if (process.client)
+      this.currentRouteKey = getCurrentRouteKey();
+  },
   methods: {
-    RoutingHop(smt, flag) {
-      this.$router.push({
-        path: smt,
-        query: {
-          flag: flag
-        }
-      });
+    select (key) {
+
     },
     changeLocale(locale) {
-      this.frOrCn = locale === 'fr';
+      this.isFr = locale === 'fr';
       this.$i18n.setLocaleCookie(locale);
       this.$router.push(this.switchLocalePath(locale));
     }
   }
 };
+
+function getCurrentRouteKey() {
+  const path = location.pathname;
+  if (path.includes('analysis')) return RouteKey.Analysis;
+  if (path.includes('my')) return RouteKey.My;
+  if (path.includes('index')) return RouteKey.Search;
+}
 </script>
 
 <style lang="scss" scoped>
-.titles {
-  display: flex;
-  align-items: center;
+header {
   padding: 0 12px;
-  box-shadow: 0px 8px 13px 0px rgba(0, 0, 0, 0.15);
-  color: #fff;
-  .lefts {
-    flex: unset;
-    .logs {
-      height: 56px;
-      vertical-align: middle;
-    }
-    .LogoN {
-      font-size: 30px;
-      font-weight: 700;
-      vertical-align: middle;
-    }
-  }
+
+  .left-part {}
   .routes {
-    flex: 1;
-    margin-right: 20px;
-    text-align: right;
-    .divide {
+    span {
       display: inline-block;
-      vertical-align: middle;
-      font-size: 20px;
-      font-weight: Semibold;
-      font-family: "PingFang SC";
-      text-align: center;
-      // width: 80px;
-      padding: 0 10px;
-      span {
-        cursor: pointer;
-      }
     }
-    .backC {
-      background-color: #234dd4;
-      cursor: pointer;
-      font-size: 17px;
-      padding-left: 21px;
-      line-height: 71px;
-      padding-right: 14px;
-      color: #fff;
-      height: 71px;
-      img {
-        width: 28px;
-        vertical-align: middle;
+    .route-item {
+      padding: 16px 24px 16px 8px;
+      .label {
+        margin-left: 8px;
+        font-size: 14px;
       }
-    }
-    .Buttons {
-      margin-left: 20px;
-      img {
-        vertical-align: middle;
-        width: 142px;
-        height: 71px;
+      &.active {
+        color: var(--main-blue);
+        border-bottom: 2px solid var(--main-blue);
+        .label {
+          margin-left: 24px;
+        }
+      }
+      &.lang-switcher-popup-trigger {
+        display: inline-block;
+        .label {
+          font-size: 16px;
+        }
+        img {
+          height: 16px;
+          transform: translateY(2px);
+        }
       }
     }
   }
@@ -208,29 +158,17 @@ export default {
     flex: unset;
     padding-right: 20px;
   }
-  .lang-switcher-wrapper {
-    margin-right: 20px;
-  }
 }
 </style>
 <style lang="scss">
 .lang-switcher-popup {
-  display: flex;
-  align-items: center;
-  margin: 3px 0;
-  font-size: 16px;
-  padding-left: 20px;
-  cursor: pointer;
+  justify-content: space-evenly;
+  margin-bottom: 16px;
   img {
-    margin-right: 6px;
+    height: 20px;
   }
-}
-.lang-switcher-popup-trigger {
-  display: inline;
-  cursor: pointer;
-  font-size: 20px;
-  img {
-    width: 16px;
+  span {
+    font-size: 20px;
   }
 }
 </style>

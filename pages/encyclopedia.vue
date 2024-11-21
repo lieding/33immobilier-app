@@ -1,6 +1,5 @@
 <template>
   <div class="encyclopedia">
-    <headers :class="{ colors: flag }"></headers>
     <div class="seconBrok clearfix">
       <div class="headline">
         <span>{{ $t("message.global.home") }}</span> /
@@ -81,13 +80,10 @@
         </div>
       </div>
     </div>
-    <foots></foots>
   </div>
 </template>
 
 <script>
-import headers from "~/components/PcIndex/header.vue";
-import foots from "~/components/PcIndex/foot.vue";
 import title from "~/assets/image/titles.jpg";
 import logoT from "~/assets/image/logoTTT.png";
 import { scrollListener } from '../utils';
@@ -95,10 +91,6 @@ import { scrollListener } from '../utils';
 export default {
   name: "encyclopedia",
   middleware: "responsive",
-  components: {
-    headers,
-    foots
-  },
   head() {
     return {
       title: "法国房产百科_法国房产知识大全_法国买房卖房租房攻略-法国33找房",
