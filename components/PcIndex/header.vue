@@ -1,6 +1,7 @@
 <template>
   <header class="flex justify-between">
-    <div class="left-part" @click="RoutingHop('/pc_index', true)">
+    <div class="left-part flex-column justify-center" @click="redirect('/pc_index')">
+      <img src="/33immo-logo.png" />
     </div>
     <div class="routes">
       <span class="route-item" :class="{ active: currentRouteKey === RouteKey.Search }" @click="select(RouteKey.Search)">
@@ -41,7 +42,7 @@
       <span v-if="curAuthInfo" style="font-size:20px">
         <img
           style="width:16px;vertical-align:middle;"
-          :src="curAuthInfo.picture || '/_nuxt/assets/image/renwuW.png'"
+          :src="curAuthInfo.picture || '/renwuW.png'"
           alt
         />
         {{ curAuthInfo.nickName || '' }}
@@ -51,13 +52,13 @@
           <img
             v-show="vas"
             style="width:16px;vertical-align:middle;cursor:pointer;"
-            src="~/assets/image/renwuW.png"
+            src="/renwuW.png"
             alt
           />
           <img
             v-show="!vas"
             style="width:16px;vertical-align:middle;cursor:pointer;"
-            src="~/assets/image/pcPerson.png"
+            src="/pcPerson.png"
             alt
           />
           {{ $t("message.global.login") }}
@@ -101,6 +102,9 @@ export default {
       this.currentRouteKey = getCurrentRouteKey();
   },
   methods: {
+    redirect (path) {
+      this.$router.replace({ path });
+    },
     select (key) {
 
     },
@@ -123,8 +127,11 @@ function getCurrentRouteKey() {
 <style lang="scss" scoped>
 header {
   padding: 0 12px;
-
-  .left-part {}
+  .left-part {
+    img {
+      height: 32px;
+    }
+  }
   .routes {
     span {
       display: inline-block;

@@ -90,7 +90,7 @@
           />
         </van-cell-group>
         <p class="field-label">{{ $t("message.global.particular") }}</p>
-        <el-select v-model.number="repaymentForm.year">
+        <el-select v-model.number="repaymentForm.year" style="width: 100%;">
           <el-option v-for="item in interestRateConfig" :key="item.year" :label="item.year" :value="item.year"></el-option>
         </el-select>
         <p class="field-label">{{ $t("message.global.LOAN_INTEREST_RATE") }}</p>
@@ -219,7 +219,7 @@ function drawRepaymentPieChart (compInst) {
   background-color: #ececec;
 }
 .section {
-  margin: 0 0.12rem;
+  // margin: 0 0.12rem;
 }
 .repay {
   .field-label {
@@ -330,7 +330,6 @@ function drawRepaymentPieChart (compInst) {
     font-size: 14px;
     background: #e9e9e9;
     border: none;
-    width: 3.5rem !important;
   }
 }
 </style>

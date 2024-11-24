@@ -3,11 +3,18 @@
     <div class="content">
       <div class="row-1 flex justify-between">
         <div class="left">
+          <img src="/33immo-logo.png" />
         </div>
         <div class="right flex">
           <div class="list" v-for="it, idx in list" :key="idx">
             <div class="list-title">{{ it.title }}</div>
-            <div v-for="itt, idxx in it.items" :key="idxx" class="list-item">{{ itt.title }}</div>
+            <div v-for="itt, idxx in it.items" :key="idxx" class="list-item">
+              {{ itt.title }}
+            </div>
+            <div v-if="idx === 2" class="whatsapp-btn pointer flex align-center" @click="whatsappClickHandler">
+              <img src="/whatsapp.svg" />
+              <span class="inline-block txt white bold">{{ $t('message.global.CONTACT_US') }}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -53,6 +60,14 @@ export default {
       translate.call(this, ContactUs),
       translate.call(this, Info)
     ];
+  },
+  methods: {
+    whatsappClickHandler () {
+      const aEl = document.createElement('a');
+      aEl.target = '_blank';
+      aEl.href = ' https://wa.me/message/PLR3FR4I7CPSO1';
+      aEl.click();
+    }
   }
 }
 
@@ -63,7 +78,6 @@ function translate (obj) {
   };
 }
 </script>
-
 
 <style lang="scss" scoped>
 .footer {
@@ -76,7 +90,11 @@ function translate (obj) {
   margin: 0 auto;
   .row-1 {
     margin-bottom: 76px;
-    .left {}
+    .left {
+      img {
+        height: 120px;
+      }
+    }
     .right {
       .list {
         margin-right: 32px;
@@ -86,6 +104,22 @@ function translate (obj) {
         .list-title {
           font-size: 20px;
           margin-bottom: 16px;
+        }
+      }
+      .whatsapp-btn {
+        width: fit-content;
+        border-radius: 4px;
+        background: #25D366;
+        padding: 4px 6px;
+        img {
+          height: 18px;
+          margin-right: 6px;
+        }
+        .txt {
+          font-size: 14px;
+        }
+        &:hover {
+          background: #178942;
         }
       }
     }

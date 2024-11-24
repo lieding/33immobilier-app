@@ -9,7 +9,7 @@
             :placeholder="$t('message.global.INDEX_SEARCH_PLACEHOLDER')"
             :trigger-on-focus="false"
             :fetch-suggestions="queryCity"
-            :debounce="1500"
+            :debounce="1000"
             @select="locationAutocompleteSelectHandler"
           >
             <el-select v-model="searchMode" slot="prepend">
@@ -115,6 +115,7 @@ import Calculator from '../components/PcIndex/calculator.vue';
 import IndexCityBar from '../components/IndexCityBar.vue';
 import { CityRegionGeolocation, loadIndexPageCityProgrames, SearchMode } from '../common/config';
 import { doLocationAutocomplete } from '../common/locationAutocomplete';
+import { searchPostalCode } from '../utils/findPosalcode'
 
 export default {
   name: "index",
@@ -167,7 +168,7 @@ export default {
       this.queryIndexPageInfo(); // 获取主页信息
       const lang = this._i18n.locale;
       gmapApiLoader(lang)
-        ?.then(() => this.gmapAutocompleteService = new window.google.maps.places.AutocompleteService());
+        .then(() => this.gmapAutocompleteService = new window.google.maps.places.AutocompleteService());
     }
   },
   methods: {
@@ -203,21 +204,28 @@ export default {
     queryCity(queryString, cb) {
       const lang = this._i18n.locale;
       gmapApiLoader(lang)
-        ?.then(() => this.gmapAutocompleteService = new window.google.maps.places.AutocompleteService());
-      if (!queryString) return cb([]);
+        .then(() => {
+          if (!this.gmapAutocompleteService)
+            this.gmapAutocompleteService = new window.google.maps.places.AutocompleteService()
+        });
+      if (queryString?.length < 2) return cb([]);
       const autocomplete = this.gmapAutocompleteService;
       if (!autocomplete) return cb([]);
-      doLocationAutocomplete(autocomplete, queryString)
-        .then(list => cb(list))
-        .catch(() => cb([]));
+      if (isNaN(queryString))
+        doLocationAutocomplete(autocomplete, queryString)
+          .then(list => cb(list))
+          .catch(() => cb([]));
+      else {
+        searchPostalCode(queryString).then(res => cb(Array.isArray(res) ? res : []));
+      }
     },
     locationAutocompleteSelectHandler (item) {
-      const { place_text, place_id, type: location_type } = item;
-      if (!place_text || !place_id || !location_type) return;
-      this.routerChange('/newList', { region_city: place_text, place_id, location_type });
+      const { place_text, place_id, type: location_type, postal_code, latitude: lat, longitude: lng } = item;
+      if ((!place_text && !place_id) || !location_type) return;
+      this.routerChange('/search', { department_city: place_text, place_id, location_type, postal_code, lat, lng });
     },
     handleProgrameClickHandler (item) {
-      this.routerChange('/newDetails', { zip_code: item.zip_code, name_id: item.name_id, estate_name: item.estate_name, city: item.city });
+      this.routerChange('/new_detail', { zip_code: item.zip_code, name_id: item.name_id, estate_name: item.estate_name, city: item.city });
     },
     moreProgramesClickHandler (ev) {
       let { city_name, location_type = '' } = ev ?? {};
@@ -225,11 +233,10 @@ export default {
       if (!city_name) return;
       const { lat, lng } = CityRegionGeolocation[city_name] ?? {};
       if (!lat || !lng) return;
-      this.routerChange('/newList', { region_city: city_name, lat, lng, location_type });
+      this.routerChange('/search', { department_city: city_name, lat, lng, location_type });
     }
   },
 };
-
 
 </script>
 

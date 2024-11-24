@@ -7,7 +7,7 @@
       <mobile-header></mobile-header>
     </template>
     <nuxt />
-    <template v-if="isDesktop">
+    <template v-if="isDesktop && desktopFooterVis">
       <Footer />
     </template>
   </div>
@@ -28,6 +28,9 @@ export default {
     },
     isMobile () {
       return this.$device.isMobile;
+    },
+    desktopFooterVis () {
+      return this.$route.path !== '/search';
     }
   },
   mounted () {

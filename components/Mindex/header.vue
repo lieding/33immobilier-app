@@ -1,6 +1,8 @@
 <template>
-  <div class="mobile-header flex">
-    <div></div>
+  <div class="mobile-header flex justify-between align-center">
+    <div class="left-part">
+      <img src="/33immo-logo.png" />
+    </div>
     <el-popover placement="bottom" width="80" trigger="click">
       <div class="list-btn" slot="reference">
         <img src="/mobile-header-list-btn.png" @click="listBtnClickHandler" />
@@ -10,34 +12,13 @@
           {{ $t("message.global.home") }}
         </router-link>
         <router-link
-          :to="{ path: '/newhouse', query: { house: 'new' } }"
+          :to="{ path: '/search', query: { house: 'new' } }"
           tag="li"
         >{{ $t("message.global.NewHouse") }}</router-link>
-        <!-- <router-link
-          :to="{ path: '/newhouse', query: { house: 'second_hand' } }"
+        <router-link
+          :to="{ path: '/search', query: { house: 'second_hand' } }"
           tag="li"
-        >{{ $t("message.global.SECOND_HAND") }}</router-link> -->
-        <router-link :to="{ path: '/rentHouse' }" tag="li">
-          {{ $t("message.global.tenement") }}
-        </router-link>
-        <router-link :to="{ path: '/agentList' }" tag="li">
-          {{ $t("message.global.agent") }}
-        </router-link>
-        <router-link :to="{ path: '/blogs' }" tag="li">
-          {{ $t("message.global.encyclopedia") }}
-        </router-link>
-        <router-link :to="{ path: '/service' }" tag="li">
-          {{ $t("message.global.SERVICE") }}
-        </router-link>
-        <router-link :to="{ path: '/instrument' }" tag="li">
-          {{ $t("message.global.instrument") }}
-        </router-link>
-        <router-link :to="{ path: '/InRegardTo' }" tag="li">
-          {{ $t("message.global.regards") }}
-        </router-link>
-        <router-link :to="{ path: '/ordIssue' }" tag="li" class="rental">
-          {{ $t("message.global.rental") }}
-        </router-link>
+        >{{ $t("message.global.SECOND_HAND") }}</router-link>
         <li @click="changeLocale('zh')" class="locale-row flex-center">
           <img src="/chinese.png" />
           <span>{{ $t("message.global.Chinese") }}</span>
@@ -74,6 +55,12 @@ export default {
 
 <style lang="scss" scoped>
 .mobile-header {
+  padding-right: .1rem;
+  .left-part {
+    img {
+      height: .36rem;
+    }
+  }
   .list-btn {
     img {
       width: 0.4rem;

@@ -1,31 +1,142 @@
 <template>
-  <!-- <div class="footer" >
-    <span>© 2019 33 immobilier. All right reserved.</span>
-  </div> -->
-  <div></div>
+  <section class="footer flex-column full-w border-box white">
+    <div class="content">
+      <div class="row-1 flex justify-between">
+        <div class="left">
+          <img src="/33immo-logo.png" />
+        </div>
+        <div class="right flex">
+          <div class="list" v-for="it, idx in list" :key="idx">
+            <div class="list-title">{{ it.title }}</div>
+            <div v-for="itt, idxx in it.items" :key="idxx" class="list-item">
+              {{ itt.title }}
+            </div>
+            <div v-if="idx === 2" class="whatsapp-btn pointer flex align-center" @click="whatsappClickHandler">
+              <img src="/whatsapp.svg" />
+              <span class="inline-block txt white bold">{{ $t('message.global.CONTACT_US') }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row-2">©2024 Micco immo, Everest Finance</div>
+      <div class="row-3">{{ $t('message.FOOTER.DESC') }}</div>
+      <div class="row-4">
+        <span>{{ $t('message.FOOTER.PRIVACY') }}</span>
+        <span>{{ $t('message.FOOTER.COOKIE') }}</span>
+      </div>
+    </div>
+  </section>
 </template>
+
 <script>
-export default {}
-</script>
-<style lang="scss">
-html,body{min-height: 100% }
- .footer{
-     height: 0.25rem;
-     background: #515151;
-     background-position: 80%;
-     position: fixed;
-     bottom: 0;
-     width: 100%;
-     font-size:.12rem;
-     font-weight:bold;
-     color:rgba(255,255,255,1);
-     line-height:.25rem;
-     /* margin-top: 10px; */
-   }
-   #app{
-     height: 100%;
-    .style{
-      height: 100%;
+const Service = {
+  title: 'message.global.SERVICE',
+  items: [
+    { i18n: 'message.global.NewHouse' },
+    { i18n: 'message.global.SECOND_HAND' },
+    { i18n: 'message.FOOTER.SCI' },
+    { i18n: 'message.FOOTER.ACCOUNTING' }
+  ]
+};
+const ContactUs = {
+  title: 'message.global.CONTACT_US',
+  items: [
+    { i18n: 'message.FOOTER.HELP_CENTER' },
+    { i18n: 'message.FOOTER.CONTACT_ASSISTANT' }
+  ]
+};
+const Info = {
+  title: 'message.FOOTER.INFO',
+  items: [
+    { i18n: 'message.FOOTER.PARTNER' },
+    { i18n: 'message.FOOTER.EMPLOYMENT' },
+    { i18n: 'message.FOOTER.NEWS_EDU' }
+  ]
+};
+export default {
+  created () {
+    this.list = [
+      translate.call(this, Service),
+      translate.call(this, ContactUs),
+      translate.call(this, Info)
+    ];
+  },
+  methods: {
+    whatsappClickHandler () {
+      const aEl = document.createElement('a');
+      aEl.target = '_blank';
+      aEl.href = ' https://wa.me/message/PLR3FR4I7CPSO1';
+      aEl.click();
     }
-   }
+  }
+}
+
+function translate (obj) {
+  return {
+    title: this.$t(obj.title),
+    items: obj.items.map(it => ({ ...it, title: this.$t(it.i18n) })),
+  };
+}
+</script>
+
+<style lang="scss" scoped>
+.footer {
+  background: linear-gradient(180deg, #2445CD 0%, #543AF8 100%);;
+  padding: .1rem 0 .12rem;
+}
+.content {
+  margin: 0 .06rem;
+  .row-1 {
+    margin-bottom: .16rem;
+    .left {
+      img {
+        height: .8rem;
+      }
+    }
+    .right {
+      flex: 1;
+      justify-content: flex-end;
+      .list {
+        margin-right: .03rem;
+        &:last-child {
+          margin-right: unset;
+        }
+        .list-title {
+          font-size: .15rem;
+          margin-bottom: .04rem;
+        }
+        .list-item {
+          font-size: .13rem;
+        }
+      }
+      .whatsapp-btn {
+        width: fit-content;
+        border-radius: 4px;
+        background: #25D366;
+        padding: 4px 6px;
+        img {
+          height: .18rem;
+          margin-right: .03rem;
+        }
+        .txt {
+          font-size: .13rem;
+        }
+      }
+    }
+  }
+  .row-2 {
+    margin-bottom: .08rem;
+    font-size: .13rem;
+  }
+  .row-3 {
+    margin-bottom: .16rem;
+    font-size: .11rem;
+  }
+  .row-4 {
+    span {
+      display: inline-block;
+      font-size: .15rem;
+    }
+  }
+}
 </style>

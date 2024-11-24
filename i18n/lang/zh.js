@@ -15,6 +15,7 @@ module.exports = {
       login: "登陆/注册",
       INDEX_BANNER: "法国找房，我们是专业的",
       INDEX_SEARCH_PLACEHOLDER: '搜索哪个城市？ 比如Paris',
+      REGION_CITY_SEARCHPLACEHOLDER: '区域或者城市邮编',
       Where: "你想住在哪？",
       SEARCH: "搜索",
       LIKE: '喜欢',
@@ -314,7 +315,7 @@ module.exports = {
       taiyu: "泰语",
       jianpu: "柬埔寨语",
       fuzhi: "复制摘要",
-      zanwushuju: "暂无数据",
+      EMPTY: "暂无数据",
       fuwureny: "服务人员列表",
       plec:
         "输入区域名称或者城市邮编，如 92省输入92, Villejuif 输入94800或者villejuif ",

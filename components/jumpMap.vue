@@ -19,6 +19,8 @@
 </template>
 
 <script>
+const gmapApiKey = process.env['IMMO_GOOGLE_MAPS_API_KEY'];
+
 export default {
   props: {
     latitude: {
@@ -61,8 +63,7 @@ export default {
     }
   },
   mounted () {
-    const cbkName = this.loadMapCallback();
-    loadScript(cbkName);
+    if (process.client) this.loadMap();
   },
   watch: {
     points() {
@@ -86,6 +87,10 @@ export default {
     }
   },
   methods: {
+    loadMap () {
+      const cbkName = this.loadMapCallback();
+      if (cbkName) loadScript(cbkName);
+    },
     async refreshPoints() {
       const map = this.__mapInst;
       if (!map) return;
@@ -167,8 +172,9 @@ export default {
         }
         refreshPoints();
       }
+      if (window.google?.maps)
+        return void setTimeout(metroMap);
       window[name] = metroMap;
-      setTimeout(metroMap, 5000);
       return name;
     }
   },
@@ -210,11 +216,10 @@ const svgContent = `
 `
 
 function loadScript (cbkName) {
-  if (window.google?.maps?.Map) return;
   const el = document.createElement('script');
-  // el.defer = true;
+  el.defer = true;
   el.async = true;
-  el.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAajgcsOMI8iloavKcKSKeoomMB7QVQL4w&callback=${cbkName}`;
+  el.src = `https://maps.googleapis.com/maps/api/js?key=${gmapApiKey}&callback=${cbkName}`;
   document.body.appendChild(el);
 }
 </script>

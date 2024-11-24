@@ -12,7 +12,7 @@ function checkCache (key) {
   if (idx < 0) return null;
   const found = cachedArr.splice(idx, 1)[0];
   cachedArr.push(found);
-  return found;
+  return Promise.resolve(found);
 }
 
 function setCache (key, val) {

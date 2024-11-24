@@ -1,14 +1,11 @@
 import { LocationType } from './config';
 
-
 const DefaultLocationAutocompleteTypes = [
   // LocationType.POSTAL_CODE,
   LocationType.LOCALITY,
   LocationType.L2_AREA,
   LocationType.L3_AREA,
 ];
-
-
 
 export function doLocationAutocomplete (service, input) {
   return service.getPlacePredictions({

@@ -306,7 +306,7 @@
       jianpu: "cambodgien",
       fuzhi: "Copier",
       INTEREST_AMOUNT: "Montant d'intérêt",
-      zanwushuju: "Pas de données",
+      EMPTY: "Pas de données",
       fuwureny: "Liste des entrepreneurs",
       plec:
         "Ville, Code Postal ou Département. Par ex. Entrez 92 pour département 92, 94800 ou villejuif",

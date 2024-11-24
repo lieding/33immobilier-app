@@ -45,7 +45,7 @@ export const SearchMode = {
 export const CsvUrlConfig = {
   ProgramCityDistribution: 'https://raw.githubusercontent.com/mingzemicco/33immo-config/refs/heads/main/program-city-distribution.csv',
   IndexPageCityProgrames: 'https://raw.githubusercontent.com/mingzemicco/33immo-config/refs/heads/main/index_city_programes.csv',
-  ProgrameRegionidCities: 'https://raw.githubusercontent.com/mingzemicco/33immo-config/refs/heads/main/programe_region_id_cities.csv',
+  ProgrameDepartmentCities: 'https://raw.githubusercontent.com/mingzemicco/33immo-config/refs/heads/main/programe_department_cities.csv',
 }
 
 export const JsonConfig = {
@@ -85,7 +85,7 @@ export function extractProgramProperty (property) {
     },
     {
       label: this.$t('message.global.price'),
-      text: price ? fmoney(price, 0) + '€' : '',
+      text: price ? fmoney(price) + '€' : '',
     }
   ]
 }
@@ -210,14 +210,6 @@ export function loadProgramesByRegions (regions) {
         .catch(() => null)
     );
   return Promise.all(promises).then(rowsList => rowsList.filter(Boolean).flat());
-}
-
-export function loadProgrameRegionidCities () {
-  return fetch(CsvUrlConfig.ProgrameRegionidCities)
-    .then(res => res.text())
-    .then(txt => parseRawCsv(txt, ',')?.rows)
-    .then(rows => rows.map(row => ({ ...row, cities: row.cities?.split('|') })))
-    .catch((err) => { console.error(err); return []; })
 }
 
 export function loadIndexPageCityProgrames () {
