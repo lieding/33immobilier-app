@@ -23,24 +23,24 @@
         <van-tag type="primary" size="medium" v-for="(it) in translatedTypologies" :key="it" plain>{{ it }}</van-tag>
       </p>
       <p class="price">{{ fmoney(programeDetail.availablePropertiesMinPrice) }}€ - {{ fmoney(programeDetail.availablePropertiesMaxPrice) }}€</p>
-      <p class="hand">
-        <span class="time">{{ $t("message.global.completionDate") }} ：</span>
+      <p class="info-row">
+        <span class="grey-color">{{ $t("message.global.completionDate") }} ：</span>
         {{ programeDetail.deliveryQuarter }}
       </p>
-      <p class="hand">
-        <span class="time">{{ $t("message.global.PROPERTIES_COUNT") }} ：</span>
+      <p class="info-row">
+        <span class="grey-color">{{ $t("message.global.PROPERTIES_COUNT") }} ：</span>
         {{ programeDetail.availablePropertiesCount }}
       </p>
-      <p class="hand">
-        <span class="time">{{ $t("message.global.measures") }} ：</span>
+      <p class="info-row">
+        <span class="grey-color">{{ $t("message.global.measures") }} ：</span>
         {{ translatedLaws }}
       </p>
-      <p class="hand">
-        <span class="time">{{ $t("message.global.TAX_AREA") }} ：</span>
+      <p class="info-row">
+        <span class="grey-color">{{ $t("message.global.TAX_AREA") }} ：</span>
         {{ translatedTaxArea }}
       </p>
-      <p class="hand">
-        <span class="time">{{ $t("message.global.LOCATION") }} ：</span>
+      <p class="info-row">
+        <span class="grey-color">{{ $t("message.global.LOCATION") }} ：</span>
         {{ programeDetail.zip_code }} / {{ programeDetail.city }}
       </p>
     </div>
@@ -85,28 +85,28 @@
       <span class="section-title">{{ $t("message.global.PROPERTY_DETAILS") }}</span>
       <div class="swipe">
         <div v-for="(info, index) in properties" :key="index" @click="propertyClickHandler(info)">
-          <p class="hand">
-            <span class="time">{{ $t("message.global.chamberID") }} ：</span>
+          <p class="info-row">
+            <span class="grey-color">{{ $t("message.global.chamberID") }} ：</span>
             {{ info.number }}
           </p>
-          <p class="hand">
-            <span class="time">{{ $t("message.global.DoorMode") }} ：</span>
+          <p class="info-row">
+            <span class="grey-color">{{ $t("message.global.DoorMode") }} ：</span>
             {{ info.translatedTypology }}
           </p>
-          <p class="hand">
-            <span class="time">{{ $t("message.global.USABLE_AREA") }} ：</span>
+          <p class="info-row">
+            <span class="grey-color">{{ $t("message.global.USABLE_AREA") }} ：</span>
             {{ info.surface }}
           </p>
-          <p class="hand">
-            <span class="time">{{ $t("message.global.FLOOR") }} ：</span>
+          <p class="info-row">
+            <span class="grey-color">{{ $t("message.global.FLOOR") }} ：</span>
             {{ info.floor }}
           </p>
-          <p class="hand">
-            <span class="time">{{ $t("message.global.price") }} ：</span>
+          <p class="info-row">
+            <span class="grey-color">{{ $t("message.global.price") }} ：</span>
             {{ info.price }}€
           </p>
-          <p class="hand">
-            <span class="time">{{ $t("message.global.ROI") }} ：</span>
+          <p class="info-row">
+            <span class="grey-color">{{ $t("message.global.ROI") }} ：</span>
             {{ info.profitability }}%
           </p>
         </div>
@@ -204,7 +204,7 @@ export default {
         ({ incluedKey, label: this.$t(`message.NEW_LIST.${I18NKey}`) })
       );
       try {
-        const res = await this.$api.article.getInfoNewHous({ zip_code, name_id, lang });
+        const res = await this.$api.article.getProgrameDetail({ zip_code, name_id, lang });
         const { properties, typologies, taxArea, laws } = res.data;
         if (Array.isArray(properties)) {
           for (const it of properties) {
@@ -246,9 +246,13 @@ export default {
       this.__selectedProperty = property;
     },
     contactConfirmHandler (contact) {
+      const property = this.__selectedProperty;
+      if (!property) return;
+      const propertyId = property.id, programeId = this.programeDetail.id;
+      if (!programeId || !propertyId) return;
       const lang = this._i18n.locale;
       this.contactPopupBtnLoading = true;
-      this.$api.article.postApplication({ mode: PostApplicationMode.JOIN, lang, contact })
+      this.$api.article.postApplication({ mode: PostApplicationMode.PROGRAME_PROPERTY, lang, contact, programeId, propertyId })
         .then(() => {
           this.contactPopupVis = false;
           Notify({ type: 'success', message: this.$t('message.global.APPLICATION_POSTED_SUCCESS') });
@@ -377,14 +381,14 @@ td {
   line-height: 0.28rem;
   padding: 0.13rem 0 0.1rem 0;
 }
-.hand {
+.info-row {
   font-size: 0.14rem;
   font-weight: 600;
   span {
     font-size: .16rem;
   }
 }
-.time {
+.grey-color {
   color: rgba(186, 186, 186, 1);
 }
 .section-title {

@@ -37,8 +37,13 @@ const article = {
     const key = createKey(Path);
     return checkCache(key) ?? axios.get(Path).then(res => handleRes(res, key));
   },
-  getInfoNewHous(params) {
+  getProgrameDetail(params) {
     const Path = '/programme-detail';
+    const key = createKey(Path, params);
+    return checkCache(key) ?? axios.get(Path, { params }).then(res => handleRes(res, key));
+  },
+  getSecondHandDetail (params) {
+    const Path = '/second-hand-detail';
     const key = createKey(Path, params);
     return checkCache(key) ?? axios.get(Path, { params }).then(res => handleRes(res, key));
   },

@@ -12,11 +12,11 @@
           {{ $t("message.global.home") }}
         </router-link>
         <router-link
-          :to="{ path: '/search', query: { house: 'new' } }"
+          :to="{ path: '/m_search', query: { searchMode: SearchMode.NewPrograme, department_city: 'Paris' } }"
           tag="li"
         >{{ $t("message.global.NewHouse") }}</router-link>
         <router-link
-          :to="{ path: '/search', query: { house: 'second_hand' } }"
+          :to="{ path: '/m_search', query: { searchMode: SearchMode.Secondhand, department_city: 'Paris' } }"
           tag="li"
         >{{ $t("message.global.SECOND_HAND") }}</router-link>
         <li @click="changeLocale('zh')" class="locale-row flex-center">
@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import { SearchMode } from '../../common/config';
 export default {
   name: "",
   data() {
@@ -40,6 +41,9 @@ export default {
       diaplay: false,
       visible: true
     };
+  },
+  created () {
+    this.SearchMode = SearchMode;
   },
   methods: {
     listBtnClickHandler() {

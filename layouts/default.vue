@@ -147,6 +147,12 @@ body {
   clear: both;
 }
 
+.desktop-placed-center {
+  width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .clear {
   zoom: 1;
 }

@@ -76,6 +76,44 @@
         </div>
       </template>
     </div>
+    <!-- 二手房 -->
+    <div class="section">
+      <div class="section-title">{{ $t('message.global.SECOND_HAND') }}</div>
+      <template v-if="secondHandGroupedByCities">
+        <div class="city-selection flex wrap">
+          <div
+            v-for="it in secondHandGroupedByCities"
+            :key="it.city"
+            class="item"
+            :class="{ active: activeSecondhandCityKey === it.city }"
+            @click="activeSecondhandCityKey = it.city"
+          >
+            {{ it.city }}
+          </div>
+        </div>
+        <ul class="new-list">
+          <router-link
+            :to="{ path: '/m_second_hand_detail', query: { zip_code: item.zip_code, id: item.id, title: item.title, city: item.city } }"
+            v-for="(item, index) in selectedSecondHand"
+            :key="index"
+            tag="li"
+          >
+            <div class="image-wrapper">
+              <img :src="item.image" class="image" />
+            </div>
+            <div class="right-section">
+              <div class="title">{{ item.title }}</div>
+              <div class="info">{{ item.surface }}m² / {{ item.piece }}{{ $t('message.PAGE_SECOND_HAND.PIECE_CNT') }}</div>
+              <div class="info">{{ item.zip_code }} / {{ item.city }}</div>
+              <div class="price">{{ fmoney(item.price) }}€</div>
+            </div>
+          </router-link>
+        </ul>
+        <div class="flex-center">
+          <div class="more-btn white bold" @click="moreSecondHandClickHandler()">{{ $t('message.PAGE_INDEX.MORE') }}</div>
+        </div>
+      </template>
+    </div>
     <!-- 专业房产顾问 -->
     <div class="section">
       <div class="join-us-bar">
@@ -122,7 +160,7 @@ import { gmapApiLoader } from '../common/gmapApiLoader';
 import ContactPopup from '../components/Mindex/contactPopup.vue';
 import Calculator from '../components/Mindex/calculator.vue';
 import Footer from '../components/Mindex/footer.vue';
-import { SearchMode, PostApplicationMode, loadIndexPageCityProgrames, CityRegionGeolocation } from '../common/config';
+import { SearchMode, PostApplicationMode, loadIndexPageCityProgrames, CityRegionGeolocation, loadIndexPageSecondHand } from '../common/config';
 import IndexCityBar from '../components/IndexCityBar.vue';
 import { doLocationAutocomplete } from '../common/locationAutocomplete';
 import { searchPostalCode } from '../utils/findPosalcode'
@@ -161,6 +199,8 @@ export default {
       contactBtnLoading: false,
       programesGroupedByCities: null,
       activeProgrameCityKey: null,
+      secondHandGroupedByCities: null,
+      activeSecondhandCityKey: null,
     };
   },
   created () {
@@ -182,7 +222,11 @@ export default {
     selectedProgrames () {
       const arr = this.programesGroupedByCities, key = this.activeProgrameCityKey;
       return arr.find(it => it.city === key)?.items ?? [];
-    }
+    },
+    selectedSecondHand () {
+      const arr = this.secondHandGroupedByCities, key = this.activeSecondhandCityKey;
+      return arr.find(it => it.city === key)?.items ?? [];
+    },
   },
   watch: {
     searchInput (input) {
@@ -251,6 +295,11 @@ export default {
         if (res.length)
           this.activeProgrameCityKey = res[0].city;
       });
+      loadIndexPageSecondHand().then(res => {
+        this.secondHandGroupedByCities = res;
+        if (res.length)
+          this.activeSecondhandCityKey = res[0].city;
+      });
     },
     startContact () {
       this.contactPopupVis = true;
@@ -262,7 +311,15 @@ export default {
       const { lat, lng } = CityRegionGeolocation[department_city] ?? {};
       if (!lat || !lng) return;
       this.$router.push({ path: '/m_search', query: { searchMode: SearchMode.NewPrograme, department_city, lat, lng, location_type } });
-    }
+    },
+    moreSecondHandClickHandler (ev) {
+      let { city_name: department_city, location_type = '' } = ev ?? {};
+      department_city = department_city ?? this.activeSecondhandCityKey;
+      if (!department_city) return;
+      const { lat, lng } = CityRegionGeolocation[department_city] ?? {};
+      if (!lat || !lng) return;
+      this.$router.push({ path: '/m_search', query: { searchMode: SearchMode.SecondHand, department_city, lat, lng, location_type } });
+    },
   }
 };
 

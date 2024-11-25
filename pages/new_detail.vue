@@ -1,15 +1,18 @@
 <template>
-  <div class="seconHandHous">
-    <div class="centerS secondBod clearfix">
-      <div class="headline">
-        <span>{{ $t("message.global.home") }}</span> /
-        <span>{{ $t("message.global.PROGRAME_DETAIL") }}</span>
+  <div>
+    <div class="desktop-placed-center top-section">
+      <div class="breadcrumb">
+        <el-breadcrumb separator="/">
+          <el-breadcrumb-item :to="{ path: '/pc_index' }">{{ $t("message.global.home") }}</el-breadcrumb-item>
+          <el-breadcrumb-item>{{ $t("message.global.PROGRAME_DETAIL") }}</el-breadcrumb-item>
+        </el-breadcrumb>
       </div>
-      <div class="oductions">
-        {{ $t("message.global.premisess") }}:
-        {{ programeInfo.estate_name }}
+      <div class="estate-name-title">
+        {{ $t("message.global.premisess") }}: {{ programeInfo.estate_name }}
       </div>
-      <div class="leftBody">
+    </div>
+    <div class="desktop-placed-center flex">
+      <div class="left-body">
         <!-- 轮播图 -->
         <div class="slideshow">
           <el-carousel :interval="5000" height="404px" arrow="always">
@@ -26,11 +29,10 @@
           </el-carousel>
         </div>
       </div>
-      <div class="rightBody">
+      <div class="right-body">
         <div class="content-package">
           <p class="prises">
-            {{ programeInfo.availablePropertiesMinPrice }}€ —
-            {{ programeInfo.availablePropertiesMaxPrice }}€
+            {{ fmoney(programeInfo.availablePropertiesMinPrice) }}€ — {{ fmoney(programeInfo.availablePropertiesMaxPrice) }}€
           </p>
           <p class="block">
             <span style="background-color:#234CD3;padding:3px 8px;">
@@ -74,7 +76,7 @@
           </p>
           <p class="smJf">
             {{ $t("message.global.LOCATION") }}：
-            <span>{{ programeInfo.zip_code }}/{{programeInfo.city}}</span>
+            <span>{{ programeInfo.zip_code }} / {{programeInfo.city}}</span>
           </p>
           <p class="smJf">
             {{ $t("message.global.range") }}：
@@ -83,7 +85,7 @@
         </div>
       </div>
     </div>
-    <div class="centerS contentS">
+    <div class="desktop-placed-center content-section">
       <p class="titles">
         <span style="font-size:32px;margin-right:10px;font-weight:600;">{{
           $t("message.global.PROGRAME_DESC")
@@ -161,89 +163,8 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class="centerS">
+    <div class="desktop-placed-center">
       <calculator></calculator>
-    </div>
-    <div class="centerS" style="margin-top:20px;" v-show="promoteList.length">
-      <div style="font-size:32px;font-weight:600;">
-        {{ $t("message.global.Recommended") }}
-      </div>
-      <div class="recommendation-section">
-        <div class="recommendation-item" v-for="(item, index) in promoteList" :key="index">
-          <div style="position:relative;">
-            <img
-              @click="routerGo(item.promoteId)"
-              style="width:244px;height:144px;"
-              :src="item.promoteShowUrl"
-              alt=""
-            />
-            <p style="position:absolute;bottom:10px;padding-left:5px;">
-              <span
-                v-show="item.promoteTaxCuts"
-                style="padding:3px 9px;
-                            font-size:12px;
-                            color:#fff;
-                            background-color:#6AC078;
-                            font-weight:600;
-                            margin-right:4px;"
-              >
-                {{ item.promoteTaxCuts }}
-              </span>
-              <span
-                v-show="item.promoteExpressing"
-                style="padding:3px 9px;
-                            font-size:12px;
-                            color:#fff;
-                            font-weight:600;
-                            background-color:#234CD3"
-              >
-                {{ item.promoteExpressing }}
-              </span>
-            </p>
-          </div>
-          <p
-            class="huodian"
-            style="font-size:18px;color:rgba(80,80,80,1);padding-left:10px;"
-          >
-            {{ item.promoteEstate }}
-          </p>
-          <div style="padding-top:5px;">
-            <img
-              style="width:13px;height:15px;padding-left:10px;vertical-align: middle;"
-              src="/dingwei.png"
-              alt=""
-            />&nbsp;
-            <span style="font-size:14px;color:#A1A1A1;vertical-align: middle;">{{ item.promoteProvince }}/{{ item.promoteCity }}</span>
-          </div>
-          <div style="padding-top:5px;">
-            <img
-              style="width:13px;height:15px;padding-left:10px;vertical-align: middle;"
-              src="/apartment.png"
-              alt=""
-            />&nbsp;
-            <span style="font-size:14px;color:#A1A1A1;vertical-align: middle;"
-              >{{ item.promoteMinHall }} - {{ item.promoteMaxHall }}
-              {{ $t("message.global.P") }}
-            </span>
-          </div>
-          <div style="padding-top:5px;">
-            <span
-              v-for="(tags, i) in item.tags"
-              :key="i"
-              style="display:inline-block;padding:3px 7px;font-size:10px;color:#fff;background-color:#BFBFBF;margin-left:10px;"
-            >{{ tags }}</span>
-          </div>
-          <div
-            style="font-size:16px;
-                    color:#FF5E5E;
-                    padding-left:10px;
-                    font-weight:600;
-                    padding-top:3px;"
-          >
-            {{ item.promoteLowPrice }} - {{ item.promoteMaxPrice }}€
-          </div>
-        </div>
-      </div>
     </div>
     <client-only>
       <gallery
@@ -267,6 +188,7 @@ import Calculator from "~/components/PcIndex/calculator.vue";
 import JumpMap from '~/components/jumpMap.vue';
 import ContactDialog from '../components/PcIndex/ContactDialog.vue';
 import { TypologyOptionConfig, extractProgramProperty, PostApplicationMode } from '../common/config';
+import { fmoney } from '../utils';
 
 export default {
   name: "newDetails",
@@ -306,6 +228,7 @@ export default {
     };
   },
   created () {
+    this.fmoney = fmoney;
     this.getTranslatedLawItem = (law) => this.$t(`message.PROGRAME_DETAIL.LAW_ITEM["${law}"]`);
   },
   mounted () {
@@ -316,7 +239,7 @@ export default {
       const lang = this._i18n.locale;
       const { zip_code, name_id } = this.$route.query;
       try {
-        const res = await this.$api.article.getInfoNewHous({ zip_code, name_id, lang });
+        const res = await this.$api.article.getProgrameDetail({ zip_code, name_id, lang });
         const { properties, typologies, taxArea } = res.data;
         if (Array.isArray(properties)) {
           for (const it of properties) {
@@ -345,13 +268,6 @@ export default {
         console.error('query detail: ', e);
       }
     },
-    routerGo(flags) {
-      if (process.client) {
-        this.get(flags);
-        document.body.scrollTop = 0;
-        document.documentElement.scrollTop = 0;
-      }
-    },
     propertyItemClickhandler (property) {
       this.contactDialogTitles = extractProgramProperty.call(this, property);
       this.contactDialogVisible = true;
@@ -377,16 +293,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.huodian {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-}
-.colors {
-  color: #000 !important;
-}
 // 轮播图
 .lunbotu {
   width: 100%;
@@ -395,77 +301,71 @@ export default {
   background-size: cover;
   background-repeat: no-repeat;
 }
-.secondBod {
+.top-section {
   padding-bottom: 12px;
-  .headline {
+  .breadcrumb {
     padding-top: 10px;
-    color: #000;
-    font-size: 16px;
-    span {
-      cursor: pointer;
-    }
   }
-  .oductions {
+  .estate-name-title {
     color: #000;
     font-size: 32px;
     font-weight: 700;
     line-height: 42px;
-    padding: 16px;
-    padding-bottom: 30px;
+    margin: 16px 0 30px;
   }
-  // 左侧主题
-  .leftBody {
-    float: left;
-    width: 710px;
-    // 轮播图
-    .slideshow {
-      text-align: center;
-      .el-carousel__item img {
-        // width: 710px;
-        height: 404px;
-      }
-      .el-carousel__item:nth-child(2n) {
-        background-color: #99a9bf;
-      }
+}
+// 左侧主题
+.left-body {
+  width: 710px;
+  // 轮播图
+  .slideshow {
+    text-align: center;
+    .el-carousel__item img {
+      height: 404px;
+    }
+    .el-carousel__item:nth-child(2n) {
+      background-color: #99a9bf;
+    }
 
-      .el-carousel__item:nth-child(2n + 1) {
-        background-color: #d3dce6;
+    .el-carousel__item:nth-child(2n + 1) {
+      background-color: #d3dce6;
+    }
+  }
+}
+.right-body {
+  width: 455px;
+  height: 404px;
+  .content-package {
+    box-shadow: 0px 2px 26px 0px rgba(0, 0, 0, 0.11);
+    padding: 9px 20px;
+    height: inherit;
+    box-sizing: border-box;
+    .prises {
+      font-size: 26px;
+      font-weight: 600;
+      color: #ff5e5e;
+      display: inline-block;
+      white-space: nowrap;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .block {
+      margin-top: 4px;
+      span {
+        display: inline-block;
+        color: #fff;
+        margin-right: 8px;
       }
     }
   }
-  .rightBody {
-    float: right;
-    width: 455px;
-    .content-package {
-      box-shadow: 0px 2px 26px 0px rgba(0, 0, 0, 0.11);
-      padding: 9px 20px;
-      .prises {
-        font-size: 26px;
-        font-weight: 600;
-        color: #ff5e5e;
-        display: inline-block;
-        white-space: nowrap;
-        width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .block {
-        margin-top: 4px;
-        span {
-          display: inline-block;
-          color: #fff;
-          margin-right: 8px;
-        }
-      }
-    }
-    .smJf {
-      margin-top: 6px;
-      color: #bababa;
-      font-weight: 600;
-      font-size: 16px;
-      span {
-        color: #000000;
-      }
+  .smJf {
+    margin-top: 6px;
+    color: #bababa;
+    font-weight: 600;
+    font-size: 16px;
+    span {
+      color: #000000;
     }
   }
 }
@@ -481,28 +381,17 @@ export default {
     box-shadow: 0px 2px 14px 0px rgba(0, 0, 0, 0.12);
   }
 }
-.contentS {
+.content-section {
   margin-top: 10px;
-  .contentS {
+  .content-section {
     span {
       display: inline-block;
     }
   }
 }
-.clearfix:after {
-  /*伪元素是行内元素 正常浏览器清除浮动方法*/
-  content: "";
-  display: block;
-  height: 0;
-  clear: both;
-  visibility: hidden;
-}
-.clearfix {
-  *zoom: 1; /*ie6清除浮动的方式 *号只有IE6-IE7执行，其他浏览器不执行*/
-}
 </style>
 <style lang="scss">
-.contentS {
+.content-section {
   .el-table thead {
     font-size: 16px;
   }

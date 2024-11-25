@@ -45,6 +45,7 @@ export const SearchMode = {
 export const CsvUrlConfig = {
   ProgramCityDistribution: 'https://raw.githubusercontent.com/mingzemicco/33immo-config/refs/heads/main/program-city-distribution.csv',
   IndexPageCityProgrames: 'https://raw.githubusercontent.com/mingzemicco/33immo-config/refs/heads/main/index_city_programes.csv',
+  IndexPageCitySecondHand: 'https://raw.githubusercontent.com/mingzemicco/33immo-config/refs/heads/main/index-second-hand.csv',
   ProgrameDepartmentCities: 'https://raw.githubusercontent.com/mingzemicco/33immo-config/refs/heads/main/programe_department_cities.csv',
 }
 
@@ -67,7 +68,6 @@ export function transformNewProgramPoints (parsed) {
 }
 
 export function extractProgramProperty (property) {
-
   const { typology, surface, number, prices } = property;
   const price = prices?.[0]?.price;
   return [
@@ -90,6 +90,24 @@ export function extractProgramProperty (property) {
   ]
 }
 
+export function extractSecondHandProperty (property) {
+  const { price, surface, piece } = property;
+  return [
+    {
+      label: this.$t('message.global.SURFACE'),
+      text: surface ? surface + 'm²' : ''
+    },
+    {
+      label: this.$t('message.PAGE_SECOND_HAND.PIECE'),
+      text: piece ?? ''
+    },
+    {
+      label: this.$t('message.global.price'),
+      text: price ? fmoney(price) + '€' : '',
+    }
+  ];
+}
+
 export const PostApplicationMode = {
   PROGRAME_PROPERTY: 'PROGRAME_PROPERTY',
   SECOND_HAND: 'SECOND_HAND',
@@ -100,7 +118,6 @@ export const CityRegionGeolocation = {
   Paris: { lat: 48.8588897, lng: 2.320041 },
   'Rueil-Malmaison': { lat: 48.87778, lng: 2.1802832 },
   'Le Blanc-Mesnil': { lat: 48.9385489, lng: 2.4631476 },
-  Nice: { lat: 43.7009358, lng: 7.2683912 },
   'Saint-Denis': { lat: 48.9355885, lng: 2.3397438 },
   Marseille: { lat: 43.2961743, lng: 5.3699525 },
   Strasbourg: { lat: 48.584614, lng: 7.7507127 },
@@ -108,7 +125,11 @@ export const CityRegionGeolocation = {
   Aubervilliers: { lat: 48.9146078, lng: 2.3821895 },
   Villejuif: { lat: 48.7921098, lng: 2.3633048 },
   Colombes: { lat: 48.922788, lng: 2.2543577 },
-  'Saint-Ouen-sur-Seine': { lat: 48.911729, lng: 2.334267 }
+  'Saint-Ouen-sur-Seine': { lat: 48.911729, lng: 2.334267 },
+  Cannes: { lat: 43.549, lng: 7.016 },
+  Nice: { lat: 43.7, lng: 7.25 },
+  Lille: { lat: 50.63, lng: 3.06 },
+  Lyon: { lat: 45.757, lng: 4.832 }
 }
 
 export const L1AREA_REGIONS = {
@@ -236,3 +257,30 @@ export function loadIndexPageCityProgrames () {
       return [];
     });
 }
+
+export function loadIndexPageSecondHand () {
+  return fetch(CsvUrlConfig.IndexPageCitySecondHand)
+    .then(res => res.text())
+    .then(text => {
+      const { rows } = parseRawCsv(text, ',') ?? {};
+      const ret = {};
+      if (Array.isArray(rows)) {
+        for (const row of rows) {
+          let city = row.city;
+          row.zip_code = row.zip_code.toString().padStart(5, '0');
+          row.price = fmoney(row.price) + '€';
+          if (city in ret) ret[city].push(row);
+          else {
+            const items = [row];
+            ret[city] = items;
+          }
+        }
+      }
+      return Object.entries(ret).map(([city, items]) => ({ city, items }));
+    })
+    .catch(err => {
+      console.error(err);
+      return [];
+    });
+}
+

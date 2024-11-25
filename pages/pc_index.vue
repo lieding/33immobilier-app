@@ -52,6 +52,32 @@
           <div class="blue-button long" @click="moreProgramesClickHandler()">{{ $t('message.PAGE_INDEX.MORE') }}</div>
         </div>
       </template>
+      <template v-if="secondHandGroupedByCities">
+        <div class="section-part section-title bold">
+          {{ $t('message.global.SECOND_HAND') }}
+        </div>
+        <div class="section-part min-mt city-selection flex">
+          <div
+            v-for="it in secondHandGroupedByCities" :key="it.city"
+            class="item"
+            :class="{ active: activeSecondhandCityKey === it.city }"
+            @click="activeSecondhandCityKey = it.city"
+          >
+            {{ it.city }}
+          </div>
+        </div>
+        <div class="section-part min-mt cards flex">
+          <div v-for="item in selectedSecondHand" :key="item.id" class="item" @click="handleSecondHandClickHandler(item)">
+            <img :src="item.image" />
+            <div class="estate-name bold">{{ item.title }}</div>
+            <div class="zipcode-city">{{ item.zip_code }} / {{ item.city }}</div>
+            <div class="price bold">{{ item.price }}</div>
+          </div>
+        </div>
+        <div class="full-w flex justify-center" style="margin-top: 24px;">
+          <div class="blue-button long" @click="moreSecondHandClickHandler()">{{ $t('message.PAGE_INDEX.MORE') }}</div>
+        </div>
+      </template>
       <div class="section-part join-us">
         <div class="section-title bold">
           {{ $t('message.global.JOIN_US_TITLE') }}
@@ -113,7 +139,7 @@ import { PostApplicationMode } from '../common/config';
 import ContactDialog from '../components/PcIndex/ContactDialog.vue';
 import Calculator from '../components/PcIndex/calculator.vue';
 import IndexCityBar from '../components/IndexCityBar.vue';
-import { CityRegionGeolocation, loadIndexPageCityProgrames, SearchMode } from '../common/config';
+import { CityRegionGeolocation, loadIndexPageCityProgrames, SearchMode, loadIndexPageSecondHand } from '../common/config';
 import { doLocationAutocomplete } from '../common/locationAutocomplete';
 import { searchPostalCode } from '../utils/findPosalcode'
 
@@ -152,13 +178,19 @@ export default {
       gmapAutocompleteService: null,
       programesGroupedByCities: null,
       activeProgrameCityKey: null,
+      secondHandGroupedByCities: null,
+      activeSecondhandCityKey: null,
     };
   },
   computed: {
     selectedProgrames () {
       const arr = this.programesGroupedByCities, key = this.activeProgrameCityKey;
       return arr.find(it => it.city === key)?.items ?? [];
-    }
+    },
+    selectedSecondHand () {
+      const arr = this.secondHandGroupedByCities, key = this.activeSecondhandCityKey;
+      return arr.find(it => it.city === key)?.items ?? [];
+    },
   },
   created () {
     this.SearchMode = SearchMode;
@@ -195,6 +227,11 @@ export default {
         this.programesGroupedByCities = res;
         if (res.length)
           this.activeProgrameCityKey = res[0].city;
+      });
+      loadIndexPageSecondHand().then(res => {
+        this.secondHandGroupedByCities = res;
+        if (res.length)
+          this.activeSecondhandCityKey = res[0].city;
       });
     },
     routerChange(path, flag = undefined) {
@@ -233,7 +270,18 @@ export default {
       if (!city_name) return;
       const { lat, lng } = CityRegionGeolocation[city_name] ?? {};
       if (!lat || !lng) return;
-      this.routerChange('/search', { department_city: city_name, lat, lng, location_type });
+      this.routerChange('/search', { department_city: city_name, lat, lng, location_type, searchMode: SearchMode.NewPrograme, });
+    },
+    handleSecondHandClickHandler (item) {
+      this.routerChange('/second_hand_detail', { zip_code: item.zip_code, id: item.id, title: item.title });
+    },
+    moreSecondHandClickHandler () {
+      let { city_name, location_type = '' } = ev ?? {};
+      city_name = city_name ?? this.activeSecondhandCityKey;
+      if (!city_name) return;
+      const { lat, lng } = CityRegionGeolocation[city_name] ?? {};
+      if (!lat || !lng) return;
+      this.routerChange('/search', { department_city: city_name, lat, lng, location_type, searchMode: SearchMode.SecondHand });
     }
   },
 };
