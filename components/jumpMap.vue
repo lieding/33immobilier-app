@@ -129,6 +129,7 @@ export default {
       async function metroMap () {
         const GMapLib = window.google.maps;
         if (!GMapLib) return;
+        if (!window.google.maps.Map) return;
         const mapElRef = getMmapElRef();
         if (!mapElRef) return;
         if (window.__mapLoaded) return;
@@ -172,7 +173,8 @@ export default {
         }
         refreshPoints();
       }
-      if (window.google?.maps)
+      setTimeout(metroMap, 8000);
+      if (window.google?.maps?.Map)
         return void setTimeout(metroMap);
       window[name] = metroMap;
       return name;

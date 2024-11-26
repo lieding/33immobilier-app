@@ -259,16 +259,14 @@ export default {
   methods: {
     suggestionClickHandler(suggestion) {
       const searchMode = this.searchMode;
-      const { place_id, place_text, type: location_type, postal_code, latitude: lat, longitude: lng } = suggestion;
+      const { place_id, place_text: department_city, type: location_type, postal_code, latitude: lat, longitude: lng } = suggestion;
       if (searchMode == SearchMode.NewPrograme) {
         if (!place_id && !place_text && !postal_code) return;
-        const query = { searchMode, place_id, department_city: place_text, location_type, lat, lng, postal_code };
+        const query = { searchMode, place_id, department_city, location_type, lat, lng, postal_code };
         this.$router.push({ path: "/m_search", query });
       } else if (searchMode == SearchMode.SecondHand) {
-        this.$router.push({
-          path: "/m_search",
-          query: { searchMode, searchInput: this.searchInput }
-        });
+        const query = { searchMode, location_type, department_city, lat, lng, postal_code };
+        this.$router.push({ path: "/m_search", query });
       } else {
       }
     },

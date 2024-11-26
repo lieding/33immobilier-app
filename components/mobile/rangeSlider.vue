@@ -1,15 +1,17 @@
 <template>
   <van-slider range :value="value" active-color="#ee0a24" :min="minValue" :max="maxValue" @change="handler">
     <template #left-button>
-      <div class="custom-button">{{ value[0] }}</div>
+      <div class="custom-button">{{ fmoney(value[0]) }}</div>
     </template>
     <template #right-button>
-      <div class="custom-button">{{ value[1] }}</div>
+      <div class="custom-button">{{ fmoney(value[1]) }}</div>
     </template>
   </van-slider>
 </template>
 
 <script>
+import { fmoney } from '../../utils';
+
 export default {
   props: {
     modelValue: {
@@ -37,6 +39,9 @@ export default {
       immediate: true,
       deep: true,
     },
+  },
+  created () {
+    this.fmoney = fmoney;
   },
   methods: {
     handler(data) {

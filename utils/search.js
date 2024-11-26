@@ -284,16 +284,17 @@ export async function doProgrameQuery (obj, setProgrames) {
 }
 
 /**
- * Do second hand properties search. It must be used with .call, .apply, .bind
+ * Do second hand properties search.
  * @param {{
  *  place_id: string | null,
  *  department_city: string | null,
  *  locationType: string | null,
  *  postal_code: string | null,
  * }} obj
- * @param {Function} setSecondHand
+ * @param {Function} searchSecondHandByCity
+ * @param {Function} searchPlaceInfoById
 */
-export async function doSecondHandQuery (obj, setSecondHand) {
+export async function doSecondHandQuery (obj, searchSecondHandByCity, searchPlaceInfoById) {
   const { place_id, department_city, locationType, postal_code, ...otherParams } = obj;
   const isPostalCode = locationType === LocationType.POSTAL_CODE && postal_code?.length > 1;
   if (!place_id && locationType) {
@@ -311,20 +312,16 @@ export async function doSecondHandQuery (obj, setSecondHand) {
       .then(properties => {
         if (isPostalCode)
           properties = properties.filter(it => it.zip_code?.toString().startsWith(postal_code));
-        Object.assign(this, setSecondHand(properties));
-        return null;
-      })
-      .finally(() => this.dataLoading = false) : null;
+        return { properties };
+      }) : {};
   }
   if (place_id && locationType === LocationType.L2_AREA) {
-    const { placeInfo } = (await this.$api.article.searchPlaceInfoById({ place_id })).data ?? {};
-    if (placeInfo) {
-      this.placeInfo = placeInfo;
-      const regionId = placeInfo.postal_code.substring(0, 2);
-      await loadSecondHandByDepartment([regionId])
-        .then(properties => Object.assign(this, setSecondHand(properties)))
-    }
-    return this.dataLoading = false;
+    const { placeInfo } = await searchPlaceInfoById({ place_id }).then(res => res.data);
+    const departmentId = placeInfo?.postal_code?.substring(0, 2);
+    if (departmentId)
+      return loadSecondHandByDepartment([departmentId]).then(properties => ({ properties, placeInfo }));
+    else
+      return { placeInfo }
   }
   let params = { ...otherParams };
   if (place_id)
@@ -333,8 +330,5 @@ export async function doSecondHandQuery (obj, setSecondHand) {
     params.postal_code = postal_code;
   else if (!locationType || locationType === LocationType.LOCALITY)
     params.city_name = department_city;
-  const { placeInfo, properties } = (await this.$api.article.searchSecondHandByCity(params)).data;
-  if (place_id && placeInfo)
-    this.placeInfo = placeInfo;
-  Object.assign(this, setSecondHand(properties));
+  return searchSecondHandByCity(params).then(res => res.data);
 }

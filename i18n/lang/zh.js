@@ -375,7 +375,7 @@ module.exports = {
         MAISON_DE_LUXE: "豪华住宅：特别讲究设计与品质的独立房屋",
         MOULIN: "水磨房：指改造为居住用途的旧磨坊",
         PROPRIETES_EQUESTRES: "马术物业：拥有马厩和骑马设施的地产",
-        MANOIR: "马术物业：拥有马厩和骑马设施的地产",
+        MANOIR: "庄园宅邸：乡村别墅与大宅",
         HOTEL_PARTICULIER: "私人豪宅：通常位于城市中心，带花园或庭院的独栋高端住宅",
         CHATEAU: "城堡：大型历史建筑，常用于私人住宅或庄园",
         DOMAINES_VITICOLES: "葡萄酒庄园：包含葡萄园并从事酿酒的地产",

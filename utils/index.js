@@ -47,6 +47,7 @@ async function queryLocation (kw) {
 */
 export async function searchCityGeolocation (city, region_id) {
   const locations = await queryLocation(city);
+  console.log(locations);
   if (!Array.isArray(locations)) return;
   for (const it of locations) {
     if (it.postcode?.startsWith(region_id) && it.coordinates?.length) {
