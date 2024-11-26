@@ -62,7 +62,7 @@ export default {
       const { isDepartment, isPostalCode, department_id, department_name, latitude, longitude, postal_code, name } = item;
       let obj;
       if (isDepartment) {
-        obj = { locationType: LocationType.L2_AREA, id: department_id, name: department_name, latitude, longitude }
+        obj = { locationType: LocationType.L2_AREA, departmentId: department_id, name: department_name, latitude, longitude }
       } else if (isPostalCode) {
         obj = { locationType: LocationType.POSTAL_CODE, departmentId: department_id, postal_code, latitude, longitude };
       } else {

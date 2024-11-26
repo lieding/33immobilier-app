@@ -361,23 +361,21 @@ export default {
         this.activePointId = '';
         const { place_id } = this.$route.query, { locationType, department_city, postal_code } = this.placeInfo;
         if (!place_id && !department_city && !postal_code) return;
+        const params = { place_id, locationType, postal_code, department_city };
+        const { searchSecondHandByCity, searchPlaceInfoById, searchProgramesByCity } = this.$api.article;
         if (this.secondHandMode) {
-          await doSecondHandQuery.call(this, { place_id, department_city, locationType, postal_code }, setSecondHand);
+          const { placeInfo, properties } = await doSecondHandQuery(params, searchSecondHandByCity, searchPlaceInfoById);
+          if (place_id && placeInfo) this.placeInfo = { ...this.placeInfo, ...placeInfo };
+          if (Array.isArray(properties)) Object.assign(this, setSecondHand(properties));
         } else {
-          const responseData =
-            await doProgrameQuery.call(this, { place_id, locationType, postal_code, department_city }, setProgrames);
-          if (!responseData || typeof responseData !== 'object') return this.dataLoading = false;;
-          const { placeInfo, programes } = responseData;
-          if (placeInfo?.longitude && placeInfo?.latitude) {
-            this.placeInfo = { ...this.placeInfo, ...placeInfo };
-          }
-          if (Array.isArray(programes)) {
-            Object.assign(this, setProgrames.call(this, programes));
-          }
+          const { programes, placeInfo } = await doProgrameQuery(params, searchProgramesByCity, searchPlaceInfoById);
+          if (place_id && placeInfo) this.placeInfo = { ...this.placeInfo, ...placeInfo };
+          if (Array.isArray(programes)) Object.assign(this, setProgrames(programes, this.TypologyOption));
         }
-        this.dataLoading = false;
       } catch (err) {
         console.error(err);
+      } finally {
+        this.dataLoading = false;
       }
     },
   },
@@ -396,13 +394,13 @@ function setSecondHand (list) {
   return { allSecondhandList: list, filteredSecondHandList: list, minPrice, maxPrice, minSurface, maxSurface, priceRange, surfaceRange };
 }
 
-function setProgrames (programes) {
+function setProgrames (programes, TypologyOption) {
   programes = programes.filter(it => it.id.toString() !== 'Infinity');
-  const { minPrice, maxPrice, typologyOptionKeys } = handleProgrames(programes, this.TypologyOption);
+  const { minPrice, maxPrice, typologyOptionKeys } = handleProgrames(programes, TypologyOption);
   return {
     maxPrice, minPrice,
     priceRange: [ minPrice, maxPrice ],
-    typologyOptions: typologyOptionKeys.map(key => this.TypologyOption.find(it => it.value === key)).filter(Boolean),
+    typologyOptions: typologyOptionKeys.map(key => TypologyOption.find(it => it.value === key)).filter(Boolean),
     allProgramList: programes,
     filteredProgramList: programes.slice(),
   };

@@ -207,23 +207,21 @@ export default {
     },
     departmentCityIndexBarSelectHandler (item) {
       this.toggleDropdownMenu('item-department-city-dropdown');
-      let { department_id, name, longitude, latitude, postal_code, isDepartment, isPostalCode } = item;
+      let { departmentId, name, longitude, latitude, postal_code, locationType } = item;
       latitude = Number(latitude) || null, longitude = Number(longitude) || null;
-      return
-      if (isDepartment) {
-        this.placeInfo = { ...this.placeInfo, latitude, longitude, department_city: name, locationType: LocationType.L2_AREA };
+      if ([LocationType.L2_AREA, LocationType.POSTAL_CODE].includes(locationType)) {
+        this.placeInfo = { ...this.placeInfo, latitude, longitude, department_city: name, locationType, postal_code };
         this.queryList();
       } else {
         name = name || postal_code;
-        const locationType = isPostalCode ? LocationType.POSTAL_CODE : null;
         const setRes = (latitude, longitude) => {
-          this.placeInfo = { ...this.placeInfo, department_city: name, locationType, longitude, latitude, postal_code };
+          this.placeInfo = { ...this.placeInfo, department_city: name, locationType, longitude, latitude };
           this.queryList();
         }
         if (latitude && longitude)
           setRes(latitude, longitude);
         else
-          searchCityGeolocation(name, department_id).then(({ latitude, longitude }) => setRes(latitude, longitude));
+          searchCityGeolocation(name, departmentId).then(({ latitude, longitude }) => setRes(latitude, longitude));
       }
     },
     priceRangeChangeHandler (range) {
@@ -282,18 +280,15 @@ export default {
       const { place_id } = this.$route.query, { department_city, locationType, postal_code } = this.placeInfo;
       const params = { page, place_id, department_city, locationType, postal_code };
       try {
+        const { searchSecondHandByCity, searchPlaceInfoById, searchProgramesByCity } = this.$api.article;
         if (this.isNew) {
-          const responseData = await doProgrameQuery.call(this, params, setProgrames);
-          if (!responseData || typeof responseData !== 'object') return this.dataLoading = false;
-          const { placeInfo, programes } = responseData;
-          if (placeInfo && place_id) this.placeInfo = placeInfo;
-          if (Array.isArray(programes)) {
+          const { placeInfo, programes } = await doProgrameQuery(params, searchProgramesByCity, searchPlaceInfoById);
+          if (placeInfo && place_id) this.placeInfo = { ...this.placeInfo, ...placeInfo };
+          if (Array.isArray(programes))
             Object.assign(this, setProgrames(programes, this.TypologyOption));
-          }
         } else if (this.isSecondHand) {
-          const { searchSecondHandByCity, searchPlaceInfoById } = this.$api.article;
           const { placeInfo, properties } = await doSecondHandQuery(params, searchSecondHandByCity, searchPlaceInfoById);
-          if (place_id && placeInfo) this.placeInfo = placeInfo;
+          if (place_id && placeInfo) this.placeInfo = { ...this.placeInfo, ...placeInfo };
           if (Array.isArray(properties)) Object.assign(this, setSecondHand(properties));
         }
       } catch (err) {

@@ -231,16 +231,17 @@ export function searchDepartmentCityPostcode (queryString, departmentCityInfo) {
 }
 
 /**
- * Do new programe search. It must be used with .call, .apply, .bind
+ * Do new programe search
  * @param {{
  *  place_id: string | null,
  *  department_city: string | null,
  *  locationType: string | null,
  *  postal_code: string | null,
  * }} obj
- * @param {Function} setProgrames
+ * @param {Function} searchProgramesByCity
+ * @param {Function} searchPlaceInfoById
 */
-export async function doProgrameQuery (obj, setProgrames) {
+export async function doProgrameQuery (obj, searchProgramesByCity, searchPlaceInfoById) {
   const { place_id, department_city, locationType, postal_code, ...otherParams } = obj;
   const isPostalCode = locationType === LocationType.POSTAL_CODE && postal_code?.length > 1;
   if (!place_id && locationType && department_city) {
@@ -258,20 +259,16 @@ export async function doProgrameQuery (obj, setProgrames) {
       .then(programes => {
         if (isPostalCode)
           programes = programes.filter(it => it.zip_code?.toString().startsWith(postal_code));
-        Object.assign(this, setProgrames.call(this, programes, this.TypologyOption));
-        return null;
-      })
-      .finally(() => this.dataLoading = false) : null;
+        return { programes };
+      }) : {};
   }
   if (place_id && locationType === LocationType.L2_AREA) {
-    const { placeInfo } = (await this.$api.article.searchPlaceInfoById({ place_id })).data ?? {};
-    if (placeInfo) {
-      this.placeInfo = placeInfo;
-      const regionId = placeInfo.postal_code.substring(0, 2);
-      await loadProgramesByDepartment([regionId])
-        .then(programes => Object.assign(this, setProgrames.call(this, programes, this.TypologyOption)))
-    }
-    return this.dataLoading = false;
+    const { placeInfo } = await searchPlaceInfoById({ place_id }).then(res => res.data);
+    const departmentId = placeInfo?.postal_code?.substring(0, 2);
+    if (departmentId)
+      return loadProgramesByDepartment([departmentId]).then(programes => ({ programes, placeInfo }));
+    else
+      return { placeInfo };
   }
   const lang = this._i18n.locale;
   const params = { lang, ...otherParams };
@@ -279,8 +276,7 @@ export async function doProgrameQuery (obj, setProgrames) {
     params.place_id = place_id;
   else if (department_city)
     params.city_name = department_city;
-  const responseData = (await this.$api.article.searchProgramesByCity(params)).data;
-  return responseData;
+  return searchProgramesByCity(params).then(res => res.data);
 }
 
 /**
