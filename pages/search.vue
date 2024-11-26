@@ -361,7 +361,8 @@ export default {
         this.activePointId = '';
         const { place_id } = this.$route.query, { locationType, department_city, postal_code } = this.placeInfo;
         if (!place_id && !department_city && !postal_code) return;
-        const params = { place_id, locationType, postal_code, department_city };
+        const lang = this._i18n.locale;
+        const params = { place_id, locationType, postal_code, department_city, lang };
         const { searchSecondHandByCity, searchPlaceInfoById, searchProgramesByCity } = this.$api.article;
         if (this.secondHandMode) {
           const { placeInfo, properties } = await doSecondHandQuery(params, searchSecondHandByCity, searchPlaceInfoById);

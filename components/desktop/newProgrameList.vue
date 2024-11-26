@@ -51,6 +51,10 @@ export default {
     activePointId: {
       type: String,
       required: true
+    },
+    finished: {
+      type: Boolean,
+      default: false
     }
   },
   created () {

@@ -270,8 +270,7 @@ export async function doProgrameQuery (obj, searchProgramesByCity, searchPlaceIn
     else
       return { placeInfo };
   }
-  const lang = this._i18n.locale;
-  const params = { lang, ...otherParams };
+  const params = { ...otherParams };
   if (place_id)
     params.place_id = place_id;
   else if (department_city)
