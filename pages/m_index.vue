@@ -36,8 +36,8 @@
     </div>
     <!-- 新房 -->
     <div class="section">
-      <div class="section-title">{{ $t('message.global.NewHouse') }}</div>
-      <div class="subtitle">{{ $t("message.global.precedence") }}</div>
+      <div class="section-title">{{ $t('message.global.NEW_PROGRAME') }}</div>
+      <div class="subtitle">{{ $t("message.global.PARTNERSHIP") }}</div>
       <template v-if="programesGroupedByCities">
         <div class="city-selection flex wrap">
           <div
@@ -134,9 +134,9 @@
     </div>
     <!-- 我们的合作伙伴 -->
     <div class="section partner">
-      <div class="section-title">{{ $t("message.global.ourFri") }}</div>
-      <div class="subtitle">{{ $t("message.global.pionner") }}</div>
-      <div class="subtitle">{{ $t("message.global.Courtier") }}</div>
+      <div class="section-title">{{ $t("message.global.OUR_PARTNERS") }}</div>
+      <div class="subtitle">{{ $t("message.global.PARTNERSHIP") }}</div>
+      <div class="subtitle">{{ $t("message.global.PARTNSHIP_WITH_COURTIER") }}</div>
       <img src="/partner.png" />
     </div>
     <hr class="divider" />

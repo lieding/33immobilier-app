@@ -32,7 +32,7 @@
 const Service = {
   title: 'message.global.SERVICE',
   items: [
-    { i18n: 'message.global.NewHouse' },
+    { i18n: 'message.global.NEW_PROGRAME' },
     { i18n: 'message.global.SECOND_HAND' },
     { i18n: 'message.FOOTER.SCI' },
     { i18n: 'message.FOOTER.ACCOUNTING' }

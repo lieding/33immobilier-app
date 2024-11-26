@@ -24,7 +24,7 @@
           >
             <el-input v-model="form.lastName" :placeholder="$t('message.global.PLEASE_ENTER')"></el-input>
           </el-form-item>
-          <el-form-item prop="mail" :label="$t('message.global.contactEmil')"
+          <el-form-item prop="mail" :label="$t('message.global.CONTACT_EMAIL_ADDRESS')"
             :rules="[
               { required: true, message: $t('message.global.PLEASE_ENTER') },
               { type: 'email', message: $t('message.global.INVALID') }
@@ -32,7 +32,7 @@
           >
             <el-input v-model="form.mail" :placeholder="$t('message.global.PLEASE_ENTER')"></el-input>
           </el-form-item>
-          <el-form-item prop="phone" :label="$t('message.global.contactPhone')"
+          <el-form-item prop="phone" :label="$t('message.global.CONTACT_PHONE')"
             :rules="{ required: true, message: $t('message.global.PLEASE_ENTER') }"
           >
             <div class="phone-form">
@@ -48,7 +48,7 @@
               <el-input v-model="form.phone" :placeholder="$t('message.global.PLEASE_ENTER')" />
             </div>
           </el-form-item>
-          <el-form-item prop="message" :label="$t('message.global.LeaveYourMessage')">
+          <el-form-item prop="message" :label="$t('message.global.LEAVE_YOUR_MESSAGE')">
             <el-input type="textarea" v-model="form.message" :placeholder="$t('message.global.PLEASE_ENTER')"></el-input>
           </el-form-item>
         </el-form>

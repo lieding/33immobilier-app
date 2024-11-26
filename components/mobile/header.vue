@@ -9,12 +9,12 @@
       </div>
       <ul class="popup-list" @click="listBtnClickHandler">
         <router-link :to="{ path: '/m_index' }" tag="li">
-          {{ $t("message.global.home") }}
+          {{ $t("message.global.HOME") }}
         </router-link>
         <router-link
           :to="{ path: '/m_search', query: { searchMode: SearchMode.NewPrograme, department_city: 'Paris' } }"
           tag="li"
-        >{{ $t("message.global.NewHouse") }}</router-link>
+        >{{ $t("message.global.NEW_PROGRAME") }}</router-link>
         <router-link
           :to="{ path: '/m_search', query: { searchMode: SearchMode.Secondhand, department_city: 'Paris' } }"
           tag="li"
@@ -97,10 +97,5 @@ export default {
       }
     }
   }
-}
-.rental {
-  padding: 6px 0;
-  background: var(--main-blue);
-  color: #fff !important;
 }
 </style>

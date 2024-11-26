@@ -1,9 +1,9 @@
 <template>
-  <div class="calculator loans">
+  <div class="calculator LOAN_AMOUNT">
     <div class="title bold">{{ $t("message.global.LOAN_CAPABILITY_CALCULATION") }}</div>
     <div class="calculate">
       <div class="counter">
-        <p>{{ $t("message.global.onnetincome") }}</p>
+        <p>{{ $t("message.global.MONTH_NET_INCOME") }}</p>
         <el-input
           class="inputs"
           type="number"
@@ -12,7 +12,7 @@
         >
           <i slot="suffix" class="el-input__icon">€</i>
         </el-input>
-        <p>{{ $t("message.global.payment") }}</p>
+        <p>{{ $t("message.global.DOWN_PAYMENT_AMOUNT") }}</p>
         <el-input
           class="inputs"
           type="number"
@@ -36,7 +36,7 @@
         </el-input>
         <el-row type="flex" justify="end">
           <div class="calcaulate-btn white" @click="doCalculate">
-            {{ $t("message.global.calculate") }}
+            {{ $t("message.global.CALCULATE") }}
           </div>
         </el-row>
       </div>
@@ -57,7 +57,7 @@
             </table>
             <table v-for="(item, index) in reckenList" :key="index">
               <tr>
-                <td>{{ item.year }} {{ $t("message.global.ans") }}</td>
+                <td>{{ item.year }} {{ $t("message.global.YEAR") }}</td>
                 <td>{{ item.retes }} %</td>
                 <td>{{ fmoney(item.money, 0) }}€</td>
               </tr>
@@ -66,13 +66,10 @@
         </div>
       </div>
     </div>
-    <!-- <div class="minimum-lona-btn" @click="routerGo">
-      {{ $t("message.global.minimum") }}
-    </div> -->
-    <div class="title bold" style="margin-top: 16px;">{{ $t("message.global.loancalculate") }}</div>
+    <div class="title bold" style="margin-top: 16px;">{{ $t("message.global.CALCULATE_LOAN_REPAYMENT_AMT") }}</div>
     <div class="calculate">
       <div class="counter couters" style="height:418px;">
-        <p>{{ $t("message.global.Housing") }}</p>
+        <p>{{ $t("message.global.HOUSING_AMOUNT") }}</p>
         <el-input
           class="inputs1"
           type="number"
@@ -81,7 +78,7 @@
         >
           <i slot="suffix" class="el-input__icon">€</i>
         </el-input>
-        <p>{{ $t("message.global.payment") }}</p>
+        <p>{{ $t("message.global.DOWN_PAYMENT_AMOUNT") }}</p>
         <el-input
           class="inputs"
           type="number"
@@ -91,7 +88,7 @@
         >
           <i slot="suffix" class="el-input__icon">€</i>
         </el-input>
-        <p>{{ $t("message.global.particular") }}</p>
+        <p>{{ $t("message.global.LOAN_TERM") }}</p>
         <el-select
           v-model="repaymentForm.year"
           style="width:305px;"
@@ -115,12 +112,12 @@
         </el-input>
         <el-row type="flex" justify="end">
           <div class="calcaulate-btn white" @click="calculateLoanRepayment">
-            {{ $t("message.global.calculate") }}
+            {{ $t("message.global.CALCULATE") }}
           </div>
         </el-row>
       </div>
       <div class="right-part" v-if="loanRepaymentCalRes">
-        <span style="font-size:20px;color:#000;font-weight:600;">{{ $t("message.global.repaymen") }}:</span>
+        <span style="font-size:20px;color:#000;font-weight:600;">{{ $t("message.global.MONTHLY_REPAYMENT_AMOUNT") }}:</span>
         <span style="font-size:20px;color:#FF5E5E;">{{ fmoney(repayment, 2) }}€</span>
         <div id="calculator-loan-repayment-chart" style="width: 331px;height:252px;"></div>
         <div>
@@ -128,7 +125,7 @@
             <span
               style="width:16px;height:16px;display:inline-block;background-color:#7ECF34;border-radius:8px;vertical-align: middle;"
             ></span>
-            {{ $t("message.global.payment") }} :
+            {{ $t("message.global.DOWN_PAYMENT_AMOUNT") }} :
             <span style="color:#FF5E5E">{{ fmoney(loanRepaymentCalRes.A, 0) }} €</span>
           </p>
           <p style="margin-top:10px;padding-left:20px;">
@@ -142,7 +139,7 @@
             <span
               style="width:16px;height:16px;display:inline-block;background-color:#F4A436;border-radius:8px;vertical-align: middle;"
             ></span>
-            {{ $t("message.global.loans") }} :
+            {{ $t("message.global.LOAN_AMOUNT") }} :
             <span style="color:#FF5E5E">{{ fmoney(loanRepaymentCalRes.S, 0) }} €</span>
           </p>
         </div>
@@ -235,8 +232,8 @@ function drawRepaymentPieChart (compInst) {
   const { S, L, A, } = compInst.loanRepaymentCalRes;
   const dataPoints = [
     { y: Number(L), indexLabel: compInst.$t('message.global.INTEREST_AMOUNT'), color: '#1B9AFB' },
-    { y: Number(S), indexLabel: compInst.$t('message.global.loans'), color: '#F4A436' },
-    { y: Number(A), indexLabel: compInst.$t('message.global.payment'), color: '#7ECF34' },
+    { y: Number(S), indexLabel: compInst.$t('message.global.LOAN_AMOUNT'), color: '#F4A436' },
+    { y: Number(A), indexLabel: compInst.$t('message.global.DOWN_PAYMENT_AMOUNT'), color: '#7ECF34' },
   ];
   const chart = new CanvasJS.Chart("calculator-loan-repayment-chart", {
 		// title:{ text: "Gaming Consoles Sold in 2012" },
@@ -266,7 +263,7 @@ function drawRepaymentPieChart (compInst) {
     cursor: pointer;
   }
 }
-.loans {
+.LOAN_AMOUNT {
   overflow: hidden;
   .title {
     font-size: 20px;

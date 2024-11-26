@@ -24,7 +24,7 @@
       </p>
       <p class="price">{{ fmoney(programeDetail.availablePropertiesMinPrice) }}€ - {{ fmoney(programeDetail.availablePropertiesMaxPrice) }}€</p>
       <p class="info-row">
-        <span class="grey-color">{{ $t("message.global.completionDate") }} ：</span>
+        <span class="grey-color">{{ $t("message.global.DELIVERY_DATE") }} ：</span>
         {{ programeDetail.deliveryQuarter }}
       </p>
       <p class="info-row">
@@ -32,7 +32,7 @@
         {{ programeDetail.availablePropertiesCount }}
       </p>
       <p class="info-row">
-        <span class="grey-color">{{ $t("message.global.measures") }} ：</span>
+        <span class="grey-color">{{ $t("message.global.TAX_CUTS") }} ：</span>
         {{ translatedLaws }}
       </p>
       <p class="info-row">
@@ -40,7 +40,7 @@
         {{ translatedTaxArea }}
       </p>
       <p class="info-row">
-        <span class="grey-color">{{ $t("message.global.LOCATION") }} ：</span>
+        <span class="grey-color">{{ $t("message.global.LOCATED_CITY") }} ：</span>
         {{ programeDetail.zip_code }} / {{ programeDetail.city }}
       </p>
     </div>
@@ -59,15 +59,15 @@
       ></div>
       <div>
         <span class="pack-up" @click="toggleDisplayMore">
-          {{ displayMoreDesc ? $t("message.global.seeMore") : $t("message.global.SEE_LESS") }}
+          {{ displayMoreDesc ? $t("message.global.SEE_MORE") : $t("message.global.SEE_LESS") }}
         </span>
       </div>
     </div>
     <hr class="hr" />
     <!-- 楼盘位置 -->
     <div class="section">
-      <span class="section-title">{{ $t("message.global.position") }}</span>
-      <p class="province">{{ programeDetail.address }}</p>
+      <span class="section-title">{{ $t("message.global.PROGRAM_POSITION") }}</span>
+      <p class="address">{{ programeDetail.address }}</p>
       <div class="map">
         <jump-map
           v-if="programeDetail.latitude && programeDetail.longitude"
@@ -86,11 +86,11 @@
       <div class="swipe">
         <div v-for="(info, index) in properties" :key="index" @click="propertyClickHandler(info)">
           <p class="info-row">
-            <span class="grey-color">{{ $t("message.global.chamberID") }} ：</span>
+            <span class="grey-color">{{ $t("message.global.NEW_PROGRAME_ID") }} ：</span>
             {{ info.number }}
           </p>
           <p class="info-row">
-            <span class="grey-color">{{ $t("message.global.DoorMode") }} ：</span>
+            <span class="grey-color">{{ $t("message.global.APARTMENT_TYPE") }} ：</span>
             {{ info.translatedTypology }}
           </p>
           <p class="info-row">
@@ -102,11 +102,11 @@
             {{ info.floor }}
           </p>
           <p class="info-row">
-            <span class="grey-color">{{ $t("message.global.price") }} ：</span>
+            <span class="grey-color">{{ $t("message.global.PRICE") }} ：</span>
             {{ info.price }}€
           </p>
           <p class="info-row">
-            <span class="grey-color">{{ $t("message.global.ROI") }} ：</span>
+            <span class="grey-color">{{ $t("message.global.RATE_OF_RETURN") }} ：</span>
             {{ info.profitability }}%
           </p>
         </div>
@@ -424,7 +424,7 @@ td {
     overflow: hidden;
   }
   // 楼盘位置
-  .province {
+  .address {
     font-size: 0.12rem;
     color: rgba(177, 177, 177, 1);
     line-height: 0.17rem;

@@ -3,7 +3,7 @@
     <div class="top-section desktop-placed-center">
       <div class="breadcrumb">
         <el-breadcrumb separator="/">
-          <el-breadcrumb-item :to="{ path: '/pc_index' }">{{ $t("message.global.home") }}</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ path: '/pc_index' }">{{ $t("message.global.HOME") }}</el-breadcrumb-item>
           <el-breadcrumb-item>{{ $t("message.global.SECOND_HAND_COLLECTION") }}</el-breadcrumb-item>
         </el-breadcrumb>
       </div>
@@ -50,7 +50,7 @@
             <span>{{ detail.chambre }}</span>
           </p>
           <p class="info-row">
-            {{ $t("message.global.LOCATION") }}：
+            {{ $t("message.global.LOCATED_CITY") }}：
             <span>{{ detail.zip_code }} / {{detail.city}}</span>
           </p>
           <p class="info-row">

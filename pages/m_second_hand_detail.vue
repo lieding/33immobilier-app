@@ -15,10 +15,10 @@
     </div>
     <div class="second-info-row-detail">
       <p class="detail-title">{{ detail.title }}</p>
-      <p class="detail-region">{{ detail.zip_code }} / {{ detail.city }}</p>
+      <p class="detail-location">{{ detail.zip_code }} / {{ detail.city }}</p>
       <p class="price">{{ fmoney(detail.price) }}€</p>
       <p class="info-row">
-        <span class="grey-color">{{ $t("message.global.LOCATION") }} ：</span>
+        <span class="grey-color">{{ $t("message.global.LOCATED_CITY") }} ：</span>
         {{ detail.zip_code }} / {{ detail.city }}
       </p>
       <p class="info-row">
@@ -57,7 +57,7 @@
       ></div>
       <div>
         <span class="pack-up" @click="toggleDisplayMore">
-          {{ displayMoreDesc ? $t("message.global.seeMore") : $t("message.global.SEE_LESS") }}
+          {{ displayMoreDesc ? $t("message.global.SEE_MORE") : $t("message.global.SEE_LESS") }}
         </span>
       </div>
     </div>
@@ -184,20 +184,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.dialog {
-  img {
-    width: 100%;
-  }
-}
-
-.block {
-  width: 120px;
-  height: 120px;
-  background-color: #fff;
-}
-div {
-  font-size: 16px;
-}
 .pack {
   padding: 0.1rem;
   div {
@@ -226,10 +212,6 @@ div {
   margin: 0.12rem 0;
   background-color: #ececec;
 }
-th,
-td {
-  border: none !important;
-}
 .van-button--large {
   width: 92%;
   margin-left: 0.1rem;
@@ -247,47 +229,13 @@ td {
     line-height: 0.28rem;
     margin: 0.07rem 0 0.03rem;
   }
-  .detail-region {
+  .detail-location {
     height: 0.17rem;
     font-size: 0.12rem;
     color: rgba(177, 177, 177, 1);
     line-height: 0.17rem;
     margin-bottom: 0.11rem;
   }
-}
-.tax {
-  height: 0.26rem;
-  background: rgba(106, 192, 120, 1);
-}
-.check {
-  height: 0.26rem;
-  background: rgba(35, 76, 211, 1);
-}
-.itemize {
-  height: 0.18rem;
-  background: rgba(191, 191, 191, 1);
-}
-
-.item > span {
-  margin-right: 0.08rem;
-}
-.font {
-  font-size: 0.12rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 1);
-  line-height: 0.17rem;
-  display: inline-block;
-  padding: 0 0.05rem;
-  line-height: 0.26rem;
-}
-.font1 {
-  font-size: 0.11rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 1);
-  line-height: 0.16rem;
-  display: inline-block;
-  padding: 0 0.05rem;
-  line-height: 0.18rem;
 }
 .price {
   height: 0.28rem;
@@ -315,11 +263,6 @@ td {
 }
 .section {
   margin: 0 0.12rem;
-  .download {
-    img {
-      width: 16px;
-    }
-  }
   .synopsis {
     margin: 0.1rem 0;
     font-size: 0.13rem;
@@ -339,12 +282,6 @@ td {
     line-height: 0.18rem;
     overflow: hidden;
   }
-  // 楼盘位置
-  .province {
-    font-size: 0.12rem;
-    color: rgba(177, 177, 177, 1);
-    line-height: 0.17rem;
-  }
   .map {
     height: 3rem;
     width: 100%;
@@ -361,18 +298,6 @@ td {
       padding: 0.1rem;
       margin: 0.08rem;
     }
-  }
-  .relation {
-    text-align: center;
-    height: 0.18rem;
-    font-size: 0.13rem;
-    color: rgba(34, 75, 215, 1);
-    line-height: 0.18rem;
-  }
-  .money {
-    padding-left: 0.2rem;
-    font-weight: 500;
-    color: rgba(255, 94, 94, 1);
   }
   .top {
     display: flex;

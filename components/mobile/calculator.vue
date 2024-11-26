@@ -4,7 +4,7 @@
     <div class="section">
       <div class="section-title full-w text-center">{{ $t("message.global.LOAN_CAPABILITY_CALCULATION") }}</div>
       <div class="repay">
-        <p class="field-label">{{ $t("message.global.onnetincome") }}</p>
+        <p class="field-label">{{ $t("message.global.MONTH_NET_INCOME") }}</p>
         <van-cell-group>
           <van-field
             v-model.number="capabilityForm.monthlyRevenu"
@@ -14,7 +14,7 @@
             type="number"
           />
         </van-cell-group>
-        <p class="field-label">{{ $t("message.global.payment") }}</p>
+        <p class="field-label">{{ $t("message.global.DOWN_PAYMENT_AMOUNT") }}</p>
         <van-cell-group>
           <van-field
             v-model.number="capabilityForm.downPay"
@@ -39,7 +39,7 @@
         </van-cell-group>
       </div>
       <div class="btn flex">
-        <van-button type="info" size="small" class="btn-i" @click="doCalculate">{{$t("message.global.calculate")}}</van-button>
+        <van-button type="info" size="small" class="btn-i" @click="doCalculate">{{$t("message.global.CALCULATE")}}</van-button>
       </div>
       <p class="monthly" v-if="monthlyCapableRepayment">
         {{ $t("message.global.MAXIMUM_MONTHLY_REPAYMENT_AMOUNT") }}
@@ -56,7 +56,7 @@
         </table>
         <table v-for="(item, index) in reckenList" :key="index">
           <tr>
-            <td>{{ item.year }} {{ $t("message.global.ans") }}</td>
+            <td>{{ item.year }} {{ $t("message.global.YEAR") }}</td>
             <td>{{ item.retes }}%</td>
             <td>{{ item.money }}€</td>
           </tr>
@@ -66,9 +66,9 @@
     <hr class="hr" />
     <!-- 还贷计算 -->
     <div class="section">
-      <div class="section-title full-w text-center">{{ $t("message.global.loancalculate") }}</div>
+      <div class="section-title full-w text-center">{{ $t("message.global.CALCULATE_LOAN_REPAYMENT_AMT") }}</div>
       <div class="repay">
-        <p class="field-label">{{ $t("message.global.Housing") }}</p>
+        <p class="field-label">{{ $t("message.global.HOUSING_AMOUNT") }}</p>
         <van-cell-group>
           <van-field
             v-model.number="repaymentForm.loan"
@@ -78,7 +78,7 @@
             type="number"
           />
         </van-cell-group>
-        <p class="field-label">{{ $t("message.global.payment") }}</p>
+        <p class="field-label">{{ $t("message.global.DOWN_PAYMENT_AMOUNT") }}</p>
         <van-cell-group>
           <van-field
             v-model.number="repaymentForm.downpay"
@@ -89,7 +89,7 @@
             type="number"
           />
         </van-cell-group>
-        <p class="field-label">{{ $t("message.global.particular") }}</p>
+        <p class="field-label">{{ $t("message.global.LOAN_TERM") }}</p>
         <el-select v-model.number="repaymentForm.year" style="width: 100%;">
           <el-option v-for="item in interestRateConfig" :key="item.year" :label="item.year" :value="item.year"></el-option>
         </el-select>
@@ -106,7 +106,7 @@
         </van-cell-group>
       </div>
       <div class="btn flex">
-        <van-button type="info" size="small" class="btn-i" @click="calculateLoanRepayment">{{$t("message.global.calculate")}}</van-button>
+        <van-button type="info" size="small" class="btn-i" @click="calculateLoanRepayment">{{$t("message.global.CALCULATE")}}</van-button>
       </div>
       <p class="monthly" v-if="M">
         {{ $t("message.global.MAXIMUM_MONTHLY_REPAYMENT_AMOUNT") }}
@@ -194,8 +194,8 @@ function drawRepaymentPieChart (compInst) {
   const { S, L, A, } = compInst;
   const dataPoints = [
     { y: Number(L), indexLabel: compInst.$t('message.global.INTEREST_AMOUNT'), color: '#1B9AFB' },
-    { y: Number(S), indexLabel: compInst.$t('message.global.loans'), color: '#F4A436' },
-    { y: Number(A), indexLabel: compInst.$t('message.global.payment'), color: '#7ECF34' },
+    { y: Number(S), indexLabel: compInst.$t('message.global.LOAN_AMOUNT'), color: '#F4A436' },
+    { y: Number(A), indexLabel: compInst.$t('message.global.DOWN_PAYMENT_AMOUNT'), color: '#7ECF34' },
   ];
   const chart = new CanvasJS.Chart("calculator-loan-repayment-chart", {
 		data: [

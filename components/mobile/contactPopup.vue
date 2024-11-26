@@ -37,13 +37,13 @@
           <van-field
             v-model="form.phone"
             name="phone"
-            :label="$t('message.global.YourPhone')"
+            :label="$t('message.global.YOUR_PHONE')"
             :placeholder="$t('message.global.PLEASE_ENTER')"
             :rules="[{ required: true, message: $t('message.global.PLEASE_ENTER') }]"
           />
           <van-field
             v-model="form.message"
-            :label="$t('message.global.LeaveYourMessage')"
+            :label="$t('message.global.LEAVE_YOUR_MESSAGE')"
             name="message" rows="1" autosize
             :placeholder="$t('message.global.PLEASE_ENTER')"
           />

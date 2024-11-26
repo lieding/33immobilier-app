@@ -31,7 +31,7 @@
         </div>
       </div>
     </div>
-    <el-alert v-show="true" :title="$t('message.global.noMore')" type="info" center show-icon :closable="false" />
+    <el-alert v-show="true" :title="$t('message.global.NO_MORE')" type="info" center show-icon :closable="false" />
   </div>
 </template>
 

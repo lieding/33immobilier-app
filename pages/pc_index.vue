@@ -13,7 +13,7 @@
             @select="locationAutocompleteSelectHandler"
           >
             <el-select v-model="searchMode" slot="prepend">
-              <el-option :label="$t('message.global.NewHouse')" :value="SearchMode.NewPrograme"></el-option>
+              <el-option :label="$t('message.global.NEW_PROGRAME')" :value="SearchMode.NewPrograme"></el-option>
               <el-option :label="$t('message.global.SECOND_HAND')" :value="SearchMode.SecondHand"></el-option>
             </el-select>
             <el-button slot="append" icon="el-icon-right" class="search-btn" circle></el-button>
@@ -28,7 +28,7 @@
       </div>
       <template v-if="programesGroupedByCities">
         <div class="section-part section-title bold">
-          {{ $t('message.global.NewHouse') }}
+          {{ $t('message.global.NEW_PROGRAME') }}
         </div>
         <div class="section-part min-mt city-selection flex">
           <div

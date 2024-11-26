@@ -3,12 +3,12 @@
     <div class="desktop-placed-center top-section">
       <div class="breadcrumb">
         <el-breadcrumb separator="/">
-          <el-breadcrumb-item :to="{ path: '/pc_index' }">{{ $t("message.global.home") }}</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ path: '/pc_index' }">{{ $t("message.global.HOME") }}</el-breadcrumb-item>
           <el-breadcrumb-item>{{ $t("message.global.PROGRAME_DETAIL") }}</el-breadcrumb-item>
         </el-breadcrumb>
       </div>
       <div class="estate-name-title">
-        {{ $t("message.global.premisess") }}: {{ programeInfo.estate_name }}
+        {{ $t("message.global.PROGRAM_NAME") }}: {{ programeInfo.estate_name }}
       </div>
     </div>
     <div class="desktop-placed-center flex">
@@ -45,7 +45,7 @@
             >{{ itemA }}</span>
           </p>
           <p class="smJf">
-            {{ $t("message.global.completionDate") }}：
+            {{ $t("message.global.DELIVERY_DATE") }}：
             <span>{{ programeInfo.deliveryQuarter }}</span>
           </p>
           <p class="smJf">
@@ -53,7 +53,7 @@
             <span>{{ programeInfo.availablePropertiesCount ?? programeInfo.propertiesCount }}</span>
           </p>
           <p class="smJf">
-            {{ $t("message.global.measures") }}：
+            {{ $t("message.global.TAX_CUTS") }}：
             <el-tooltip v-for="it in programeInfo.laws" :key="it" placement="top-end" effect="light" :content="getTranslatedLawItem(it)">
               <el-tag>{{ it }}</el-tag>
             </el-tooltip>
@@ -71,15 +71,15 @@
             </template>
           </p>
           <p class="smJf">
-            {{ $t("message.global.deductibility") }}：
+            {{ $t("message.global.TAX_REDUCTION_AMOUNT") }}：
             <span>{{ programeInfo.taxCutsQuota }}</span>
           </p>
           <p class="smJf">
-            {{ $t("message.global.LOCATION") }}：
+            {{ $t("message.global.LOCATED_CITY") }}：
             <span>{{ programeInfo.zip_code }} / {{programeInfo.city}}</span>
           </p>
           <p class="smJf">
-            {{ $t("message.global.range") }}：
+            {{ $t("message.global.TYPOLOGIES") }}：
             <el-tag v-for="it in translatedTypologies" :key="it" type="success" size="mini">{{ it }}</el-tag>
           </p>
         </div>
@@ -96,7 +96,7 @@
       </p>
       <p class="titles" style="margin-top:10px;">
         <span style="font-size:32px;margin-right:10px;font-weight:600;">
-          {{ $t("message.global.position") }}：{{ programeInfo.address }}
+          {{ $t("message.global.PROGRAM_POSITION") }}：{{ programeInfo.address }}
         </span>
       </p>
       <div style="border: 1px solid #ccc;height:500px;width:1200px">
@@ -122,11 +122,11 @@
       >
         <el-table-column
           prop="number"
-          :label="$t('message.global.chamberNum')"
+          :label="$t('message.global.PROPERTY_NUMBER')"
         ></el-table-column>
         <el-table-column
           prop="typology"
-          :label="$t('message.global.DoorMode')"
+          :label="$t('message.global.APARTMENT_TYPE')"
         ></el-table-column>
         <el-table-column
           prop="surface"
@@ -138,17 +138,17 @@
         ></el-table-column>
         <el-table-column
           prop="price"
-          :label="$t('message.global.price')"
+          :label="$t('message.global.PRICE')"
         ></el-table-column>
         <el-table-column
           prop="rentPrice"
-          :label="$t('message.global.estimate')"
+          :label="$t('message.global.ESTIMATED_MONTHLY_RENT')"
         ></el-table-column>
         <el-table-column
           prop="profitability"
-          :label="$t('message.global.ROI')"
+          :label="$t('message.global.RATE_OF_RETURN')"
         ></el-table-column>
-        <el-table-column :label="$t('message.global.floorPlan')">
+        <el-table-column :label="$t('message.global.FLOOR_PLAN')">
           <template slot-scope="scope">
             <el-link :href="scope.planLink" target="'_blank'">Plan</el-link>
           </template>

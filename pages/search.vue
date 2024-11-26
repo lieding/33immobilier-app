@@ -1,8 +1,8 @@
 <template>
   <div class="new-list-page" @click="hidePopup">
     <el-breadcrumb separator="/">
-      <el-breadcrumb-item><a href="/pc_index">{{ $t("message.global.home") }}</a></el-breadcrumb-item>
-      <el-breadcrumb-item>{{ $t("message.global.homeList") }}</el-breadcrumb-item>
+      <el-breadcrumb-item><a href="/pc_index">{{ $t("message.global.HOME") }}</a></el-breadcrumb-item>
+      <el-breadcrumb-item>{{ $t("message.global.NEW_PROGRAME_LIST") }}</el-breadcrumb-item>
     </el-breadcrumb>
     <section class="content flex">
       <div class="content-left full-h">
@@ -29,7 +29,7 @@
           <el-skeleton :rows="12" />
         </template>
         <template v-else>
-          <p class="content-title bold">{{ $t("message.global.method") }}</p>
+          <p class="content-title bold">{{ $t("message.global.ALL_FRANCE_NEW") }}</p>
           <el-row :gutter="8">
             <!-- region/city selection -->
             <el-col :span="6">
@@ -41,7 +41,7 @@
             <!-- Price range slider -->
             <el-col :span="6">
               <div class="price-range-btn full-w pointer micco-select customized" @click="priceSlideVis = true" v-popover:popover>
-                <span class="label">{{ $t("message.global.price") }}</span>
+                <span class="label">{{ $t("message.global.PRICE") }}</span>
                 <i class="el-icon-arrow-down" />
               </div>
             </el-col>

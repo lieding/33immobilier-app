@@ -195,11 +195,11 @@ export function extractProgramProperty (property) {
       text: surface ? surface + 'm²' : ''
     },
     {
-      label: this.$t('message.global.chamberNum'),
+      label: this.$t('message.global.PROPERTY_NUMBER'),
       text: number ?? ''
     },
     {
-      label: this.$t('message.global.price'),
+      label: this.$t('message.global.PRICE'),
       text: price ? fmoney(price) + '€' : '',
     }
   ]
@@ -217,7 +217,7 @@ export function extractSecondHandProperty (property) {
       text: piece ?? ''
     },
     {
-      label: this.$t('message.global.price'),
+      label: this.$t('message.global.PRICE'),
       text: price ? fmoney(price) + '€' : '',
     }
   ];

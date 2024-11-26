@@ -18,7 +18,7 @@
         <van-dropdown-menu>
           <van-dropdown-item
             class="dropdown-slider"
-            :title="$t('message.global.price')"
+            :title="$t('message.global.PRICE')"
             ref="item-dropdown-price"
           >
             <range-slider :modelValue.sync="priceRange" :min-value="minPrice" :max-value="maxPrice" @change="priceRangeChangeHandler" />
@@ -41,7 +41,7 @@
           <van-dropdown-item
             v-model="completionStatus"
             :options="CompletionStatusOption"
-            :title="$t('message.global.completionDate')"
+            :title="$t('message.global.DELIVERY_DATE')"
             @change="completionStatusChangeHandler"
           />
         </van-dropdown-menu>
