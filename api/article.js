@@ -52,6 +52,11 @@ const article = {
     const key = createKey(Path, params);
     return checkCache(key) ?? axios.get(Path, { params }).then(res => handleRes(res, key));
   },
+  searchSecondHandByCity (params) {
+    const Path = '/search-second-hand-by-city';
+    const key = createKey(Path, params);
+    return checkCache(key) ?? axios.get(Path, { params }).then(res => handleRes(res, key));
+  },
   searchPlaceInfoById (params) {
     const Path = '/search-place-info-by-id';
     const key = createKey(Path, params);

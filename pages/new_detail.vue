@@ -184,9 +184,9 @@
 </template>
 
 <script>
-import Calculator from "~/components/PcIndex/calculator.vue";
+import Calculator from "~/components/desktop/calculator.vue";
 import JumpMap from '~/components/jumpMap.vue';
-import ContactDialog from '../components/PcIndex/ContactDialog.vue';
+import ContactDialog from '../components/desktop/ContactDialog.vue';
 import { TypologyOptionConfig, extractProgramProperty, PostApplicationMode } from '../common/config';
 import { fmoney } from '../utils';
 

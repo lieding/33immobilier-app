@@ -198,11 +198,11 @@
 
 <script>
 import rem from "~/common/rem.js";
-import RangeSlider from '../components/Mindex/rangeSlider.vue';
+import RangeSlider from '../components/mobile/rangeSlider.vue';
 import { fmoney, searchCityGeolocation } from '../utils';
 import { SearchMode } from '../common/config';
 import JumpMap from '../components/jumpMap.vue';
-import DepartmentCitySearchBar from '../components/Mindex/departmentCitySearchBar.vue';
+import DepartmentCitySearchBar from '../components/mobile/departmentCitySearchBar.vue';
 import { TypologyOptionConfig, LocationType } from '../common/config';
 import {
   filterProgrammeListByConditions,

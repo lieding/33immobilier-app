@@ -92,8 +92,8 @@
 </template>
 
 <script>
-import Calculator from "~/components/PcIndex/calculator.vue";
-import ContactDialog from '../components/PcIndex/ContactDialog.vue';
+import Calculator from "~/components/desktop/calculator.vue";
+import ContactDialog from '../components/desktop/ContactDialog.vue';
 import { fmoney } from '../utils';
 import { extractSecondHandProperty, PostApplicationMode } from '../common/config';
 

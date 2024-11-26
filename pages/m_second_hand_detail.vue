@@ -89,9 +89,9 @@
 
 <script>
 import rem from "~/common/rem.js";
-import Calculator from '../components/Mindex/calculator.vue';
-import ContactPopup from '../components/Mindex/contactPopup.vue';
-import LoadingDialog from '../components/Mindex/loadingDialog.vue';
+import Calculator from '../components/mobile/calculator.vue';
+import ContactPopup from '../components/mobile/contactPopup.vue';
+import LoadingDialog from '../components/mobile/loadingDialog.vue';
 import { fmoney } from '../utils'
 import { extractSecondHandProperty, PostApplicationMode } from '../common/config';
 

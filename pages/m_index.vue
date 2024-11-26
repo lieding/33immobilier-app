@@ -157,9 +157,9 @@
 import rem from "~/common/rem.js";
 import { Notify } from 'vant';
 import { gmapApiLoader } from '../common/gmapApiLoader';
-import ContactPopup from '../components/Mindex/contactPopup.vue';
-import Calculator from '../components/Mindex/calculator.vue';
-import Footer from '../components/Mindex/footer.vue';
+import ContactPopup from '../components/mobile/contactPopup.vue';
+import Calculator from '../components/mobile/calculator.vue';
+import Footer from '../components/mobile/footer.vue';
 import { SearchMode, PostApplicationMode, loadIndexPageCityProgrames, CityRegionGeolocation, loadIndexPageSecondHand } from '../common/config';
 import IndexCityBar from '../components/IndexCityBar.vue';
 import { doLocationAutocomplete } from '../common/locationAutocomplete';

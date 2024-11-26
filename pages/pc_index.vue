@@ -134,10 +134,10 @@
 
 <script>
 import { gmapApiLoader } from '../common/gmapApiLoader';
-import TrendChart  from '../components/PcIndex/trendChart.vue';
+import TrendChart  from '../components/desktop/trendChart.vue';
 import { PostApplicationMode } from '../common/config';
-import ContactDialog from '../components/PcIndex/ContactDialog.vue';
-import Calculator from '../components/PcIndex/calculator.vue';
+import ContactDialog from '../components/desktop/ContactDialog.vue';
+import Calculator from '../components/desktop/calculator.vue';
 import IndexCityBar from '../components/IndexCityBar.vue';
 import { CityRegionGeolocation, loadIndexPageCityProgrames, SearchMode, loadIndexPageSecondHand } from '../common/config';
 import { doLocationAutocomplete } from '../common/locationAutocomplete';
@@ -259,7 +259,8 @@ export default {
     locationAutocompleteSelectHandler (item) {
       const { place_text, place_id, type: location_type, postal_code, latitude: lat, longitude: lng } = item;
       if ((!place_text && !place_id) || !location_type) return;
-      this.routerChange('/search', { department_city: place_text, place_id, location_type, postal_code, lat, lng });
+      const searchMode = this.searchMode;
+      this.routerChange('/search', { searchMode, department_city: place_text, place_id, location_type, postal_code, lat, lng });
     },
     handleProgrameClickHandler (item) {
       this.routerChange('/new_detail', { zip_code: item.zip_code, name_id: item.name_id, estate_name: item.estate_name, city: item.city });
@@ -275,7 +276,7 @@ export default {
     handleSecondHandClickHandler (item) {
       this.routerChange('/second_hand_detail', { zip_code: item.zip_code, id: item.id, title: item.title });
     },
-    moreSecondHandClickHandler () {
+    moreSecondHandClickHandler (ev) {
       let { city_name, location_type = '' } = ev ?? {};
       city_name = city_name ?? this.activeSecondhandCityKey;
       if (!city_name) return;

@@ -47,66 +47,12 @@ export const CsvUrlConfig = {
   IndexPageCityProgrames: 'https://raw.githubusercontent.com/mingzemicco/33immo-config/refs/heads/main/index_city_programes.csv',
   IndexPageCitySecondHand: 'https://raw.githubusercontent.com/mingzemicco/33immo-config/refs/heads/main/index-second-hand.csv',
   ProgrameDepartmentCities: 'https://raw.githubusercontent.com/mingzemicco/33immo-config/refs/heads/main/programe_department_cities.csv',
+  SecondHandDepartmentCities: 'https://raw.githubusercontent.com/mingzemicco/33immo-config/refs/heads/main/second_hand_department_cities.csv',
 }
 
 export const JsonConfig = {
   NationCodeFlag: 'https://gist.githubusercontent.com/devhammed/78cfbee0c36dfdaa4fce7e79c0d39208/raw/494967e8ae71c9fed70650b35dd96e9273fa3344/countries.json',
-}
-
-export function transformNewProgramPoints (parsed) {
-  const { header, rows } = parsed ?? {};
-  if (!header || !rows) return;
-  return rows.map(({ city, count, latitude, longitude, region_id }) => {
-    return {
-      lat: latitude,
-      lng: longitude,
-      city,
-      title: count?.toString() ?? '',
-      groupCondition: region_id
-    };
-  });
-}
-
-export function extractProgramProperty (property) {
-  const { typology, surface, number, prices } = property;
-  const price = prices?.[0]?.price;
-  return [
-    {
-      label: this.$t('message.NEW_LIST.ALL_TYPOLOGY_LABEL'),
-      text: this.TypologyI18NConfig?.find(itt => typology?.toLowerCase().includes(itt.incluedKey))?.label ?? ''
-    },
-    {
-      label: this.$t('message.global.SURFACE'),
-      text: surface ? surface + 'm²' : ''
-    },
-    {
-      label: this.$t('message.global.chamberNum'),
-      text: number ?? ''
-    },
-    {
-      label: this.$t('message.global.price'),
-      text: price ? fmoney(price) + '€' : '',
-    }
-  ]
-}
-
-export function extractSecondHandProperty (property) {
-  const { price, surface, piece } = property;
-  return [
-    {
-      label: this.$t('message.global.SURFACE'),
-      text: surface ? surface + 'm²' : ''
-    },
-    {
-      label: this.$t('message.PAGE_SECOND_HAND.PIECE'),
-      text: piece ?? ''
-    },
-    {
-      label: this.$t('message.global.price'),
-      text: price ? fmoney(price) + '€' : '',
-    }
-  ];
-}
+};
 
 export const PostApplicationMode = {
   PROGRAME_PROPERTY: 'PROGRAME_PROPERTY',
@@ -222,14 +168,79 @@ export const L2AREA_REGION = {
   Yonne: '89'
 };
 
-export function loadProgramesByRegions (regions) {
-  const promises = regions
-    .map(region_id =>
-      fetch(`https://raw.githubusercontent.com/mingzemicco/33immo-config/refs/heads/main/regions/${region_id}.csv`)
+export function transformNewProgramPoints (parsed) {
+  const { header, rows } = parsed ?? {};
+  if (!header || !rows) return;
+  return rows.map(({ city, count, latitude, longitude, region_id }) => {
+    return {
+      lat: latitude,
+      lng: longitude,
+      city,
+      title: count?.toString() ?? '',
+      groupCondition: region_id
+    };
+  });
+}
+
+export function extractProgramProperty (property) {
+  const { typology, surface, number, prices } = property;
+  const price = prices?.[0]?.price;
+  return [
+    {
+      label: this.$t('message.NEW_LIST.ALL_TYPOLOGY_LABEL'),
+      text: this.TypologyI18NConfig?.find(itt => typology?.toLowerCase().includes(itt.incluedKey))?.label ?? ''
+    },
+    {
+      label: this.$t('message.global.SURFACE'),
+      text: surface ? surface + 'm²' : ''
+    },
+    {
+      label: this.$t('message.global.chamberNum'),
+      text: number ?? ''
+    },
+    {
+      label: this.$t('message.global.price'),
+      text: price ? fmoney(price) + '€' : '',
+    }
+  ]
+}
+
+export function extractSecondHandProperty (property) {
+  const { price, surface, piece } = property;
+  return [
+    {
+      label: this.$t('message.global.SURFACE'),
+      text: surface ? surface + 'm²' : ''
+    },
+    {
+      label: this.$t('message.PAGE_SECOND_HAND.PIECE'),
+      text: piece ?? ''
+    },
+    {
+      label: this.$t('message.global.price'),
+      text: price ? fmoney(price) + '€' : '',
+    }
+  ];
+}
+
+export function loadProgramesByDepartment (departments) {
+  const promises = departments
+    .map(department_id =>
+      fetch(`https://raw.githubusercontent.com/mingzemicco/33immo-config/refs/heads/main/regions/${department_id}.csv`)
         .then(res => res.text())
         .then(txt => parseRawCsv(txt, ',')?.rows)
         .catch(() => null)
     );
+  return Promise.all(promises).then(rowsList => rowsList.filter(Boolean).flat());
+}
+
+export function loadSecondHandByDepartment (departments) {
+  const promises = departments.map(departmentId =>
+    fetch(`https://raw.githubusercontent.com/mingzemicco/33immo-config/refs/heads/main/second_hand_departments/${departmentId}.csv`)
+      .then(res => res.text())
+      .then(txt => parseRawCsv(txt, ',')?.rows)
+      .catch(() => null)
+  );
   return Promise.all(promises).then(rowsList => rowsList.filter(Boolean).flat());
 }
 

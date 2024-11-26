@@ -14,9 +14,9 @@
 </template>
 
 <script>
-import TopHeader from '../components/PcIndex/header.vue';
-import Footer from '../components/PcIndex/footer.vue';
-import MobileHeader from '../components/Mindex/header.vue';
+import TopHeader from '../components/desktop/header.vue';
+import Footer from '../components/desktop/footer.vue';
+import MobileHeader from '../components/mobile/header.vue';
 import { createNamespacedHelpers } from 'vuex';
 const { mapActions } = createNamespacedHelpers('auth');
 
