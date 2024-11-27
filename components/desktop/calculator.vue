@@ -95,10 +95,10 @@
           @change="repayFormYearChangeHandler"
         >
           <el-option
-            v-for="item in prsLis"
-            :key="item"
-            :label="item"
-            :value="item"
+            v-for="item in interestRateConfig"
+            :key="item.year"
+            :label="item.year"
+            :value="item.year"
           ></el-option>
         </el-select>
         <p>{{ $t("message.global.LOAN_INTEREST_RATE") }}</p>
@@ -121,7 +121,7 @@
         <span style="font-size:20px;color:#FF5E5E;">{{ fmoney(repayment, 2) }}€</span>
         <div id="calculator-loan-repayment-chart" style="width: 331px;height:252px;"></div>
         <div>
-          <p style="padding-left:20px;">
+          <p style="padding-left:20px;" v-if="repaymentDownpayLabelVis">
             <span
               style="width:16px;height:16px;display:inline-block;background-color:#7ECF34;border-radius:8px;vertical-align: middle;"
             ></span>
@@ -150,7 +150,7 @@
 
 <script>
 import { fmoney } from '../../utils';
-import { loadRate, creditInterface, loanInterface,  } from '../../utils/calculator';
+import { loadRate, creditInterface, loanInterface, loadRateConfig } from '../../utils/calculator';
 
 export default {
   name: "calculator",
@@ -174,9 +174,14 @@ export default {
         year: 25,
         rate: 0
       },
-      prsLis: [],
+      interestRateConfig: [],
       interestRateList: []
     };
+  },
+  computed: {
+    repaymentDownpayLabelVis () {
+      return Number(this.loanRepaymentCalRes?.A) > 0;
+    }
   },
   mounted() {
     if (process.client) this.loadRate();
@@ -185,11 +190,6 @@ export default {
     this.fmoney = fmoney;
   },
   methods: {
-    routerGo() {
-      this.$router.push({
-        path: "/concentUs"
-      });
-    },
     repayFormDownPayInutHandler() {
       if (this.repaymentForm.downPay > this.repaymentForm.loan) {
         this.repaymentForm.downPay = this.repaymentForm.loan;
@@ -201,26 +201,29 @@ export default {
       }
     },
     repayFormYearChangeHandler() {
-      this.repaymentForm.rate = this.interestRateList[this.repaymentForm.year];
+      const year = this.repaymentForm.year;
+      this.repaymentForm.rate = this.interestRateConfig.find(it => it.year == year)?.rate ?? 0;
     },
     doCalculate() {
       let { monthlyRevenu, debtRatio, downPay } = this.capabilityForm;
-      monthlyRevenu = Number(monthlyRevenu), debtRatio = Number(debtRatio), downPay = Number(downPay);
-      if (!monthlyRevenu || !downPay) return;
+      monthlyRevenu = Number(monthlyRevenu), debtRatio = Number(debtRatio), downPay = Number(downPay) || 0;
+      if (!monthlyRevenu) return;
       const [ _, ...rates ] = this.interestRateList;
       const { reckenList, M } = loanInterface(monthlyRevenu, debtRatio, downPay, ...rates);
       this.reckenList = reckenList;
       this.monthlyHighestRepayAmt = M;
     },
     loadRate() {
-      debugger
       this.interestRateList = loadRate();
-      this.repaymentForm.rate = this.interestRateList[this.repaymentForm.year];
+      this.interestRateConfig = Object.entries(loadRateConfig()).map(([year, rate]) => ({ year, rate }));
+      const lastItem = this.interestRateConfig[this.interestRateConfig.length - 1];
+      this.repaymentForm.year = lastItem.year;
+      this.repaymentForm.rate = lastItem.rate;
     },
     calculateLoanRepayment() {
       let { loan, downPay, year, rate } = this.repaymentForm;
-      loan = Number(loan), downPay = Number(downPay), year = Number(year), rate = Number(rate);
-      if (!loan || !downPay || !rate) return;
+      loan = Number(loan), downPay = Number(downPay) || 0, year = Number(year), rate = Number(rate);
+      if (!loan || !rate) return;
       const loanRepaymentcalRes = creditInterface(loan, downPay, year, rate);
       this.loanRepaymentCalRes = loanRepaymentcalRes;
       this.repayment = loanRepaymentcalRes.M;
@@ -234,8 +237,10 @@ function drawRepaymentPieChart (compInst) {
   const dataPoints = [
     { y: Number(L), indexLabel: compInst.$t('message.global.INTEREST_AMOUNT'), color: '#1B9AFB' },
     { y: Number(S), indexLabel: compInst.$t('message.global.LOAN_AMOUNT'), color: '#F4A436' },
-    { y: Number(A), indexLabel: compInst.$t('message.global.DOWN_PAYMENT_AMOUNT'), color: '#7ECF34' },
   ];
+  const downPay = Number(A) || 0;
+  if (downPay > 0)
+    dataPoints.push({ y: downPay, indexLabel: compInst.$t('message.global.DOWN_PAYMENT_AMOUNT'), color: '#7ECF34' });
   const chart = new CanvasJS.Chart("calculator-loan-repayment-chart", {
 		// title:{ text: "Gaming Consoles Sold in 2012" },
 		data: [

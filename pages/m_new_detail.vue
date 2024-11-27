@@ -103,11 +103,11 @@
           </p>
           <p class="info-row">
             <span class="grey-color">{{ $t("message.global.PRICE") }} ：</span>
-            {{ info.price }}€
+            {{ fmoney(info.price) }}€
           </p>
           <p class="info-row">
             <span class="grey-color">{{ $t("message.global.RATE_OF_RETURN") }} ：</span>
-            {{ info.profitability }}%
+            {{ info.profitability ? (info.profitability + '%') : '' }}
           </p>
         </div>
       </div>

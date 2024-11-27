@@ -141,17 +141,21 @@
           :label="$t('message.global.FLOOR')"
         ></el-table-column>
         <el-table-column
-          prop="price"
           :label="$t('message.global.PRICE')"
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{ scope.row.price ? (fmoney(scope.row.price) + '€') : '' }}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="rentPrice"
           :label="$t('message.global.ESTIMATED_MONTHLY_RENT')"
         ></el-table-column>
-        <el-table-column
-          prop="profitability"
-          :label="$t('message.global.RATE_OF_RETURN')"
-        ></el-table-column>
+        <el-table-column :label="$t('message.global.RATE_OF_RETURN')">
+          <template slot-scope="scope">
+            <span>{{ scope.row.profitability ? (scope.row.profitability + '%') : '' }}</span>
+          </template>
+        </el-table-column>
         <el-table-column :label="$t('message.global.FLOOR_PLAN')">
           <template slot-scope="scope">
             <el-link :href="scope.planLink" target="'_blank'">Plan</el-link>

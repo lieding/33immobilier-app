@@ -6,10 +6,10 @@ const FiftenRate = process.env['IMMO_PROMOTE_FIFTEN_RATE'];
 const TwentyRate = process.env['IMMO_PROMOTE_TWENTY_RATE'];
 const TwentyfiveRate = process.env['IMMO_PROMOTE_TWENTYFIVE_RATE'];
 
+const RateList = [Rate, FiveRate, TenRate, FiftenRate, TwentyRate, TwentyfiveRate].map(it => Number(it) ?? 0);
+
 export function loadRate () {
-  const list = [Rate, FiveRate, TenRate, FiftenRate, TwentyRate, TwentyfiveRate].map(it => Number(it) ?? 0);
-  console.log(list)
-  return list;
+  return RateList;
 }
 
 export function loadRateConfig () {

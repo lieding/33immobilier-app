@@ -29,9 +29,9 @@
           />
           <van-field
             readonly
-            v-model="form.code"
+            v-model="form.displayCode"
             :label="$t('message.global.COUNTRY_CODE')"
-            name="code"
+            name="displayCode"
             @click="codePickerVis = true"
           />
           <van-field
@@ -54,13 +54,21 @@
         </van-form>
       </div>
     </van-popup>
-    <van-popup v-model="codePickerVis" position="bottom" style="z-index: 1000;">
-      <van-picker
+    <van-popup v-model="codePickerVis" position="bottom" style="z-index: 1000;" :overlay="false" clo>
+      <van-search v-model="codeSearch" show-action :action-text="$t('message.global.CANCEL')" @cancel="codePickerVis = false" />
+      <van-list
+        :finished="true"
+        finished-text="The end"
+      >
+        <van-cell v-for="item in filteredCodes" :key="item" :title="item" @click.stop="select(item)"
+        />
+      </van-list>
+      <!-- <van-picker
         show-toolbar
         :columns="nationCodeStrs"
         :confirm-button-text="$t('message.global.CONFIRM')"
         :cancel-button-text="$t('message.global.CANCEL')"
-        @cancel="codePickerVis = false" @confirm="phoneCodeConfirm" />
+        @cancel="codePickerVis = false" @confirm="phoneCodeConfirm" /> -->
     </van-popup>
   </div>
 </template>
@@ -89,14 +97,23 @@ export default {
       codePickerVis: false,
       nationCodeOptions: [],
       nationCodeStrs: [],
+      codeSearch: '',
       form: {
         firstName: '',
         lastName: '',
         mail: '',
         phone: '',
         message: '',
+        displayCode: '',
         code: ''
       }
+    }
+  },
+  computed: {
+    filteredCodes () {
+      const list = this.nationCodeStrs?.slice() ?? []
+      if (!this.codeSearch) return list;
+      return list.filter(it => it.includes(this.codeSearch));
     }
   },
   created () {
@@ -105,15 +122,20 @@ export default {
     }
   },
   methods: {
-    phoneCodeConfirm (_, idx) {
-      const code = this.nationCodeOptions[idx]?.dial_code;
-      if (code) this.form.code = code;
+    select (str) {
+      const item = this.nationCodeOptions.find(it => str.endsWith(it.dial_code));
+      if (item) {
+        const { dial_code, flag } = item;
+        this.form.code = dial_code;
+        this.form.displayCode = `${flag} ${dial_code}`;
+      }
     },
     loadCodeConfig () {
       fetch(JsonConfig.NationCodeFlag).then(res => res.json()).then(res => {
         this.nationCodeOptions = res;
         this.nationCodeStrs = res.map(({ flag, dial_code }) => `${flag} ${dial_code}`);
-        this.form.code = 'FR';
+        this.form.displayCode = this.nationCodeStrs.find(it => it.endsWith('+33'))
+        this.form.code = '+33';
       });
     },
     validHandler () {

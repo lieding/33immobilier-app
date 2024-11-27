@@ -8,21 +8,23 @@
         <van-cell-group>
           <van-field
             v-model.number="capabilityForm.monthlyRevenu"
-            label="€"
             label-width=".15rem"
             :placeholder="$t('message.global.PLEASE_ENTER')"
             type="number"
-          />
+          >
+            <span slot="right-icon">€</span>
+          </van-field>
         </van-cell-group>
         <p class="field-label">{{ $t("message.global.DOWN_PAYMENT_AMOUNT") }}</p>
         <van-cell-group>
           <van-field
             v-model.number="capabilityForm.downPay"
-            label="€"
             label-width=".15rem"
             :placeholder="$t('message.global.PLEASE_ENTER')"
             type="number"
-          />
+          >
+            <span slot="right-icon">€</span>
+          </van-field>
         </van-cell-group>
         <p class="field-label">
           {{ $t("message.global.DEBT_RATIO") }}
@@ -31,11 +33,12 @@
         <van-cell-group>
           <van-field
             v-model.number="capabilityForm.debtRatio"
-            label="%"
             label-width=".15rem"
             :placeholder="$t('message.global.PLEASE_ENTER')"
             type="number"
-          />
+          >
+            <span slot="right-icon">%</span>
+          </van-field>
         </van-cell-group>
       </div>
       <div class="btn flex">
@@ -58,7 +61,7 @@
           <tr>
             <td>{{ item.year }} {{ $t("message.global.YEAR") }}</td>
             <td>{{ item.retes }}%</td>
-            <td>{{ item.money }}€</td>
+            <td>{{ fmoney(item.money) }}€</td>
           </tr>
         </table>
       </div>
@@ -72,22 +75,24 @@
         <van-cell-group>
           <van-field
             v-model.number="repaymentForm.loan"
-            label="€"
             label-width=".15rem"
             :placeholder="$t('message.global.PLEASE_ENTER')"
             type="number"
-          />
+          >
+            <span slot="right-icon">€</span>
+          </van-field>
         </van-cell-group>
         <p class="field-label">{{ $t("message.global.DOWN_PAYMENT_AMOUNT") }}</p>
         <van-cell-group>
           <van-field
             v-model.number="repaymentForm.downpay"
             @input="repayDownpayInputHandler"
-            label="€"
             label-width=".15rem"
             :placeholder="$t('message.global.PLEASE_ENTER')"
             type="number"
-          />
+          >
+            <span slot="right-icon">€</span>
+          </van-field>
         </van-cell-group>
         <p class="field-label">{{ $t("message.global.LOAN_TERM") }}</p>
         <el-select v-model.number="repaymentForm.year" style="width: 100%;">
@@ -98,11 +103,12 @@
           <van-field
             :readonly="true"
             v-model.number="repaymentForm.interesrate"
-            label="%"
             label-width=".2rem"
             :placeholder="$t('message.global.PLEASE_ENTER')"
             type="number"
-          />
+          >
+            <span slot="right-icon">%</span>
+          </van-field>
         </van-cell-group>
       </div>
       <div class="btn flex">
@@ -110,7 +116,7 @@
       </div>
       <p class="monthly" v-if="M">
         {{ $t("message.global.MAXIMUM_MONTHLY_REPAYMENT_AMOUNT") }}
-        <span class="money">{{ M }}€</span>
+        <span class="money">{{ fmoney(M) }}€</span>
       </p>
       <div v-if="M" class="repay-result">
         <div class="chart-wrapper" id="calculator-loan-repayment-chart"></div>
@@ -120,6 +126,7 @@
 </template>
 
 <script>
+import { fmoney } from '../../utils';
 import { loadRate, creditInterface, loanInterface, loadRateConfig } from '../../utils/calculator';
 
 export default {
@@ -146,6 +153,7 @@ export default {
     }
   },
   created () {
+    this.fmoney = fmoney;
     if (process.client) {
       this.loadRate();
     }
@@ -172,8 +180,8 @@ export default {
     },
     doCalculate() {
       let { monthlyRevenu, debtRatio, downPay } = this.capabilityForm;
-      monthlyRevenu = Number(monthlyRevenu), debtRatio = Number(debtRatio), downPay = Number(downPay);
-      if (!monthlyRevenu || !downPay) return;
+      monthlyRevenu = Number(monthlyRevenu), debtRatio = Number(debtRatio), downPay = Number(downPay) || 0;
+      if (!monthlyRevenu) return;
       const [ _, ...rates ] = this.interestRateList;
       const { reckenList, M } = loanInterface(monthlyRevenu, debtRatio, downPay, ...rates);
       this.reckenList = reckenList;
@@ -181,8 +189,8 @@ export default {
     },
     calculateLoanRepayment() {
       let { loan, downpay, year, interesrate } = this.repaymentForm;
-      loan = Number(loan), downpay = Number(downpay), year = Number(year), interesrate = Number(interesrate);
-      if (!loan || !downpay || !interesrate) return;
+      loan = Number(loan), downpay = Number(downpay) || 0, year = Number(year), interesrate = Number(interesrate);
+      if (!loan || !interesrate) return;
       const loanRepaymentcalRes = creditInterface(loan, downpay, year, interesrate);
       Object.assign(this, loanRepaymentcalRes);
       setTimeout(() => drawRepaymentPieChart(this), 1000);
@@ -195,8 +203,10 @@ function drawRepaymentPieChart (compInst) {
   const dataPoints = [
     { y: Number(L), indexLabel: compInst.$t('message.global.INTEREST_AMOUNT'), color: '#1B9AFB' },
     { y: Number(S), indexLabel: compInst.$t('message.global.LOAN_AMOUNT'), color: '#F4A436' },
-    { y: Number(A), indexLabel: compInst.$t('message.global.DOWN_PAYMENT_AMOUNT'), color: '#7ECF34' },
   ];
+  const downPayment = Number(A);
+  if (downPayment)
+    dataPoints.push({ y: downPayment, indexLabel: compInst.$t('message.global.DOWN_PAYMENT_AMOUNT'), color: '#7ECF34' });
   const chart = new CanvasJS.Chart("calculator-loan-repayment-chart", {
 		data: [
       {
