@@ -108,7 +108,7 @@ module.exports = {
       PARTNER: '合作伙伴',
       EMPLOYMENT: '就业机会',
       NEWS_EDU: '新闻库 & 教育内容',
-      DESC: "Micco immo 服务和产品由 Everest Finance 公司提供，Everest Finance是一家在巴黎注册的有限股份公司，注册号为 N° SIREN 948 100 839，总部位于 66 avenue des Champs Elyssées, 75008 Paris",
+      DESC: "33immo 服务和产品由 Everest Finance 公司提供，Everest Finance是一家在巴黎注册的有限股份公司，注册号为 N° SIREN 948 100 839，总部位于 66 avenue des Champs Elyssées, 75008 Paris",
       PRIVACY: '隐私政策',
       COOKIE: 'Cookie政策',
     },
