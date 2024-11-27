@@ -57,3 +57,13 @@ export async function searchCityGeolocation (city, region_id) {
   }
   return null;
 }
+
+/**
+ * @param {String} href
+*/
+export function aLink (href) {
+  const aEl = document.createElement('a');
+  aEl.target = '_blank';
+  aEl.href = href;
+  aEl.click();
+}

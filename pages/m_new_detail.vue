@@ -95,7 +95,7 @@
           </p>
           <p class="info-row">
             <span class="grey-color">{{ $t("message.global.USABLE_AREA") }} ：</span>
-            {{ info.surface }}
+            {{ info.surface }}m²
           </p>
           <p class="info-row">
             <span class="grey-color">{{ $t("message.global.FLOOR") }} ：</span>

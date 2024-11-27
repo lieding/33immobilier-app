@@ -36,9 +36,17 @@
             :rules="{ required: true, message: $t('message.global.PLEASE_ENTER') }"
           >
             <div class="phone-form">
-              <el-select v-model="form.code" :placeholder="$t('message.global.PLEASE_SELECT')" style="width: 120px;margin-right: 8px;">
+              <el-select
+                v-model="form.code"
+                filterable
+                remote
+                :remote-method="filterBySearch"
+                :loading="false"
+                :placeholder="$t('message.global.PLEASE_SELECT')"
+                style="width: 120px;margin-right: 8px;"
+              >
                 <el-option
-                  v-for="it in nationCodeOptions" :key="it.code"
+                  v-for="it in filtered" :key="it.code"
                   :label="it.flag" :value="it.code"
                 >
                   <span style="float:left">{{ it.flag }}</span>
@@ -82,7 +90,8 @@ export default {
   },
   data () {
     return {
-      nationCodeOptions: [],
+      filtered: [],
+      allOptions: [],
       form: {
         firstName: '',
         lastName: '',
@@ -100,7 +109,11 @@ export default {
   },
   methods: {
     loadCodeConfig () {
-      fetch(JsonConfig.NationCodeFlag).then(res => res.json()).then(res => this.nationCodeOptions = res);
+      fetch(JsonConfig.NationCodeFlag).then(res => res.json()).then(res => {
+        this.filtered = res;
+        this.allOptions = res.slice();
+        this.form.code = 'FR';
+      });
     },
     confirm () {
       const form = this.$refs.form;
@@ -110,7 +123,14 @@ export default {
         const code = this.nationCodeOptions.find(it => it.code === this.form.code)?.dial_code ?? '';
         this.$emit('confirm', { ...this.form, code });
       });
-    }
+    },
+    filterBySearch (query) {
+      if (query !== '') {
+        this.filtered = this.allOptions.filter(it => it.dial_code?.includes(query));
+      } else {
+        this.filtered = this.allOptions.slice();
+      }
+    },
   }
 }
 </script>

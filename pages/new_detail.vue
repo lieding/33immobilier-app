@@ -107,7 +107,6 @@
           :interactive="false"
           :need-circle="true"
           :need-center-logo="true"
-          :show-nav="true"
         ></jump-map>
       </div>
       <p class="titles" style="margin-top:10px;padding-bottom:20px;">
@@ -130,8 +129,13 @@
         ></el-table-column>
         <el-table-column
           prop="surface"
-          :label="$t('message.global.USABLE_AREA')"
+          :label="$t('message.global.')"
         ></el-table-column>
+        <el-table-column :label="$t('message.global.USABLE_AREA')">
+          <template slot-scope="scope">
+            <span>{{ scope.row.surface }}m²</span>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="floor"
           :label="$t('message.global.FLOOR')"

@@ -113,7 +113,7 @@ export default {
       fetch(JsonConfig.NationCodeFlag).then(res => res.json()).then(res => {
         this.nationCodeOptions = res;
         this.nationCodeStrs = res.map(({ flag, dial_code }) => `${flag} ${dial_code}`);
-        this.form.code = '+33';
+        this.form.code = 'FR';
       });
     },
     validHandler () {

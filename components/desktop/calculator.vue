@@ -52,7 +52,7 @@
               <tr>
                 <th>{{ $t("message.global.LOAN_PERIOD") }}</th>
                 <th>{{ $t("message.global.ANNUAL_INTEREST_RATE") }}</th>
-                <th>{{ $t("message.global.capacity") }}</th>
+                <th>{{ $t("message.global.LOAN_CAPACITY") }}</th>
               </tr>
             </table>
             <table v-for="(item, index) in reckenList" :key="index">
@@ -213,6 +213,7 @@ export default {
       this.monthlyHighestRepayAmt = M;
     },
     loadRate() {
+      debugger
       this.interestRateList = loadRate();
       this.repaymentForm.rate = this.interestRateList[this.repaymentForm.year];
     },

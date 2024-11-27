@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { fmoney } from '../../utils'
+import { fmoney, aLink } from '../../utils'
 export default {
   props: {
     list: {
@@ -70,7 +70,12 @@ export default {
       this.$emit('selectPoint', item);
     },
     listItemClickhandler ({ zip_code, name_id, city, estate_name }) {
-      this.$router.push({ path: '/new_detail', query: { zip_code, name_id, city, estate_name } });
+      const urlParams = new URLSearchParams();
+      urlParams.set('zip_code', zip_code);
+      urlParams.set('name_id', name_id);
+      urlParams.set('city', city);
+      urlParams.set('estate_name', estate_name);
+      aLink('/new_detail?' + urlParams.toString());
     },
   }
 }

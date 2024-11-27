@@ -35,32 +35,32 @@ const article = {
   getHomePageInfo() {
     const Path = '/homepage-index'
     const key = createKey(Path);
-    return checkCache(key) ?? axios.get(Path).then(res => handleRes(res, key));
+    return axios.get(Path).then(res => handleRes(res, key));
   },
   getProgrameDetail(params) {
     const Path = '/programme-detail';
     const key = createKey(Path, params);
-    return checkCache(key) ?? axios.get(Path, { params }).then(res => handleRes(res, key));
+    return axios.get(Path, { params }).then(res => handleRes(res, key));
   },
   getSecondHandDetail (params) {
     const Path = '/second-hand-detail';
     const key = createKey(Path, params);
-    return checkCache(key) ?? axios.get(Path, { params }).then(res => handleRes(res, key));
+    return axios.get(Path, { params }).then(res => handleRes(res, key));
   },
   searchProgramesByCity (params) {
     const Path = '/search-programes-by-city';
     const key = createKey(Path, params);
-    return checkCache(key) ?? axios.get(Path, { params }).then(res => handleRes(res, key));
+    return axios.get(Path, { params }).then(res => handleRes(res, key));
   },
   searchSecondHandByCity (params) {
     const Path = '/search-second-hand-by-city';
     const key = createKey(Path, params);
-    return checkCache(key) ?? axios.get(Path, { params }).then(res => handleRes(res, key));
+    return axios.get(Path, { params }).then(res => handleRes(res, key));
   },
   searchPlaceInfoById (params) {
     const Path = '/search-place-info-by-id';
     const key = createKey(Path, params);
-    return checkCache(key) ?? axios.get(Path, { params }).then(res => handleRes(res, key));
+    return axios.get(Path, { params }).then(res => handleRes(res, key));
   },
   postApplication (data) {
     return axios.post('/post-application', data);

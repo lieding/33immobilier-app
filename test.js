@@ -93,12 +93,12 @@ const MyMath = {
   }
 }
 
-function loanInterface(revenu, rate, downPay, sevenRate, tenRate, fifteenRate, twentyRate, twentyFiveRate) {
+function loanInterface(revenu, rate, downPay, fiveRate, tenRate, fifteenRate, twentyRate, twentyFiveRate) {
   const resultMap = {};
 
   const M = topMonthlySupply(revenu, rate);
 
-  const sevenMoney = daiMoney(M, downPay, sevenRate, 7);
+  const fiveMoney = daiMoney(M, downPay, fiveRate, 5);
   const tenMoney = daiMoney(M, downPay, tenRate, 10);
   const fifteenMoney = daiMoney(M, downPay, fifteenRate, 15);
   const twentyMoney = daiMoney(M, downPay, twentyRate, 20);
@@ -107,9 +107,9 @@ function loanInterface(revenu, rate, downPay, sevenRate, tenRate, fifteenRate, t
   resultMap.M = M; // 月最高还款金额
   const reckenList = [];
   let map = {};
-  map.year = 7;
-  map.retes = sevenRate;
-  map.money = sevenMoney;
+  map.year = 5;
+  map.retes = fiveRate;
+  map.money = fiveMoney;
   reckenList.push(map);
 
   map = {};
@@ -184,4 +184,5 @@ function topMonthlySupply(revenu, rate) {
   return M;
 }
 
-console.log(loanInterface(4000, 50, 300000, 5, 6, 7, 8, 9))
+console.log(loanInterface(4000, 50, 0, 5, 6, 7, 8, 9))
+console.log(creditInterface(30000, 10000, 5, 2))

@@ -72,6 +72,7 @@ module.exports = {
       HOUSING_AMOUNT: "房屋金额",
       LOAN_INTEREST_RATE: "贷款利率(33找房-权威利率)",
       LOAN_TERM: "贷款年份(请选择)",
+      LOAN_CAPACITY: '贷款能力',
       MONTHLY_REPAYMENT_AMOUNT: "月还款金额",
       INTEREST_AMOUNT: "利息金额",
       LOAN_AMOUNT: "贷款金额",
@@ -83,6 +84,8 @@ module.exports = {
       YOUR_PHONE: "您的电话",
       LEAVE_YOUR_MESSAGE: "留下您的信息",
       SEE_MORE: "查看更多",
+      RESET: '重置',
+      ALL_OPTIONS: '全部',
 
       PLEASE_ENTER: "请输入",
       PLEASE_SELECT: "请选择",
@@ -178,7 +181,6 @@ module.exports = {
       TYPOLOGY_OPTION_LABEL_COMMERCIAL: '商业用房',
       TYPOLOGY_OPTION_LABEL_CHAMBRE: '单间卧室',
       TYPOLOGY_OPTION_LABEL_SUITE: '套房',
-      TYPOLOGY_OPTION_LABEL_SUITE: '生活单元',
       TYPOLOGY_OPTION_LABEL_CELLIER: '储物间',
     },
     COMPONENT_TREND_CHART: {
@@ -238,8 +240,7 @@ module.exports = {
     index: {
       SEARCH_MODE: [
         { text: "新房", value: "NewPrograme" },
-        { text: "二手房", value: "SecondHand" },
-        // { text: "租房", value: "Renting" }
+        { text: "二手", value: "SecondHand" },
       ],
     }
   }

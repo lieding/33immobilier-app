@@ -61,21 +61,22 @@ export const PostApplicationMode = {
 };
 
 export const CityRegionGeolocation = {
-  Paris: { lat: 48.8588897, lng: 2.320041 },
-  'Rueil-Malmaison': { lat: 48.87778, lng: 2.1802832 },
-  'Le Blanc-Mesnil': { lat: 48.9385489, lng: 2.4631476 },
-  'Saint-Denis': { lat: 48.9355885, lng: 2.3397438 },
-  Marseille: { lat: 43.2961743, lng: 5.3699525 },
-  Strasbourg: { lat: 48.584614, lng: 7.7507127 },
-  'Île-de-France': { lat: 48.8588897, lng: 2.320041 },
-  Aubervilliers: { lat: 48.9146078, lng: 2.3821895 },
-  Villejuif: { lat: 48.7921098, lng: 2.3633048 },
-  Colombes: { lat: 48.922788, lng: 2.2543577 },
-  'Saint-Ouen-sur-Seine': { lat: 48.911729, lng: 2.334267 },
+  Paris: { lat: 48.858, lng: 2.320 },
+  'Rueil-Malmaison': { lat: 48.877, lng: 2.180 },
+  'Le Blanc-Mesnil': { lat: 48.938, lng: 2.463 },
+  'Saint-Denis': { lat: 48.935, lng: 2.339 },
+  Marseille: { lat: 43.296, lng: 5.369 },
+  Strasbourg: { lat: 48.584, lng: 7.750 },
+  'Île-de-France': { lat: 48.858, lng: 2.320 },
+  Aubervilliers: { lat: 48.914, lng: 2.382 },
+  Villejuif: { lat: 48.792, lng: 2.363 },
+  Colombes: { lat: 48.922, lng: 2.254 },
+  'Saint-Ouen-sur-Seine': { lat: 48.911, lng: 2.334 },
   Cannes: { lat: 43.549, lng: 7.016 },
   Nice: { lat: 43.7, lng: 7.25 },
   Lille: { lat: 50.63, lng: 3.06 },
-  Lyon: { lat: 45.757, lng: 4.832 }
+  Lyon: { lat: 45.757, lng: 4.832 },
+  Clichy: { lat: 48.90, lng: 2.30 },
 }
 
 export const L1AREA_REGIONS = {

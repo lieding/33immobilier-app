@@ -2,7 +2,7 @@
   <div class="new-list-page" @click="hidePopup">
     <el-breadcrumb separator="/">
       <el-breadcrumb-item><a href="/pc_index">{{ $t("message.global.HOME") }}</a></el-breadcrumb-item>
-      <el-breadcrumb-item>{{ $t("message.global.NEW_PROGRAME_LIST") }}</el-breadcrumb-item>
+      <el-breadcrumb-item>{{ curPageBreadCrumb }}</el-breadcrumb-item>
     </el-breadcrumb>
     <section class="content flex">
       <div class="content-left full-h">
@@ -55,6 +55,9 @@
                 <span style="float:left;"> {{ fmoney(priceRange[0], 1) }} </span>
                 <span style="float:right;">{{ fmoney(priceRange[1], 1) }}</span>
               </p>
+              <div>
+                <el-button type="text" @click="priceRange = [minPrice, maxPrice]">{{ $t('message.global.RESET') }}</el-button>
+              </div>
             </el-popover>
             <!-- Compleyion status select / Surface slide range -->
             <el-col :span="6">
@@ -73,12 +76,16 @@
                     <span style="float:left;"> {{ surfaceRange[0] }}</span>
                     <span style="float:right;">{{ surfaceRange[1] }}</span>
                   </p>
+                  <div>
+                  <el-button type="text" @click="surfaceRange = [minSurface, maxSurface]">{{ $t('message.global.RESET') }}</el-button>
+                </div>
                 </el-popover>
               </template>
               <template v-else>
                 <el-select
                   v-model="completionStatusArr"
                   multiple
+                  clearable
                   class="micco-select"
                   :placeholder="$t('message.NEW_LIST.ALL_COMPLETION_STATUS')"
                 >
@@ -92,6 +99,7 @@
                 <el-select
                   v-model="selectedClassLevels"
                   multiple
+                  clearable
                   class="micco-select"
                   :placeholder="$t('message.PAGE_SECOND_HAND.CLASS_LEVEL')"
                 >
@@ -102,6 +110,7 @@
                 <el-select
                   v-model="selectedTypologies"
                   multiple
+                  clearable
                   class="micco-select"
                   :placeholder="$t('message.NEW_LIST.ALL_TYPOLOGY_LABEL')"
                 >
@@ -195,7 +204,7 @@ export default {
       locationSearchDialogVis: false,
       locationOptions: [],
       dataLoading: true,
-      placeInfo: null,
+      placeInfo: {},
       priceRange: [0, 0],
       minPrice: 0,
       maxPrice: 0,
@@ -233,6 +242,9 @@ export default {
     },
     secondHandMode () {
       return this.$route.query?.searchMode === SearchMode.SecondHand;
+    },
+    curPageBreadCrumb () {
+      return this.secondHandMode ? this.$t('message.global.SECOND_HAND') : this.$t("message.global.NEW_PROGRAME_LIST");
     }
   },
   watch: {
@@ -250,7 +262,7 @@ export default {
       this.activePointId = '';
       this.filteredSecondHandList =
         filterSecondHandListByConditions(this.allSecondhandList, this.priceRange, this.surfaceRange, levels);
-    }
+    },
   },
   created() {
     this.fmoney = fmoney;
@@ -266,6 +278,7 @@ export default {
   },
   mounted () {
     if (process.client) {
+      this.setInitialParams();
       this.doSearch();
     }
   },
@@ -355,29 +368,33 @@ export default {
       if (!el) return;
       el.scrollIntoView({ behavior: "smooth", block: "center" });
     },
-    async doSearch() {
-      try {
-        this.dataLoading = true;
-        this.activePointId = '';
-        const { place_id } = this.$route.query, { locationType, department_city, postal_code } = this.placeInfo;
-        if (!place_id && !department_city && !postal_code) return;
-        const lang = this._i18n.locale;
-        const params = { place_id, locationType, postal_code, department_city, lang };
-        const { searchSecondHandByCity, searchPlaceInfoById, searchProgramesByCity } = this.$api.article;
-        if (this.secondHandMode) {
-          const { placeInfo, properties } = await doSecondHandQuery(params, searchSecondHandByCity, searchPlaceInfoById);
+    doSearch() {
+      this.dataLoading = true;
+      this.activePointId = '';
+      const { place_id } = this.$route.query, { locationType, department_city, postal_code } = this.placeInfo;
+      if (!place_id && !department_city && !postal_code) return;
+      const lang = this._i18n.locale;
+      const params = { place_id, locationType, postal_code, department_city, lang };
+      const { searchSecondHandByCity, searchPlaceInfoById, searchProgramesByCity } = this.$api.article;
+      let promise;
+      if (this.secondHandMode) {
+        promise = doSecondHandQuery(params, searchSecondHandByCity, searchPlaceInfoById)
+        .then(res => {
+          const { placeInfo = null, properties } = res || {};
           if (place_id && placeInfo) this.placeInfo = { ...this.placeInfo, ...placeInfo };
           if (Array.isArray(properties)) Object.assign(this, setSecondHand(properties));
-        } else {
-          const { programes, placeInfo } = await doProgrameQuery(params, searchProgramesByCity, searchPlaceInfoById);
-          if (place_id && placeInfo) this.placeInfo = { ...this.placeInfo, ...placeInfo };
-          if (Array.isArray(programes)) Object.assign(this, setProgrames(programes, this.TypologyOption));
-        }
-      } catch (err) {
-        console.error(err);
-      } finally {
-        this.dataLoading = false;
+        });
+      } else {
+        promise = doProgrameQuery(params, searchProgramesByCity, searchPlaceInfoById)
+        .then((res) => {
+          const { placeInfo = null, programes } = res || {};
+          if (place_id && placeInfo)
+            this.placeInfo = { ...this.placeInfo, ...placeInfo };
+          if (Array.isArray(programes))
+            Object.assign(this, setProgrames(programes, this.TypologyOption));
+        });
       }
+      promise?.catch(console.error).finally(() => this.dataLoading = false);
     },
   },
 };
@@ -392,16 +409,23 @@ function setSecondHand (list) {
     maxSurface = !maxSurface ? surface : Math.max(maxSurface, surface);
   }
   const priceRange = [minPrice, maxPrice], surfaceRange = [minSurface, maxSurface];
-  return { allSecondhandList: list, filteredSecondHandList: list, minPrice, maxPrice, minSurface, maxSurface, priceRange, surfaceRange };
+  return {
+    allSecondhandList: list,
+    filteredSecondHandList: list,
+    minPrice, maxPrice, priceRange,
+    minSurface, maxSurface, surfaceRange,
+  };
 }
 
 function setProgrames (programes, TypologyOption) {
   programes = programes.filter(it => it.id.toString() !== 'Infinity');
   const { minPrice, maxPrice, typologyOptionKeys } = handleProgrames(programes, TypologyOption);
+  const typologyOptions = typologyOptionKeys
+    .map(key => TypologyOption.find(it => it.value === key)).filter(Boolean);
+  const priceRange = [ minPrice, maxPrice ];
   return {
-    maxPrice, minPrice,
-    priceRange: [ minPrice, maxPrice ],
-    typologyOptions: typologyOptionKeys.map(key => TypologyOption.find(it => it.value === key)).filter(Boolean),
+    maxPrice, minPrice, priceRange,
+    typologyOptions,
     allProgramList: programes,
     filteredProgramList: programes.slice(),
   };

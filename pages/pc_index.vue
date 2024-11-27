@@ -1,7 +1,7 @@
 <template>
   <div class="index-page">
     <div class="flex-column justify-center align-center top">
-      <div class="bold white banner">{{ $t("message.global.INDEX_BANNER") }}</div>
+      <div class="bold white text-center banner">{{ $t("message.global.INDEX_BANNER") }}</div>
       <div class="city-search-wrapper">
         <client-only>
           <el-autocomplete
@@ -16,7 +16,7 @@
               <el-option :label="$t('message.global.NEW_PROGRAME')" :value="SearchMode.NewPrograme"></el-option>
               <el-option :label="$t('message.global.SECOND_HAND')" :value="SearchMode.SecondHand"></el-option>
             </el-select>
-            <el-button slot="append" icon="el-icon-right" class="search-btn" circle></el-button>
+            <!-- <el-button slot="append" icon="el-icon-right" class="search-btn" circle></el-button> -->
           </el-autocomplete>
         </client-only>
       </div>
@@ -299,11 +299,13 @@ export default {
     width: 100%;
     min-height: 340px;
     .banner {
+      max-width: 80%;
       font-size: 56px;
       margin-bottom: 36px;
     }
     .city-search-wrapper {
-      width: 500px;
+      width: 60%;
+      max-width: 600px;
       .el-autocomplete {
         width: 100%;
       }
@@ -437,14 +439,20 @@ export default {
         border-bottom-left-radius: 16px;
         .el-select {
           margin: unset;
-          width: 80px;
+          width: 120px;
           color: #000;
           font-weight: bold;
+          input {
+            text-align: center;
+            font-size: 13px;
+          }
         }
       }
       input {
         height: 48px;
         border: unset;
+        border-top-right-radius: 16px;
+        border-bottom-right-radius: 16px;
       }
       .el-input-group__append {
         border-top-right-radius: 16px;

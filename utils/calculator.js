@@ -1,18 +1,20 @@
 
 const Rate = process.env['IMMO_PROMOTE_RATE'];
-const SevenRate = process.env['IMMO_PROMOTE_SEVEN_RATE'];
+const FiveRate = process.env['IMMO_PROMOTE_FIVE_RATE'];
 const TenRate = process.env['IMMO_PROMOTE_TEN_RATE'];
 const FiftenRate = process.env['IMMO_PROMOTE_FIFTEN_RATE'];
 const TwentyRate = process.env['IMMO_PROMOTE_TWENTY_RATE'];
 const TwentyfiveRate = process.env['IMMO_PROMOTE_TWENTYFIVE_RATE'];
 
 export function loadRate () {
-  return [Rate, SevenRate, TenRate, FiftenRate, TwentyRate, TwentyfiveRate].map(it => Number(it) ?? 0);
+  const list = [Rate, FiveRate, TenRate, FiftenRate, TwentyRate, TwentyfiveRate].map(it => Number(it) ?? 0);
+  console.log(list)
+  return list;
 }
 
 export function loadRateConfig () {
   return {
-    7: Number(SevenRate),
+    5: Number(FiveRate),
     10: Number(TenRate),
     15: Number(FiftenRate),
     20: Number(TwentyRate),
@@ -23,11 +25,11 @@ export function loadRateConfig () {
 /**
  * 贷款能力计算器
 */
-export function loanInterface(monthlyRevenu, rate, downPay, sevenRate, tenRate, fifteenRate, twentyRate, twentyFiveRate) {
+export function loanInterface(monthlyRevenu, rate, downPay, fiveRate, tenRate, fifteenRate, twentyRate, twentyFiveRate) {
   const resultMap = {};
   const M = topMonthlySupply(monthlyRevenu, rate);
 
-  const sevenMoney = daiMoney(M, downPay, sevenRate, 7);
+  const fiveMoney = daiMoney(M, downPay, fiveRate, 5);
   const tenMoney = daiMoney(M, downPay, tenRate, 10);
   const fifteenMoney = daiMoney(M, downPay, fifteenRate, 15);
   const twentyMoney = daiMoney(M, downPay, twentyRate, 20);
@@ -36,9 +38,9 @@ export function loanInterface(monthlyRevenu, rate, downPay, sevenRate, tenRate, 
   resultMap.M = M; // 月最高还款金额
   const reckenList = [];
   let map = {};
-  map.year = 7;
-  map.retes = sevenRate;
-  map.money = sevenMoney;
+  map.year = 5;
+  map.retes = fiveRate;
+  map.money = fiveMoney;
   reckenList.push(map);
 
   map = {};

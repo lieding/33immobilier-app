@@ -22,7 +22,10 @@
             ref="item-dropdown-price"
           >
             <range-slider :modelValue.sync="priceRange" :min-value="minPrice" :max-value="maxPrice" @change="priceRangeChangeHandler" />
-            <van-button type="info" @click="toggleDropdownMenu('item-dropdown-price')" class="btn-i">{{ $t("message.global.CONFIRM") }}</van-button>
+            <div class="flex justify-end dropdown-btns">
+              <van-button type="info" class="btn-i" @click="toggleDropdownMenu('item-dropdown-price')">{{ $t("message.global.CONFIRM") }}</van-button>
+              <van-button type="warning" class="btn-i" @click="resetPriceRange">{{ $t('message.global.RESET') }}</van-button>
+            </div>
           </van-dropdown-item>
         </van-dropdown-menu>
         <!-- 面积 -->
@@ -33,7 +36,10 @@
             ref="item-dropdown-surface"
           >
             <range-slider :modelValue.sync="surfaceRange" :min-value="minSurface" :max-value="maxSurface" @change="surfaceRangeChangeHandler" />
-            <van-button type="info" @click="toggleDropdownMenu('item-dropdown-surface')" class="btn-i">{{ $t("message.global.CONFIRM") }}</van-button>
+            <div class="flex justify-end dropdown-btns">
+              <van-button type="info" class="btn-i" @click="toggleDropdownMenu('item-dropdown-surface')">{{ $t("message.global.CONFIRM") }}</van-button>
+              <van-button type="warning" class="btn-i" @click="resetSurfaceRange">{{ $t('message.global.RESET') }}</van-button>
+            </div>
           </van-dropdown-item>
         </van-dropdown-menu>
         <!-- 交房时间 -->
@@ -176,8 +182,9 @@ export default {
   created() {
     this.fmoney = fmoney;
     this.setInitialPlaceinfo();
-    this.CompletionStatusOption =
-      CompletionStatusOptionConfig.map(({ key, I18NKey }) => ({ value:key, text: this.$t(`message.NEW_LIST.${I18NKey}`) }));
+    this.CompletionStatusOption = CompletionStatusOptionConfig
+      .map(({ key, I18NKey }) => ({ value: key, text: this.$t(`message.NEW_LIST.${I18NKey}`) }));
+    this.CompletionStatusOption.unshift({ key: '', text: this.$t('message.global.ALL_OPTIONS') });
     this.TypologyOption = TypologyOptionConfig
       .map(({ incluedKey, I18NKey }) => ({ value: incluedKey, incluedKey, text: this.$t(`message.NEW_LIST.${I18NKey}`) }));
     if (this.isSecondHand) {
@@ -185,6 +192,7 @@ export default {
       this.ClassLevelList = Object
         .entries(this.$t('message.PAGE_SECOND_HAND.CLASS_LEVEL_LIST'))
         .map(it => ({ value: it[0], text: it[1] }));
+      this.ClassLevelList.unshift({ key: '', text: this.$t('message.global.ALL_OPTIONS') });
     } else {
       this.departmentCityDataLoader = loadProgrameDepartmentCities;
     }
@@ -234,10 +242,18 @@ export default {
           filterSecondHandListByConditions(this.allSecondhandList, range, this.surfaceRange, [this.selectedClassLevel]);
       }
     },
+    resetPriceRange () {
+      this.priceRange = [this.minPrice, this.maxPrice];
+      this.priceRangeChangeHandler();
+    },
     surfaceRangeChangeHandler (range) {
       this.activePointId = '';
       this.filteredSecondHandList =
         filterSecondHandListByConditions(this.allSecondhandList, this.priceRange, range, [this.selectedClassLevel]);
+    },
+    resetSurfaceRange () {
+      this.surfaceRange = [this.minSurface, this.maxSurface];
+      this.surfaceRangeChangeHandler();
     },
     selectedTypologyChangeHandler (selectedTypology) {
       this.activePointId = '';
@@ -264,7 +280,7 @@ export default {
       if (!el) return;
       el.scrollIntoView({ behavior: "smooth", block: "center" });
     },
-    async queryList(initial = true) {
+    queryList(initial = true) {
       let page = this.page;
       this.activePointId = '';
       if (initial) {
@@ -279,23 +295,26 @@ export default {
       this.dataLoading = true;
       const { place_id } = this.$route.query, { department_city, locationType, postal_code } = this.placeInfo;
       const params = { page, place_id, department_city, locationType, postal_code };
-      try {
-        const { searchSecondHandByCity, searchPlaceInfoById, searchProgramesByCity } = this.$api.article;
-        if (this.isNew) {
-          const { placeInfo, programes } = await doProgrameQuery(params, searchProgramesByCity, searchPlaceInfoById);
-          if (placeInfo && place_id) this.placeInfo = { ...this.placeInfo, ...placeInfo };
-          if (Array.isArray(programes))
+      const { searchSecondHandByCity, searchPlaceInfoById, searchProgramesByCity } = this.$api.article;
+      let promise;
+      if (this.isNew) {
+        promise = doProgrameQuery(params, searchProgramesByCity, searchPlaceInfoById).then(({ placeInfo, programes }) => {
+          if (placeInfo && place_id)
+            this.placeInfo = { ...this.placeInfo, ...placeInfo };
+          if (Array.isArray(programes)) {
             Object.assign(this, setProgrames(programes, this.TypologyOption));
-        } else if (this.isSecondHand) {
-          const { placeInfo, properties } = await doSecondHandQuery(params, searchSecondHandByCity, searchPlaceInfoById);
-          if (place_id && placeInfo) this.placeInfo = { ...this.placeInfo, ...placeInfo };
-          if (Array.isArray(properties)) Object.assign(this, setSecondHand(properties));
-        }
-      } catch (err) {
-        console.error(err);
-      } finally {
-        this.dataLoading = false;
+            this.typologyOptions.unshift({ value: '', text: this.$t('message.global.ALL_OPTIONS') });
+          }
+        });
+      } else if (this.isSecondHand) {
+        promise = doSecondHandQuery(params, searchSecondHandByCity, searchPlaceInfoById).then(({ placeInfo, properties }) => {
+          if (place_id && placeInfo)
+            this.placeInfo = { ...this.placeInfo, ...placeInfo };
+          if (Array.isArray(properties))
+            Object.assign(this, setSecondHand(properties));
+        });
       }
+      promise?.catch(console.error).finally(() => this.dataLoading = false);
     }
   },
 };
@@ -315,10 +334,10 @@ function setSecondHand (list) {
 
 function setProgrames (programes, TypologyOption) {
   const { minPrice, maxPrice, typologyOptionKeys } = handleProgrames(programes, TypologyOption);
+  const typologyOptions = typologyOptionKeys.map(key => TypologyOption.find(it => it.value === key)).filter(Boolean);
   return {
     minPrice, maxPrice, priceRange: [ minPrice, maxPrice ],
-    typologyOptions: typologyOptionKeys
-      .map(key => TypologyOption.find(it => it.value === key)).filter(Boolean),
+    typologyOptions,
     allProgramList: programes.slice(),
     filteredProgramList: programes.slice(),
   }
@@ -391,12 +410,12 @@ function generateHead (searchMode) {
 .dropdown-slider {
   padding-bottom: 0.2rem;
 }
-.btn-i {
-  float: right;
-  width: 1.1rem;
-  margin: 0.1rem 0.2rem;
-  background: rgba(35, 77, 212, 1);
-  border-radius: 0.06rem;
+.dropdown-btns {
+  margin: .2rem 0 .1rem;
+  .btn-i {
+    margin: 0 0.1rem;
+    border-radius: 0.06rem;
+  }
 }
 </style>
 <style>

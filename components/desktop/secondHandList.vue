@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { fmoney } from '../../utils'
+import { fmoney, aLink } from '../../utils'
 export default {
   props: {
     list: {
@@ -49,7 +49,12 @@ export default {
   },
   methods: {
     listItemClickhandler ({ zip_code, id, city, title }) {
-      this.$router.push({ path: '/second_hand_detail', query: { zip_code, id, city, title } });
+      const urlParams = new URLSearchParams();
+      urlParams.set('zip_code', zip_code);
+      urlParams.set('id', id);
+      urlParams.set('city', city);
+      urlParams.set('title', title);
+      aLink('/second_hand_detail?' + urlParams.toString());
     },
   }
 }
