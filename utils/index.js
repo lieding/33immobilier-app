@@ -67,3 +67,11 @@ export function aLink (href) {
   aEl.href = href;
   aEl.click();
 }
+
+export function createPath (path) {
+  if (path.startsWith('/')) path = path.substring(1);
+  const curPath = window.location.pathname;
+  const split = curPath.split('/');
+  split[split.length - 1] = path;
+  return split.join('/');
+}

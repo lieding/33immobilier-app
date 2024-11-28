@@ -1,5 +1,9 @@
 <template>
   <div>
+    <div v-if="fromSearchPage" class="to-list flex align-center" @click="$router.go(-1)">
+      <van-icon name="arrow-left" />
+      <span>{{ $t('message.global.RETURN_TO_LIST') }}</span>
+    </div>
     <div>
       <div class="images" @click="swipeDialogVis = true">
         <van-swipe
@@ -171,6 +175,7 @@ export default {
   },
   data() {
     return {
+      fromSearchPage: false,
       loading: false,
       programeDetail: {},
       swipeDialogVis: false,
@@ -263,6 +268,13 @@ export default {
     toggleDisplayMore() {
       this.displayMoreDesc = !this.displayMoreDesc;
     },
+  },
+  beforeRouteEnter (to, from, next) {
+    let fromSearchPage = undefined;
+    if (from.path.includes('search')) {
+      fromSearchPage = true;
+    }
+    next(vm => vm.fromSearchPage = fromSearchPage);
   }
 };
 </script>
@@ -339,17 +351,12 @@ td {
     margin-bottom: 0.11rem;
   }
 }
+.to-list {
+  margin: .1rem 0;
+}
 .tax {
   height: 0.26rem;
   background: rgba(106, 192, 120, 1);
-}
-.check {
-  height: 0.26rem;
-  background: rgba(35, 76, 211, 1);
-}
-.itemize {
-  height: 0.18rem;
-  background: rgba(191, 191, 191, 1);
 }
 
 .item > span {
@@ -363,15 +370,6 @@ td {
   display: inline-block;
   padding: 0 0.05rem;
   line-height: 0.26rem;
-}
-.font1 {
-  font-size: 0.11rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 1);
-  line-height: 0.16rem;
-  display: inline-block;
-  padding: 0 0.05rem;
-  line-height: 0.18rem;
 }
 .price {
   height: 0.28rem;

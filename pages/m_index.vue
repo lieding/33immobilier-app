@@ -164,7 +164,7 @@ import { SearchMode, PostApplicationMode, loadIndexPageCityProgrames, CityRegion
 import IndexCityBar from '../components/IndexCityBar.vue';
 import { doLocationAutocomplete } from '../common/locationAutocomplete';
 import { searchPostalCode } from '../utils/findPosalcode'
-import { fmoney } from '../utils';
+import { fmoney, createPath } from '../utils';
 
 export default {
   components: {
@@ -263,10 +263,10 @@ export default {
       if (searchMode == SearchMode.NewPrograme) {
         if (!place_id && !place_text && !postal_code) return;
         const query = { searchMode, place_id, department_city, location_type, lat, lng, postal_code };
-        this.$router.push({ path: "/m_search", query });
+        this.$router.push({ path: createPath("/m_search"), query });
       } else if (searchMode == SearchMode.SecondHand) {
         const query = { searchMode, location_type, department_city, lat, lng, postal_code };
-        this.$router.push({ path: "/m_search", query });
+        this.$router.push({ path: createPath("/m_search"), query });
       } else {
       }
     },
@@ -308,7 +308,7 @@ export default {
       if (!department_city) return;
       const { lat, lng } = CityRegionGeolocation[department_city] ?? {};
       if (!lat || !lng) return;
-      this.$router.push({ path: '/m_search', query: { searchMode: SearchMode.NewPrograme, department_city, lat, lng, location_type } });
+      this.$router.push({ path: createPath('/m_search'), query: { searchMode: SearchMode.NewPrograme, department_city, lat, lng, location_type } });
     },
     moreSecondHandClickHandler (ev) {
       let { city_name: department_city, location_type = '' } = ev ?? {};
@@ -316,7 +316,7 @@ export default {
       if (!department_city) return;
       const { lat, lng } = CityRegionGeolocation[department_city] ?? {};
       if (!lat || !lng) return;
-      this.$router.push({ path: '/m_search', query: { searchMode: SearchMode.SecondHand, department_city, lat, lng, location_type } });
+      this.$router.push({ path: createPath('/m_search'), query: { searchMode: SearchMode.SecondHand, department_city, lat, lng, location_type } });
     },
   }
 };

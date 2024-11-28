@@ -1,5 +1,9 @@
 <template>
   <div>
+    <div v-if="fromSearchPage" class="to-list flex align-center" @click="$router.go(-1)">
+      <van-icon name="arrow-left" />
+      <span>{{ $t('message.global.RETURN_TO_LIST') }}</span>
+    </div>
     <div>
       <div class="images" @click="swipeDialogVis = true">
         <van-swipe
@@ -117,6 +121,7 @@ export default {
   },
   data () {
     return {
+      fromSearchPage: false,
       loading: false,
       detail: {},
       swipeDialogVis: false,
@@ -179,6 +184,13 @@ export default {
         .catch(console.error)
         .finally(() => this.contactPopupBtnLoading = false);
     },
+  },
+  beforeRouteEnter (to, from, next) {
+    let fromSearchPage = undefined;
+    if (from.path.includes('search')) {
+      fromSearchPage = true;
+    }
+    next(vm => vm.fromSearchPage = fromSearchPage);
   }
 }
 </script>
@@ -244,6 +256,9 @@ export default {
   color: rgba(255, 94, 94, 1);
   line-height: 0.28rem;
   padding: 0.13rem 0 0.1rem 0;
+}
+.to-list {
+  margin: .1rem 0;
 }
 .info-row {
   font-size: 0.14rem;

@@ -4,55 +4,53 @@
     :loading-text="$t('message.global.LOADING')"
   >
     <template v-if="isNew">
-      <router-link
+      <li
         v-for="(item) in list"
         :key="item.id"
-        :to="{ path: '/m_new_detail', query: { zip_code: item.zip_code, name_id: item.name_id, estate_name: item.estate_name, city: item.city } }"
+        class="list-li" :id="'item-' + item.id" :class="{ active: activePointId === item.id }"
+        @click="routerChange('/m_new_detail', { zip_code: item.zip_code, name_id: item.name_id, estate_name: item.estate_name, city: item.city })"
       >
-        <li class="list-li" :id="'item-' + item.id" :class="{ active: activePointId === item.id }">
-          <div class="flex">
-            <div class="image-wrapper">
-              <van-image :src="getImage(item)" class="cover-image" />
-              <span class="floating bold white" v-if="item.deliveryQuarter">{{ item.deliveryQuarter }}</span>
+        <div class="flex">
+          <div class="image-wrapper">
+            <van-image :src="getImage(item)" class="cover-image" />
+            <span class="floating bold white" v-if="item.deliveryQuarter">{{ item.deliveryQuarter }}</span>
+          </div>
+          <div class="text">
+            <div class="info-row item-title">{{ item.estate_name }}</div>
+            <div class="info-row ">{{ item.zip_code }} / {{ item.city }}</div>
+            <div class="info-row ">
+              <van-tag v-for="it in item.translatedTypologies" :key="it" type="primary" size=""medium>{{ it }}</van-tag>
             </div>
-            <div class="text">
-              <div class="info-row item-title">{{ item.estate_name }}</div>
-              <div class="info-row ">{{ item.zip_code }} / {{ item.city }}</div>
-              <div class="info-row ">
-                <van-tag v-for="it in item.translatedTypologies" :key="it" type="primary" size=""medium>{{ it }}</van-tag>
-              </div>
-              <div class="info-row price">
-                {{ fmoney(item.availablePropertiesMinPrice) }}€ - {{ fmoney(item.availablePropertiesMaxPrice) }}€
-              </div>
+            <div class="info-row price">
+              {{ fmoney(item.availablePropertiesMinPrice) }}€ - {{ fmoney(item.availablePropertiesMaxPrice) }}€
             </div>
           </div>
-        </li>
-      </router-link>
+        </div>
+      </li>
     </template>
     <template v-else-if="isSecondHand">
-      <router-link
+      <li
         v-for="(item) in list"
         :key="item.id"
-        :to="{ path: '/m_second_hand_detail', query: { id: item.id, zip_code: item.zip_code, title: item.title, city: item.city } }"
+        class="list-li"
+        @click="routerChange('/m_second_hand_detail', { id: item.id, zip_code: item.zip_code, title: item.title, city: item.city })"
       >
-        <li class="list-li">
-          <div class="flex">
-            <div class="image-wrapper">
-              <van-image :src="item.image" class="cover-image" />
+        <div class="flex">
+          <div class="image-wrapper">
+            <van-image :src="item.image" class="cover-image" />
+          </div>
+          <div class="text">
+            <div class="info-row item-title">{{ item.title }}</div>
+            <div class="info-row ">{{ item.zip_code }} / {{ item.city }}</div>
+            <div class="info-row">
+              {{ item.surface }}m² / <span class="price">{{ fmoney(item.price) }}€</span>
             </div>
-            <div class="text">
-              <div class="info-row item-title">{{ item.title }}</div>
-              <div class="info-row ">{{ item.zip_code }} / {{ item.city }}</div>
-              <div class="info-row">
-                {{ item.surface }}m² / <span class="price">{{ fmoney(item.price) }}€</span>
-              </div>
-              <div class="info-row">
-                {{ item.piece }}{{ $t('message.PAGE_SECOND_HAND.PIECE_CNT') }} / {{ item.chambre }}{{ $t('message.PAGE_SECOND_HAND.CHAMBRE_CNT') }}
-              </div>
+            <div class="info-row">
+              {{ item.piece }}{{ $t('message.PAGE_SECOND_HAND.PIECE_CNT') }} / {{ item.chambre }}{{ $t('message.PAGE_SECOND_HAND.CHAMBRE_CNT') }}
             </div>
           </div>
-        </li>
-      </router-link>
+        </div>
+      </li>
     </template>
     <template v-if="!dataLoading && !list.length">
       <van-empty
@@ -65,7 +63,7 @@
 </template>
 
 <script>
-import { fmoney } from '../../utils/index';
+import { fmoney, createPath } from '../../utils/index';
 import { SearchMode } from '../../common/config';
 export default {
   props: {
@@ -96,6 +94,10 @@ export default {
       if (Array.isArray(item.images) && item.images.length) return item.images[0];
       return null;
     },
+    routerChange (path, query) {
+      path = createPath(path);
+      this.$router.push({ path, query });
+    }
   }
 }
 </script>
@@ -112,7 +114,7 @@ export default {
       font-weight: 600;
       color: rgba(168, 168, 168, 1);
       // padding-bottom: 0.04rem;
-      .price {
+      &.price {
         color: rgba(255, 94, 94, 1);
       }
       &.item-title {
@@ -134,7 +136,7 @@ export default {
       top: 0;
       right: 0;
       padding: .02rem .1rem;
-      background: var (--main-blue);
+      background: var(--main-blue);
       border-radius: 0 0 0 .13rem;
       font-size: 0.12rem;
     }

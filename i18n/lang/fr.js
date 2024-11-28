@@ -99,6 +99,7 @@ module.exports = {
       INVALID: 'Non valide',
       CANCEL: 'Annuler',
       FIRST_NAME: 'Votre prénom',
+      RETURN_TO_LIST: 'Retour à la page de liste',
       LAST_NAME: 'Votre nom',
       APPLICATION_POSTED_SUCCESS: 'Votre demande a été soumise avec succès',
     },

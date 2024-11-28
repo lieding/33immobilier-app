@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { fmoney, aLink } from '../../utils'
+import { fmoney, aLink, createPath } from '../../utils'
 export default {
   props: {
     list: {
@@ -75,7 +75,8 @@ export default {
       urlParams.set('name_id', name_id);
       urlParams.set('city', city);
       urlParams.set('estate_name', estate_name);
-      aLink('/new_detail?' + urlParams.toString());
+      const path = createPath('/new_detail?');
+      aLink(path + urlParams.toString());
     },
   }
 }

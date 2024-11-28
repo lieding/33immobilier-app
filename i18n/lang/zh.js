@@ -99,6 +99,7 @@ module.exports = {
       INVALID: '不合法',
       CANCEL: '取 消',
       FIRST_NAME: '您的名字',
+      RETURN_TO_LIST: '返回到列表页',
       LAST_NAME: '您的姓氏',
       APPLICATION_POSTED_SUCCESS: '您的请求已成功提交',
     },

@@ -8,17 +8,17 @@
         <img src="/mobile-header-list-btn.png" @click="listBtnClickHandler" />
       </div>
       <ul class="popup-list" @click="listBtnClickHandler">
-        <router-link :to="{ path: '/m_index' }" tag="li">
+        <li @click="routerChange('m_index')" tag="li">
           {{ $t("message.global.HOME") }}
-        </router-link>
-        <router-link
-          :to="{ path: '/m_search', query: { searchMode: SearchMode.NewPrograme, department_city: 'Paris' } }"
+        </li>
+        <li
+          @click="routerChange('m_search', { searchMode: SearchMode.NewPrograme, department_city: 'Paris' })"
           tag="li"
-        >{{ $t("message.global.NEW_PROGRAME") }}</router-link>
-        <router-link
-          :to="{ path: '/m_search', query: { searchMode: SearchMode.Secondhand, department_city: 'Paris' } }"
+        >{{ $t("message.global.NEW_PROGRAME") }}</li>
+        <li
+          @click="routerChange('m_search', { searchMode: SearchMode.SecondHand, department_city: 'Paris' })"
           tag="li"
-        >{{ $t("message.global.SECOND_HAND") }}</router-link>
+        >{{ $t("message.global.SECOND_HAND") }}</li>
         <li @click="changeLocale('zh')" class="locale-row flex-center">
           <img src="/chinese.png" />
           <span>{{ $t("message.global.Chinese") }}</span>
@@ -33,7 +33,8 @@
 </template>
 
 <script>
-import { SearchMode } from '../../common/config';
+import { SearchMode, CityRegionGeolocation } from '../../common/config';
+import { createPath } from '../../utils';
 export default {
   name: "",
   data() {
@@ -53,6 +54,13 @@ export default {
       this.$i18n.setLocaleCookie(locale);
       this.$router.push(this.switchLocalePath(locale));
     },
+    routerChange (path, query) {
+      path = createPath(path);
+      if (query?.department_city)
+        query = { ...query, ...(CityRegionGeolocation[query.department_city]) };
+      this.$router.replace({ path, query });
+      this.listBtnClickHandler();
+    }
   }
 };
 </script>

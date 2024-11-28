@@ -142,6 +142,7 @@ import IndexCityBar from '../components/IndexCityBar.vue';
 import { CityRegionGeolocation, loadIndexPageCityProgrames, SearchMode, loadIndexPageSecondHand } from '../common/config';
 import { doLocationAutocomplete } from '../common/locationAutocomplete';
 import { searchPostalCode } from '../utils/findPosalcode'
+import { createPath } from '../utils'
 
 export default {
   name: "index",
@@ -236,7 +237,7 @@ export default {
     },
     routerChange(path, flag = undefined) {
       const query = typeof flag === 'object' ? flag : { flag };
-      this.$router.push({ path, query });
+      this.$router.push({ path: createPath(path), query });
     },
     queryCity(queryString, cb) {
       const lang = this._i18n.locale;

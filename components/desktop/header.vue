@@ -4,17 +4,14 @@
       <img src="/33immo-logo.png" />
     </div>
     <div class="routes">
-      <span class="route-item" :class="{ active: currentRouteKey === RouteKey.Search }" @click="select(RouteKey.Search)">
-        <i class="el-icon-search" />
-        <span class="label">{{ $t("message.global.SEARCH") }}</span>
+      <span class="route-item pointer" @click="select('/pc_index')">
+        <span class="label">{{ $t("message.global.HOME") }}</span>
       </span>
-      <span class="route-item" :class="{ active: currentRouteKey === RouteKey.Analysis }" @click="select(RouteKey.Analysis)">
-        <i class="el-icon-finished" />
-        <span class="label">{{ $t("message.global.ANALYSIS") }}</span>
+      <span class="route-item pointer" @click="toSearch(SearchMode.NewPrograme)">
+        <span class="label">{{ $t("message.global.NEW_PROGRAME") }}</span>
       </span>
-      <span class="route-item" :class="{ active: currentRouteKey === RouteKey.My }" @click="select(RouteKey.My)">
-        <i class="el-icon-user" />
-        <span class="label">{{ $t("message.global.MY") }}</span>
+      <span class="route-item pointer" @click="toSearch(SearchMode.SecondHand)">
+        <span class="label">{{ $t("message.global.SECOND_HAND") }}</span>
       </span>
       <div v-popover:popover class="pointer route-item lang-switcher-popup-trigger">
         <img :src="langSwitchImgSrc" />
@@ -69,23 +66,13 @@
 </template>
 
 <script>
+import { createPath } from '../../utils';
+import { SearchMode, CityRegionGeolocation } from '../../common/config'
 import { createNamespacedHelpers } from 'vuex'
 const { mapGetters } = createNamespacedHelpers('auth');
 
-const RouteKey = {
-  Search: 'Search',
-  Like: 'Like',
-  Analysis: 'Analysis',
-  My: 'My',
-}
-
 export default {
   name: "headers",
-  data () {
-    return {
-      currentRouteKey: RouteKey.Search,
-    }
-  },
   computed: {
     langSwitchImgSrc () {
       if (this.isFr) return '/chinese.png';
@@ -95,18 +82,18 @@ export default {
   },
   created () {
     this.isFr = this._i18n.locale === 'fr';
-    this.RouteKey = RouteKey;
-  },
-  mounted () {
-    if (process.client)
-      this.currentRouteKey = getCurrentRouteKey();
+    this.SearchMode = SearchMode;
   },
   methods: {
     redirect (path) {
       this.$router.replace({ path });
     },
-    select (key) {
-
+    select (key, query) {
+      this.$router.replace({ path: createPath(key), query });
+    },
+    toSearch (searchMode) {
+      const geolocation = CityRegionGeolocation.Paris;
+      this.$router.replace({ path: createPath('/search'), query: { department_city: 'Paris', ...geolocation, searchMode } });
     },
     changeLocale(locale) {
       this.isFr = locale === 'fr';
@@ -115,13 +102,6 @@ export default {
     }
   }
 };
-
-function getCurrentRouteKey() {
-  const path = location.pathname;
-  if (path.includes('analysis')) return RouteKey.Analysis;
-  if (path.includes('my')) return RouteKey.My;
-  if (path.includes('index')) return RouteKey.Search;
-}
 </script>
 
 <style lang="scss" scoped>

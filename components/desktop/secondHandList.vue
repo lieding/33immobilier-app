@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { fmoney, aLink } from '../../utils'
+import { fmoney, aLink, createPath } from '../../utils'
 export default {
   props: {
     list: {
@@ -54,7 +54,8 @@ export default {
       urlParams.set('id', id);
       urlParams.set('city', city);
       urlParams.set('title', title);
-      aLink('/second_hand_detail?' + urlParams.toString());
+      const path = createPath('/second_hand_detail?');
+      aLink(path + urlParams.toString());
     },
   }
 }

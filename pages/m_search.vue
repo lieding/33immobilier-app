@@ -109,6 +109,8 @@ import {
   loadSecondHandDepartmentCities,
 } from '../utils/search';
 
+const PLACEINFO_SESSION_KEY = 'M_PLACEINFO';
+
 export default {
   name: "",
   middleware: "responsive",
@@ -151,6 +153,9 @@ export default {
   watch: {
     $route() {
       this.searchMode = this.$route.query.searchMode;
+    },
+    placeInfo (obj) {
+      sessionStorage.setItem(PLACEINFO_SESSION_KEY, obj ? JSON.stringify(obj) : '');
     },
   },
   computed: {
@@ -199,10 +204,21 @@ export default {
   },
   mounted() {
     rem();
-    if (process.client) this.queryList();
+    if (process.client) {
+      this.setInitialPlaceinfo();
+      this.queryList();
+    }
   },
   methods: {
     setInitialPlaceinfo () {
+      if (process.client) {
+        const cached = sessionStorage.getItem(PLACEINFO_SESSION_KEY);
+        if (this.__fromDetailPage && cached) {
+          const placeInfo = JSON.parse(cached);
+          sessionStorage.removeItem(PLACEINFO_SESSION_KEY);
+          return this.placeInfo = placeInfo;
+        }
+      }
       const { searchMode, department_city, lat, lng, location_type, postal_code } = this.$route.query;
       this.searchMode = searchMode;
       this.placeInfo = {
@@ -316,6 +332,12 @@ export default {
       }
       promise?.catch(console.error).finally(() => this.dataLoading = false);
     }
+  },
+  beforeRouteEnter(_, from, next) {
+    let __fromDetailPage = undefined;
+    if (from.path.includes(('detail')))
+      __fromDetailPage = true;
+    next(vm => vm.__fromDetailPage = __fromDetailPage);
   },
 };
 
