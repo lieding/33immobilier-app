@@ -312,4 +312,21 @@ body {
   }
 }
 
+.whatsapp-btn {
+  width: fit-content;
+  border-radius: 4px;
+  background: #25D366;
+  padding: 4px 6px;
+  img {
+    height: 18px;
+    margin-right: 6px;
+  }
+  .txt {
+    font-size: 14px;
+  }
+  &:hover {
+    background: #178942;
+  }
+}
+
 </style>

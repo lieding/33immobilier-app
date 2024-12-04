@@ -197,6 +197,8 @@ module.exports = {
       LATEST_CITIES_CHART_VILLA: '别墅',
     },
     PROGRAME_DETAIL: {
+      DOWNLOAD_PLAN_BTN: '下载户型图',
+      DOWNLOAD_BROCHURE_BTN: '下载宣传册',
       TAX_AREA: {
         "A BIS": "需求非常大的区域，涵盖巴黎市中心，房地产价格非常高，租赁需求强劲",
         A: "高需求区域，涵盖里昂、马赛、里尔等大城市及近郊，房地产价格较高",

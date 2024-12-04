@@ -82,23 +82,31 @@
             {{ $t("message.global.TYPOLOGIES") }}：
             <el-tag v-for="it in translatedTypologies" :key="it" type="success" size="mini">{{ it }}</el-tag>
           </p>
+          <div class="whatsapp-btn-row">
+            <div class="whatsapp-btn pointer flex align-center" @click="downloadBrochureClickHandler">
+              <img src="/whatsapp.svg" />
+              <span class="inline-block txt white bold">{{ $t('message.global.CONTACT_US') }}</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
     <div class="desktop-placed-center content-section">
-      <p class="titles">
-        <span style="font-size:32px;margin-right:10px;font-weight:600;">{{
-          $t("message.global.PROGRAME_DESC")
-        }}</span>
-      </p>
+      <div class="flex justify-between">
+        <div style="font-size:32px;margin-right:10px;font-weight:600;">{{ $t("message.global.PROGRAME_DESC") }}</div>
+        <div class="download-btn white bold flex align-center pointer" @click="downloadBrochureClickHandler">
+          <i class="el-icon-download" />
+          {{ $t('message.PROGRAME_DETAIL.DOWNLOAD_BROCHURE_BTN') }}
+        </div>
+      </div>
       <p style="margin-top: 10px; white-space:pre-line;">
         <div v-html="programeInfo.description"></div>
       </p>
-      <p class="titles" style="margin-top:10px;">
+      <div style="margin-top:10px;">
         <span style="font-size:32px;margin-right:10px;font-weight:600;">
           {{ $t("message.global.PROGRAM_POSITION") }}：{{ programeInfo.address }}
         </span>
-      </p>
+      </div>
       <div style="border: 1px solid #ccc;height:500px;width:1200px">
         <jump-map
           v-if="programeInfo.latitude && programeInfo.longitude"
@@ -109,7 +117,7 @@
           :need-center-logo="true"
         ></jump-map>
       </div>
-      <p class="titles" style="margin-top:10px;padding-bottom:20px;">
+      <p style="margin-top:10px;padding-bottom:20px;">
         <span style="font-size:32px;margin-right:10px;font-weight:600;">{{
           $t("message.global.PROPERTY_DETAILS")
         }}</span>
@@ -158,7 +166,11 @@
         </el-table-column>
         <el-table-column :label="$t('message.global.FLOOR_PLAN')">
           <template slot-scope="scope">
-            <el-link :href="scope.planLink" target="'_blank'">Plan</el-link>
+            <!-- <el-link :href="scope.planLink" target="'_blank'">Plan</el-link> -->
+            <span
+              class="pointer inline-block download-btn white bold"
+              @click="propertyItemClickhandler(scope.row)"
+            >{{ $t("message.PROGRAME_DETAIL.DOWNLOAD_PLAN_BTN") }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="data" :label="$t('message.global.CONTACT_US')">
@@ -283,8 +295,7 @@ export default {
     },
     contactFormConfirmHandler (contact) {
       const property = this.__selectedProperty;
-      if (!property) return;
-      const propertyId = property.id, programeId = this.programeInfo.id;
+      const propertyId = property?.id ?? ' ', programeId = this.programeInfo.id;
       if (!programeId || !propertyId) return;
       this.postApplicationLoading = true;
       const lang = this._i18n.locale;
@@ -295,7 +306,11 @@ export default {
         })
         .catch(console.error)
         .finally(() => this.postApplicationLoading = false);
-    }
+    },
+    downloadBrochureClickHandler () {
+      this.contactDialogTitles = [];
+      this.contactDialogVisible = true;
+    },
   }
 };
 </script>
@@ -341,7 +356,7 @@ export default {
   }
 }
 .right-body {
-  width: 455px;
+  width: 488px;
   height: 404px;
   .content-package {
     box-shadow: 0px 2px 26px 0px rgba(0, 0, 0, 0.11);
@@ -376,6 +391,9 @@ export default {
       color: #000000;
     }
   }
+  .whatsapp-btn-row {
+    margin-top: 7px;
+  }
 }
 .recommendation-section {
   margin-bottom: 20px;
@@ -395,6 +413,13 @@ export default {
     span {
       display: inline-block;
     }
+  }
+  .download-btn {
+    background: var(--main-blue);
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+  .whatsapp-btn {
   }
 }
 </style>

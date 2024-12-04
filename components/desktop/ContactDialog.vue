@@ -120,7 +120,7 @@ export default {
       if (!form) return;
       form.validate?.(valid => {
         if (!valid) return;
-        const code = this.nationCodeOptions.find(it => it.code === this.form.code)?.dial_code ?? '';
+        const code = this.allOptions.find(it => it.code === this.form.code)?.dial_code ?? '';
         this.$emit('confirm', { ...this.form, code });
       });
     },

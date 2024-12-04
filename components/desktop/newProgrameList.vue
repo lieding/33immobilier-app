@@ -32,7 +32,7 @@
           {{ fmoney(itemss.availablePropertiesMinPrice) }}€ - {{ fmoney(itemss.availablePropertiesMaxPrice) }}€
         </div>
         <div class="link-btn">
-          <el-button icon="el-icon-position" circle @click="listItemClickhandler(itemss)"></el-button>
+          <el-button icon="el-icon-right" circle @click="listItemClickhandler(itemss)"></el-button>
         </div>
       </div>
     </div>

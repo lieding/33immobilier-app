@@ -19,7 +19,13 @@
     </div>
     <div class="programe-detail">
       <p class="detail-title">{{ programeDetail.estate_name }}</p>
-      <p class="detail-region">{{ programeDetail.zip_code }} / {{ programeDetail.city }}</p>
+      <div class="detail-region flex justify-between">
+        <span class="inline-block">{{ programeDetail.zip_code }} / {{ programeDetail.city }}</span>
+        <div class="whatsapp-btn pointer flex align-center" @click="directContact">
+          <img src="/whatsapp.svg" />
+          <span class="inline-block txt white bold">{{ $t('message.global.CONTACT_US') }}</span>
+        </div>
+      </div>
       <p class="item">
         <van-tag type="primary" size="large" v-if="programeDetail.deliveryQuarter">
           {{ programeDetail.deliveryQuarter }}
@@ -70,7 +76,13 @@
     <hr class="hr" />
     <!-- 楼盘位置 -->
     <div class="section">
-      <span class="section-title">{{ $t("message.global.PROGRAM_POSITION") }}</span>
+      <div class="flex justify-between">
+        <span class="section-title">{{ $t("message.global.PROGRAM_POSITION") }}</span>
+        <div class="download-btn white bold" @click="directContact">
+          <i class="el-icon-download" />
+          {{ $t('message.PROGRAME_DETAIL.DOWNLOAD_BROCHURE_BTN') }}
+        </div>
+      </div>
       <p class="address">{{ programeDetail.address }}</p>
       <div class="map">
         <jump-map
@@ -250,10 +262,13 @@ export default {
       this.contactPopupVis = true;
       this.__selectedProperty = property;
     },
+    directContact () {
+      this.contactPopupTitles = [];
+      this.contactPopupVis = true;
+    },
     contactConfirmHandler (contact) {
       const property = this.__selectedProperty;
-      if (!property) return;
-      const propertyId = property.id, programeId = this.programeDetail.id;
+      const propertyId = property?.id ?? ' ', programeId = this.programeDetail.id;
       if (!programeId || !propertyId) return;
       const lang = this._i18n.locale;
       this.contactPopupBtnLoading = true;
@@ -344,11 +359,9 @@ td {
     margin: 0.07rem 0 0.03rem;
   }
   .detail-region {
-    height: 0.17rem;
+    margin-right: .12rem;
     font-size: 0.12rem;
     color: rgba(177, 177, 177, 1);
-    line-height: 0.17rem;
-    margin-bottom: 0.11rem;
   }
 }
 .to-list {
@@ -397,10 +410,10 @@ td {
 }
 .section {
   margin: 0 0.12rem;
-  .download {
-    img {
-      width: 16px;
-    }
+  .download-btn {
+    background: var(--main-blue);
+    padding: .03rem .1rem;
+    border-radius: 6px;
   }
   .synopsis {
     margin: 0.1rem 0;

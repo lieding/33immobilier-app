@@ -198,6 +198,8 @@ module.exports = {
       LATEST_CITIES_CHART_VILLA: 'Villas',
     },
     PROGRAME_DETAIL: {
+      DOWNLOAD_PLAN_BTN: 'Demander le plan',
+      DOWNLOAD_BROCHURE_BTN: 'Télécharger la brochure ',
       TAX_AREA: {
         "A BIS": "Zone très demandée : centre de Paris avec prix immobiliers élevés et forte demande locative",
         A: "Zone à forte demande : grandes villes comme Lyon, Marseille avec prix élevés",
