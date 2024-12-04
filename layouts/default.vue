@@ -30,7 +30,7 @@ export default {
       return this.$device.isMobile;
     },
     desktopFooterVis () {
-      return this.$route.path !== '/search';
+      return !this.$route.path.includes('search');
     }
   },
   mounted () {

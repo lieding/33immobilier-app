@@ -15,6 +15,7 @@ module.exports = {
       LIKE: 'Aimer',
       ANALYSIS: 'Évaluation',
       MY: 'Mon espace',
+      LOAN_LINK: 'Prêt',
       JOIN_US_TITLE: 'Devenez agent, vendez facilement',
       JOIN_US_SUBTITLE: 'Rejoignez 33 Trouver un logement comme agent invité pour vendre facilement des biens en France',
       TREND_TITLE: 'Tendances immobilières en France',
@@ -239,5 +240,11 @@ module.exports = {
         'TVA réduite': "TVA réduite pour certains types de biens",
       }
     },
+    index: {
+      SEARCH_MODE: [
+        { text: "Nouveaux", value: "NewPrograme" },
+        { text: "D'Occasion", value: "SecondHand" },
+      ],
+    }
   }
 };

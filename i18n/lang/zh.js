@@ -15,6 +15,7 @@ module.exports = {
       LIKE: '喜欢',
       ANALYSIS: '评估',
       MY: '我的',
+      LOAN_LINK: '贷款',
       JOIN_US_TITLE: '成为中介，轻松卖房',
       JOIN_US_SUBTITLE: '您可以成为33找房的特邀中介， 轻松实现法国卖房梦',
       TREND_TITLE: '法国房产趋势',

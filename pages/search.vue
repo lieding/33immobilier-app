@@ -52,8 +52,8 @@
             >
               <el-slider v-model="priceRange" :max="maxPrice" :min="minPrice" range @input="priceSlideChangeHandler"></el-slider>
               <p style="overflow:hidden">
-                <span style="float:left;"> {{ fmoney(priceRange[0], 1) }} </span>
-                <span style="float:right;">{{ fmoney(priceRange[1], 1) }}</span>
+                <span style="float:left;"> {{ fmoney(priceRange[0]) }}€</span>
+                <span style="float:right;">{{ fmoney(priceRange[1]) }}€</span>
               </p>
               <div>
                 <el-button type="text" @click="priceRange = [minPrice, maxPrice]">{{ $t('message.global.RESET') }}</el-button>
@@ -199,7 +199,9 @@ export default {
     };
   },
   data() {
+    const searchMode = this.$route.query?.searchMode;
     return {
+      searchMode,
       locationSearch: '',
       locationSearchDialogVis: false,
       locationOptions: [],
@@ -241,7 +243,7 @@ export default {
       return department_city || postal_code;
     },
     secondHandMode () {
-      return this.$route.query?.searchMode === SearchMode.SecondHand;
+      return this.searchMode === SearchMode.SecondHand;
     },
     curPageBreadCrumb () {
       return this.secondHandMode ? this.$t('message.global.SECOND_HAND') : this.$t("message.global.NEW_PROGRAME_LIST");
@@ -263,18 +265,21 @@ export default {
       this.filteredSecondHandList =
         filterSecondHandListByConditions(this.allSecondhandList, this.priceRange, this.surfaceRange, levels);
     },
+    '$route.query.searchMode' (searchMode) {
+      if (!searchMode) return;
+      this.searchMode = searchMode;
+      this.setSearchModeConcerningConfig();
+      this.resetAllData();
+      this.$nextTick(() => {
+        this.setInitialParams();
+        this.doSearch();
+      });
+    }
   },
   created() {
     this.fmoney = fmoney;
     this.setInitialParams();
-    this.CompletionStatusOption =
-      CompletionStatusOptionConfig.map(({ key, I18NKey }) => ({ value:key, label: this.$t(`message.NEW_LIST.${I18NKey}`) }));
-    this.TypologyOption = TypologyOptionConfig
-      .map(({ incluedKey, I18NKey }) => ({ value: incluedKey, incluedKey, label: this.$t(`message.NEW_LIST.${I18NKey}`) }));
-    if (this.secondHandMode) {
-      this.ClassLevelList = Object.entries(this.$t('message.PAGE_SECOND_HAND.CLASS_LEVEL_LIST'))
-        .map(it => ({ value: it[0], label: it[1] }));
-    }
+    this.setSearchModeConcerningConfig();
   },
   mounted () {
     if (process.client) {
@@ -283,6 +288,28 @@ export default {
     }
   },
   methods: {
+    resetAllData () {
+      Object.assign(this, {
+        locationSearch: '', locationSearchDialogVis: false, locationOptions: [],
+        dataLoading: true,
+        placeInfo: {},
+        priceSlideVis: false, minPrice: 0, maxPrice: 0, priceRange: [0, 0],
+        surfaceSlideVis: false, minSurface: 0, maxSurface: 0, surfaceRange: [0, 0],
+        allProgramList: [], filteredProgramList: [],
+        allSecondhandList: [], filteredSecondHandList : [],
+        activePointId: '',
+      });
+    },
+    setSearchModeConcerningConfig () {
+      this.CompletionStatusOption =
+        CompletionStatusOptionConfig.map(({ key, I18NKey }) => ({ value:key, label: this.$t(`message.NEW_LIST.${I18NKey}`) }));
+      this.TypologyOption = TypologyOptionConfig
+        .map(({ incluedKey, I18NKey }) => ({ value: incluedKey, incluedKey, label: this.$t(`message.NEW_LIST.${I18NKey}`) }));
+      if (this.secondHandMode) {
+        this.ClassLevelList = Object.entries(this.$t('message.PAGE_SECOND_HAND.CLASS_LEVEL_LIST'))
+          .map(it => ({ value: it[0], label: it[1] }));
+      }
+    },
     setInitialParams () {
       const { department_city, lat, lng, location_type, postal_code } = this.$route.query;
       this.placeInfo = {

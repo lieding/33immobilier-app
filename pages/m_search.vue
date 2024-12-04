@@ -127,7 +127,6 @@ export default {
     const searchMode = this.$route.query.searchMode;
     return {
       searchMode,
-      visible: false,
       activePointId: '',
       completionStatus: "",
       minPrice: 0, //价格
@@ -136,7 +135,6 @@ export default {
       surfaceRange: [0, 1], //面积
       minSurface: 0, //最小面积
       maxSurface: 0, //最大面积
-      page: 1, //页数
       dataLoading: false, //下拉刷新
       allProgramList: [], //新房
       filteredProgramList: [],
@@ -146,13 +144,20 @@ export default {
       selectedTypology: null,
       selectedClassLevel: null,
       placeInfo: null,
+      page: 1, //页数
       maxPage: 1, //新房的最大页数
       departmentCitySearchBarVis: false,
     };
   },
   watch: {
-    $route() {
-      this.searchMode = this.$route.query.searchMode;
+    '$route.query.searchMode' (searchMode) {
+      this.searchMode = searchMode;
+      this.setSearchModeConcerningConfig();
+      this.resetAllData();
+      this.$nextTick(() => {
+        this.setInitialParams();
+        this.queryList();
+      });
     },
     placeInfo (obj) {
       sessionStorage.setItem(PLACEINFO_SESSION_KEY, obj ? JSON.stringify(obj) : '');
@@ -187,20 +192,7 @@ export default {
   created() {
     this.fmoney = fmoney;
     this.setInitialPlaceinfo();
-    this.CompletionStatusOption = CompletionStatusOptionConfig
-      .map(({ key, I18NKey }) => ({ value: key, text: this.$t(`message.NEW_LIST.${I18NKey}`) }));
-    this.CompletionStatusOption.unshift({ key: '', text: this.$t('message.global.ALL_OPTIONS') });
-    this.TypologyOption = TypologyOptionConfig
-      .map(({ incluedKey, I18NKey }) => ({ value: incluedKey, incluedKey, text: this.$t(`message.NEW_LIST.${I18NKey}`) }));
-    if (this.isSecondHand) {
-      this.departmentCityDataLoader = loadSecondHandDepartmentCities;
-      this.ClassLevelList = Object
-        .entries(this.$t('message.PAGE_SECOND_HAND.CLASS_LEVEL_LIST'))
-        .map(it => ({ value: it[0], text: it[1] }));
-      this.ClassLevelList.unshift({ key: '', text: this.$t('message.global.ALL_OPTIONS') });
-    } else {
-      this.departmentCityDataLoader = loadProgrameDepartmentCities;
-    }
+    this.setSearchModeConcerningConfig();
   },
   mounted() {
     rem();
@@ -210,6 +202,38 @@ export default {
     }
   },
   methods: {
+    resetAllData () {
+      Object.assign(this, {
+        activePointId: '',
+        completionStatus: "",
+        minPrice: 0, maxPrice: 0, priceRange: [0, 0],
+        minSurface: 0, maxSurface: 0, surfaceRange: [0, 1],
+        dataLoading: false,
+        allProgramList: [], filteredProgramList: [],
+        allSecondhandList: [], filteredSecondHandList : [],
+        typologyOptions: [], // 房型选择列表
+        selectedTypology: null,
+        selectedClassLevel: null,
+        placeInfo: null,
+        departmentCitySearchBarVis: false,
+      });
+    },
+    setSearchModeConcerningConfig () {
+      this.CompletionStatusOption = CompletionStatusOptionConfig
+        .map(({ key, I18NKey }) => ({ value: key, text: this.$t(`message.NEW_LIST.${I18NKey}`) }));
+      this.CompletionStatusOption.unshift({ key: '', text: this.$t('message.global.ALL_OPTIONS') });
+      this.TypologyOption = TypologyOptionConfig
+        .map(({ incluedKey, I18NKey }) => ({ value: incluedKey, incluedKey, text: this.$t(`message.NEW_LIST.${I18NKey}`) }));
+      if (this.isSecondHand) {
+        this.departmentCityDataLoader = loadSecondHandDepartmentCities;
+        this.ClassLevelList = Object
+          .entries(this.$t('message.PAGE_SECOND_HAND.CLASS_LEVEL_LIST'))
+          .map(it => ({ value: it[0], text: it[1] }));
+        this.ClassLevelList.unshift({ key: '', text: this.$t('message.global.ALL_OPTIONS') });
+      } else {
+        this.departmentCityDataLoader = loadProgrameDepartmentCities;
+      }
+    },
     setInitialPlaceinfo () {
       if (process.client) {
         const cached = sessionStorage.getItem(PLACEINFO_SESSION_KEY);

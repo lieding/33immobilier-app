@@ -4,14 +4,17 @@
       <img src="/33immo-logo.png" />
     </div>
     <div class="routes">
-      <span class="route-item pointer" @click="select('/pc_index')">
+      <span class="route-item pointer" @click="select('/pc_index')" :class="{ active: currentPath === Path.INDEX }">
         <span class="label">{{ $t("message.global.HOME") }}</span>
       </span>
-      <span class="route-item pointer" @click="toSearch(SearchMode.NewPrograme)">
+      <span class="route-item pointer" @click="toSearch(SearchMode.NewPrograme)" :class="{ active: currentPath === Path.NEW }">
         <span class="label">{{ $t("message.global.NEW_PROGRAME") }}</span>
       </span>
-      <span class="route-item pointer" @click="toSearch(SearchMode.SecondHand)">
+      <span class="route-item pointer" @click="toSearch(SearchMode.SecondHand)" :class="{ active: currentPath === Path.SECOND_HAND }">
         <span class="label">{{ $t("message.global.SECOND_HAND") }}</span>
+      </span>
+      <span class="route-item pointer" @click="toLoan">
+        <span class="label">{{ $t("message.global.LOAN_LINK") }}</span>
       </span>
       <div v-popover:popover class="pointer route-item lang-switcher-popup-trigger">
         <img :src="langSwitchImgSrc" />
@@ -35,44 +38,25 @@
         <span>FR</span>
       </div>
     </el-popover>
-    <!-- <div class="login-btn-wrapper">
-      <span v-if="curAuthInfo" style="font-size:20px">
-        <img
-          style="width:16px;vertical-align:middle;"
-          :src="curAuthInfo.picture || '/renwuW.png'"
-          alt
-        />
-        {{ curAuthInfo.nickName || '' }}
-      </span>
-      <nuxt-link v-else to="loginOrRegister">
-        <span style="font-size:20px;cursor:pointer;">
-          <img
-            v-show="vas"
-            style="width:16px;vertical-align:middle;cursor:pointer;"
-            src="/renwuW.png"
-            alt
-          />
-          <img
-            v-show="!vas"
-            style="width:16px;vertical-align:middle;cursor:pointer;"
-            src="/pcPerson.png"
-            alt
-          />
-          {{ $t("message.global.login") }}
-        </span>
-      </nuxt-link>
-    </div> -->
   </header>
 </template>
 
 <script>
-import { createPath } from '../../utils';
+import { createPath, aLink } from '../../utils';
 import { SearchMode, CityRegionGeolocation } from '../../common/config'
 import { createNamespacedHelpers } from 'vuex'
 const { mapGetters } = createNamespacedHelpers('auth');
 
+const LOAN_LINK = process.env['IMMO_LOAN_LINK'];
+
 export default {
   name: "headers",
+  data () {
+    return {
+      currentPath: null,
+      isFr: false,
+    }
+  },
   computed: {
     langSwitchImgSrc () {
       if (this.isFr) return '/chinese.png';
@@ -80,13 +64,30 @@ export default {
     },
     ...mapGetters(['curAuthInfo']),
   },
+  watch: {
+    '$route.path' () {
+      const { path, query } = this.$route;
+      this.currentPath = checkCurrentPath(path, query);
+    },
+    '$route.query': {
+      deep: true,
+      handler () {
+        const { path, query } = this.$route;
+        this.currentPath = checkCurrentPath(path, query);
+      }
+    }
+  },
   created () {
     this.isFr = this._i18n.locale === 'fr';
     this.SearchMode = SearchMode;
+    this.Path = Path;
   },
   methods: {
+    toLoan () {
+      aLink(LOAN_LINK);
+    },
     redirect (path) {
-      this.$router.replace({ path });
+      this.$router.replace({ path: createPath(path) });
     },
     select (key, query) {
       this.$router.replace({ path: createPath(key), query });
@@ -102,6 +103,26 @@ export default {
     }
   }
 };
+const Path = {
+  INDEX: 'INDEX',
+  NEW: 'NEW',
+  SECOND_HAND: 'SECOND_HAND'
+}
+function checkCurrentPath (path, query) {
+  if (!path) return null;
+  if (path.includes('index')) return Path.INDEX;
+  if (path.includes('search')) {
+    if (query?.searchMode) {
+      if (query.searchMode === SearchMode.NewPrograme) return Path.NEW;
+      if (query.searchMode === SearchMode.SecondHand) return Path.SECOND_HAND;
+    }
+  }
+  if (path.includes('detail')) {
+    if (path.includes('new')) return Path.NEW;
+    if (path.includes('second')) return Path.SECOND_HAND;
+  }
+  return null;
+}
 </script>
 
 <style lang="scss" scoped>

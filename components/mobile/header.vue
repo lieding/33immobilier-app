@@ -1,6 +1,6 @@
 <template>
   <div class="mobile-header flex justify-between align-center">
-    <div class="left-part">
+    <div class="left-part" @click="toIndex">
       <img src="/33immo-logo.png" />
     </div>
     <el-popover placement="bottom" width="80" trigger="click">
@@ -19,6 +19,10 @@
           @click="routerChange('m_search', { searchMode: SearchMode.SecondHand, department_city: 'Paris' })"
           tag="li"
         >{{ $t("message.global.SECOND_HAND") }}</li>
+        <li
+          @click="toLoan"
+          tag="li"
+        >{{ $t("message.global.LOAN_LINK") }}</li>
         <li @click="changeLocale('zh')" class="locale-row flex-center">
           <img src="/chinese.png" />
           <span>{{ $t("message.global.Chinese") }}</span>
@@ -34,7 +38,10 @@
 
 <script>
 import { SearchMode, CityRegionGeolocation } from '../../common/config';
-import { createPath } from '../../utils';
+import { createPath, aLink } from '../../utils';
+
+const LOAN_LINK = process.env['IMMO_LOAN_LINK'];
+
 export default {
   name: "",
   data() {
@@ -47,6 +54,12 @@ export default {
     this.SearchMode = SearchMode;
   },
   methods: {
+    toLoan () {
+      aLink(LOAN_LINK);
+    },
+    toIndex () {
+      this.$router.replace({ path: createPath('m_index') });
+    },
     listBtnClickHandler() {
       this.diaplay = !this.diaplay;
     },
