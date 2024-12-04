@@ -7,21 +7,25 @@
       <mobile-header></mobile-header>
     </template>
     <nuxt />
-    <template v-if="isDesktop && desktopFooterVis">
-      <Footer />
+    <template v-if="isDesktop && footerVis">
+      <desktop-footer />
+    </template>
+    <template v-if="isMobile && footerVis">
+      <mobile-footer />
     </template>
   </div>
 </template>
 
 <script>
 import TopHeader from '../components/desktop/header.vue';
-import Footer from '../components/desktop/footer.vue';
+import DesktopFooter from '../components/desktop/footer.vue';
 import MobileHeader from '../components/mobile/header.vue';
+import MobileFooter from '../components/mobile/footer.vue';
 import { createNamespacedHelpers } from 'vuex';
 const { mapActions } = createNamespacedHelpers('auth');
 
 export default {
-  components: { TopHeader, Footer, MobileHeader },
+  components: { TopHeader, DesktopFooter, MobileHeader, MobileFooter },
   computed: {
     isDesktop () {
       return this.$device.isDesktop;
@@ -29,7 +33,7 @@ export default {
     isMobile () {
       return this.$device.isMobile;
     },
-    desktopFooterVis () {
+    footerVis () {
       return !this.$route.path.includes('search');
     }
   },
