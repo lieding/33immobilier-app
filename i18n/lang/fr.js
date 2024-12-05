@@ -74,7 +74,7 @@ module.exports = {
       LOAN_INTEREST_RATE: "Taux d'intérêt du prêt (%)",
       LOAN_TERM: "Année du remboursement",
       MONTHLY_REPAYMENT_AMOUNT: "Mensualité",
-      LOAN_CAPACITY: 'Capacité d'emprunt',
+      LOAN_CAPACITY: "Capacité d'emprunt",
       INTEREST_AMOUNT: "Montant des intérêts",
       LOAN_AMOUNT: "Montant du prêt",
       YEAR: "ans",
