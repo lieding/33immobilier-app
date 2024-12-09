@@ -14,8 +14,8 @@ export function loadRate () {
 
 export function loadRateConfig () {
   return {
-    5: Number(FiveRate),
-    10: Number(TenRate),
+    //5: Number(FiveRate),
+    //10: Number(TenRate),
     15: Number(FiftenRate),
     20: Number(TwentyRate),
     25: Number(TwentyRate),
