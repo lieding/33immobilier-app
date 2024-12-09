@@ -135,10 +135,7 @@
           prop="typology"
           :label="$t('message.global.APARTMENT_TYPE')"
         ></el-table-column>
-        <el-table-column
-          prop="surface"
-          :label="$t('message.global.')"
-        ></el-table-column>
+        
         <el-table-column :label="$t('message.global.USABLE_AREA')">
           <template slot-scope="scope">
             <span>{{ scope.row.surface }}m²</span>
