@@ -5,6 +5,7 @@ module.exports = {
       SECOND_HAND: "二手房",
       instrument: "实用工具",
       French: "Français",
+      English: "English",
       Chinese: "中文",
       login: "登陆/注册",
       INDEX_BANNER: "法国找房，我们是专业的",
