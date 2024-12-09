@@ -47,10 +47,10 @@
               >
                 <el-option
                   v-for="it in filtered" :key="it.code"
-                  :label="it.flag" :value="it.code"
+                  :label="`${it.flag} ${it.dial_code}`" :value="it.code"
                 >
-                  <span style="float:left">{{ it.flag }}</span>
-                  <span style="float:right">{{ it.dial_code }}</span>
+                  <span >{{ it.flag }}</span>
+                  <span >{{ it.dial_code }}</span>
                 </el-option>
               </el-select>
               <el-input v-model="form.phone" :placeholder="$t('message.global.PLEASE_ENTER')" />

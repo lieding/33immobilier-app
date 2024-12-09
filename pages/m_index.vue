@@ -51,11 +51,10 @@
           </div>
         </div>
         <ul class="new-list">
-          <router-link
-            :to="{ path: '/m_new_detail', query: { zip_code: item.zip_code, name_id: item.name_id, estate_name: item.estate_name, city: item.city } }"
+          <li
             v-for="(item, index) in selectedProgrames"
             :key="index"
-            tag="li"
+            @click="routerChange('/m_new_detail', { zip_code: item.zip_code, name_id: item.name_id, estate_name: item.estate_name, city: item.city })"
           >
             <div class="image-wrapper">
               <img :src="item.image" class="image" />
@@ -69,7 +68,7 @@
                 {{ fmoney(item.availablePropertiesMinPrice) }}€ - {{ fmoney(item.availablePropertiesMaxPrice) }}$
               </div>
             </div>
-          </router-link>
+          </li>
         </ul>
         <div class="flex-center">
           <div class="more-btn white bold" @click="moreProgramesClickHandler()">{{ $t('message.PAGE_INDEX.MORE') }}</div>
@@ -92,11 +91,10 @@
           </div>
         </div>
         <ul class="new-list">
-          <router-link
-            :to="{ path: '/m_second_hand_detail', query: { zip_code: item.zip_code, id: item.id, title: item.title, city: item.city } }"
+          <li
             v-for="(item, index) in selectedSecondHand"
             :key="index"
-            tag="li"
+            @click="routerChange('/m_second_hand_detail', { zip_code: item.zip_code, id: item.id, title: item.title, city: item.city })"
           >
             <div class="image-wrapper">
               <img :src="item.image" class="image" />
@@ -107,7 +105,7 @@
               <div class="info">{{ item.zip_code }} / {{ item.city }}</div>
               <div class="price">{{ fmoney(item.price) }}€</div>
             </div>
-          </router-link>
+          </li>
         </ul>
         <div class="flex-center">
           <div class="more-btn white bold" @click="moreSecondHandClickHandler()">{{ $t('message.PAGE_INDEX.MORE') }}</div>
@@ -140,7 +138,6 @@
       <img src="/partner.png" />
     </div>
     <hr class="divider" />
-    <Footer />
     <client-only>
       <contact-popup
         :visible="contactPopupVis"
@@ -159,7 +156,6 @@ import { Notify } from 'vant';
 import { gmapApiLoader } from '../common/gmapApiLoader';
 import ContactPopup from '../components/mobile/contactPopup.vue';
 import Calculator from '../components/mobile/calculator.vue';
-import Footer from '../components/mobile/footer.vue';
 import { SearchMode, PostApplicationMode, loadIndexPageCityProgrames, CityRegionGeolocation, loadIndexPageSecondHand } from '../common/config';
 import IndexCityBar from '../components/IndexCityBar.vue';
 import { doLocationAutocomplete } from '../common/locationAutocomplete';
@@ -168,7 +164,7 @@ import { fmoney, createPath } from '../utils';
 
 export default {
   components: {
-    ContactPopup, Calculator, IndexCityBar, Footer,
+    ContactPopup, Calculator, IndexCityBar,
   },
   middleware: "responsive",
   head() {
@@ -263,10 +259,10 @@ export default {
       if (searchMode == SearchMode.NewPrograme) {
         if (!place_id && !place_text && !postal_code) return;
         const query = { searchMode, place_id, department_city, location_type, lat, lng, postal_code };
-        this.$router.push({ path: createPath("/m_search"), query });
+        this.routerChange("/m_search", query);
       } else if (searchMode == SearchMode.SecondHand) {
         const query = { searchMode, location_type, department_city, lat, lng, postal_code };
-        this.$router.push({ path: createPath("/m_search"), query });
+        this.routerChange("/m_search", query);
       } else {
       }
     },
@@ -308,7 +304,7 @@ export default {
       if (!department_city) return;
       const { lat, lng } = CityRegionGeolocation[department_city] ?? {};
       if (!lat || !lng) return;
-      this.$router.push({ path: createPath('/m_search'), query: { searchMode: SearchMode.NewPrograme, department_city, lat, lng, location_type } });
+      this.routerChange('/m_search', { searchMode: SearchMode.NewPrograme, department_city, lat, lng, location_type });
     },
     moreSecondHandClickHandler (ev) {
       let { city_name: department_city, location_type = '' } = ev ?? {};
@@ -316,8 +312,11 @@ export default {
       if (!department_city) return;
       const { lat, lng } = CityRegionGeolocation[department_city] ?? {};
       if (!lat || !lng) return;
-      this.$router.push({ path: createPath('/m_search'), query: { searchMode: SearchMode.SecondHand, department_city, lat, lng, location_type } });
+      this.routerChange('/m_search', { searchMode: SearchMode.SecondHand, department_city, lat, lng, location_type });
     },
+    routerChange (path, query) {
+      this.$router.push({ path: createPath(path), query });
+    }
   }
 };
 
