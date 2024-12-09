@@ -2,10 +2,11 @@ module.exports = {
   message: {
     global: {
       NEW_PROGRAME: "New",
-      SECOND_HAND: "Used",
+      SECOND_HAND: "Old",
       instrument: "Practical Tools",
       French: "French",
       Chinese: "Chinese",
+      English: "English",
       login: "Login/Sign Up",
       INDEX_BANNER: "Find housing in France, we are the experts",
       INDEX_SEARCH_PLACEHOLDER: "Which city are you looking for? For example, Paris",
