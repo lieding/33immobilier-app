@@ -30,6 +30,13 @@
         <span>{{ $t("message.global.Chinese") }}</span>
       </div>
       <div
+        @click="changeLocale('en')"
+        class="flex align-center pointer lang-switcher-popup"
+      >
+        <img src="/english.png" alt />
+        <span>{{ $t("message.global.English") }}</span>
+      </div>
+      <div
         @click="changeLocale('fr')"
         class="flex align-center pointer lang-switcher-popup"
         style="margin-bottom: unset;"
@@ -59,7 +66,8 @@ export default {
   },
   computed: {
     langSwitchImgSrc () {
-      if (this.isFr) return '/chinese.png';
+      if (this.isCn) return '/chinese.png';
+      if (this.isEn) return '/english.png';
       return '/french.png';
     },
     ...mapGetters(['curAuthInfo']),
@@ -79,6 +87,8 @@ export default {
   },
   created () {
     this.isFr = this._i18n.locale === 'fr';
+    this.isEn = this._i18n.locale === 'en';
+    this.isCn = this._i18n.locale === 'cn';
     this.SearchMode = SearchMode;
     this.Path = Path;
   },
