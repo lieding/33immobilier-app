@@ -135,7 +135,7 @@
           prop="typology"
           :label="$t('message.global.APARTMENT_TYPE')"
         ></el-table-column>
-        
+
         <el-table-column :label="$t('message.global.USABLE_AREA')">
           <template slot-scope="scope">
             <span>{{ scope.row.surface }}m²</span>
@@ -153,9 +153,12 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="rentPrice"
           :label="$t('message.global.ESTIMATED_MONTHLY_RENT')"
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span>{{ scope.row.rentPrice ? (fmoney(scope.row.rentPrice) + '€') : '' }}</span>
+          </template>
+        </el-table-column>
         <el-table-column :label="$t('message.global.RATE_OF_RETURN')">
           <template slot-scope="scope">
             <span>{{ scope.row.profitability ? (scope.row.profitability + '%') : '' }}</span>

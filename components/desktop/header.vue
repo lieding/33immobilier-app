@@ -17,8 +17,8 @@
         <span class="label">{{ $t("message.global.LOAN_LINK") }}</span>
       </span>
       <div v-popover:popover class="pointer route-item lang-switcher-popup-trigger">
-        <img :src="langSwitchImgSrc" />
-        <span class="label">{{ isFr ? "中文" : "FR" }}</span>
+        <img src="/i18n.svg" />
+        <!-- <span class="label">{{ isFr ? "中文" : "FR" }}</span> -->
       </div>
     </div>
     <el-popover width="40" trigger="click" ref="popover">
@@ -42,7 +42,7 @@
         style="margin-bottom: unset;"
       >
         <img src="/french.png" alt />
-        <span>FR</span>
+        <span>{{ $t("message.global.French") }}</span>
       </div>
     </el-popover>
   </header>

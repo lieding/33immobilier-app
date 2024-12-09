@@ -1,5 +1,6 @@
 const fr = require("./lang/fr");
 const zh = require("./lang/zh");
+const en = require("./lang/en");
 
 module.exports = {
   locales: [
@@ -12,6 +13,11 @@ module.exports = {
       code: "zh",
       iso: "zh-CN",
       name: "ZH"
+    },
+    {
+      code: 'en',
+      iso: 'en-US',
+      name: 'EN'
     }
   ],
   defaultLocale: "zh",
@@ -22,6 +28,6 @@ module.exports = {
   },
   vueI18n: {
     fallbackLocale: "zh",
-    messages: { fr, zh }
+    messages: { fr, zh, en }
   }
 };

@@ -27,6 +27,10 @@
           <img src="/chinese.png" />
           <span>{{ $t("message.global.Chinese") }}</span>
         </li>
+        <li @click="changeLocale('en')" class="locale-row flex-center">
+          <img src="/english.png" />
+          <span>{{ $t("message.global.English") }}</span>
+        </li>
         <li @click="changeLocale('fr')" class="locale-row flex-center">
           <img src="/french.png" />
           <span>{{ $t("message.global.French") }}</span>

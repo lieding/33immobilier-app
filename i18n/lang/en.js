@@ -120,7 +120,7 @@ module.exports = {
       PRIVACY: "Privacy Policy",
       COOKIE: "Cookie Policy",
     },
-       PAGE_INDEX: {
+    PAGE_INDEX: {
       SELECT_CITY: "Select a city",
       PROPERTIES_LEFT: "lots available",
       SELL_RENT_BANNER: {
