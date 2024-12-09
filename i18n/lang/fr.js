@@ -5,6 +5,7 @@ module.exports = {
       SECOND_HAND: "Ancien",
       instrument: "Outils pratiques",
       French: "Français",
+      English: "English",
       Chinese: "中文",
       login: "Connexion/Inscription",
       INDEX_BANNER: "Trouvez un logement en France, nous sommes des experts",
