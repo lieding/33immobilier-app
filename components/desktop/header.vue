@@ -151,7 +151,7 @@ header {
       padding: 16px 24px 16px 8px;
       .label {
         margin-left: 8px;
-        font-size: 14px;
+        font-size: 18px;
       }
       &.active {
         color: var(--main-blue);
