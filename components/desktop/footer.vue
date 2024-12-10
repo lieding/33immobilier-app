@@ -107,6 +107,7 @@ function translate (obj) {
         }
       }
       .whatsapp-btn {
+  margin: 20px 0px;
       }
     }
   }
