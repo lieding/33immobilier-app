@@ -353,7 +353,7 @@ export default {
   }
 }
 .search-bar {
-  top: 1.2rem;
+  top: 1.5rem;
   left: 5%;
   width: 90%;
   height: 0.43rem;
