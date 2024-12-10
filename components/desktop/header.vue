@@ -137,10 +137,10 @@ function checkCurrentPath (path, query) {
 
 <style lang="scss" scoped>
 header {
-  padding: 0 12px;
+  padding: 0 24px;
   .left-part {
     img {
-      height: 32px;
+      height: 50px;
     }
   }
   .routes {
