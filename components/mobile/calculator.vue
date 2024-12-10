@@ -2,7 +2,7 @@
   <div>
     <!-- 贷款能力计算 -->
     <div class="section">
-      <div class="section-title full-w text-center">{{ $t("message.global.LOAN_CAPABILITY_CALCULATION") }}</div>
+      <div class="section-title full-w">{{ $t("message.global.LOAN_CAPABILITY_CALCULATION") }}</div>
       <div class="repay">
         <p class="field-label">{{ $t("message.global.MONTH_NET_INCOME") }}</p>
         <van-cell-group>
@@ -69,7 +69,7 @@
     <hr class="hr" />
     <!-- 还贷计算 -->
     <div class="section">
-      <div class="section-title full-w text-center">{{ $t("message.global.CALCULATE_LOAN_REPAYMENT_AMT") }}</div>
+      <div class="section-title full-w">{{ $t("message.global.CALCULATE_LOAN_REPAYMENT_AMT") }}</div>
       <div class="repay">
         <p class="field-label">{{ $t("message.global.HOUSING_AMOUNT") }}</p>
         <van-cell-group>
