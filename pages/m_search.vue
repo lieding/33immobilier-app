@@ -392,28 +392,28 @@ function setProgrames (programes, TypologyOption) {
 function generateHead (searchMode) {
   if (searchMode === SearchMode.NewPrograme) {
     return {
-      title: "法国新房_楼盘_买新房就上法国33找房网",
+      title: "法国新房_楼盘_买新房就上法国Micco immo网",
       meta: [
         {
           name: "description",
           content:
-            "法国33找房新房频道为您查找真实优质的法国新开盘楼盘, 法国新房投资,PINEL减税,LMNP减税,法国33找房收录全法最新最全新房信息。"
+            "法国Micco immo新房频道为您查找真实优质的法国新开盘楼盘, 法国新房投资,PINEL减税,LMNP减税,法国Micco immo收录全法最新最全新房信息。"
         },
         {
           name: "keywords",
           content:
-            "法国新房,法国买新房,法国楼盘,33找房,找房,买房投资,买房减税,PINEL减税,LMNP减税,Programme neuf,VEFA,Logement neuf,Promoteur immobilier"
+            "法国新房,法国买新房,法国楼盘,Micco immo,找房,买房投资,买房减税,PINEL减税,LMNP减税,Programme neuf,VEFA,Logement neuf,Promoteur immobilier"
         }
       ]
     };
   }
   return {
-    title: "法国二手房_巴黎二手房出售买卖信息网-法国33找房",
+    title: "法国二手房_巴黎二手房出售买卖信息网-法国Micco immo",
     meta: [
       {
         name: "description",
         content:
-          "法国33找房二手房频道为您查找真实优质的法国二手房信息,买房,卖房就上33找房-全法最专业的华人找房平台"
+          "法国Micco immo二手房频道为您查找真实优质的法国二手房信息,买房,卖房就上Micco immo-全法最专业的华人找房平台"
       },
       {
         name: "keywords",
