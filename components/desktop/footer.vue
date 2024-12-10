@@ -57,8 +57,8 @@ export default {
   created () {
     this.list = [
       translate.call(this, Service),
-      translate.call(this, ContactUs),
-      translate.call(this, Info)
+     /* translate.call(this, ContactUs),
+      translate.call(this, Info)*/
     ];
   },
   methods: {
