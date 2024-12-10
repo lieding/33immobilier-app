@@ -114,6 +114,7 @@ function translate (obj) {
         border-radius: 4px;
         background: #25D366;
         padding: 4px 6px;
+        margin: 20px 0;
         img {
           height: .18rem;
           margin-right: .03rem;
