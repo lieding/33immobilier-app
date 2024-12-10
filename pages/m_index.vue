@@ -337,7 +337,7 @@ export default {
     color: rgba(0, 0, 0, 0.76);
   }
   .subtitle {
-    font-size: 0.2rem;
+    font-size: 0.14rem;
     color: rgba(126, 126, 126, 0.76);
   }
 }
