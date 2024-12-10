@@ -88,7 +88,8 @@ export default {
   
   .left-part {
     img {
-      padding-left: .3rem;
+      padding-left: .1rem;
+      padding-top: .1rem;
       height: .50rem;
     }
   }
