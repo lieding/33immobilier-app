@@ -332,7 +332,7 @@ export default {
 .section {
   margin: .14rem 0.08rem .06rem;
   .section-title {
-    font-size: 0.2rem;
+    font-size: 0.26rem;
     font-weight: 600;
     color: rgba(0, 0, 0, 0.76);
     margin-top:40px;
