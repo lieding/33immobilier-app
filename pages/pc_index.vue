@@ -301,7 +301,7 @@ export default {
     min-height: 340px;
     .banner {
       max-width: 80%;
-      font-size: 56px;
+      font-size: 47px;
       margin-bottom: 36px;
     }
     .city-search-wrapper {
