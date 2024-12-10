@@ -335,6 +335,7 @@ export default {
     font-size: 0.2rem;
     font-weight: 600;
     color: rgba(0, 0, 0, 0.76);
+    margin-top:40px;
   }
   .subtitle {
     font-size: 0.14rem;
