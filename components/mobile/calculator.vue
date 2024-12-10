@@ -269,9 +269,10 @@ function drawRepaymentPieChart (compInst) {
   }
 }
 .section-title {
-  font-size: 0.16rem;
+  font-size: 0.26rem;
   color: rgba(0, 0, 0, 0.76);
   margin-right: 0.1rem;
+  
 }
 .btn {
   margin: 0.1rem 0;
