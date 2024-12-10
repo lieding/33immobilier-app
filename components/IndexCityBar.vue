@@ -23,7 +23,11 @@
 import { LocationType } from '../common/config';
 
 const Col = [
-  { height: '266px', mobileMaxHeight: '26vh', items: [{ city: 'Paris', img: '/city-images/paris.jpeg' }] },
+  {
+    height: '342px', mobileMaxHeight: '32vh',
+    items: [{ city: 'Île-de-France', img: '/city-images/ile-de-france.jpeg', location_type: LocationType.L1_AREA }]
+  },
+  
   {
     height: '190px', mobileMaxHeight: '20vh',
     items: [
@@ -31,10 +35,8 @@ const Col = [
       { city: 'Le Blanc-Mesnil', img: '/city-images/blanc-mesnil.jpeg' }
     ]
   },
-  {
-    height: '266px', mobileMaxHeight: '26vh',
-    items: [{ city: 'Nice', img: '/city-images/nice.jpeg' }]
-  },
+  { height: '266px', mobileMaxHeight: '26vh', items: [{ city: 'Paris', img: '/city-images/paris.jpeg' }] },
+  
 ];
 const Col1 = [
   {
@@ -42,8 +44,8 @@ const Col1 = [
     items: [{ city: 'Saint-Denis', img: '/city-images/saint-denis.jpeg' }, { city: 'Clichy', img: '/city-images/clichy.jpeg' }]
   },
   {
-    height: '342px', mobileMaxHeight: '32vh',
-    items: [{ city: 'Île-de-France', img: '/city-images/ile-de-france.jpeg', location_type: LocationType.L1_AREA }]
+    height: '266px', mobileMaxHeight: '26vh',
+    items: [{ city: 'Nice', img: '/city-images/nice.jpeg' }]
   },
   {
     height: '190px', mobileMaxHeight: '20vh',
