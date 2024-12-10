@@ -85,9 +85,11 @@ export default {
 <style lang="scss" scoped>
 .mobile-header {
   padding-right: .1rem;
+  
   .left-part {
     img {
-      height: .36rem;
+      padding-left: .3rem;
+      height: .50rem;
     }
   }
   .list-btn {
