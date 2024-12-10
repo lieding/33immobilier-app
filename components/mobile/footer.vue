@@ -11,7 +11,7 @@
             <div v-for="itt, idxx in it.items" :key="idxx" class="list-item">
               {{ itt.title }}
             </div>
-            <div v-if="idx === 2" class="whatsapp-btn pointer flex align-center" @click="whatsappClickHandler">
+            <div v-if="idx === 0" class="whatsapp-btn pointer flex align-center" @click="whatsappClickHandler">
               <img src="/whatsapp.svg" />
               <span class="inline-block txt white bold">{{ $t('message.global.CONTACT_US') }}</span>
             </div>
