@@ -17,7 +17,7 @@ export default {
    ** Headers of the page
    */
   head: {
-    title: "33找房, 法国第一华人找房平台",
+    title: "Micco immo找房, 法国第一华人找房平台",
     meta: [
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
