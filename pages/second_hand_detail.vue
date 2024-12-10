@@ -241,7 +241,7 @@ export default {
   }
   .info-row {
     margin-top: 6px;
-    color: #bababa;
+    color: #2746d1;
     font-weight: 600;
     font-size: 16px;
     span {
