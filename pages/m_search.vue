@@ -74,6 +74,7 @@
             :init-zoom="11"
             :points="mapPoints"
             :active-point-id="activePointId"
+            :boundary-placeid="boundaryPlaceid"
             @pointSelect="pointSelectHandler"
           ></jump-map>
         </template>
@@ -107,6 +108,7 @@ import {
   doSecondHandQuery,
   loadProgrameDepartmentCities,
   loadSecondHandDepartmentCities,
+  createSearchPlaceidParams,
 } from '../utils/search';
 
 const PLACEINFO_SESSION_KEY = 'M_PLACEINFO';
@@ -127,6 +129,7 @@ export default {
     const searchMode = this.$route.query.searchMode;
     return {
       searchMode,
+      boundaryPlaceid: '',
       activePointId: '',
       completionStatus: "",
       minPrice: 0, //价格
@@ -335,7 +338,7 @@ export default {
       this.dataLoading = true;
       const { place_id } = this.$route.query, { department_city, locationType, postal_code } = this.placeInfo;
       const params = { page, place_id, department_city, locationType, postal_code };
-      const { searchSecondHandByCity, searchPlaceInfoById, searchProgramesByCity } = this.$api.article;
+      const { searchSecondHandByCity, searchPlaceInfoById, searchProgramesByCity, searchPlaceId } = this.$api.article;
       let promise;
       if (this.isNew) {
         promise = doProgrameQuery(params, searchProgramesByCity, searchPlaceInfoById).then(({ placeInfo, programes }) => {
@@ -347,6 +350,13 @@ export default {
           }
         });
       } else if (this.isSecondHand) {
+        const searchIdParams = createSearchPlaceidParams(place_id, postal_code, locationType, department_city);
+        if (searchIdParams) {
+          if (params.place_id)
+            this.boundaryPlaceid = params.place_id;
+          else
+            searchPlaceId(searchIdParams).then(res => this.boundaryPlaceid = res.data.place_id);
+        }
         promise = doSecondHandQuery(params, searchSecondHandByCity, searchPlaceInfoById).then(({ placeInfo, properties }) => {
           if (place_id && placeInfo)
             this.placeInfo = { ...this.placeInfo, ...placeInfo };

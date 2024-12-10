@@ -15,6 +15,7 @@
                 :init-zoom="11"
                 :points="mapPoints"
                 :active-point-id="activePointId"
+                :boundary-placeid="boundaryPlaceid"
                 @pointSelect="pointSelectHandler"
               ></jump-map>
             </client-only>
@@ -172,6 +173,7 @@ import {
   loadProgrameDepartmentCities,
   loadSecondHandDepartmentCities,
   searchDepartmentCityPostcode,
+  createSearchPlaceidParams,
 } from '../utils/search';
 import { searchCityGeolocation } from '../utils';
 
@@ -202,6 +204,7 @@ export default {
     const searchMode = this.$route.query?.searchMode;
     return {
       searchMode,
+      boundaryPlaceid: '',
       locationSearch: '',
       locationSearchDialogVis: false,
       locationOptions: [],
@@ -402,9 +405,16 @@ export default {
       if (!place_id && !department_city && !postal_code) return;
       const lang = this._i18n.locale;
       const params = { place_id, locationType, postal_code, department_city, lang };
-      const { searchSecondHandByCity, searchPlaceInfoById, searchProgramesByCity } = this.$api.article;
+      const { searchSecondHandByCity, searchPlaceInfoById, searchProgramesByCity, searchPlaceId } = this.$api.article;
       let promise;
       if (this.secondHandMode) {
+        const searchIdParams = createSearchPlaceidParams(place_id, postal_code, locationType, department_city);
+        if (searchIdParams) {
+          if (params.place_id)
+            this.boundaryPlaceid = params.place_id;
+          else
+            searchPlaceId(searchIdParams).then(res => this.boundaryPlaceid = res.data.place_id);
+        }
         promise = doSecondHandQuery(params, searchSecondHandByCity, searchPlaceInfoById)
         .then(res => {
           const { placeInfo = null, properties } = res || {};

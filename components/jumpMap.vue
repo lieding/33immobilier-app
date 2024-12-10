@@ -60,6 +60,9 @@ export default {
     showNav: {
       type: Boolean,
       default: false
+    },
+    boundaryPlaceid: {
+      type: String,
     }
   },
   mounted () {
@@ -84,7 +87,10 @@ export default {
     longitude () {
       clearTimeout(this.__changeCenterTimeout);
       this.__changeCenterTimeout = setTimeout(changeCenter.bind(this), 500);
-    }
+    },
+    boundaryPlaceid () {
+      setTimeout(this.setBoundary, 3000);
+    },
   },
   methods: {
     loadMap () {
@@ -122,6 +128,7 @@ export default {
       const getMmapElRef = () => this.$refs.map;
       const setMapInst = (inst) => this.__mapInst = inst;
       const refreshPoints = this.refreshPoints;
+      const setBoundary = this.setBoundary;
       const name = 'metroMap';
       const lat = this.latitude, lng = this.longitude, points = this.points, needCircle = this.needCircle,
         interactive = this.interactive, minZoom = this.minZoom, initZoom = this.initZoom, needCenterLogo = this.needCenterLogo;
@@ -140,7 +147,7 @@ export default {
           zoom: initZoom,
           center: { lat, lng },
           minZoom,
-          mapId: 'DEMO_MAP_ID',
+          mapId: '68ad0f0bf0e03fd3',
         };
         if (interactive === false) {
           mapConfig.gestureHandling = 'none';
@@ -172,12 +179,30 @@ export default {
           });
         }
         refreshPoints();
+        setTimeout(setBoundary, 3000);
       }
       setTimeout(metroMap, 8000);
       if (window.google?.maps?.Map)
         return void setTimeout(metroMap);
       window[name] = metroMap;
       return name;
+    },
+    setBoundary () {
+      const boundaryPlaceid = this.boundaryPlaceid;
+      const map = this.__mapInst;
+      if (boundaryPlaceid && map) {
+        const featureLayer = map.getFeatureLayer("LOCALITY");
+        featureLayer.style = (options) => {
+          if (options.feature.placeId === boundaryPlaceid)
+            return {
+              strokeColor: "#810FCB",
+              strokeOpacity: 1.0,
+              strokeWeight: 3.0,
+              fillColor: "#810FCB",
+              fillOpacity: 0.5,
+            };
+        };
+      }
     }
   },
 }

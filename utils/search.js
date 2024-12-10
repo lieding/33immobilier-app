@@ -327,3 +327,20 @@ export async function doSecondHandQuery (obj, searchSecondHandByCity, searchPlac
     params.city_name = department_city;
   return searchSecondHandByCity(params).then(res => res.data);
 }
+
+/**
+ * construct the request params to search placeid, but it might return null
+ * @param {string} place_id
+ * @param {string} postal_code
+ * @param {string} locationType
+ * @param {string} department_city
+*/
+export function createSearchPlaceidParams (place_id, postal_code, locationType, department_city) {
+  if ([LocationType.L2_AREA, LocationType.L1_AREA].includes(locationType))
+    return null;
+  if (place_id) return { place_id };
+  if (locationType === LocationType.POSTAL_CODE) {
+    return { postal_code };
+  }
+  return { city: department_city };
+}

@@ -26,7 +26,7 @@ function createKey (path, params) {
 }
 
 function handleRes (res, key) {
-  setCache(key, res.data);
+  // setCache(key, res.data);
   return res;
 }
 
@@ -59,6 +59,11 @@ const article = {
   },
   searchPlaceInfoById (params) {
     const Path = '/search-place-info-by-id';
+    const key = createKey(Path, params);
+    return axios.get(Path, { params }).then(res => handleRes(res, key));
+  },
+  searchPlaceId (params) {
+    const Path = '/search-placeid';
     const key = createKey(Path, params);
     return axios.get(Path, { params }).then(res => handleRes(res, key));
   },
