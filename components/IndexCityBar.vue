@@ -24,7 +24,7 @@ import { LocationType } from '../common/config';
 
 const Col = [
   {
-    height: '342px', mobileMaxHeight: '32vh',
+    height: '266px', mobileMaxHeight: '32vh',
     items: [{ city: 'Île-de-France', img: '/city-images/ile-de-france.jpeg', location_type: LocationType.L1_AREA }]
   },
   
@@ -40,7 +40,7 @@ const Col = [
 ];
 const Col1 = [
   {
-    height: '190px', mobileMaxHeight: '20vh',
+    height: '228px', mobileMaxHeight: '20vh',
     items: [{ city: 'Saint-Denis', img: '/city-images/saint-denis.jpeg' }, { city: 'Clichy', img: '/city-images/clichy.jpeg' }]
   },
   {
@@ -48,7 +48,7 @@ const Col1 = [
     items: [{ city: 'Nice', img: '/city-images/nice.jpeg' }]
   },
   {
-    height: '190px', mobileMaxHeight: '20vh',
+    height: '228px', mobileMaxHeight: '20vh',
     items: [{ city: 'Marseille', img: '/city-images/marseille.jpeg' }, { city: 'Strasbourg', img: '/city-images/strasbourg.jpeg' }]
   }
 ]
