@@ -3,7 +3,7 @@
     <div class="content">
       <div class="row-1 flex justify-between">
         <div class="left">
-          <img src="/33immo-logo.png" />
+          <img src="/33immo-logo-blanc.png" />
         </div>
         <div class="right flex">
           <div class="list" v-for="it, idx in list" :key="idx">
