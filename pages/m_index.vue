@@ -113,16 +113,10 @@
       </template>
     </div>
     <!-- 专业房产顾问 -->
-    <div class="section">
-      <div class="join-us-bar">
-        <img src="/broker.png" alt />
-        <span class="white bold" style="margin-right: .1rem;">
-          {{ $t("message.global.JOIN_AND_BECOME_AGENT") }}
-        </span>
-        <span class="contact-btn inline-block" @click.stop="startContact">
-          {{ $t("message.global.JOIN_IMMEDIATELY") }}
-        </span>
-      </div>
+    <div class="section join-us-bar">
+      <div class="section-title bold white">{{ $t('message.PAGE_INDEX.SELL_RENT_BANNER.TITLE') }}</div>
+      <div class="white subtitle">{{ $t('message.PAGE_INDEX.SELL_RENT_BANNER.SUBTITLE') }}</div>
+      <div class="contact-btn bold white" @click.stop="startContact">{{ $t('message.global.JOIN_IMMEDIATELY') }}</div>
     </div>
     <div class="section">
       <div class="section-title">{{ $t('message.global.instrument') }}</div>
@@ -330,12 +324,11 @@ export default {
   background-color: #ececec;
 }
 .section {
-  margin: .14rem 0.08rem .06rem;
+  margin: 28px 0.08rem .06rem;
   .section-title {
     font-size: 0.26rem;
     font-weight: 600;
     color: rgba(0, 0, 0, 0.76);
-    margin-top:40px;
   }
   .subtitle {
     font-size: 0.14rem;
@@ -478,18 +471,17 @@ export default {
   }
 }
 .join-us-bar {
-  background: var(--main-blue);
-  img {
-    width: 0.48rem;
-    vertical-align: middle;
-  }
-  span {
-    font-size: 0.18rem;
+  border-radius: 8px;
+  padding: .1rem .16rem;
+  background: linear-gradient(331deg, #FFE4DD 0%, #FFEAE7 23%, #DAF4F8 50%, #BBE5F4 100%);
+  .section-title {
+    margin-top: unset;
   }
   .contact-btn {
-    background: #fff;
+    background: var(--main-blue);
+    width: fit-content;
     padding: 0.03rem 0.1rem;
-    font-size: .14rem;
+    font-size: .16rem;
     border-radius: 6px;
   }
 }
