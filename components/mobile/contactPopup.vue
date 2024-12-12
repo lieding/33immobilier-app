@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-popup v-model="visible" position="bottom" closeable style="height:max-content" :close-on-click-overlay="false" @close="$emit('close')">
+    <van-popup v-model="visible" position="bottom" closeable :close-on-click-overlay="false" @close="$emit('close')">
       <div class="content">
         <van-cell-group inset>
           <van-cell v-for="it in titles" :key="it.label" :title="it.label" :value="it.text" />
