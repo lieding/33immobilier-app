@@ -439,7 +439,7 @@ function generateHead (searchMode) {
 .m-list-page-wrapper {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - .06rem);
+  // height: calc(100vh - .06rem);
 }
 .hr {
   border: none;
@@ -447,8 +447,8 @@ function generateHead (searchMode) {
   background-color: #ececec;
 }
 .list-wrapper {
-  flex: 1;
-  overflow-y: auto;
+  // flex: 1;
+  // overflow-y: auto;
 }
 .top-bar > div {
   width: 25%;
