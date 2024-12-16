@@ -117,7 +117,7 @@
         {{ $t('message.PAGE_INDEX.PARTNER_TITLE') }}
         <div class="sub">{{ $t('message.PAGE_INDEX.PARTNER_SUBTITLE_1') }}</div>
         <div class="sub">{{ $t('message.PAGE_INDEX.PARTNER_SUBTITLE_2') }}</div>
-        <img src="/partner.png" />
+        <img src="/partner.png" style="width: 100%"/>
       </div>
     </div>
     <client-only>
