@@ -251,12 +251,14 @@ export default {
 }
 .content-section {
   margin-top: 16px;
+  margin-bottom: 16px;
   .title {
     font-size: 32px;
     margin-right: 10px;
   }
   .description {
     margin-top: 10px;
+    margin-bottom: 10px;
     white-space: pre-line;
   }
 }
