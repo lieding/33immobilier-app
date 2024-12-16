@@ -44,7 +44,9 @@
 import { SearchMode, CityRegionGeolocation } from '../../common/config';
 import { createPath, aLink } from '../../utils';
 
-const LOAN_LINK = process.env['IMMO_LOAN_LINK'];
+const LOAN_LINK_CN = process.env['IMMO_LOAN_LINK_CN'];
+const LOAN_LINK_FR = process.env['IMMO_LOAN_LINK_EN'];
+const LOAN_LINK_EN = process.env['IMMO_LOAN_LINK_FR'];
 
 export default {
   name: "",
