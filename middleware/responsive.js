@@ -1,3 +1,7 @@
+import { locales } from '../i18n/index';
+
+const I18N_CODES = locales.map(it => it.code);
+
 /**
  * @param {Object} params
  * @param {{ path: String }} params.route
@@ -9,6 +13,11 @@ export default function({ route, isDesktop, redirect }) {
 
   if (path == "/") {
     return redirect(isDesktop ? "/pc_index" : "/m_index");
+  }
+
+  if (I18N_CODES.some(prefix => path.replace(prefix, '') === '/')) {
+    const redirectPath = path + (isDesktop ? "/pc_index" : "/m_index");
+    return redirect(redirectPath);
   }
 
   const lastIdx = path.lastIndexOf('/');

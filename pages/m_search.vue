@@ -158,7 +158,7 @@ export default {
       this.setSearchModeConcerningConfig();
       this.resetAllData();
       this.$nextTick(() => {
-        this.setInitialParams();
+        this.setInitialPlaceinfo();
         this.queryList();
       });
     },

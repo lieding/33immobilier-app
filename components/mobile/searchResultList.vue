@@ -83,10 +83,16 @@ export default {
       type: String,
     }
   },
+  computed: {
+    isNew () {
+      return this.searchMode === SearchMode.NewPrograme;
+    },
+    isSecondHand () {
+      return this.searchMode === SearchMode.SecondHand;
+    }
+  },
   created () {
     this.fmoney = fmoney;
-    this.isNew = this.searchMode === SearchMode.NewPrograme;
-    this.isSecondHand = this.searchMode === SearchMode.SecondHand;
   },
   methods: {
     getImage (item) {
