@@ -4,6 +4,7 @@ module.exports = {
       NEW_PROGRAME: "New",
       SECOND_HAND: "Old",
       instrument: "Practical Tools",
+      STORE: "Store",
       French: "French",
       Chinese: "Chinese",
       English: "English",

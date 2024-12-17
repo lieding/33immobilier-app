@@ -4,6 +4,7 @@ module.exports = {
       NEW_PROGRAME: "新房",
       SECOND_HAND: "二手房",
       instrument: "实用工具",
+      STORE: "商铺",
       French: "Français",
       English: "English",
       Chinese: "中文",

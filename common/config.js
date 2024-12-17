@@ -52,6 +52,7 @@ export const CsvUrlConfig = {
 
 export const JsonConfig = {
   NationCodeFlag: 'https://gist.githubusercontent.com/devhammed/78cfbee0c36dfdaa4fce7e79c0d39208/raw/494967e8ae71c9fed70650b35dd96e9273fa3344/countries.json',
+  StoreConfig: 'https://raw.githubusercontent.com/mingzemicco/33immo-config/refs/heads/main/store_departments/department_config.json',
 };
 
 export const PostApplicationMode = {
@@ -294,5 +295,13 @@ export function loadIndexPageSecondHand () {
       console.error(err);
       return [];
     });
+}
+
+export function loadStoresGroupedByDepartmentId (departmentId, index = '') {
+  const fileName = index ? `${departmentId}-${index}` : departmentId
+  return fetch(`https://raw.githubusercontent.com/mingzemicco/33immo-config/refs/heads/main/store_departments/${fileName}.csv`)
+    .then(res => res.text())
+    .then(txt => parseRawCsv(txt, ',')?.rows)
+    .catch(console.error);
 }
 
