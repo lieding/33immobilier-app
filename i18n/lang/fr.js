@@ -108,6 +108,7 @@ module.exports = {
       RETURN_TO_LIST: 'Retour à la liste',
       LAST_NAME: 'Votre nom',
       APPLICATION_POSTED_SUCCESS: 'Votre demande a été soumise avec succès',
+      ESTIMATED_PRICE_RANGE: "Fourchette de prix estimée"
     },
     // FOOTER
     FOOTER: {

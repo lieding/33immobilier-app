@@ -11,66 +11,71 @@
         {{ detail.title }}
       </div>
     </div>
-    <div class="desktop-placed-center flex">
-      <div class="left-body">
-        <div class="slideshow">
-          <el-carousel :interval="5000" height="400px" arrow="always">
-            <el-carousel-item
-              v-for="(item, i) in detail.images"
-              :key="i"
-            >
-              <div
-                class="lunbotu"
-                v-bind:style="{ 'background-image': 'url(' + item + ')' }"
-                @click="galleryIndex = i"
-              ></div>
-            </el-carousel-item>
-          </el-carousel>
+    <div v-if="loading" class="desktop-placed-center">
+      <detail-skeleton />
+    </div>
+    <template v-else>
+      <div class="desktop-placed-center flex">
+        <div class="left-body">
+          <div class="slideshow">
+            <el-carousel :interval="5000" height="400px" arrow="always">
+              <el-carousel-item
+                v-for="(item, i) in detail.images"
+                :key="i"
+              >
+                <div
+                  class="lunbotu"
+                  v-bind:style="{ 'background-image': 'url(' + item + ')' }"
+                  @click="galleryIndex = i"
+                ></div>
+              </el-carousel-item>
+            </el-carousel>
+          </div>
+        </div>
+        <div class="right-body">
+          <div class="content-package">
+            <p class="prises">
+              {{ fmoney(detail.price) }}€
+            </p>
+            <p class="info-row">
+              {{ $t("message.PAGE_SECOND_HAND.AGENT") }}：
+              <span>{{ detail.agent }}</span>
+            </p>
+            <p class="info-row">
+              {{ $t("message.global.SURFACE") }}：
+              <span>{{ detail.surface }}m²</span>
+            </p>
+            <p class="info-row">
+              {{ $t("message.PAGE_SECOND_HAND.PIECE") }}：
+              <span>{{ detail.piece }}</span>
+            </p>
+            <p class="info-row">
+              {{ $t("message.PAGE_SECOND_HAND.CHAMBRE") }}：
+              <span>{{ detail.chambre }}</span>
+            </p>
+            <p class="info-row">
+              {{ $t("message.global.LOCATED_CITY") }}：
+              <span>{{ detail.zip_code }} / {{detail.city}}</span>
+            </p>
+            <p class="info-row">
+              {{ $t("message.PAGE_SECOND_HAND.CLASS_LEVEL") }}：
+              <span>{{ detail.translated_class_level }}</span>
+            </p>
+            <p class="info-row">
+              <el-button type="primary" @click="propertyItemClickhandler">{{ $t('message.global.CONTACT_US') }}</el-button>
+            </p>
+          </div>
         </div>
       </div>
-      <div class="right-body">
-        <div class="content-package">
-          <p class="prises">
-            {{ fmoney(detail.price) }}€
-          </p>
-          <p class="info-row">
-            {{ $t("message.PAGE_SECOND_HAND.AGENT") }}：
-            <span>{{ detail.agent }}</span>
-          </p>
-          <p class="info-row">
-            {{ $t("message.global.SURFACE") }}：
-            <span>{{ detail.surface }}m²</span>
-          </p>
-          <p class="info-row">
-            {{ $t("message.PAGE_SECOND_HAND.PIECE") }}：
-            <span>{{ detail.piece }}</span>
-          </p>
-          <p class="info-row">
-            {{ $t("message.PAGE_SECOND_HAND.CHAMBRE") }}：
-            <span>{{ detail.chambre }}</span>
-          </p>
-          <p class="info-row">
-            {{ $t("message.global.LOCATED_CITY") }}：
-            <span>{{ detail.zip_code }} / {{detail.city}}</span>
-          </p>
-          <p class="info-row">
-            {{ $t("message.PAGE_SECOND_HAND.CLASS_LEVEL") }}：
-            <span>{{ detail.translated_class_level }}</span>
-          </p>
-          <p class="info-row">
-            <el-button type="primary" @click="propertyItemClickhandler">{{ $t('message.global.CONTACT_US') }}</el-button>
-          </p>
-        </div>
+      <div class="desktop-placed-center content-section">
+        <p class="title">
+          {{ $t("message.global.DESCRIPTION") }}
+        </p>
+        <p class="description">
+          <div v-html="detail.description"></div>
+        </p>
       </div>
-    </div>
-    <div class="desktop-placed-center content-section">
-      <p class="title">
-        {{ $t("message.global.DESCRIPTION") }}
-      </p>
-      <p class="description">
-        <div v-html="detail.description"></div>
-      </p>
-    </div>
+    </template>
     <div class="desktop-placed-center">
       <calculator />
     </div>
@@ -94,6 +99,7 @@
 <script>
 import Calculator from "~/components/desktop/calculator.vue";
 import ContactDialog from '../components/desktop/ContactDialog.vue';
+import DetailSkeleton from '../components/desktop/detailSkeleton.vue';
 import { fmoney } from '../utils';
 import { extractSecondHandProperty, PostApplicationMode } from '../common/config';
 
@@ -101,7 +107,7 @@ export default {
   name: "secondHandDetail",
   middleware: "responsive",
   components: {
-    Calculator, ContactDialog,
+    Calculator, ContactDialog, DetailSkeleton,
   },
   head() {
     const { title, zip_code } = this.$route.query;
@@ -121,6 +127,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       galleryIndex: null,
       detail: {},
       contactDialogVisible: false,
@@ -138,6 +145,7 @@ export default {
     async queryDetail () {
       const lang = this._i18n.locale;
       const { zip_code, id } = this.$route.query;
+      this.loading = true;
       try {
         const res = await this.$api.article.getSecondHandDetail({ zip_code, id, lang });
         const detail = res.data;
@@ -148,6 +156,8 @@ export default {
         this.detail = detail;
       } catch (e) {
         console.error('query detail: ', e);
+      } finally {
+        this.loading = false;
       }
     },
     propertyItemClickhandler () {

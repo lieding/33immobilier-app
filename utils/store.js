@@ -1,4 +1,5 @@
-import { fmoney } from './index'
+import { fmoney, extractTranslatedProperty } from './index';
+import { L2AREA_REGION } from '../common/config';
 
 export const CSV_SPLIT_SIZE = 500;
 
@@ -51,4 +52,29 @@ export function extractProperty (property) {
       text: price ? fmoney(price) + '€' : '',
     }
   ];
+}
+
+export async function queryDetail (VueInst, department_id, id, lang) {
+  const res = await VueInst.$api.article.getStoreDetail({ department_id, id, lang });
+  const detail = res.data;
+  if (!detail) return;
+  const category = detail.category;
+  detail.translatedCategory = category ?
+  VueInst.$t('message.PAGE_STORE.CATEGORIES')[category] : '';
+  const departmentId = detail.department_id;
+  const departmentName = Object.entries(L2AREA_REGION).find(it => it[1] === departmentId)?.[0];
+  detail.addressInfo = [`${departmentName}(${departmentId})`, detail.zip_code].filter(Boolean).join(' / ');
+  detail.images = Array.isArray(detail.images) ? detail.images.filter(Boolean) : [];
+  Object.assign(detail, extractTranslatedProperty(detail, ['title', 'revenu'], lang));
+  VueInst.detail = detail;
+  if (detail.missingTranslation) {
+    VueInst.$api.article.translateStoreDetail({ department_id, id, lang })
+      .then(res => {
+        const data = res.data;
+        if (data) {
+          const translated = extractTranslatedProperty(data, ['title', 'revenu', 'description'], lang);
+          VueInst.detail = { ...VueInst.detail, ...translated };
+        }
+      })
+  }
 }

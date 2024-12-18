@@ -7,182 +7,189 @@
           <el-breadcrumb-item>{{ $t("message.global.PROGRAME_DETAIL") }}</el-breadcrumb-item>
         </el-breadcrumb>
       </div>
-      <div class="estate-name-title">
-        {{ $t("message.global.PROGRAM_NAME") }}: {{ programeInfo.estate_name }}
-      </div>
     </div>
-    <div class="desktop-placed-center flex">
-      <div class="left-body">
-        <!-- 轮播图 -->
-        <div class="slideshow">
-          <el-carousel :interval="5000" height="404px" arrow="always">
-            <el-carousel-item
-              v-for="(item, i) in programeInfo.images"
-              :key="i"
-            >
-              <div
-                class="lunbotu"
-                v-bind:style="{ 'background-image': 'url(' + item + ')' }"
-                @click="galleryIndex = i"
-              ></div>
-            </el-carousel-item>
-          </el-carousel>
+    <div class="desktop-placed-center" v-if="loading">
+      <detail-skeleton />
+    </div>
+    <template v-else>
+      <div class="desktop-placed-center">
+        <div class="estate-name-title">
+          {{ $t("message.global.PROGRAM_NAME") }}: {{ programeInfo.estate_name }}
         </div>
       </div>
-      <div class="right-body">
-        <div class="content-package">
-          <p class="prises">
-            {{ fmoney(programeInfo.availablePropertiesMinPrice) }}€ — {{ fmoney(programeInfo.availablePropertiesMaxPrice) }}€
-          </p>
-          <p class="block">
-            <span style="background-color:#234CD3;padding:3px 8px;">
-              {{ programeInfo.deliveryQuarter }}
-            </span>
-            <span
-              style="background-color:#BFBFBF;padding:2px 3px; float:right;"
-              v-for="(itemA, index) in programeInfo.tags"
-              :key="index"
-            >{{ itemA }}</span>
-          </p>
-          <p class="smJf">
-            {{ $t("message.global.DELIVERY_DATE") }}：
-            <span>{{ programeInfo.deliveryQuarter }}</span>
-          </p>
-          <p class="smJf">
-            {{ $t("message.global.PROPERTIES_COUNT") }}：
-            <span>{{ programeInfo.availablePropertiesCount ?? programeInfo.propertiesCount }}</span>
-          </p>
-          <p class="smJf">
-            {{ $t("message.global.TAX_CUTS") }}：
-            <el-tooltip v-for="it in programeInfo.laws" :key="it" placement="top-end" effect="light" :content="getTranslatedLawItem(it)">
-              <el-tag>{{ it }}</el-tag>
-            </el-tooltip>
-          </p>
-          <p class="smJf">
-            {{ $t("message.global.TAX_AREA") }}：
-            <template v-if="translatedTaxArea">
-              <span>{{ programeInfo.taxArea }}</span>
-              <el-tooltip placement="top" effect="light" :content="translatedTaxArea">
-                <i class="el-icon-info" />
+      <div class="desktop-placed-center flex">
+        <div class="left-body">
+          <!-- 轮播图 -->
+          <div class="slideshow">
+            <el-carousel :interval="5000" height="404px" arrow="always">
+              <el-carousel-item
+                v-for="(item, i) in programeInfo.images"
+                :key="i"
+              >
+                <div
+                  class="lunbotu"
+                  v-bind:style="{ 'background-image': 'url(' + item + ')' }"
+                  @click="galleryIndex = i"
+                ></div>
+              </el-carousel-item>
+            </el-carousel>
+          </div>
+        </div>
+        <div class="right-body">
+          <div class="content-package">
+            <p class="prises">
+              {{ fmoney(programeInfo.availablePropertiesMinPrice) }}€ — {{ fmoney(programeInfo.availablePropertiesMaxPrice) }}€
+            </p>
+            <p class="block">
+              <span style="background-color:#234CD3;padding:3px 8px;">
+                {{ programeInfo.deliveryQuarter }}
+              </span>
+              <span
+                style="background-color:#BFBFBF;padding:2px 3px; float:right;"
+                v-for="(itemA, index) in programeInfo.tags"
+                :key="index"
+              >{{ itemA }}</span>
+            </p>
+            <p class="smJf">
+              {{ $t("message.global.DELIVERY_DATE") }}：
+              <span>{{ programeInfo.deliveryQuarter }}</span>
+            </p>
+            <p class="smJf">
+              {{ $t("message.global.PROPERTIES_COUNT") }}：
+              <span>{{ programeInfo.availablePropertiesCount ?? programeInfo.propertiesCount }}</span>
+            </p>
+            <p class="smJf">
+              {{ $t("message.global.TAX_CUTS") }}：
+              <el-tooltip v-for="it in programeInfo.laws" :key="it" placement="top-end" effect="light" :content="getTranslatedLawItem(it)">
+                <el-tag>{{ it }}</el-tag>
               </el-tooltip>
-            </template>
-            <template v-else>
-              <span>{{ programeInfo.taxArea }}</span>
-            </template>
-          </p>
-          <p class="smJf">
-            {{ $t("message.global.TAX_REDUCTION_AMOUNT") }}：
-            <span>{{ programeInfo.taxCutsQuota }}</span>
-          </p>
-          <p class="smJf">
-            {{ $t("message.global.LOCATED_CITY") }}：
-            <span>{{ programeInfo.zip_code }} / {{programeInfo.city}}</span>
-          </p>
-          <p class="smJf">
-            {{ $t("message.global.TYPOLOGIES") }}：
-            <el-tag v-for="it in translatedTypologies" :key="it" type="success" size="mini">{{ it }}</el-tag>
-          </p>
-          <div class="whatsapp-btn-row">
-            <div class="whatsapp-btn pointer flex align-center" @click="downloadBrochureClickHandler">
-              <img src="/whatsapp.svg" />
-              <span class="inline-block txt white bold">{{ $t('message.global.CONTACT_US') }}</span>
+            </p>
+            <p class="smJf">
+              {{ $t("message.global.TAX_AREA") }}：
+              <template v-if="translatedTaxArea">
+                <span>{{ programeInfo.taxArea }}</span>
+                <el-tooltip placement="top" effect="light" :content="translatedTaxArea">
+                  <i class="el-icon-info" />
+                </el-tooltip>
+              </template>
+              <template v-else>
+                <span>{{ programeInfo.taxArea }}</span>
+              </template>
+            </p>
+            <p class="smJf">
+              {{ $t("message.global.TAX_REDUCTION_AMOUNT") }}：
+              <span>{{ programeInfo.taxCutsQuota }}</span>
+            </p>
+            <p class="smJf">
+              {{ $t("message.global.LOCATED_CITY") }}：
+              <span>{{ programeInfo.zip_code }} / {{programeInfo.city}}</span>
+            </p>
+            <p class="smJf">
+              {{ $t("message.global.TYPOLOGIES") }}：
+              <el-tag v-for="it in translatedTypologies" :key="it" type="success" size="mini">{{ it }}</el-tag>
+            </p>
+            <div class="whatsapp-btn-row">
+              <div class="whatsapp-btn pointer flex align-center" @click="downloadBrochureClickHandler">
+                <img src="/whatsapp.svg" />
+                <span class="inline-block txt white bold">{{ $t('message.global.CONTACT_US') }}</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="desktop-placed-center content-section">
-      <div class="flex justify-between">
-        <div style="font-size:32px;margin-right:10px;font-weight:600;">{{ $t("message.global.PROGRAME_DESC") }}</div>
-        <div class="download-btn white bold flex align-center pointer" @click="downloadBrochureClickHandler">
-          <i class="el-icon-download" />
-          {{ $t('message.PROGRAME_DETAIL.DOWNLOAD_BROCHURE_BTN') }}
+      <div class="desktop-placed-center content-section">
+        <div class="flex justify-between">
+          <div style="font-size:32px;margin-right:10px;font-weight:600;">{{ $t("message.global.PROGRAME_DESC") }}</div>
+          <div class="download-btn white bold flex align-center pointer" @click="downloadBrochureClickHandler">
+            <i class="el-icon-download" />
+            {{ $t('message.PROGRAME_DETAIL.DOWNLOAD_BROCHURE_BTN') }}
+          </div>
         </div>
-      </div>
-      <p style="margin-top: 10px; white-space:pre-line;">
-        <div v-html="programeInfo.description"></div>
-      </p>
-      <div style="margin-top:10px;">
-        <span style="font-size:32px;margin-right:10px;font-weight:600;">
-          {{ $t("message.global.PROGRAM_POSITION") }}：{{ programeInfo.address }}
-        </span>
-      </div>
-      <div style="border: 1px solid #ccc;height:500px;width:1200px">
-        <jump-map
-          v-if="programeInfo.latitude && programeInfo.longitude"
-          :latitude="programeInfo.latitude"
-          :longitude="programeInfo.longitude"
-          :interactive="false"
-          :need-circle="true"
-          :need-center-logo="true"
-        ></jump-map>
-      </div>
-      <p style="margin-top:10px;padding-bottom:20px;">
-        <span style="font-size:32px;margin-right:10px;font-weight:600;">{{
-          $t("message.global.PROPERTY_DETAILS")
-        }}</span>
-      </p>
-      <el-table
-        :empty-text="$t('message.global.EMPTY')"
-        :data="tableData"
-        style="width: 100%"
-      >
-        <el-table-column
-          prop="number"
-          :label="$t('message.global.PROPERTY_NUMBER')"
-        ></el-table-column>
-        <el-table-column
-          prop="typology"
-          :label="$t('message.global.APARTMENT_TYPE')"
-        ></el-table-column>
+        <p style="margin-top: 10px; white-space:pre-line;">
+          <div v-html="programeInfo.description"></div>
+        </p>
+        <div style="margin-top:10px;">
+          <span style="font-size:32px;margin-right:10px;font-weight:600;">
+            {{ $t("message.global.PROGRAM_POSITION") }}：{{ programeInfo.address }}
+          </span>
+        </div>
+        <div style="border: 1px solid #ccc;height:500px;width:1200px">
+          <jump-map
+            v-if="programeInfo.latitude && programeInfo.longitude"
+            :latitude="programeInfo.latitude"
+            :longitude="programeInfo.longitude"
+            :interactive="false"
+            :need-circle="true"
+            :need-center-logo="true"
+          ></jump-map>
+        </div>
+        <p style="margin-top:10px;padding-bottom:20px;">
+          <span style="font-size:32px;margin-right:10px;font-weight:600;">{{
+            $t("message.global.PROPERTY_DETAILS")
+          }}</span>
+        </p>
+        <el-table
+          :empty-text="$t('message.global.EMPTY')"
+          :data="tableData"
+          style="width: 100%"
+        >
+          <el-table-column
+            prop="number"
+            :label="$t('message.global.PROPERTY_NUMBER')"
+          ></el-table-column>
+          <el-table-column
+            prop="typology"
+            :label="$t('message.global.APARTMENT_TYPE')"
+          ></el-table-column>
 
-        <el-table-column :label="$t('message.global.USABLE_AREA')">
-          <template slot-scope="scope">
-            <span>{{ scope.row.surface }}m²</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="floor"
-          :label="$t('message.global.FLOOR')"
-        ></el-table-column>
-        <el-table-column
-          :label="$t('message.global.PRICE')"
-        >
-          <template slot-scope="scope">
-            <span>{{ scope.row.price ? (fmoney(scope.row.price) + '€') : '' }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          :label="$t('message.global.ESTIMATED_MONTHLY_RENT')"
-        >
-          <template slot-scope="scope">
-            <span>{{ scope.row.rentPrice ? (fmoney(scope.row.rentPrice) + '€') : '' }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column :label="$t('message.global.RATE_OF_RETURN')">
-          <template slot-scope="scope">
-            <span>{{ scope.row.profitability ? (scope.row.profitability + '%') : '' }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column :label="$t('message.global.FLOOR_PLAN')">
-          <template slot-scope="scope">
-            <!-- <el-link :href="scope.planLink" target="'_blank'">Plan</el-link> -->
-            <span
-              class="pointer inline-block download-btn white bold"
-              @click="propertyItemClickhandler(scope.row)"
-            >{{ $t("message.PROGRAME_DETAIL.DOWNLOAD_PLAN_BTN") }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="data" :label="$t('message.global.CONTACT_US')">
-          <template slot-scope="scope">
-            <span
-              style="color:#224BD7;cursor: pointer;text-decoration:underline;"
-              @click="propertyItemClickhandler(scope.row)"
-            >{{ $t("message.global.CONTACT_US") }}</span>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
+          <el-table-column :label="$t('message.global.USABLE_AREA')">
+            <template slot-scope="scope">
+              <span>{{ scope.row.surface }}m²</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="floor"
+            :label="$t('message.global.FLOOR')"
+          ></el-table-column>
+          <el-table-column
+            :label="$t('message.global.PRICE')"
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.price ? (fmoney(scope.row.price) + '€') : '' }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            :label="$t('message.global.ESTIMATED_MONTHLY_RENT')"
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.rentPrice ? (fmoney(scope.row.rentPrice) + '€') : '' }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column :label="$t('message.global.RATE_OF_RETURN')">
+            <template slot-scope="scope">
+              <span>{{ scope.row.profitability ? (scope.row.profitability + '%') : '' }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column :label="$t('message.global.FLOOR_PLAN')">
+            <template slot-scope="scope">
+              <!-- <el-link :href="scope.planLink" target="'_blank'">Plan</el-link> -->
+              <span
+                class="pointer inline-block download-btn white bold"
+                @click="propertyItemClickhandler(scope.row)"
+              >{{ $t("message.PROGRAME_DETAIL.DOWNLOAD_PLAN_BTN") }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="data" :label="$t('message.global.CONTACT_US')">
+            <template slot-scope="scope">
+              <span
+                style="color:#224BD7;cursor: pointer;text-decoration:underline;"
+                @click="propertyItemClickhandler(scope.row)"
+              >{{ $t("message.global.CONTACT_US") }}</span>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+    </template>
     <div class="desktop-placed-center">
       <calculator></calculator>
     </div>
@@ -209,6 +216,7 @@ import JumpMap from '~/components/jumpMap.vue';
 import ContactDialog from '../components/desktop/ContactDialog.vue';
 import { TypologyOptionConfig, extractProgramProperty, PostApplicationMode } from '../common/config';
 import { fmoney } from '../utils';
+import DetailSkeleton from "../components/desktop/detailSkeleton.vue";
 
 export default {
   name: "newDetails",
@@ -217,6 +225,7 @@ export default {
     Calculator,
     JumpMap,
     ContactDialog,
+    DetailSkeleton,
   },
   head() {
     const { estate_name, city } = this.$route.query;
@@ -236,6 +245,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       programeInfo: {},
       promoteList: [],
       translatedTypologies: [],
@@ -258,6 +268,7 @@ export default {
     async queryDetail () {
       const lang = this._i18n.locale;
       const { zip_code, name_id } = this.$route.query;
+      this.loading = true;
       try {
         const res = await this.$api.article.getProgrameDetail({ zip_code, name_id, lang });
         const { properties, typologies, taxArea } = res.data;
@@ -286,6 +297,8 @@ export default {
         });
       } catch (e) {
         console.error('query detail: ', e);
+      } finally {
+        this.loading = false;
       }
     },
     propertyItemClickhandler (property) {
@@ -329,13 +342,13 @@ export default {
   .breadcrumb {
     padding-top: 10px;
   }
-  .estate-name-title {
-    color: #000;
-    font-size: 32px;
-    font-weight: 700;
-    line-height: 42px;
-    margin: 16px 0 30px;
-  }
+}
+.estate-name-title {
+  color: #000;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 42px;
+  margin: 16px 0 30px;
 }
 // 左侧主题
 .left-body {

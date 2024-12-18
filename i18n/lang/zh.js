@@ -107,6 +107,7 @@ module.exports = {
       RETURN_TO_LIST: '返回到列表页',
       LAST_NAME: '您的姓氏',
       APPLICATION_POSTED_SUCCESS: '您的请求已成功提交',
+      ESTIMATED_PRICE_RANGE: "预估价格区间"
     },
     FOOTER: {
       SCI: '注册SCI/LMP/LMNP',

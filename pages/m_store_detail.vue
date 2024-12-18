@@ -1,0 +1,339 @@
+<template>
+  <div>
+    <div v-if="fromSearchPage" class="to-list flex align-center" @click="$router.go(-1)">
+      <van-icon name="arrow-left" />
+      <span>{{ $t('message.global.RETURN_TO_LIST') }}</span>
+    </div>
+    <div>
+      <div class="images" @click="swipeDialogVis = true">
+        <van-swipe
+          :autoplay="3000"
+          @change="imageSwipeChangeHandler"
+          :show-indicators="false"
+        >
+          <van-swipe-item v-for="(image, index) in picList" :key="index">
+            <img :src="image" @click="galleryIndex = i" />
+          </van-swipe-item>
+        </van-swipe>
+      </div>
+    </div>
+    <div class="store-info-row-detail">
+      <p class="detail-title">{{ detail.title }}</p>
+      <p class="detail-location">{{ detail.addressInfo }}</p>
+      <p class="price">{{ fmoney(detail.price) }}€</p>
+      <p class="info-row">
+        <span class="grey-color">{{ $t("message.global.LOCATED_CITY") }} ：</span>
+        {{ detail.addressInfo }}
+      </p>
+      <p class="info-row" v-if="detail.lower_price && detail.upper_price">
+        <span class="grey-color">{{ $t("message.global.ESTIMATED_PRICE_RANGE") }} ：</span>
+        {{ fmoney(detail.lower_price) }}€ - {{ fmoney(detail.upper_price) }}€
+      </p>
+      <p class="info-row">
+        <span class="grey-color">{{ $t("message.global.SURFACE") }} ：</span>
+        {{ detail.surface }}m²
+      </p>
+      <p class="info-row">
+        <span class="grey-color">{{ $t("message.PAGE_STORE.CATEGORY") }}：</span>
+        {{ detail.translatedCategory }}
+      </p>
+      <p class="info-row" v-if="detail.revenu">
+        <span class="grey-color">{{ $t("message.PAGE_STORE.REVENU") }}：</span>
+        {{ detail.revenu }}
+      </p>
+      <p class="info-row" v-if="detail.rent">
+        <span class="grey-color">{{ $t("message.global.ESTIMATED_MONTHLY_RENT") }}：</span>
+        {{ detail.rent }}€
+      </p>
+    </div>
+    <hr class="hr" />
+    <!-- 介绍 -->
+    <div class="section pack">
+      <div class="top">
+        <div>
+          <span class="section-title">{{ $t("message.global.DESCRIPTION") }}</span>
+        </div>
+      </div>
+      <div
+        :class="displayMoreDesc ? 'synopsisno' : 'synopsis'"
+        style="white-space:pre-line;"
+        v-html="detail.description"
+      ></div>
+      <div>
+        <span class="pack-up" @click="toggleDisplayMore">
+          {{ displayMoreDesc ? $t("message.global.SEE_MORE") : $t("message.global.SEE_LESS") }}
+        </span>
+      </div>
+    </div>
+    <hr class="hr" />
+    <div class="section">
+      <van-button round block type="info" @click="btnClickHandler">{{ $t('message.global.CONTACT_US') }}</van-button>
+    </div>
+    <hr class="hr" />
+    <div style="margin: 0 .1rem;">
+      <Calculator />
+    </div>
+    <client-only>
+      <gallery
+        :images="picList"
+        :index="galleryIndex"
+        @close="galleryIndex = null"
+      ></gallery>
+      <contact-popup
+        :visible="contactPopupVis"
+        :titles="contactPopupTitles"
+        :confirm-btn-loading="contactPopupBtnLoading"
+        @close="contactPopupVis = false"
+        @confirm="contactConfirmHandler"
+      />
+      <loading-dialog :visible="loading" :loading-text="$t('message.global.LOADING')" />
+    </client-only>
+  </div>
+</template>
+
+<script>
+import rem from "~/common/rem.js";
+import Calculator from '../components/mobile/calculator.vue';
+import ContactPopup from '../components/mobile/contactPopup.vue';
+import LoadingDialog from '../components/mobile/loadingDialog.vue';
+import { fmoney } from '../utils'
+import { PostApplicationMode } from '../common/config';
+import { extractProperty, queryDetail } from '../utils/store';
+
+export default {
+  name: '',
+  middleware: "responsive",
+  components: { Calculator, ContactPopup, LoadingDialog },
+  head () {
+    const { title } = this.$route.query;
+    return {
+      title,
+      meta: [
+        { name: "description", content: title },
+        { name: "keywords", content: title },
+      ]
+    };
+  },
+  data () {
+    return {
+      fromSearchPage: false,
+      loading: false,
+      detail: {},
+      swipeDialogVis: false,
+      picList: [], //图片集合
+      displayMoreDesc: true,
+      swipeIdx: 0,
+      galleryIndex: null,
+      contactPopupVis: false,
+      contactPopupTitles: [],
+      contactPopupBtnLoading: false,
+    }
+  },
+  created () {
+    this.fmoney = fmoney;
+  },
+  mounted(){
+    rem();
+    if (process.client) this.queryDetail();
+  },
+  methods: {
+    async queryDetail () {
+      this.loading = true;
+      const lang = this._i18n.locale;
+      const { department_id, id } = this.$route.query;
+      try {
+        await queryDetail(this, department_id, id, lang);
+        this.picList = this.detail.images || [];
+      } catch (e) {
+        console.error('query detail: ', e);
+      } finally {
+        this.loading = false;
+      }
+    },
+    imageSwipeChangeHandler(index) {
+      this.swipeIdx = index;
+    },
+    toggleDisplayMore() {
+      this.displayMoreDesc = !this.displayMoreDesc;
+    },
+    btnClickHandler () {
+      this.contactPopupTitles = extractProperty.call(this, this.detail);
+      this.contactPopupVis = true;
+    },
+    contactConfirmHandler (contact) {
+      const { id, link } = this.detail ?? {};
+      if (!link || !id) return;
+      const lang = this._i18n.locale;
+      this.contactPopupBtnLoading = true;
+      this.$api.article.postApplication({ mode: PostApplicationMode.STORE, lang, contact, id, link })
+        .then(() => {
+          this.contactPopupVis = false;
+          Notify({ type: 'success', message: this.$t('message.global.APPLICATION_POSTED_SUCCESS') });
+        })
+        .catch(console.error)
+        .finally(() => this.contactPopupBtnLoading = false);
+    },
+  },
+  beforeRouteEnter (to, from, next) {
+    let fromSearchPage = undefined;
+    if (from.path.includes('search')) {
+      fromSearchPage = true;
+    }
+    next(vm => vm.fromSearchPage = fromSearchPage);
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.pack {
+  padding: 0.1rem;
+  div {
+    .pack-up {
+      float: right;
+      font-size: 0.13rem;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: rgba(35, 76, 211, 1);
+      line-height: 0.18rem;
+    }
+  }
+}
+
+.images {
+  height: 2.14rem;
+  position: relative;
+  img {
+    height: 2.14rem;
+    width: 100%;
+  }
+}
+.hr {
+  border: none;
+  height: 1px;
+  margin: 0.12rem 0;
+  background-color: #ececec;
+}
+.van-button--large {
+  width: 92%;
+  margin-left: 0.1rem;
+  margin-bottom: 0.3rem;
+  background: rgba(35, 76, 211, 1);
+}
+.store-info-row-detail {
+  position: relative;
+  margin-left: 0.12rem;
+  .detail-title {
+    width: 70%;
+    font-size: 0.2rem;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 1);
+    line-height: 0.28rem;
+    margin: 0.07rem 0 0.03rem;
+  }
+  .detail-location {
+    height: 0.17rem;
+    font-size: 0.12rem;
+    color: rgba(177, 177, 177, 1);
+    line-height: 0.17rem;
+    margin-bottom: 0.11rem;
+  }
+}
+.price {
+  height: 0.28rem;
+  font-size: 0.2rem;
+  font-weight: 600;
+  color: rgba(255, 94, 94, 1);
+  line-height: 0.28rem;
+  padding: 0.13rem 0 0.1rem 0;
+}
+.to-list {
+  margin: .1rem 0;
+}
+.info-row {
+  font-size: 0.14rem;
+  font-weight: 600;
+  span {
+    font-size: .16rem;
+  }
+}
+.grey-color {
+  color: rgba(186, 186, 186, 1);
+}
+.section-title {
+  font-size: 0.2rem;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.76);
+  margin-right: 0.1rem;
+}
+.section {
+  margin: 0 0.12rem;
+  .synopsis {
+    margin: 0.1rem 0;
+    font-size: 0.13rem;
+    color: rgba(70, 70, 70, 1);
+    line-height: 0.18rem;
+    overflow: hidden;
+  }
+  .synopsisno {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 8;
+    -webkit-box-orient: vertical;
+    margin: 0.1rem 0;
+    font-size: 0.13rem;
+    color: rgba(70, 70, 70, 1);
+    line-height: 0.18rem;
+    overflow: hidden;
+  }
+  .map {
+    height: 3rem;
+    width: 100%;
+    margin-top: 0.05rem;
+  }
+  .swipe {
+    margin-top: 0.05rem;
+    white-space: nowrap; //阻止文本换行
+    overflow: auto; //设置溢出可滚动
+    div {
+      width: 1.68rem;
+      display: inline-block; //设置属性（元素间不换行）
+      box-shadow: 0px 1px 18px 0px rgba(0, 0, 0, 0.11);
+      padding: 0.1rem;
+      margin: 0.08rem;
+    }
+  }
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    span {
+      display: inline-block;
+    }
+  }
+}
+</style>
+<style lang="scss">
+.el-dialog__wrapper dialog {
+  background: #2a2a2a;
+}
+.dialog {
+  .el-dialog__header {
+    display: none;
+  }
+  .el-dialog {
+    width: 100%;
+    background: none;
+  }
+  .van-swipe {
+    top: 16%;
+  }
+}
+.drug {
+  .van-field__label {
+    font-size: 0.12rem;
+    color: rgba(167, 167, 167, 1);
+    line-height: 0.23rem;
+  }
+}
+</style>

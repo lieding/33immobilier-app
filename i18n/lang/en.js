@@ -108,6 +108,7 @@ module.exports = {
       RETURN_TO_LIST: "Return to List Page",
       LAST_NAME: "Your Last Name",
       APPLICATION_POSTED_SUCCESS: "Your application was successfully submitted",
+      ESTIMATED_PRICE_RANGE: "Estimated price range"
     },
     // FOOTER
     FOOTER: {
