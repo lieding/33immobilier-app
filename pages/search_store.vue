@@ -4,7 +4,7 @@
       <el-breadcrumb-item><a href="/pc_index">{{ $t("message.global.HOME") }}</a></el-breadcrumb-item>
       <el-breadcrumb-item>{{ $t('message.global.STORE') }}</el-breadcrumb-item>
     </el-breadcrumb>
-    <section class="content">
+    <section class="content desktop-placed-center">
       <template v-if="dataLoading">
         <el-skeleton :rows="12" />
       </template>
@@ -15,7 +15,7 @@
           <el-col :span="6">
             <el-select
               v-model="selectedDepartmentId"
-              class="micco-select"
+              class="full-w micco-select"
               :placeholder="$t('message.global.REGION_CITY_SEARCHPLACEHOLDER')"
             >
               <el-option
@@ -28,7 +28,7 @@
           </el-col>
           <!-- Price range slider -->
           <el-col :span="6">
-            <div class="price-range-btn full-w pointer micco-select customized" @click="priceSlideVis = true" v-popover:popover>
+            <div class="full-w pointer micco-select customized" @click="priceSlideVis = true" v-popover:popover>
               <span class="label">{{ $t("message.global.PRICE") }}</span>
               <i class="el-icon-arrow-down" />
             </div>
@@ -49,7 +49,7 @@
           </el-popover>
           <!-- Surface slide range -->
           <el-col :span="6">
-            <div class="price-range-btn full-w pointer micco-select customized" @click="surfaceSlideVis = true" v-popover:surfacePopover>
+            <div class="full-w pointer micco-select customized" @click="surfaceSlideVis = true" v-popover:surfacePopover>
               <span class="label">{{ $t("message.global.SURFACE") }}</span>
               <i class="el-icon-arrow-down" />
             </div>
@@ -73,7 +73,7 @@
             <el-select
               v-model="selectedCategoryId"
               clearable
-              class="micco-select"
+              class="full-w micco-select"
               :placeholder="$t('message.PAGE_STORE.CATEGORY')"
             >
               <el-option v-for="it in categoryOptions" :key="it.value" :label="it.label" :value="it.value"></el-option>
@@ -82,21 +82,29 @@
         </el-row>
         <div class="table-container">
           <el-table :data="tableData" stripe style="width: 100%" @row-click="rowClickHandler">
-            <el-table-column prop="zip_code">
-              <template slot-scope="scope"><span>{{ scope.row.zip_code || '' }}</span></template>
-            </el-table-column>
-            <el-table-column prop="title" :label="$t('message.global.TITLE')" />
-            <el-table-column :label="$t('message.global.PRICE')">
-              <template slot-scope="scope"><span>{{ fmoney(scope.row.price) }}€</span></template>
-            </el-table-column>
-            <el-table-column :label="$t('message.global.SURFACE')">
-              <template slot-scope="scope"><span>{{ scope.row.surface ? `${scope.row.surface}m²` : '' }}</span></template>
+            <el-table-column :width="120">
+              <template slot-scope="scope">
+                <img :src="getCategoryImg(scope.row)" class="category-img" />
+              </template>
             </el-table-column>
             <el-table-column :label="$t('message.PAGE_STORE.CATEGORY')" prop="category" />
+            <el-table-column prop="zip_code" :label="$t('message.global.POSTAL_CODE')" :width="160">
+              <template slot-scope="scope"><span>{{ scope.row.zip_code || '' }}</span></template>
+            </el-table-column>
+            <!-- <el-table-column prop="title" :label="$t('message.global.TITLE')" /> -->
+            <el-table-column :label="$t('message.global.PRICE')" :width="160">
+              <template slot-scope="scope"><span>{{ fmoney(scope.row.price) }}€</span></template>
+            </el-table-column>
+            <el-table-column :label="$t('message.global.SURFACE')" :width="160">
+              <template slot-scope="scope"><span>{{ scope.row.surface ? `${scope.row.surface}m²` : '' }}</span></template>
+            </el-table-column>
             <el-table-column :label="$t('message.global.ESTIMATED_MONTHLY_RENT')">
               <template slot-scope="scope"><span>{{ scope.row.rent ? `${scope.row.rent}€` : '' }}</span></template>
             </el-table-column>
           </el-table>
+
+        </div>
+        <div class="pagination-wrapper flex justify-center">
           <el-pagination
             layout="prev, pager, next" :total="dataCnt" :page-size="pageSize" :current-page.sync="curPage">
           </el-pagination>
@@ -227,6 +235,11 @@ export default {
         setTimeout(() => this._allReady = true, 3000);
       });
     },
+    getCategoryImg (row) {
+      const category = row.category?.replaceAll(' ', '');
+      if (!category) return '';
+      return category + '.png';
+    }
   }
 }
 </script>
@@ -241,5 +254,14 @@ export default {
       margin: 0 0 16px;
     }
   }
+}
+.table-container {
+  .category-img {
+    max-height: 80px;
+    border-radius: 8px;
+  }
+}
+.pagination-wrapper {
+  margin: 32px 0 38px;
 }
 </style>

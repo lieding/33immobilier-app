@@ -34,14 +34,14 @@
           <el-row :gutter="8">
             <!-- region/city selection -->
             <el-col :span="6">
-              <div class="price-range-btn full-w pointer micco-select customized" @click="startLocationSearch">
+              <div class=" full-w pointer micco-select customized" @click="startLocationSearch">
                 <span class="label">{{ locationSearchText || $t("message.global.REGION_CITY_SEARCHPLACEHOLDER") }}</span>
                 <i class="el-icon-place" />
               </div>
             </el-col>
             <!-- Price range slider -->
             <el-col :span="6">
-              <div class="price-range-btn full-w pointer micco-select customized" @click="priceSlideVis = true" v-popover:popover>
+              <div class=" full-w pointer micco-select customized" @click="priceSlideVis = true" v-popover:popover>
                 <span class="label">{{ $t("message.global.PRICE") }}</span>
                 <i class="el-icon-arrow-down" />
               </div>
@@ -63,7 +63,7 @@
             <!-- Compleyion status select / Surface slide range -->
             <el-col :span="6">
               <template v-if="secondHandMode">
-                <div class="price-range-btn full-w pointer micco-select customized" @click="surfaceSlideVis = true" v-popover:surfacePopover>
+                <div class=" full-w pointer micco-select customized" @click="surfaceSlideVis = true" v-popover:surfacePopover>
                   <span class="label">{{ $t("message.global.SURFACE") }}</span>
                   <i class="el-icon-arrow-down" />
                 </div>

@@ -13,6 +13,7 @@ module.exports = {
       INDEX_BANNER: "Find housing in France, we are the experts",
       INDEX_SEARCH_PLACEHOLDER: "Which city are you looking for? For example, Paris",
       REGION_CITY_SEARCHPLACEHOLDER: "Region or city postal code",
+      POSTAL_CODE: "Postal code",
       Where: "Where would you like to live?",
       SEARCH: "Search",
       LIKE: "Like",

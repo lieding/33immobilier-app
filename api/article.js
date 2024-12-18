@@ -52,6 +52,11 @@ const article = {
     const key = createKey(Path, params);
     return axios.get(Path, { params }).then(res => handleRes(res, key));
   },
+  translateStoreDetail (params) {
+    const Path = '/store-detail-translate';
+    const key = createKey(Path, params);
+    return axios.get(Path, { params }).then(res => handleRes(res, key));
+  },
   searchProgramesByCity (params) {
     const Path = '/search-programes-by-city';
     const key = createKey(Path, params);

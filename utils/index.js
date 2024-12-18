@@ -1,4 +1,3 @@
-// export * as Validator from './validate';
 
 export function fmoney(s, n = 0) {
   n = n >= 0 && n <= 20 ? n : 2;
@@ -74,4 +73,20 @@ export function createPath (path) {
   const split = curPath.split('/');
   split[split.length - 1] = path;
   return split.join('/');
+}
+
+/**
+ * extract translated keys, like title_en
+ * @param {object} obj
+ * @param {string[]} keys
+ * @param {string} lang
+*/
+export function extractTranslatedProperty (obj, keys, lang) {
+  const ret = {};
+  if (lang === 'zh') lang = 'cn_zh';
+  for (const key of keys) {
+    const val = obj[key + '_' + lang];
+    if (val) ret[key] = val;
+  }
+  return ret;
 }

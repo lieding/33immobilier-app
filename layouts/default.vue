@@ -34,7 +34,7 @@ export default {
       return this.$device.isMobile;
     },
     footerVis () {
-      return !this.$route.path.includes('search');
+      return !['search', 'm_search'].some(it => this.$route.path.endsWith(it));
     }
   },
   mounted () {

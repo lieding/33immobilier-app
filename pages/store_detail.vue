@@ -94,7 +94,7 @@
 <script lang="js">
 import Calculator from "~/components/desktop/calculator.vue";
 import ContactDialog from '../components/desktop/ContactDialog.vue';
-import { fmoney } from '../utils';
+import { fmoney, extractTranslatedProperty } from '../utils';
 import { L2AREA_REGION, PostApplicationMode } from '../common/config';
 import { extractProperty } from '../utils/store';
 
@@ -143,7 +143,16 @@ export default {
         const departmentName = Object.entries(L2AREA_REGION).find(it => it[1] === departmentId)?.[0];
         detail.addressInfo = [`${departmentName}(${departmentId})`, detail.zip_code].filter(Boolean).join(' / ');
         detail.images = Array.isArray(detail.images) ? detail.images.filter(Boolean) : [];
+        Object.assign(detail, extractTranslatedProperty(detail, ['title', 'revenu'], lang));
         this.detail = detail;
+        if (detail.missingTranslation) {
+          this.$api.article.translateStoreDetail({ department_id, id, lang })
+            .then(res => {
+              const data = res.data;
+              if (data)
+                this.detail = { ...this.detail, ...extractTranslatedProperty(data, ['title', 'revenu', 'description'], lang) };
+            })
+        }
       } catch (e) {
         console.error('query detail: ', e);
       }

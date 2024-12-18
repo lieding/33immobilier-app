@@ -13,6 +13,7 @@ module.exports = {
       INDEX_BANNER: "法国找房，我们是专业的",
       INDEX_SEARCH_PLACEHOLDER: '搜索哪个城市？ 比如Paris',
       REGION_CITY_SEARCHPLACEHOLDER: '区域或者城市邮编',
+      POSTAL_CODE: "邮编",
       Where: "你想住在哪？",
       SEARCH: "搜索",
       LIKE: '喜欢',
