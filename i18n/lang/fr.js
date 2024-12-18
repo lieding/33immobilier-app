@@ -9,6 +9,7 @@ module.exports = {
       English: "English",
       Chinese: "中文",
       login: "Connexion/Inscription",
+      TITLE: "Titre",
       INDEX_BANNER: "Trouvez un logement en France, nous sommes des experts",
       INDEX_SEARCH_PLACEHOLDER: 'Quelle ville cherchez-vous? Par exemple, Paris',
       REGION_CITY_SEARCHPLACEHOLDER: 'Région ou code postal de la ville',
@@ -156,6 +157,15 @@ module.exports = {
         TERRAIN: "Terrain : parcelle destinée à la construction ou au développement",
         LOFT: "Loft : espace ouvert aménagé, souvent dans d’anciens bâtiments industriels",
         APPARTEMENT_DE_LUXE: "Appartement de luxe : logement de haut standing avec des aménagements premium",
+      }
+    },
+    PAGE_STORE: {
+      CATEGORY: "Catégorie",
+      REVENU: "Chiffre d'Affaires",
+      CATEGORIES: {
+        "Tabac - Presse - Loto": "Tabac-Presse-Loto",
+        "Bar - Brasserie - Tabac": "Bar-Brasserie-Tabac",
+        Restaurant: "Restaurant"
       }
     },
     NEW_LIST: {

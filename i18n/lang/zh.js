@@ -9,6 +9,7 @@ module.exports = {
       English: "English",
       Chinese: "中文",
       login: "登陆/注册",
+      TITLE: "标题",
       INDEX_BANNER: "法国找房，我们是专业的",
       INDEX_SEARCH_PLACEHOLDER: '搜索哪个城市？ 比如Paris',
       REGION_CITY_SEARCHPLACEHOLDER: '区域或者城市邮编',
@@ -154,6 +155,15 @@ module.exports = {
         TERRAIN: "土地：指可用于建造或开发的地块",
         LOFT: "阁楼：通常是改造的工业空间，高天花板和开放式设计",
         APPARTEMENT_DE_LUXE: "豪华公寓：设施齐全、设计优雅的高级公寓",
+      }
+    },
+    PAGE_STORE: {
+      CATEGORY: "种类",
+      REVENU: "年收入",
+      CATEGORIES: {
+        "Tabac - Presse - Loto": "烟草 - 新闻 - 彩票乐透",
+        "Bar - Brasserie - Tabac": "酒吧 - 小酒馆 - 烟草",
+        Restaurant: "饭店"
       }
     },
     NEW_LIST: {

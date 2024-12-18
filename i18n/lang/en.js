@@ -9,6 +9,7 @@ module.exports = {
       Chinese: "Chinese",
       English: "English",
       login: "Login/Sign Up",
+      TITLE: "Title",
       INDEX_BANNER: "Find housing in France, we are the experts",
       INDEX_SEARCH_PLACEHOLDER: "Which city are you looking for? For example, Paris",
       REGION_CITY_SEARCHPLACEHOLDER: "Region or city postal code",
@@ -157,6 +158,15 @@ module.exports = {
         LOFT: "Loft: Open-plan space, often converted from industrial buildings",
         APPARTEMENT_DE_LUXE: "Luxury Apartment: High-end residence with premium amenities",
       },
+    },
+    PAGE_STORE: {
+      CATEGORY: "Category",
+      REVENU: "Revenue",
+      CATEGORIES: {
+        "Tabac - Presse - Loto": "Tobacco - Press - Loto",
+        "Bar - Brasserie - Tabac": "Bar - Brasserie - Tobacco",
+        Restaurant: "Restaurant"
+      }
     },
     NEW_LIST: {
       ALL_COMPLETION_STATUS: "No delivery status specified",

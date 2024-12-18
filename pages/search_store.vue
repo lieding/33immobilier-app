@@ -1,5 +1,5 @@
 <template>
-  <div class="new-list-page">
+  <div class="search-store-page">
     <el-breadcrumb separator="/">
       <el-breadcrumb-item><a href="/pc_index">{{ $t("message.global.HOME") }}</a></el-breadcrumb-item>
       <el-breadcrumb-item>{{ $t('message.global.STORE') }}</el-breadcrumb-item>
@@ -15,7 +15,6 @@
           <el-col :span="6">
             <el-select
               v-model="selectedDepartmentId"
-              clearable
               class="micco-select"
               :placeholder="$t('message.global.REGION_CITY_SEARCHPLACEHOLDER')"
             >
@@ -39,7 +38,7 @@
             width="220"
             trigger="click"
           >
-            <el-slider v-model="priceRange" :max="maxPrice" :min="minPrice" range @input="priceSlideChangeHandler"></el-slider>
+            <el-slider v-model="priceRange" :max="maxPrice" :min="minPrice" range @input="filterTableData"></el-slider>
             <p style="overflow:hidden">
               <span style="float:left;"> {{ fmoney(priceRange[0]) }}€</span>
               <span style="float:right;">{{ fmoney(priceRange[1]) }}€</span>
@@ -48,55 +47,59 @@
               <el-button type="text" @click="priceRange = [minPrice, maxPrice]">{{ $t('message.global.RESET') }}</el-button>
             </div>
           </el-popover>
-          <!-- Compleyion status select / Surface slide range -->
+          <!-- Surface slide range -->
           <el-col :span="6">
-            <template v-if="secondHandMode">
-              <div class="price-range-btn full-w pointer micco-select customized" @click="surfaceSlideVis = true" v-popover:surfacePopover>
-                <span class="label">{{ $t("message.global.SURFACE") }}</span>
-                <i class="el-icon-arrow-down" />
-              </div>
-              <el-popover
-                ref="surfacePopover"
-                width="220"
-                trigger="click"
-              >
-                <el-slider v-model="surfaceRange" :min="minSurface" :max="maxSurface" range @input="surfaceSlideChangeHandler"></el-slider>
-                <p style="overflow:hidden">
-                  <span style="float:left;"> {{ surfaceRange[0] }}</span>
-                  <span style="float:right;">{{ surfaceRange[1] }}</span>
-                </p>
-                <div>
+            <div class="price-range-btn full-w pointer micco-select customized" @click="surfaceSlideVis = true" v-popover:surfacePopover>
+              <span class="label">{{ $t("message.global.SURFACE") }}</span>
+              <i class="el-icon-arrow-down" />
+            </div>
+            <el-popover
+              ref="surfacePopover"
+              width="220"
+              trigger="click"
+            >
+              <el-slider v-model="surfaceRange" :min="minSurface" :max="maxSurface" range @input="filterTableData"></el-slider>
+              <p style="overflow:hidden">
+                <span style="float:left;"> {{ surfaceRange[0] }}</span>
+                <span style="float:right;">{{ surfaceRange[1] }}</span>
+              </p>
+              <div>
                 <el-button type="text" @click="surfaceRange = [minSurface, maxSurface]">{{ $t('message.global.RESET') }}</el-button>
               </div>
-              </el-popover>
-            </template>
-            <template v-else>
-              <el-select
-                v-model="completionStatusArr"
-                multiple
-                clearable
-                class="micco-select"
-                :placeholder="$t('message.NEW_LIST.ALL_COMPLETION_STATUS')"
-              >
-                <el-option v-for="it in CompletionStatusOption" :key="it.value" :label="it.label" :value="it.value"></el-option>
-              </el-select>
-            </template>
+            </el-popover>
           </el-col>
-          <!-- Typology select 房型选择 / class select -->
+          <!-- Category select -->
           <el-col :span="6">
             <el-select
-              v-model="selectedClassLevels"
-              multiple
+              v-model="selectedCategoryId"
               clearable
               class="micco-select"
-              :placeholder="$t('message.PAGE_SECOND_HAND.CLASS_LEVEL')"
+              :placeholder="$t('message.PAGE_STORE.CATEGORY')"
             >
-              <el-option v-for="it in ClassLevelList" :key="it.value" :label="it.label" :value="it.value"></el-option>
+              <el-option v-for="it in categoryOptions" :key="it.value" :label="it.label" :value="it.value"></el-option>
             </el-select>
           </el-col>
         </el-row>
         <div class="table-container">
-
+          <el-table :data="tableData" stripe style="width: 100%" @row-click="rowClickHandler">
+            <el-table-column prop="zip_code">
+              <template slot-scope="scope"><span>{{ scope.row.zip_code || '' }}</span></template>
+            </el-table-column>
+            <el-table-column prop="title" :label="$t('message.global.TITLE')" />
+            <el-table-column :label="$t('message.global.PRICE')">
+              <template slot-scope="scope"><span>{{ fmoney(scope.row.price) }}€</span></template>
+            </el-table-column>
+            <el-table-column :label="$t('message.global.SURFACE')">
+              <template slot-scope="scope"><span>{{ scope.row.surface ? `${scope.row.surface}m²` : '' }}</span></template>
+            </el-table-column>
+            <el-table-column :label="$t('message.PAGE_STORE.CATEGORY')" prop="category" />
+            <el-table-column :label="$t('message.global.ESTIMATED_MONTHLY_RENT')">
+              <template slot-scope="scope"><span>{{ scope.row.rent ? `${scope.row.rent}€` : '' }}</span></template>
+            </el-table-column>
+          </el-table>
+          <el-pagination
+            layout="prev, pager, next" :total="dataCnt" :page-size="pageSize" :current-page.sync="curPage">
+          </el-pagination>
         </div>
       </template>
     </section>
@@ -104,7 +107,8 @@
 </template>
 
 <script lang="js">
-import { fmoney } from '../utils';
+import { fmoney, createPath } from '../utils';
+import { CSV_SPLIT_SIZE, getInstanceParams, filterTableDataByConditions } from '../utils/store';
 import { JsonConfig, L2AREA_REGION, loadStoresGroupedByDepartmentId } from '../common/config';
 
 export default {
@@ -113,15 +117,54 @@ export default {
       dataLoading: false,
       departmentOptions: [],
       selectedDepartmentId: '',
-      tableData: [],
-      curPage: 0,
-      curPart: 0,
-      totalCnt: 0,
+      selectedCategoryId: '',
+      allTableData: [],
+      filterdData: [],
+      pageSize: 50,
+      curPage: 1,
+      dataCnt: 0,
+      minPrice: 0,
+      maxPrice: 0,
+      priceRange: [0, 0],
+      minSurface: 0,
+      maxSurface: 0,
+      surfaceRange: [0, 0],
     }
+  },
+  created () {
+    this.fmoney = fmoney;
+    this.categoryOptions = Object.entries(this.$t('message.PAGE_STORE.CATEGORIES'))
+      .map(it => ({ value: it[0], label: it[1] }));
   },
   mounted () {
     if (process.client) {
       this.loadConfig();
+    }
+  },
+  watch : {
+    selectedCategoryId () {
+      this.filterTableData();
+    },
+    selectedDepartmentId(cur, old) {
+      if (cur == old) return;
+      const found = this.departmentOptions.find(it => it.departmentId === cur);
+      if (!found) return;
+      Object.assign(this, {
+        selectedCategoryId: '',
+        allTableData: [], filterdData: [],
+        curPage: 1,
+        dataCnt: 0,
+        minPrice: 0, maxPrice: 0, priceRange: [0, 0],
+        minSurface: 0, maxSurface: 0, surfaceRange: [0, 0],
+      });
+      this.dataCnt = found.totalCnt || 0;
+      this.loadStoresGroupedByDepartmentId();
+    }
+  },
+  computed: {
+    tableData() {
+      const start = (this.curPage - 1) * this.pageSize, end = this.curPage * this.pageSize;
+      return this.filterdData.slice(start, end);
     }
   },
   methods: {
@@ -144,19 +187,59 @@ export default {
         .then(() => {
           if (!this.departmentOptions.length) return;
           this.selectedDepartmentId = '75';
-          this.totalCnt = this.departmentOptions.find(it => it.departmentId === '75')?.totalCnt || 0;
-          return this.loadStoresGroupedByDepartmentId();
         });
     },
-    loadStoresGroupedByDepartmentId(index) {
+    filterTableData() {
+      if (!this._allReady) return;
+      this.filterdData = [];
+      this.curPage = 1;
+      this.dataCnt = 0;
+      const filtered =
+        filterTableDataByConditions(this.allTableData, this.selectedCategoryId, this.priceRange, this.surfaceRange);
+      this.filterdData = filtered;
+      this.dataCnt = filtered.length;
+    },
+    rowClickHandler (row) {
+      const department_id = this.selectedDepartmentId;
+      const { id, title } = row;
+      if (!department_id || !id) return;
+      this.$router.push({ path: createPath('/store_detail'), query: { department_id, id, title } });
+    },
+    loadStoresGroupedByDepartmentId() {
       this.dataLoading = true;
-      return loadStoresGroupedByDepartmentId(this.selectedDepartmentId, index)
-        .then(rows => {
-          if (Array.isArray(rows))
-            this.tableData = [ ...this.tableData, ...rows ];
-        })
+      const index = Math.floor(this.dataCnt / CSV_SPLIT_SIZE);
+      const addRows = (rows) => {
+        if (Array.isArray(rows))
+          this.allTableData = [ ...this.allTableData, ...rows ];
+      }
+      // Load the first page
+      loadStoresGroupedByDepartmentId(this.selectedDepartmentId)
+        .then(addRows)
+        .then(() => Object.assign(this, getInstanceParams(this.allTableData)))
         .finally(() => this.dataLoading = false);
+      if (!index) return setTimeout(() => this._allReady = true, 3000);
+      // Load remaining pages
+      const promise = loadStoresGroupedByDepartmentId(this.selectedDepartmentId, 1).then(addRows);
+      for (let i = 2;i <= index; i++)
+        promise.then(loadStoresGroupedByDepartmentId(this.selectedDepartmentId, i).then(addRows));
+      promise.finally(() => {
+        Object.assign(this, getInstanceParams(this.allTableData));
+        setTimeout(() => this._allReady = true, 3000);
+      });
     },
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.search-store-page {
+  margin: 0 32px;
+  .content {
+    margin-top: 16px;
+    .content-title {
+      font-size: 24px;
+      margin: 0 0 16px;
+    }
+  }
+}
+</style>

@@ -13,6 +13,9 @@
       <span class="route-item pointer" @click="toSearch(SearchMode.SecondHand)" :class="{ active: currentPath === Path.SECOND_HAND }">
         <span class="label">{{ $t("message.global.SECOND_HAND") }}</span>
       </span>
+      <span class="route-item pointer" @click="select('/search_store')" :class="{ active: currentPath === Path.STORE }">
+        <span class="label">{{ $t("message.global.STORE") }}</span>
+      </span>
       <span class="route-item pointer" @click="toLoan">
         <span class="label">{{ $t("message.global.LOAN_LINK") }}</span>
       </span>
@@ -116,11 +119,15 @@ export default {
 const Path = {
   INDEX: 'INDEX',
   NEW: 'NEW',
-  SECOND_HAND: 'SECOND_HAND'
+  SECOND_HAND: 'SECOND_HAND',
+  STORE: 'STORE',
 }
 function checkCurrentPath (path, query) {
   if (!path) return null;
   if (path.includes('index')) return Path.INDEX;
+  if (path.includes('store')) {
+    return Path.STORE;
+  }
   if (path.includes('search')) {
     if (query?.searchMode) {
       if (query.searchMode === SearchMode.NewPrograme) return Path.NEW;

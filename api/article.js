@@ -47,6 +47,11 @@ const article = {
     const key = createKey(Path, params);
     return axios.get(Path, { params }).then(res => handleRes(res, key));
   },
+  getStoreDetail (params) {
+    const Path = '/store-detail';
+    const key = createKey(Path, params);
+    return axios.get(Path, { params }).then(res => handleRes(res, key));
+  },
   searchProgramesByCity (params) {
     const Path = '/search-programes-by-city';
     const key = createKey(Path, params);

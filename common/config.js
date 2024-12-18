@@ -58,7 +58,8 @@ export const JsonConfig = {
 export const PostApplicationMode = {
   PROGRAME_PROPERTY: 'PROGRAME_PROPERTY',
   SECOND_HAND: 'SECOND_HAND',
-  JOIN: 'JOIN'
+  JOIN: 'JOIN',
+  STORE: 'STORE',
 };
 
 export const CityRegionGeolocation = {

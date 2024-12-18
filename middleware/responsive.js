@@ -36,6 +36,8 @@ export default function({ route, isDesktop, redirect }) {
         return redirect(prefix + "/new_detail", route.query);
       case "/m_second_hand_detail":
         return redirect(prefix + "/second_hand_detail", route.query);
+      case "/m_search_store":
+        return redirect(prefix + "/search_store", route.query);
     }
   } else {
     switch (path) {
@@ -49,6 +51,8 @@ export default function({ route, isDesktop, redirect }) {
         return redirect(prefix + "/m_new_detail", route.query);
       case "/second_hand_detail":
         return redirect(prefix + "/m_second_hand_detail", route.query);
+      case "/search_store":
+        return redirect(prefix + "/m_search_store", route.query);
     }
   }
 }
