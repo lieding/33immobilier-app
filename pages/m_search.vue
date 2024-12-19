@@ -131,7 +131,7 @@ export default {
       searchMode,
       boundaryPlaceid: '',
       activePointId: '',
-      completionStatus: "",
+      completionStatus: '',
       minPrice: 0, //价格
       maxPrice: 0, //最大价格
       priceRange: [0, 0],
@@ -144,8 +144,8 @@ export default {
       allSecondhandList: [],
       filteredSecondHandList : [],
       typologyOptions: [], // 房型选择列表
-      selectedTypology: null,
-      selectedClassLevel: null,
+      selectedTypology: '',
+      selectedClassLevel: '',
       placeInfo: null,
       page: 1, //页数
       maxPage: 1, //新房的最大页数
@@ -224,7 +224,7 @@ export default {
     setSearchModeConcerningConfig () {
       this.CompletionStatusOption = CompletionStatusOptionConfig
         .map(({ key, I18NKey }) => ({ value: key, text: this.$t(`message.NEW_LIST.${I18NKey}`) }));
-      this.CompletionStatusOption.unshift({ key: '', text: this.$t('message.global.ALL_OPTIONS') });
+      this.CompletionStatusOption.unshift({ value: '', text: this.$t('message.global.ALL_OPTIONS') });
       this.TypologyOption = TypologyOptionConfig
         .map(({ incluedKey, I18NKey }) => ({ value: incluedKey, incluedKey, text: this.$t(`message.NEW_LIST.${I18NKey}`) }));
       if (this.isSecondHand) {
@@ -232,7 +232,7 @@ export default {
         this.ClassLevelList = Object
           .entries(this.$t('message.PAGE_SECOND_HAND.CLASS_LEVEL_LIST'))
           .map(it => ({ value: it[0], text: it[1] }));
-        this.ClassLevelList.unshift({ key: '', text: this.$t('message.global.ALL_OPTIONS') });
+        this.ClassLevelList.unshift({ value: '', text: this.$t('message.global.ALL_OPTIONS') });
       } else {
         this.departmentCityDataLoader = loadProgrameDepartmentCities;
       }

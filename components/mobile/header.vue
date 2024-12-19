@@ -20,6 +20,10 @@
           tag="li"
         >{{ $t("message.global.SECOND_HAND") }}</li>
         <li
+          @click="routerChange('m_search_store')"
+          tag="li"
+        >{{ $t("message.global.STORE") }}</li>
+        <li
           @click="toLoan"
           tag="li"
         >{{ $t("message.global.LOAN_LINK") }}</li>
@@ -87,7 +91,7 @@ export default {
 <style lang="scss" scoped>
 .mobile-header {
   padding-right: .1rem;
-  
+
   .left-part {
     img {
       padding-left: .1rem;

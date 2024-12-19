@@ -52,6 +52,30 @@
         </div>
       </li>
     </template>
+    <template v-else-if="isStore">
+      <li
+        v-for="(item) in list"
+        :key="item.id"
+        class="list-li"
+        @click="routerChange('/m_store_detail', { id: item.id, department_id: departmentId, title: item.title })"
+      >
+        <div class="flex">
+          <div class="image-wrapper">
+            <van-image :src="getCategoryImg(item)" class="cover-image" />
+          </div>
+          <div class="text">
+            <div class="info-row mt-4">{{ item.category }}</div>
+            <div class="info-row price mt-4"><span>{{ fmoney(item.price) }}€</span></div>
+            <div class="info-row mt-4">
+              {{ item.surface }}m²{{ item.zip_code ? ` / ${item.zip_code}`: '' }}
+            </div>
+            <div class="info-row mt-4" v-if="item.rent">
+              {{ $t('message.global.ESTIMATED_MONTHLY_RENT') }} {{ item.rent }}€
+            </div>
+          </div>
+        </div>
+      </li>
+    </template>
     <template v-if="!dataLoading && !list.length">
       <van-empty
         class="custom-image"
@@ -81,6 +105,9 @@ export default {
     },
     activePointId: {
       type: String,
+    },
+    departmentId: {
+      type: String,
     }
   },
   computed: {
@@ -89,6 +116,9 @@ export default {
     },
     isSecondHand () {
       return this.searchMode === SearchMode.SecondHand;
+    },
+    isStore () {
+      return this.searchMode === SearchMode.Store;
     }
   },
   created () {
@@ -103,6 +133,11 @@ export default {
     routerChange (path, query) {
       path = createPath(path);
       this.$router.push({ path, query });
+    },
+    getCategoryImg (row) {
+      const category = row.category?.replaceAll(' ', '');
+      if (!category) return '';
+      return `/${category}.png`;
     }
   }
 }
@@ -127,6 +162,9 @@ export default {
         font-size: 0.16rem;
         color: rgba(80, 80, 80, 1);
         text-shadow: 0 0.02rem 0.03rem rgba(255, 255, 255, 0.5);
+      }
+      &.mt-4 {
+        margin-top: 4px;
       }
     }
   }

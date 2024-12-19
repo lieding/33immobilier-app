@@ -116,8 +116,7 @@
 
 <script lang="js">
 import { fmoney, createPath } from '../utils';
-import { CSV_SPLIT_SIZE, getInstanceParams, filterTableDataByConditions } from '../utils/store';
-import { JsonConfig, L2AREA_REGION, loadStoresGroupedByDepartmentId } from '../common/config';
+import { CSV_SPLIT_SIZE, getInstanceParams, filterTableDataByConditions, loadStores, loadConfig } from '../utils/store';
 
 export default {
   data () {
@@ -178,24 +177,11 @@ export default {
   methods: {
     loadConfig () {
       this.dataLoading = true;
-      const configUrl = JsonConfig.StoreConfig;
-      const departmentObj = {};
-      for (const [name, id] of Object.entries(L2AREA_REGION)) {
-        departmentObj[id] = name;
-      }
-      fetch(configUrl)
-        .then(res => res.json())
-        .then(config => {
-          if (!config) return null;
-          this.departmentOptions = Object.entries(config)
-            .map(([departmentId, config]) =>
-              ({ departmentId, totalCnt: config.total_count, departmentName: departmentObj[departmentId] })
-            );
-        })
-        .then(() => {
-          if (!this.departmentOptions.length) return;
-          this.selectedDepartmentId = '75';
-        });
+      loadConfig().then(departmentOptions => {
+        if (!departmentOptions.length) return;
+        this.departmentOptions = departmentOptions;
+        this.selectedDepartmentId = '75';
+      });
     },
     filterTableData() {
       if (!this._allReady) return;
@@ -221,16 +207,13 @@ export default {
           this.allTableData = [ ...this.allTableData, ...rows ];
       }
       // Load the first page
-      loadStoresGroupedByDepartmentId(this.selectedDepartmentId)
-        .then(addRows)
-        .then(() => Object.assign(this, getInstanceParams(this.allTableData)))
-        .finally(() => this.dataLoading = false);
-      if (!index) return setTimeout(() => this._allReady = true, 3000);
-      // Load remaining pages
-      const promise = loadStoresGroupedByDepartmentId(this.selectedDepartmentId, 1).then(addRows);
-      for (let i = 2;i <= index; i++)
-        promise.then(loadStoresGroupedByDepartmentId(this.selectedDepartmentId, i).then(addRows));
+      const { promise, remainingPromise } = loadStores(this.selectedDepartmentId, index, addRows);
       promise.finally(() => {
+        Object.assign(this, getInstanceParams(this.allTableData));
+        this.dataLoading = false;
+        if (!remainingPromise) setTimeout(() => this._allReady = true, 3000);
+      });
+      remainingPromise?.finally(() => {
         Object.assign(this, getInstanceParams(this.allTableData));
         setTimeout(() => this._allReady = true, 3000);
       });

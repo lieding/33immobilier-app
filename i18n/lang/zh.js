@@ -41,6 +41,8 @@ module.exports = {
       PRICE: "价格",
       DELIVERY_DATE: "交房时间",
       SURFACE: "面积",
+      NEXT: "下一页",
+      PREV: "上一页",
 
       //新房
       NEW_PROGRAME_DETAIL: "新房详情",

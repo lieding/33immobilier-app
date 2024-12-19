@@ -1,10 +1,10 @@
 <template>
   <van-slider range :value="value" active-color="#ee0a24" :min="minValue" :max="maxValue" @change="handler">
     <template #left-button>
-      <div class="custom-button">{{ fmoney(value[0]) }}</div>
+      <div class="custom-button">{{ fmoney(value[0]) }}{{ metricStr }}</div>
     </template>
     <template #right-button>
-      <div class="custom-button">{{ fmoney(value[1]) }}</div>
+      <div class="custom-button">{{ fmoney(value[1]) }}{{ metricStr }}</div>
     </template>
   </van-slider>
 </template>
@@ -26,6 +26,10 @@ export default {
     maxValue: {
       required: true,
       type: Number
+    },
+    metricStr: {
+      type: String,
+      default: '',
     }
   },
   data () {

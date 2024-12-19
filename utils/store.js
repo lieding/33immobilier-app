@@ -1,5 +1,5 @@
 import { fmoney, extractTranslatedProperty } from './index';
-import { L2AREA_REGION } from '../common/config';
+import { L2AREA_REGION, loadStoresGroupedByDepartmentId, JsonConfig } from '../common/config';
 
 export const CSV_SPLIT_SIZE = 500;
 
@@ -77,4 +77,35 @@ export async function queryDetail (VueInst, department_id, id, lang) {
         }
       })
   }
+}
+
+export function loadStores (departmentId, index, addRows) {
+  const promise = loadStoresGroupedByDepartmentId(departmentId)
+    .then(addRows);
+  if (!index) {
+    return { promise };
+  }
+  // Load remaining pages
+  let remainingPromise = loadStoresGroupedByDepartmentId(departmentId, 1).then(addRows);
+  for (let i = 2;i <= index; i++)
+    remainingPromise = remainingPromise.then(() => loadStoresGroupedByDepartmentId(departmentId, i).then(addRows));
+  return { promise, remainingPromise };
+}
+
+export function loadConfig () {
+  const configUrl = JsonConfig.StoreConfig;
+  const departmentObj = {};
+  for (const [name, id] of Object.entries(L2AREA_REGION)) {
+    departmentObj[id] = name;
+  }
+  return fetch(configUrl)
+    .then(res => res.json())
+    .then(config => {
+      if (!config) return null;
+      const departmentOptions = Object.entries(config)
+        .map(([departmentId, config]) =>
+          ({ departmentId, totalCnt: config.total_count, departmentName: departmentObj[departmentId] })
+        );
+      return departmentOptions;
+    });
 }

@@ -41,6 +41,8 @@ module.exports = {
       PRICE: "Price",
       DELIVERY_DATE: "Delivery",
       SURFACE: "Area",
+      NEXT: "Next",
+      PREV: "Prev",
 
       // New Properties
       NEW_PROGRAME_DETAIL: "New Property Program Details",

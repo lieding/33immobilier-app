@@ -41,6 +41,8 @@ module.exports = {
       PRICE: "Prix",
       DELIVERY_DATE: "Livraison",
       SURFACE: "Surface",
+      NEXT: "Suivante",
+      PREV: "Précédent",
 
       // Logements Neuf
       NEW_PROGRAME_DETAIL: "Détails des programmes neufs",

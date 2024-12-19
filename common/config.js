@@ -40,6 +40,7 @@ export const SearchMode = {
   NewPrograme: 'NewPrograme',
   SecondHand: 'Secondhand',
   Renting: 'Renting',
+  Store: 'Store',
 };
 
 export const CsvUrlConfig = {
