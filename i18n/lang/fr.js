@@ -8,8 +8,10 @@ module.exports = {
       French: "Français",
       English: "English",
       Chinese: "中文",
-      login: "Connexion/Inscription",
+      LOGIN: "Connexion",
       TITLE: "Titre",
+      YES: "Oui",
+      NO: "Non",
       INDEX_BANNER: "Trouvez un logement en France, nous sommes des experts",
       INDEX_SEARCH_PLACEHOLDER: 'Quelle ville cherchez-vous? Par exemple, Paris',
       REGION_CITY_SEARCHPLACEHOLDER: 'Région ou code postal de la ville',
@@ -43,6 +45,13 @@ module.exports = {
       SURFACE: "Surface",
       NEXT: "Suivante",
       PREV: "Précédent",
+      MONTHS: "Mois",
+      REQUEST_RETRY: "La requête n'a pas abouti, veuillez réessayer après quelques secondes",
+      ALREADY_SUMITTED: "Déjà soumis",
+      LOCATION: "Position",
+      DESCRIPTION: "Description",
+      AUTH_NOT_ALLOWED: "Pour accéder à cette page, il faut d'abord se connecter",
+      PHOTOS: "Photos",
 
       // Logements Neuf
       NEW_PROGRAME_DETAIL: "Détails des programmes neufs",
@@ -54,7 +63,7 @@ module.exports = {
       TYPOLOGIES: "Typologies",
       CONSULTANT: "Conseiller immobilier",
       PROGRAME_DESC: "Description du programme",
-      DESCRIPTION: "Description de la propriété",
+      PROPERTY_DESCRIPTION: "Description de la propriété",
       PROGRAM_POSITION: "Emplacement du programme",
       PROPERTY_DETAILS: "Détails des propriétés",
       NEW_PROGRAME_ID: "Lot",
@@ -125,6 +134,15 @@ module.exports = {
       DESC: "Micco immo Services et produits sont fournis par Everest Finance, une société anonyme enregistrée à Paris, SIREN 948 100 839, siège social : 66 avenue des Champs Élysées, 75008 Paris",
       PRIVACY: 'Politique de confidentialité',
       COOKIE: 'Politique sur les cookies',
+    },
+    HEADER: {
+      PUBLISH_RENT: "Publier la location",
+      SEE_RENTS: "Voir toutes les locations",
+      LOGOUT: 'Déconnexion',
+    },
+    PAGE_LOGIN_REGISTER: {
+      PASSWORD: "Password",
+      LOGIN_FAIL: "La connexion a échoué, veuillez réessayer plus tard",
     },
     PAGE_INDEX: {
       SELECT_CITY: 'Sélectionnez une ville',
@@ -203,6 +221,58 @@ module.exports = {
       TYPOLOGY_OPTION_LABEL_SUITE: 'Suite',
       TYPOLOGY_OPTION_LABEL_CELLIER: 'Cellier (espace de rangement)',
     },
+    PAGE_RENT: {
+      HAS_FURNITURE: "Meublé",
+      NO_FURNITURE: "Without furniture",
+      RENT: "Loyer",
+      DEPOSIT: "Deposit",
+      EQUIPMENTS: "Equipments",
+      DELETE_WARNING: "Are you sure to delete this renting publish? REMEBER this action is not reversible!",
+    },
+    PAGE_QUESTINNAIRE: {
+      BASIS_INFO: "Informations de base",
+      RENT_TYPE: "Type de logement",
+      RENT_TYPE_OPTS: {
+        FULL: "Entier, sans partage",
+        SHARING: "Colocation, Partager avec d'autres"
+      },
+      RESIDENCE_TYPE: "Type de bien",
+      RESIDENCE_TYPE_OPTS: {
+        HOUSE: "Maison ou villa",
+        APPARTMENT: "Appartment"
+      },
+      ADDRESS: "Adresse de résidence",
+      ENTER_MANUALLY: "Entrer manuellement",
+      DETAIL: "Détail",
+      TITLE: "Titre de l’annonce",
+      PIECE_CNT: "Nombre de pièces",
+      CHAMBRE_CNT: "Nombre de chambres",
+      FURNITURE: "Meublé",
+      DESCRIPTION: "Description de la résidence",
+      TIME: "Disponibilité",
+      AVAILABLE_DATE: "Disponible à partir de",
+      DURATION: "Durée minimum de location",
+      RENT_CHARGE: "Loyers et charges",
+      PURE_RENT: "Loyer hors charge",
+      CHARGE: "Charge",
+      DEPOSIT: "Dépôt de garantie",
+      DEPOSIT_NOTICE: "Vous pouvez demander un maximum de 2 mois de loyer hors charges pour un bien meublé",
+      INTERNAL_PHOTOS: "Ajoutez des photos de l’intérieur de votre logement (3 photos minimum)",
+      ROOMS: "Chambres",
+      ADD_ROOM: "Ajouter une nouvelle pièce",
+      PHOTO_UPLOAD: "Télécharger des photos",
+      PHOTO_TAG_UNSELECTED: 'Étiquette non sélectionnée',
+      PHOTO_TAG_DIALOG_TITLE: "Sélectionner l'étiquette de la photo",
+      PHOTO_TAG_LIST: {
+        LIVING_ROOM: "Salon",
+        KITCHEN: "Cuisine",
+        BATHROOM: "Salle de bain",
+        TOILET: "Toilette",
+        CORRIDOR: "Couloir",
+        BALCONY: "Balcon",
+        OUTDOOR: "Extérieur"
+      },
+    },
     COMPONENT_TREND_CHART: {
       REGION_PER_METER: 'Prix moyen au m² par région',
       REGION: 'Évolution des prix par région',
@@ -258,6 +328,10 @@ module.exports = {
         'Malraux': "Rénovation de patrimoine historique avec réductions fiscales",
         'TVA réduite': "TVA réduite pour certains types de biens",
       }
+    },
+    FORM_RULE: {
+      MESSAGE_MIN_LEN: "Au moins {minLen} mots",
+      TYPE_NUMBER: "Doit être un nombre",
     },
     index: {
       SEARCH_MODE: [

@@ -64,13 +64,16 @@
             <van-image :src="getCategoryImg(item)" class="cover-image" />
           </div>
           <div class="text">
-            <div class="info-row mt-4">{{ item.category }}</div>
-            <div class="info-row price mt-4"><span>{{ fmoney(item.price) }}€</span></div>
-            <div class="info-row mt-4">
+            <div class="info-row mt">{{ item.category }}</div>
+            <div class="info-row price mt"><span>{{ fmoney(item.price) }}€</span></div>
+            <div class="info-row mt">
               {{ item.surface }}m²{{ item.zip_code ? ` / ${item.zip_code}`: '' }}
             </div>
-            <div class="info-row mt-4" v-if="item.rent">
+            <div class="info-row mt" v-if="item.rent">
               {{ $t('message.global.ESTIMATED_MONTHLY_RENT') }} {{ item.rent }}€
+            </div>
+            <div class="info-row" style="font-size: .11rem;">
+              {{ item.title.length > 24 ? (item.title.substring(0, 24) + '..') : item.title }}
             </div>
           </div>
         </div>
@@ -163,8 +166,8 @@ export default {
         color: rgba(80, 80, 80, 1);
         text-shadow: 0 0.02rem 0.03rem rgba(255, 255, 255, 0.5);
       }
-      &.mt-4 {
-        margin-top: 4px;
+      &.mt {
+        margin-top: 1px;
       }
     }
   }

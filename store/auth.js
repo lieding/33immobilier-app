@@ -7,7 +7,8 @@ import {
   getRefreshToken,
   clearAccessToken,
   clearRefreshToken,
-  getLocalAuthInfo
+  getLocalAuthInfo,
+  checkCachedAccessTokenValid
 } from '../utils/auth';
 import { verifyToken } from '../api/account';
 
@@ -27,26 +28,36 @@ export const mutations = {
     let { authorized = false, authInfo = null } = payload;
     if (authorized && authInfo?.user) {
       state.authorized = true;
-      setAccessToken(authInfo.AccessToken);
-      setRefreshToken(authInfo.RefreshToken);
+      setAccessToken(authInfo.token);
+      // setRefreshToken(authInfo.RefreshToken);
       setLocalAuthInfo(authInfo.user);
       state.authInfo = authInfo.user;
     } else {
       clearLocalAuthInfo();
     }
+  },
+  logout (state) {
+    state.authInfo = null;
+    state.authorized = false;
+    clearLocalAuthInfo();
   }
 }
 
 export const actions = {
   verifyToken({ commit, state }) {
     if (state.authorized) return;
-    const accessToken = getAccessToken(),
-      refreshToken = getRefreshToken();
-    if (!accessToken || !refreshToken) return;
-    verifyToken(accessToken, refreshToken)
+    const accessToken = getAccessToken();
+    if (!accessToken) return;
+    const cachedTokenVerificationValid = checkCachedAccessTokenValid();
+    const userInfo = getLocalAuthInfo();
+    if (cachedTokenVerificationValid)
+      return commit('setAuth', {
+        authorized: true,
+        authInfo: { user: userInfo }
+      });
+    verifyToken(accessToken)
       .then(res => {
         const data = res || {};
-        const userInfo = getLocalAuthInfo();
         if (userInfo)
           commit('setAuth', {
             authorized: true,
@@ -61,5 +72,8 @@ export const actions = {
   },
   setAuth ({ commit }, params) {
     commit('setAuth', { ...params })
-  }
+  },
+  logout ({ commit }) {
+    commit('logout')
+  },
 }

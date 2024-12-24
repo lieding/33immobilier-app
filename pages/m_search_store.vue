@@ -213,11 +213,6 @@ function generateHead () {
   display: flex;
   flex-direction: column;
 }
-.hr {
-  border: none;
-  height: 1px;
-  background-color: #ececec;
-}
 .list-wrapper {
   // flex: 1;
   // overflow-y: auto;

@@ -58,6 +58,13 @@ export async function searchCityGeolocation (city, region_id) {
 }
 
 /**
+ * @param {Array} arr
+*/
+export function checkArrLenGreaterThan1 (arr) {
+  return Array.isArray(arr) && arr.length > 1;
+}
+
+/**
  * @param {String} href
 */
 export function aLink (href) {
@@ -89,4 +96,47 @@ export function extractTranslatedProperty (obj, keys, lang) {
     if (val) ret[key] = val;
   }
   return ret;
+}
+
+/// city: "Paris"
+// citycode: "75118"
+// context: "75, Paris, Île-de-France"
+// district: "Paris 18e Arrondissement" Attention, this value maybe Null
+/// housenumber "113" Attention, this value maybe Null
+// id: "75118_5122"
+// importance: 0.74667
+// label: "Avenue Junot 75018 Paris"
+// name: "Avenue Junot"
+// postcode: "75018"
+// score: 0.2724245454545455
+// street: "Avenue Junot"
+// type: "street"  OR "housenumber" or "municipality"
+// x: 651328.83
+// y: 6865553.21
+/**
+ * @param {String} kw
+ * @returns {}
+*/
+const SearchAddressUrl = 'https://api-adresse.data.gouv.fr/search/';
+export function addressAutocompleteSearch (kw) {
+  return fetch(`${SearchAddressUrl}?q=${kw}&limit=6&type=housenumber`)
+    .then(res => res.json())
+    .then(res => res.features?.map((ele) => {
+      if (!ele) return;
+      const { properties, geometry: { coordinates } } = ele;
+      return { ...properties, latitude: coordinates[1], longitude: coordinates[0] };
+    }))
+    .then((items) => items?.filter(Boolean));
+}
+
+/**
+ * @param {String} presignedUrl
+ * @param {File} file
+*/
+export function upload2S3 (presignedUrl, file) {
+  return fetch(presignedUrl, {
+    method: "PUT",
+    headers: { 'Content-Type': file.type },
+    body: file
+  });
 }

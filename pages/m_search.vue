@@ -441,11 +441,6 @@ function generateHead (searchMode) {
   flex-direction: column;
   // height: calc(100vh - .06rem);
 }
-.hr {
-  border: none;
-  height: 1px;
-  background-color: #ececec;
-}
 .list-wrapper {
   // flex: 1;
   // overflow-y: auto;

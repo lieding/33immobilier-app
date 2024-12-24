@@ -17,12 +17,12 @@
           <el-form-item prop="firstName" :label="$t('message.global.FIRST_NAME')"
             :rules="{ required: true, message: $t('message.global.PLEASE_ENTER') }"
           >
-            <el-input v-model="form.firstName" :placeholder="$t('message.global.PLEASE_ENTER')"></el-input>
+            <el-input v-model="form.firstName" :placeholder="$t('message.global.PLEASE_ENTER')" size="small"></el-input>
           </el-form-item>
           <el-form-item prop="lastName" :label="$t('message.global.LAST_NAME')"
             :rules="{ required: true, message: $t('message.global.PLEASE_ENTER') }"
           >
-            <el-input v-model="form.lastName" :placeholder="$t('message.global.PLEASE_ENTER')"></el-input>
+            <el-input v-model="form.lastName" :placeholder="$t('message.global.PLEASE_ENTER')" size="small"></el-input>
           </el-form-item>
           <el-form-item prop="mail" :label="$t('message.global.CONTACT_EMAIL_ADDRESS')"
             :rules="[
@@ -30,7 +30,7 @@
               { type: 'email', message: $t('message.global.INVALID') }
             ]"
           >
-            <el-input v-model="form.mail" :placeholder="$t('message.global.PLEASE_ENTER')"></el-input>
+            <el-input v-model="form.mail" :placeholder="$t('message.global.PLEASE_ENTER')" size="small"></el-input>
           </el-form-item>
           <el-form-item prop="phone" :label="$t('message.global.CONTACT_PHONE')"
             :rules="{ required: true, message: $t('message.global.PLEASE_ENTER') }"
@@ -44,6 +44,7 @@
                 :loading="false"
                 :placeholder="$t('message.global.PLEASE_SELECT')"
                 style="width: 120px;margin-right: 8px;"
+                size="small"
               >
                 <el-option
                   v-for="it in filtered" :key="it.code"
@@ -53,7 +54,7 @@
                   <span >{{ it.dial_code }}</span>
                 </el-option>
               </el-select>
-              <el-input v-model="form.phone" :placeholder="$t('message.global.PLEASE_ENTER')" />
+              <el-input v-model="form.phone" :placeholder="$t('message.global.PLEASE_ENTER')" size="small" />
             </div>
           </el-form-item>
           <el-form-item prop="message" :label="$t('message.global.LEAVE_YOUR_MESSAGE')">
@@ -150,7 +151,7 @@ export default {
         display: inline-block;
       }
       .label {
-        width: 120px;
+        width: 200px;
       }
       .text {
         font-weight: bold;

@@ -1,4 +1,5 @@
 import axios from "~/common/http"; // 导入http中创建的axios实例
+import { getAccessToken } from '../utils/auth';
 
 const cachedArr = [];
 
@@ -28,6 +29,12 @@ function createKey (path, params) {
 function handleRes (res, key) {
   // setCache(key, res.data);
   return res;
+}
+
+function createHeaderWithAuth () {
+  return {
+    Authorization: `Bearer ${getAccessToken()}`,
+  };
 }
 
 const article = {
@@ -79,6 +86,30 @@ const article = {
   },
   postApplication (data) {
     return axios.post('/post-application', data);
+  },
+  getRentPhotosPresignedUrls (data) {
+    const headers = createHeaderWithAuth();
+    return axios.post('/rent-photo-presigned-urls', data, { headers });
+  },
+  createNewRent (data) {
+    const headers = createHeaderWithAuth();
+    return axios.post('/create-new-rent', data, { headers });
+  },
+  getRentDetail (params) {
+    const Path = '/rent-detail';
+    const key = createKey(Path, params);
+    return axios.get(Path, { params }).then(res => handleRes(res, key));
+  },
+  searchRentsByUserId () {
+    const Path = '/search-rents-by-userid';
+    const key = createKey(Path);
+    const headers = createHeaderWithAuth();
+    return axios.get(Path, { headers }).then(res => handleRes(res, key));
+  },
+  translateRentDetail (params) {
+    const Path = '/rent-detail-translate';
+    const key = createKey(Path, params);
+    return axios.get(Path, { params }).then(res => handleRes(res, key));
   }
 };
 

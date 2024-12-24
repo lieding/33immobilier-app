@@ -8,8 +8,10 @@ module.exports = {
       French: "French",
       Chinese: "Chinese",
       English: "English",
-      login: "Login/Sign Up",
+      LOGIN: "Login",
       TITLE: "Title",
+      YES: "Yes",
+      NO: "No",
       INDEX_BANNER: "Find housing in France, we are the experts",
       INDEX_SEARCH_PLACEHOLDER: "Which city are you looking for? For example, Paris",
       REGION_CITY_SEARCHPLACEHOLDER: "Region or city postal code",
@@ -43,6 +45,13 @@ module.exports = {
       SURFACE: "Area",
       NEXT: "Next",
       PREV: "Prev",
+      MONTHS: "Months",
+      REQUEST_RETRY: "Request not succeeded, please retry after seconds",
+      ALREADY_SUMITTED: "Already submitted",
+      LOCATION: "Location",
+      DESCRIPTION: "Description",
+      AUTH_NOT_ALLOWED: "This page requires to login firstly",
+      PHOTOS: "Photos",
 
       // New Properties
       NEW_PROGRAME_DETAIL: "New Property Program Details",
@@ -54,7 +63,7 @@ module.exports = {
       TYPOLOGIES: "Typologies",
       CONSULTANT: "Real Estate Advisor",
       PROGRAME_DESC: "Program Description",
-      DESCRIPTION: "Property Description",
+      PROPERTY_DESCRIPTION: "Property Description",
       PROGRAM_POSITION: "Program Location",
       PROPERTY_DETAILS: "Property Details",
       NEW_PROGRAME_ID: "Lot",
@@ -125,6 +134,15 @@ module.exports = {
       DESC: "Micco Immo Services and products are provided by Everest Finance, a company registered in Paris, SIREN 948 100 839, headquarters: 66 avenue des Champs Élysées, 75008 Paris",
       PRIVACY: "Privacy Policy",
       COOKIE: "Cookie Policy",
+    },
+    HEADER: {
+      PUBLISH_RENT: "Publish rentings",
+      SEE_RENTS: "See all rentings",
+      LOGOUT: 'Log out',
+    },
+    PAGE_LOGIN_REGISTER: {
+      PASSWORD: "Password",
+      LOGIN_FAIL: "Login failed, please try again later",
     },
     PAGE_INDEX: {
       SELECT_CITY: "Select a city",
@@ -203,6 +221,58 @@ module.exports = {
       TYPOLOGY_OPTION_LABEL_SUITE: "Suite",
       TYPOLOGY_OPTION_LABEL_CELLIER: "Storage room",
     },
+    PAGE_RENT: {
+      HAS_FURNITURE: "Furniture",
+      NO_FURNITURE: "Without furniture",
+      RENT: "Rent",
+      DEPOSIT: "Deposit",
+      EQUIPMENTS: "Equipments",
+      DELETE_WARNING: "Are you sure to delete this renting publish? REMEBER this action is not reversible!",
+    },
+    PAGE_QUESTINNAIRE: {
+      BASIS_INFO: "Basis information",
+      RENT_TYPE: "Type of rent",
+      RENT_TYPE_OPTS: {
+        FULL: "Full, no sharing",
+        SHARING: "Sharing with others"
+      },
+      RESIDENCE_TYPE: "Type of residence",
+      RESIDENCE_TYPE_OPTS: {
+        HOUSE: "House or villa",
+        APPARTMENT: "Appartment"
+      },
+      ADDRESS: "Residence address",
+      ENTER_MANUALLY: "Enter manually",
+      DETAIL: "Detail",
+      TITLE: "Title",
+      PIECE_CNT: "Number of rooms",
+      CHAMBRE_CNT: "Number of bedrooms",
+      FURNITURE: "Furniture inside?",
+      DESCRIPTION: "Description of residence",
+      TIME: "Time",
+      AVAILABLE_DATE: "When available",
+      DURATION: "Duration time of residence",
+      RENT_CHARGE: "Rent & Charge",
+      PURE_RENT: "Rent without charge",
+      CHARGE: "Charge",
+      DEPOSIT: "Deposit for guarantee",
+      DEPOSIT_NOTICE: "You can request a maximum of 2 months' rent excluding charges for a furnished property",
+      INTERNAL_PHOTOS: "Upload photos of the interior of your accommodation (3 photos minimum)",
+      ROOMS: "Rooms",
+      ADD_ROOM: "Add new room",
+      PHOTO_UPLOAD: "Upload photos",
+      PHOTO_TAG_UNSELECTED: 'Tag Unselected',
+      PHOTO_TAG_DIALOG_TITLE: "Select Photo Tag",
+      PHOTO_TAG_LIST: {
+        LIVING_ROOM: "Living room",
+        KITCHEN: "Kitchen",
+        BATHROOM: "Bathroom",
+        TOILET: "Toilet",
+        CORRIDOR: "Corridor",
+        BALCONY: "Balcony",
+        OUTDOOR: "Outdoor"
+      },
+    },
     COMPONENT_TREND_CHART: {
       REGION_PER_METER: "Average price per m² by region",
       REGION: "Price trends by region",
@@ -258,6 +328,10 @@ module.exports = {
         'Malraux': "Historical heritage renovation with tax reductions",
         'TVA réduite': "Reduced VAT for specific property types",
       }
+    },
+    FORM_RULE: {
+      MESSAGE_MIN_LEN: "At least {minLen} words",
+      TYPE_NUMBER: "Must be number",
     },
     index: {
       SEARCH_MODE: [

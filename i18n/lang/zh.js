@@ -8,8 +8,10 @@ module.exports = {
       French: "Français",
       English: "English",
       Chinese: "中文",
-      login: "登陆/注册",
+      LOGIN: "登陆",
       TITLE: "标题",
+      YES: "是",
+      NO: "否",
       INDEX_BANNER: "法国找房，我们是专业的",
       INDEX_SEARCH_PLACEHOLDER: '搜索哪个城市？ 比如Paris',
       REGION_CITY_SEARCHPLACEHOLDER: '区域或者城市邮编',
@@ -43,6 +45,13 @@ module.exports = {
       SURFACE: "面积",
       NEXT: "下一页",
       PREV: "上一页",
+      MONTHS: "个月",
+      REQUEST_RETRY: "请求不成功，请稍后再试",
+      ALREADY_SUMITTED: "已提交",
+      LOCATION: "位置",
+      DESCRIPTION: "简介",
+      AUTH_NOT_ALLOWED: "您必须先登录",
+      PHOTOS: "照片",
 
       //新房
       NEW_PROGRAME_DETAIL: "新房详情",
@@ -54,7 +63,7 @@ module.exports = {
       TYPOLOGIES: "户型范围",
       CONSULTANT: "房产顾问",
       PROGRAME_DESC: "楼盘介绍",
-      DESCRIPTION: "房源介绍",
+      PROPERTY_DESCRIPTION: "房源介绍",
       PROGRAM_POSITION: "楼盘位置",
       PROPERTY_DETAILS: "户型详情",
       NEW_PROGRAME_ID: "新房ID",
@@ -123,6 +132,15 @@ module.exports = {
       DESC: "Micco immo服务和产品由 Everest Finance 公司提供，Everest Finance是一家在巴黎注册的有限股份公司，注册号为 N° SIREN 948 100 839，总部位于 66 avenue des Champs Elyssées, 75008 Paris",
       PRIVACY: '隐私政策',
       COOKIE: 'Cookie政策',
+    },
+    HEADER: {
+      PUBLISH_RENT: "发布租房房源",
+      SEE_RENTS: "查看我的房源",
+      LOGOUT: '登出',
+    },
+    PAGE_LOGIN_REGISTER: {
+      PASSWORD: "密码",
+      LOGIN_FAIL: "登录失败，请稍后再试一试",
     },
     PAGE_INDEX: {
       SELECT_CITY: '选择城市',
@@ -201,6 +219,58 @@ module.exports = {
       TYPOLOGY_OPTION_LABEL_SUITE: '套房',
       TYPOLOGY_OPTION_LABEL_CELLIER: '储物间',
     },
+    PAGE_RENT: {
+      HAS_FURNITURE: "带家具",
+      NO_FURNITURE: "无家具",
+      RENT: "租金",
+      DEPOSIT: "押金",
+      EQUIPMENTS: "家具电器",
+      DELETE_WARNING: "您确定删除它吗? 一旦执行无法撤回!",
+    },
+    PAGE_QUESTINNAIRE: {
+      BASIS_INFO: "基本信息",
+      RENT_TYPE: "类型",
+      RENT_TYPE_OPTS: {
+        FULL: "整租",
+        SHARING: "合租"
+      },
+      RESIDENCE_TYPE: "房屋类型",
+      RESIDENCE_TYPE_OPTS: {
+        HOUSE: "别墅",
+        APPARTMENT: "公寓"
+      },
+      ADDRESS: "地址",
+      ENTER_MANUALLY: "手动输入",
+      DETAIL: "细节",
+      TITLE: "标题",
+      PIECE_CNT: "房屋数量",
+      CHAMBRE_CNT: "房间数量",
+      FURNITURE: "带有家具?",
+      DESCRIPTION: "描述",
+      TIME: "时间",
+      AVAILABLE_DATE: "什么时候开始",
+      DURATION: "最短租期",
+      RENT_CHARGE: "租金 & 费用",
+      PURE_RENT: "租金不包括费用",
+      CHARGE: "杂费",
+      DEPOSIT: "押金",
+      DEPOSIT_NOTICE: "对一个已装修的房屋您可以最多要求两个月的押金",
+      INTERNAL_PHOTOS: "上传展示房屋的图片(至少三张)",
+      ROOMS: "房间",
+      ADD_ROOM: "添加新房间",
+      PHOTO_UPLOAD: "上传照片",
+      PHOTO_TAG_UNSELECTED: '未选择标签',
+      PHOTO_TAG_DIALOG_TITLE: "选择图片标签",
+      PHOTO_TAG_LIST: {
+        LIVING_ROOM: "客厅",
+        KITCHEN: "厨房",
+        BATHROOM: "浴室",
+        TOILET: "厕所",
+        CORRIDOR: "走廊",
+        BALCONY: "阳台",
+        OUTDOOR: "室外"
+      },
+    },
     COMPONENT_TREND_CHART: {
       REGION_PER_METER: '大区均价走势',
       REGION: '大区房价走势',
@@ -256,6 +326,10 @@ module.exports = {
         'Malraux': '历史遗产修复的税收计划',
         'TVA réduite': '部分房产的低税率增值税',
       }
+    },
+    FORM_RULE: {
+      MESSAGE_MIN_LEN: "至少{minLen}词",
+      TYPE_NUMBER: "必须是数字",
     },
     index: {
       SEARCH_MODE: [

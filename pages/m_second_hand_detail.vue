@@ -22,15 +22,15 @@
       <p class="detail-location">{{ detail.zip_code }} / {{ detail.city }}</p>
       <p class="price">{{ fmoney(detail.price) }}€</p>
       <p class="info-row">
-        <span class="grey-color">{{ $t("message.global.LOCATED_CITY") }} ：</span>
+        <span class="grey">{{ $t("message.global.LOCATED_CITY") }} ：</span>
         {{ detail.zip_code }} / {{ detail.city }}
       </p>
       <p class="info-row">
-        <span class="grey-color">{{ $t("message.PAGE_SECOND_HAND.AGENT") }} ：</span>
+        <span class="grey">{{ $t("message.PAGE_SECOND_HAND.AGENT") }} ：</span>
         {{ detail.agent }}
       </p>
       <p class="info-row">
-        <span class="grey-color">{{ $t("message.global.SURFACE") }} ：</span>
+        <span class="grey">{{ $t("message.global.SURFACE") }} ：</span>
         {{ detail.surface }}m²
       </p>
       <p class="info-row">
@@ -51,7 +51,7 @@
     <div class="section pack">
       <div class="top">
         <div>
-          <span class="section-title">{{ $t("message.global.DESCRIPTION") }}</span>
+          <span class="section-title">{{ $t("message.global.PROPERTY_DESCRIPTION") }}</span>
         </div>
       </div>
       <div
@@ -218,12 +218,7 @@ export default {
     width: 100%;
   }
 }
-.hr {
-  border: none;
-  height: 1px;
-  margin: 0.12rem 0;
-  background-color: #ececec;
-}
+
 .van-button--large {
   width: 92%;
   margin-left: 0.1rem;
@@ -266,9 +261,6 @@ export default {
   span {
     font-size: .16rem;
   }
-}
-.grey-color {
-  color: rgba(186, 186, 186, 1);
 }
 .section-title {
   font-size: 0.2rem;

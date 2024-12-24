@@ -69,7 +69,7 @@
       </div>
       <div class="desktop-placed-center content-section">
         <p class="title">
-          {{ $t("message.global.DESCRIPTION") }}
+          {{ $t("message.global.PROPERTY_DESCRIPTION") }}
         </p>
         <p class="description">
           <div v-html="detail.description"></div>

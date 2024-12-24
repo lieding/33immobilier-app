@@ -3,7 +3,7 @@
     <div class="left-part flex-column justify-center" @click="redirect('/pc_index')">
       <img src="/33immo-logo.png" />
     </div>
-    <div class="routes">
+    <div class="routes flex justify-center">
       <span class="route-item pointer" @click="select('/pc_index')" :class="{ active: currentPath === Path.INDEX }">
         <span class="label">{{ $t("message.global.HOME") }}</span>
       </span>
@@ -21,7 +21,6 @@
       </span>
       <div v-popover:popover class="pointer route-item lang-switcher-popup-trigger">
         <img src="/i18n.svg" />
-        <!-- <span class="label">{{ isFr ? "中文" : "FR" }}</span> -->
       </div>
     </div>
     <el-popover width="40" trigger="click" ref="popover">
@@ -48,6 +47,23 @@
         <span>{{ $t("message.global.French") }}</span>
       </div>
     </el-popover>
+    <div  class="right-part">
+      <el-popover width="40" trigger="click" v-if="curAuthInfo">
+        <div @click="redirect('/rent_questionnaire')" class="pointer text-center">
+          <span>{{ $t("message.HEADER.PUBLISH_RENT") }}</span>
+        </div>
+        <div @click="redirect('/rent_list')" class="pointer text-center">
+          <span>{{ $t("message.HEADER.SEE_RENTS") }}</span>
+        </div>
+        <div @click="doLogout" class="pointer text-center danger-color">
+          <span>{{ $t("message.HEADER.LOGOUT") }}</span>
+        </div>
+        <el-avatar slot="reference" icon="el-icon-user-solid" class="avatar-icon pointer" size="small"></el-avatar>
+      </el-popover>
+      <span class="login-text inline-block pointer" @click="redirect('/login_register')" v-else>
+        {{ $t('message.global.LOGIN') }}
+      </span>
+    </div>
   </header>
 </template>
 
@@ -55,24 +71,20 @@
 import { createPath, aLink } from '../../utils';
 import { SearchMode, CityRegionGeolocation } from '../../common/config'
 import { createNamespacedHelpers } from 'vuex'
-const { mapGetters } = createNamespacedHelpers('auth');
+const { mapGetters, mapActions } = createNamespacedHelpers('auth');
 
-const LOAN_LINK = process.env['IMMO_LOAN_LINK'];
+const LOAN_LINK_CN = process.env['IMMO_LOAN_LINK_CN'];
+const LOAN_LINK_EN = process.env['IMMO_LOAN_LINK_EN'];
+const LOAN_LINK_FR = process.env['IMMO_LOAN_LINK_FR'];
 
 export default {
   name: "headers",
   data () {
     return {
       currentPath: null,
-      isFr: false,
     }
   },
   computed: {
-    langSwitchImgSrc () {
-      if (this.isCn) return '/chinese.png';
-      if (this.isEn) return '/english.png';
-      return '/french.png';
-    },
     ...mapGetters(['curAuthInfo']),
   },
   watch: {
@@ -89,15 +101,21 @@ export default {
     }
   },
   created () {
-    this.isFr = this._i18n.locale === 'fr';
-    this.isEn = this._i18n.locale === 'en';
-    this.isCn = this._i18n.locale === 'cn';
     this.SearchMode = SearchMode;
     this.Path = Path;
   },
   methods: {
+    ...mapActions(['logout']),
+    doLogout () {
+      this.logout();
+      this.redirect('/pc_index');
+    },
     toLoan () {
-      aLink(LOAN_LINK);
+      const lang = this._i18n.locale;
+      let link = LOAN_LINK_EN;
+      if (lang === 'fr') link = LOAN_LINK_FR;
+      if (lang === 'cn') link = LOAN_LINK_CN;
+      aLink(link);
     },
     redirect (path) {
       this.$router.replace({ path: createPath(path) });
@@ -110,7 +128,6 @@ export default {
       this.$router.replace({ path: createPath('/search'), query: { department_city: 'Paris', ...geolocation, searchMode } });
     },
     changeLocale(locale) {
-      this.isFr = locale === 'fr';
       this.$i18n.setLocaleCookie(locale);
       this.$router.push(this.switchLocalePath(locale));
     }
@@ -146,11 +163,13 @@ function checkCurrentPath (path, query) {
 header {
   padding: 0 24px;
   .left-part {
+    flex: unset;
     img {
       height: 50px;
     }
   }
   .routes {
+    flex: 1;
     span {
       display: inline-block;
     }
@@ -177,6 +196,16 @@ header {
           transform: translateY(2px);
         }
       }
+    }
+  }
+  .right-part {
+    flex: unset;
+    .login-text {
+      padding: 16px 24px 16px 8px;
+      font-size: 18px;
+    }
+    .avatar-icon {
+      margin-top: 10px;
     }
   }
   .login-btn-wrapper {

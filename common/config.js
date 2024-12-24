@@ -61,6 +61,7 @@ export const PostApplicationMode = {
   SECOND_HAND: 'SECOND_HAND',
   JOIN: 'JOIN',
   STORE: 'STORE',
+  RENT: 'RENT',
 };
 
 export const CityRegionGeolocation = {

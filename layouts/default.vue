@@ -38,7 +38,7 @@ export default {
     }
   },
   mounted () {
-    this.verifyToken();
+    if (process.client) this.verifyToken();
   },
   methods: {
     ...mapActions(['verifyToken'])
@@ -93,6 +93,8 @@ figcaption {
 :root {
   --main-blue: #2746D1;
   --white-color: #fff;
+  --main-purple: #4113f6;
+  --danger-color: #f56c6c;
 }
 
 /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
@@ -176,6 +178,10 @@ body {
   align-items: center;
 }
 
+.block {
+  display: block;
+}
+
 .inline-block {
   display: inline-block;
 }
@@ -257,6 +263,21 @@ body {
 
 .white {
   color: var(--white-color);
+}
+
+.grey {
+  color: #bababa;
+}
+
+.danger-color {
+  color: var(--danger-color);
+}
+
+.hr {
+  border: none;
+  height: 1px;
+  margin: 0.12rem 0;
+  background-color: #ececec;
 }
 
 .relative {

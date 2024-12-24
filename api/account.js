@@ -5,7 +5,7 @@ export function createUserByGoogle (data) {
     "/user/createUserByGoogle",
     data,
     { headers: { 'Content-Type': 'application/json' } },
-  ).then(res => res.data.data); 
+  ).then(res => res.data.data);
 }
 
 export function createUser (data) {
@@ -16,16 +16,13 @@ export function createUser (data) {
   ).then(res => res.data.data);
 }
 
-export function login (loginName, password) {
-  return axios.get(
-    "/user/login",
-    { params: { loginName, password } },
-  ).then(res => res.data.data);
+export function login (params) {
+  return axios.get("/user-login", { params }).then(res => res.data);
 }
 
-export function verifyToken (accessToken, refreshToken) {
+export function verifyToken (accessToken) {
   return axios.get(
-    "/user/verify-refresh-token",
-    { params: { accessToken, refreshToken } },
-  ).then(res => res.data.data);
+    "/verify-token",
+    { headers: { Authorization: `Bearer ${accessToken}` } },
+  );
 }

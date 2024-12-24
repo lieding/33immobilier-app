@@ -222,12 +222,6 @@ function drawRepaymentPieChart (compInst) {
 </script>
 
 <style lang="scss" scoped>
-.hr {
-  border: none;
-  height: 1px;
-  margin: 0.12rem 0;
-  background-color: #ececec;
-}
 .section {
   // margin: 0 0.12rem;
 }
@@ -272,7 +266,7 @@ function drawRepaymentPieChart (compInst) {
   font-size: 0.26rem;
   color: rgba(0, 0, 0, 0.76);
   margin-right: 0.1rem;
-  
+
 }
 .btn {
   margin: 0.1rem 0;

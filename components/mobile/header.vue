@@ -8,9 +8,7 @@
         <img src="/mobile-header-list-btn.png" @click="listBtnClickHandler" />
       </div>
       <ul class="popup-list" @click="listBtnClickHandler">
-        <li @click="routerChange('m_index')" tag="li">
-          {{ $t("message.global.HOME") }}
-        </li>
+        <li @click="routerChange('m_index')" tag="li">{{ $t("message.global.HOME") }}</li>
         <li
           @click="routerChange('m_search', { searchMode: SearchMode.NewPrograme, department_city: 'Paris' })"
           tag="li"
@@ -19,14 +17,8 @@
           @click="routerChange('m_search', { searchMode: SearchMode.SecondHand, department_city: 'Paris' })"
           tag="li"
         >{{ $t("message.global.SECOND_HAND") }}</li>
-        <li
-          @click="routerChange('m_search_store')"
-          tag="li"
-        >{{ $t("message.global.STORE") }}</li>
-        <li
-          @click="toLoan"
-          tag="li"
-        >{{ $t("message.global.LOAN_LINK") }}</li>
+        <li @click="routerChange('m_search_store')" tag="li">{{ $t("message.global.STORE") }}</li>
+        <li @click="toLoan" tag="li">{{ $t("message.global.LOAN_LINK") }}</li>
         <li @click="changeLocale('zh')" class="locale-row flex-center">
           <img src="/chinese.png" />
           <span>{{ $t("message.global.Chinese") }}</span>
@@ -39,18 +31,27 @@
           <img src="/french.png" />
           <span>{{ $t("message.global.French") }}</span>
         </li>
+        <template v-if="!curAuthInfo">
+          <li @click="routerChange('/login_register')" tag="li">{{ $t("message.global.LOGIN") }}</li>
+        </template>
+        <template v-else>
+          <li @click="routerChange('/rent_questionnaire')" tag="li">{{ $t("message.HEADER.PUBLISH_RENT") }}</li>
+          <li @click="doLogout" tag="li">{{ $t("message.HEADER.LOGOUT") }}</li>
+        </template>
       </ul>
     </el-popover>
   </div>
 </template>
 
 <script>
+import { createNamespacedHelpers } from 'vuex';
 import { SearchMode, CityRegionGeolocation } from '../../common/config';
 import { createPath, aLink } from '../../utils';
+const { mapGetters, mapActions } = createNamespacedHelpers('auth');
 
 const LOAN_LINK_CN = process.env['IMMO_LOAN_LINK_CN'];
-const LOAN_LINK_FR = process.env['IMMO_LOAN_LINK_EN'];
-const LOAN_LINK_EN = process.env['IMMO_LOAN_LINK_FR'];
+const LOAN_LINK_EN = process.env['IMMO_LOAN_LINK_EN'];
+const LOAN_LINK_FR = process.env['IMMO_LOAN_LINK_FR'];
 
 export default {
   name: "",
@@ -63,9 +64,21 @@ export default {
   created () {
     this.SearchMode = SearchMode;
   },
+  computed: {
+    ...mapGetters(['curAuthInfo']),
+  },
   methods: {
+    ...mapActions(['logout']),
+    doLogout () {
+      this.logout();
+      this.redirect('/m_index');
+    },
     toLoan () {
-      aLink(LOAN_LINK);
+      const lang = this._i18n.locale;
+      let link = LOAN_LINK_EN;
+      if (lang === 'fr') link = LOAN_LINK_FR;
+      if (lang === 'cn') link = LOAN_LINK_CN;
+      aLink(link);
     },
     toIndex () {
       this.$router.replace({ path: createPath('m_index') });

@@ -34,23 +34,23 @@
       </p>
       <p class="price">{{ fmoney(programeDetail.availablePropertiesMinPrice) }}€ - {{ fmoney(programeDetail.availablePropertiesMaxPrice) }}€</p>
       <p class="info-row">
-        <span class="grey-color">{{ $t("message.global.DELIVERY_DATE") }} ：</span>
+        <span class="grey">{{ $t("message.global.DELIVERY_DATE") }} ：</span>
         {{ programeDetail.deliveryQuarter }}
       </p>
       <p class="info-row">
-        <span class="grey-color">{{ $t("message.global.PROPERTIES_COUNT") }} ：</span>
+        <span class="grey">{{ $t("message.global.PROPERTIES_COUNT") }} ：</span>
         {{ programeDetail.availablePropertiesCount }}
       </p>
       <p class="info-row">
-        <span class="grey-color">{{ $t("message.global.TAX_CUTS") }} ：</span>
+        <span class="grey">{{ $t("message.global.TAX_CUTS") }} ：</span>
         {{ translatedLaws }}
       </p>
       <p class="info-row">
-        <span class="grey-color">{{ $t("message.global.TAX_AREA") }} ：</span>
+        <span class="grey">{{ $t("message.global.TAX_AREA") }} ：</span>
         {{ translatedTaxArea }}
       </p>
       <p class="info-row">
-        <span class="grey-color">{{ $t("message.global.LOCATED_CITY") }} ：</span>
+        <span class="grey">{{ $t("message.global.LOCATED_CITY") }} ：</span>
         {{ programeDetail.zip_code }} / {{ programeDetail.city }}
       </p>
     </div>
@@ -102,27 +102,27 @@
       <div class="swipe">
         <div v-for="(info, index) in properties" :key="index" @click="propertyClickHandler(info)">
           <p class="info-row">
-            <span class="grey-color">{{ $t("message.global.NEW_PROGRAME_ID") }} ：</span>
+            <span class="grey">{{ $t("message.global.NEW_PROGRAME_ID") }} ：</span>
             {{ info.number }}
           </p>
           <p class="info-row">
-            <span class="grey-color">{{ $t("message.global.APARTMENT_TYPE") }} ：</span>
+            <span class="grey">{{ $t("message.global.APARTMENT_TYPE") }} ：</span>
             {{ info.translatedTypology }}
           </p>
           <p class="info-row">
-            <span class="grey-color">{{ $t("message.global.USABLE_AREA") }} ：</span>
+            <span class="grey">{{ $t("message.global.USABLE_AREA") }} ：</span>
             {{ info.surface }}m²
           </p>
           <p class="info-row">
-            <span class="grey-color">{{ $t("message.global.FLOOR") }} ：</span>
+            <span class="grey">{{ $t("message.global.FLOOR") }} ：</span>
             {{ info.floor }}
           </p>
           <p class="info-row">
-            <span class="grey-color">{{ $t("message.global.PRICE") }} ：</span>
+            <span class="grey">{{ $t("message.global.PRICE") }} ：</span>
             {{ fmoney(info.price) }}€
           </p>
           <p class="info-row">
-            <span class="grey-color">{{ $t("message.global.RATE_OF_RETURN") }} ：</span>
+            <span class="grey">{{ $t("message.global.RATE_OF_RETURN") }} ：</span>
             {{ info.profitability ? (info.profitability + '%') : '' }}
           </p>
         </div>
@@ -331,12 +331,6 @@ div {
     width: 100%;
   }
 }
-.hr {
-  border: none;
-  height: 1px;
-  margin: 0.12rem 0;
-  background-color: #ececec;
-}
 th,
 td {
   border: none !important;
@@ -398,9 +392,6 @@ td {
   span {
     font-size: .16rem;
   }
-}
-.grey-color {
-  color: rgba(186, 186, 186, 1);
 }
 .section-title {
   font-size: 0.2rem;
