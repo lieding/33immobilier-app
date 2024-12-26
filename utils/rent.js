@@ -16,3 +16,5 @@ export function getEquipmentPic (id, grey = false) {
   id = id.toLowerCase().replaceAll('_', '-');
   return `/renting-equipment/${id}${grey ? '-grey' : ''}.png`;
 }
+
+export const RentDurationOption = [1, 3, 6, 12, 24];

@@ -106,6 +106,11 @@ const article = {
     const headers = createHeaderWithAuth();
     return axios.get(Path, { headers }).then(res => handleRes(res, key));
   },
+  searchRentings (params) {
+    const Path = '/search-rentings';
+    const key = createKey(Path);
+    return axios.get(Path, { params }).then(res => handleRes(res, key));
+  },
   translateRentDetail (params) {
     const Path = '/rent-detail-translate';
     const key = createKey(Path, params);

@@ -3,6 +3,7 @@ module.exports = {
     global: {
       NEW_PROGRAME: "Neuf",
       SECOND_HAND: "Ancien",
+      RENTING: "Location",
       instrument: "Outils pratiques",
       STORE: "Magasin",
       French: "Français",
@@ -225,9 +226,12 @@ module.exports = {
       HAS_FURNITURE: "Meublé",
       NO_FURNITURE: "Without furniture",
       RENT: "Loyer",
-      DEPOSIT: "Deposit",
-      EQUIPMENTS: "Equipments",
-      DELETE_WARNING: "Are you sure to delete this renting publish? REMEBER this action is not reversible!",
+      DEPOSIT: "Garantie",
+      EQUIPMENTS: "Équipements",
+      DELETE_WARNING: "Êtes-vous sûr de supprimer cette publication de location ? N'OUBLIEZ PAS que cette action n'est pas réversible !",
+      AVAILABLE_DATE_FILTER_LABEL: "En {value} mois",
+      AVAILABLE_FROM: "Accessible à partir de ",
+      LEAST_DURATION_MONTHS: "Au moins {value} mois",
     },
     PAGE_QUESTINNAIRE: {
       BASIS_INFO: "Informations de base",
@@ -337,6 +341,7 @@ module.exports = {
       SEARCH_MODE: [
         { text: "Neuf", value: "NewPrograme" },
         { text: "Ancien", value: "SecondHand" },
+        { text: 'Loyer', value: 'Renting' },
       ],
     }
   }

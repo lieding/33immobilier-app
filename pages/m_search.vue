@@ -75,7 +75,6 @@
             :points="mapPoints"
             :active-point-id="activePointId"
             :boundary-placeid="boundaryPlaceid"
-            @pointSelect="pointSelectHandler"
           ></jump-map>
         </template>
       </client-only>
@@ -316,12 +315,6 @@ export default {
     toggleDropdownMenu (key) {
       const el = this.$refs[key];
       if (el) el.toggle?.();
-    },
-    pointSelectHandler (id) {
-      this.activePointId = id;
-      const el = this.$el.querySelector('#scroll-wrapper')?.querySelector(`#item-${id}`);
-      if (!el) return;
-      el.scrollIntoView({ behavior: "smooth", block: "center" });
     },
     queryList(initial = true) {
       let page = this.page;

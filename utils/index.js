@@ -42,12 +42,17 @@ async function queryLocation (kw) {
 /**
  * Search city geolocation by its name and filter by the id of region it is located
  * @param {string} city the name of the city
- * @param {string} region_id like 92, 75
+ * @param {string | undefined} region_id like 92, 75
 */
 export async function searchCityGeolocation (city, region_id) {
   const locations = await queryLocation(city);
-  console.log(locations);
   if (!Array.isArray(locations)) return;
+  if (!region_id) {
+    const coordinates = locations[0]?.coordinates;
+    if (!coordinates) return;
+    const [ longitude, latitude ] = coordinates;
+    return { latitude, longitude };
+  }
   for (const it of locations) {
     if (it.postcode?.startsWith(region_id) && it.coordinates?.length) {
       const [ longitude, latitude ] = it.coordinates.map(it => Number(it));

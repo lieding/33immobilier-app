@@ -3,6 +3,7 @@ module.exports = {
     global: {
       NEW_PROGRAME: "新房",
       SECOND_HAND: "二手房",
+      RENTING: "租房",
       instrument: "实用工具",
       STORE: "商铺",
       French: "Français",
@@ -226,6 +227,9 @@ module.exports = {
       DEPOSIT: "押金",
       EQUIPMENTS: "家具电器",
       DELETE_WARNING: "您确定删除它吗? 一旦执行无法撤回!",
+      AVAILABLE_DATE_FILTER_LABEL: "在{value}个月内",
+      AVAILABLE_FROM: "开始于",
+      LEAST_DURATION_MONTHS: "至少{value}个月",
     },
     PAGE_QUESTINNAIRE: {
       BASIS_INFO: "基本信息",
@@ -248,7 +252,7 @@ module.exports = {
       FURNITURE: "带有家具?",
       DESCRIPTION: "描述",
       TIME: "时间",
-      AVAILABLE_DATE: "什么时候开始",
+      AVAILABLE_DATE: "开始时间",
       DURATION: "最短租期",
       RENT_CHARGE: "租金 & 费用",
       PURE_RENT: "租金不包括费用",
@@ -335,6 +339,7 @@ module.exports = {
       SEARCH_MODE: [
         { text: "新房", value: "NewPrograme" },
         { text: "二手房", value: "SecondHand" },
+        { text: '租房', value: 'Renting' },
       ],
     }
   }

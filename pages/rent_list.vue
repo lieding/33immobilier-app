@@ -16,6 +16,11 @@
               <span>{{ ResidenceTypeConfig[scope.row.residenceType] }}</span>
             </template>
           </el-table-column>
+          <el-table-column :label="$t('message.global.LOCATED_CITY')">
+            <template slot-scope="scope">
+              <span>{{ `${scope.row.city}(${scope.row.zip_code})` }}</span>
+            </template>
+          </el-table-column>
           <el-table-column :label="$t('message.global.PRICE')">
             <template slot-scope="scope">
               <span v-if="checkArrLenGreaterThan1(scope.row.pureRentRange)">

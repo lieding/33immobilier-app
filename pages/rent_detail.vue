@@ -1,5 +1,9 @@
 <template>
   <div class="rent-detail-page">
+    <div v-if="isMobile && fromSearchPage" class="return-to-list flex align-center" @click="$router.go(-1)">
+      <van-icon name="arrow-left" />
+      <span>{{ $t('message.global.RETURN_TO_LIST') }}</span>
+    </div>
     <div class="desktop-placed-center top-section" v-if="isDesktop">
       <div class="breadcrumb">
         <el-breadcrumb separator="/">
@@ -19,26 +23,28 @@
         </div>
       </div>
       <div :class="{ 'desktop-placed-center': isDesktop, flex: isDesktop }">
-        <div class="carousel-part" v-if="isDesktop">
-          <!-- 轮播图 -->
-          <div class="slideshow">
-            <el-carousel :interval="5000" height="404px" arrow="always">
-              <el-carousel-item v-for="(item, i) in detail.images" :key="i" :label="detail.imageTags[i]">
-                <div class="carousel" :style="{ 'background-image': 'url(' + item + ')' }" @click="galleryIndex = i"></div>
-              </el-carousel-item>
-            </el-carousel>
+        <client-only>
+          <div class="carousel-part" v-if="isDesktop">
+            <!-- 轮播图 -->
+            <div class="slideshow">
+              <el-carousel :interval="5000" height="404px" arrow="always">
+                <el-carousel-item v-for="(item, i) in detail.images" :key="i" :label="detail.imageTags[i]">
+                  <div class="carousel" :style="{ 'background-image': 'url(' + item + ')' }" @click="galleryIndex = i"></div>
+                </el-carousel-item>
+              </el-carousel>
+            </div>
           </div>
-        </div>
-        <div class="mobile-carousel" v-if="isMobile">
-          <van-swipe :autoplay="3000" :show-indicators="false">
-            <van-swipe-item v-for="(image, index) in detail.images" :key="index" @change="swipeIdx = $event">
-              <img :src="image" @click="galleryIndex = index" />
-            </van-swipe-item>
-            <template #indicator>
-              <div>{{ detail.imageTags[swipeIdx] }}</div>
-            </template>
-          </van-swipe>
-        </div>
+          <div class="mobile-carousel" v-if="isMobile">
+            <van-swipe :autoplay="3000" :show-indicators="false">
+              <van-swipe-item v-for="(image, index) in detail.images" :key="index" @change="swipeIdx = $event">
+                <img :src="image" @click="galleryIndex = index" />
+              </van-swipe-item>
+              <template #indicator>
+                <div>{{ detail.imageTags[swipeIdx] }}</div>
+              </template>
+            </van-swipe>
+          </div>
+        </client-only>
         <template v-if="isMobile">
           <div class="page-title mobile bold mobile-section">
             {{ detail.title }}
@@ -209,6 +215,7 @@ export default {
   },
   data () {
     return {
+      fromSearchPage: false,
       loading: false,
       swipeIdx: null,
       galleryIndex: null,
@@ -271,6 +278,7 @@ export default {
           surfaceRange = [Math.min(...surfaceArr), Math.max(...surfaceArr)];
         }
         this.detail = { ...detail, images, imageTags, pureRentRange, chargeRange, depositRange, surfaceRange };
+        this.loading = false;
         if (detail.missingTranslation) {
           const res = await this.$api.article.translateRentDetail({ user_id, id, lang })
           const data = res.data;
@@ -281,8 +289,6 @@ export default {
         }
       } catch (e) {
         console.error('query detail: ', e);
-      } finally {
-        this.loading = false;
       }
     },
     startContactPopup (room) {
@@ -290,6 +296,13 @@ export default {
       this.contactDialogTitles = room ? exractRoomProps.call(this, room) : [];
     },
     contactFormConfirmHandler() {},
+  },
+  beforeRouteEnter (to, from, next) {
+    let fromSearchPage = undefined;
+    if (from.path.includes('search')) {
+      fromSearchPage = true;
+    }
+    next(vm => vm.fromSearchPage = fromSearchPage);
   }
 }
 
@@ -436,6 +449,9 @@ function exractRoomProps (room) {
 }
 .rent-detail-page {
   margin-bottom: 36px;
+  .return-to-list {
+    margin: .06rem 0;
+  }
   .desktop-placed-center {
     margin-top: 32px;
   }

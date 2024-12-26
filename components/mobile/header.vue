@@ -17,6 +17,10 @@
           @click="routerChange('m_search', { searchMode: SearchMode.SecondHand, department_city: 'Paris' })"
           tag="li"
         >{{ $t("message.global.SECOND_HAND") }}</li>
+        <li
+          @click="routerChange('/search_rentings', { department_city: 'Paris' })"
+          tag="li"
+        >{{ $t("message.global.RENTING") }}</li>
         <li @click="routerChange('m_search_store')" tag="li">{{ $t("message.global.STORE") }}</li>
         <li @click="toLoan" tag="li">{{ $t("message.global.LOAN_LINK") }}</li>
         <li @click="changeLocale('zh')" class="locale-row flex-center">

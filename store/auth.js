@@ -58,6 +58,7 @@ export const actions = {
     verifyToken(accessToken)
       .then(res => {
         const data = res || {};
+        setAccessToken(accessToken);
         if (userInfo)
           commit('setAuth', {
             authorized: true,

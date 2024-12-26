@@ -257,7 +257,10 @@ export default {
       } else if (searchMode == SearchMode.SecondHand) {
         const query = { searchMode, location_type, department_city, lat, lng, postal_code };
         this.routerChange("/m_search", query);
-      } else {
+      } else if (searchMode === SearchMode.Renting) {
+        if (!place_id && !place_text && !postal_code) return;
+        const query = { place_id, department_city, location_type, lat, lng, postal_code };
+        this.routerChange("/search_rentings", query);
       }
     },
     searchInputClickHandler () {

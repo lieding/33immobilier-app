@@ -146,7 +146,13 @@
       <template>
         <h1>{{ $t('message.PAGE_QUESTINNAIRE.TIME') }}</h1>
         <el-form-item :label="$t('message.PAGE_QUESTINNAIRE.AVAILABLE_DATE')" prop="availableDate" label-width="220px" required>
-          <el-date-picker v-model="form.availableDate" type="date" :placeholder="$t('message.global.PLEASE_SELECT')" :picker-options="availableDatePickerOptions"></el-date-picker>
+          <el-date-picker
+            v-model="form.availableDate"
+            type="date"
+            :placeholder="$t('message.global.PLEASE_SELECT')"
+            :picker-options="availableDatePickerOptions"
+            value-format="yyyy-MM-dd"
+          ></el-date-picker>
         </el-form-item>
         <el-form-item :label="$t('message.PAGE_QUESTINNAIRE.DURATION')" prop="rent_duration" required label-width="220px">
           <el-select v-model="form.rent_duration" :placeholder="$t('message.PAGE_QUESTINNAIRE.DURATION')">
@@ -196,6 +202,7 @@
 import { createNamespacedHelpers } from 'vuex'
 import rem from "~/common/rem.js";
 import { addressAutocompleteSearch, upload2S3, createPath } from '../utils';
+import { RentDurationOption } from '../utils/rent';
 import RentingEquipment from '../components/rentingEquipment.vue';
 const { mapGetters } = createNamespacedHelpers('auth');
 
@@ -239,7 +246,7 @@ export default {
       this.labelPosition = 'top';
     }
     const translatedMonth = this.$t('message.global.MONTHS');
-    this.durationOptions = [1, 3, 6, 12, 24].map(value => ({ value, label: value + ' ' + translatedMonth }));
+    this.durationOptions = RentDurationOption.map(value => ({ value, label: value + ' ' + translatedMonth }));
     this.formRules = {
       description: [
         { min: 30, message: this.$t('message.FORM_RULE.MESSAGE_MIN_LEN').replace('{minLen}', '30'), trigger: 'blur' }

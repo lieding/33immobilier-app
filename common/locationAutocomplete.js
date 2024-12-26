@@ -7,11 +7,21 @@ const DefaultLocationAutocompleteTypes = [
   LocationType.L3_AREA,
 ];
 
-export function doLocationAutocomplete (service, input) {
+export const RentingLocationTypes = [
+  LocationType.LOCALITY,,
+  LocationType.L3_AREA,
+]
+
+/**
+ * @param {object} service
+ * @param {string} input
+ * @param {string[] | undefined} locationTypes
+*/
+export function doLocationAutocomplete (service, input, locationTypes) {
   return service.getPlacePredictions({
     input,
     componentRestrictions: { country: ['FRA'], },
-    types: DefaultLocationAutocompleteTypes,
+    types: locationTypes || DefaultLocationAutocompleteTypes,
   }).then(res => {
     const predictions = res.predictions;
     if (!Array.isArray(predictions)) return cb([]);

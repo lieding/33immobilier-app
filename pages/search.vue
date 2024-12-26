@@ -74,8 +74,8 @@
                 >
                   <el-slider v-model="surfaceRange" :min="minSurface" :max="maxSurface" range @input="surfaceSlideChangeHandler"></el-slider>
                   <p style="overflow:hidden">
-                    <span style="float:left;"> {{ surfaceRange[0] }}</span>
-                    <span style="float:right;">{{ surfaceRange[1] }}</span>
+                    <span style="float:left;"> {{ surfaceRange[0] }}m²</span>
+                    <span style="float:right;">{{ surfaceRange[1] }}m²</span>
                   </p>
                   <div>
                   <el-button type="text" @click="surfaceRange = [minSurface, maxSurface]">{{ $t('message.global.RESET') }}</el-button>

@@ -13,6 +13,9 @@
       <span class="route-item pointer" @click="toSearch(SearchMode.SecondHand)" :class="{ active: currentPath === Path.SECOND_HAND }">
         <span class="label">{{ $t("message.global.SECOND_HAND") }}</span>
       </span>
+      <span class="route-item pointer" @click="toSearch(SearchMode.Renting)" :class="{ active: currentPath === Path.RENT }">
+        <span class="label">{{ $t("message.global.RENTING") }}</span>
+      </span>
       <span class="route-item pointer" @click="select('/search_store')" :class="{ active: currentPath === Path.STORE }">
         <span class="label">{{ $t("message.global.STORE") }}</span>
       </span>
@@ -125,7 +128,11 @@ export default {
     },
     toSearch (searchMode) {
       const geolocation = CityRegionGeolocation.Paris;
-      this.$router.replace({ path: createPath('/search'), query: { department_city: 'Paris', ...geolocation, searchMode } });
+      const query = { department_city: 'Paris', ...geolocation, searchMode };
+      let path = '/search';
+      if (searchMode === SearchMode.Renting)
+        path = '/search_rentings';
+      this.$router.replace({ path: createPath(path), query });
     },
     changeLocale(locale) {
       this.$i18n.setLocaleCookie(locale);
@@ -137,6 +144,7 @@ const Path = {
   INDEX: 'INDEX',
   NEW: 'NEW',
   SECOND_HAND: 'SECOND_HAND',
+  RENT: "RENT",
   STORE: 'STORE',
 }
 function checkCurrentPath (path, query) {
@@ -144,6 +152,9 @@ function checkCurrentPath (path, query) {
   if (path.includes('index')) return Path.INDEX;
   if (path.includes('store')) {
     return Path.STORE;
+  }
+  if (path.includes('rent')) {
+    return Path.RENT;
   }
   if (path.includes('search')) {
     if (query?.searchMode) {
@@ -205,7 +216,7 @@ header {
       font-size: 18px;
     }
     .avatar-icon {
-      margin-top: 10px;
+      margin-top: 14px;
     }
   }
   .login-btn-wrapper {

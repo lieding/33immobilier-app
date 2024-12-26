@@ -3,6 +3,7 @@ module.exports = {
     global: {
       NEW_PROGRAME: "New",
       SECOND_HAND: "Old",
+      RENTING: "Renting",
       instrument: "Practical Tools",
       STORE: "Store",
       French: "French",
@@ -228,6 +229,9 @@ module.exports = {
       DEPOSIT: "Deposit",
       EQUIPMENTS: "Equipments",
       DELETE_WARNING: "Are you sure to delete this renting publish? REMEBER this action is not reversible!",
+      AVAILABLE_DATE_FILTER_LABEL: "In {value} months",
+      AVAILABLE_FROM: "Sart from ",
+      LEAST_DURATION_MONTHS: "At least {value} months",
     },
     PAGE_QUESTINNAIRE: {
       BASIS_INFO: "Basis information",
@@ -337,6 +341,7 @@ module.exports = {
       SEARCH_MODE: [
         { text: "New", value: "NewPrograme" },
         { text: "Used", value: "SecondHand" },
+        { text: 'Rent', value: 'Renting' },
       ],
     }
   }

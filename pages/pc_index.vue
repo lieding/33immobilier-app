@@ -15,6 +15,7 @@
             <el-select v-model="searchMode" slot="prepend">
               <el-option :label="$t('message.global.NEW_PROGRAME')" :value="SearchMode.NewPrograme"></el-option>
               <el-option :label="$t('message.global.SECOND_HAND')" :value="SearchMode.SecondHand"></el-option>
+              <el-option :label="$t('message.global.RENTING')" :value="SearchMode.Renting"></el-option>
             </el-select>
             <!-- <el-button slot="append" icon="el-icon-right" class="search-btn" circle></el-button> -->
           </el-autocomplete>
@@ -261,7 +262,10 @@ export default {
       const { place_text, place_id, type: location_type, postal_code, latitude: lat, longitude: lng } = item;
       if ((!place_text && !place_id) || !location_type) return;
       const searchMode = this.searchMode;
-      this.routerChange('/search', { searchMode, department_city: place_text, place_id, location_type, postal_code, lat, lng });
+      if (searchMode === SearchMode.Renting) {
+        this.routerChange('/search_rentings', { department_city: place_text, place_id, location_type, postal_code, lat, lng });
+      } else
+        this.routerChange('/search', { searchMode, department_city: place_text, place_id, location_type, postal_code, lat, lng });
     },
     handleProgrameClickHandler (item) {
       this.routerChange('/new_detail', { zip_code: item.zip_code, name_id: item.name_id, estate_name: item.estate_name, city: item.city });
