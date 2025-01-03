@@ -237,6 +237,18 @@ body {
   justify-content: space-between;
 }
 
+.box-line-clamp {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  overflow: hidden;
+  &.two-lines {
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+}
+
 .pointer {
   cursor: pointer;
 }
