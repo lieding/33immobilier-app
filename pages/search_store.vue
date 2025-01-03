@@ -87,11 +87,12 @@
                 <img :src="getCategoryImg(scope.row)" class="category-img" />
               </template>
             </el-table-column>
+            <el-table-column prop="title" :label="$t('message.global.TITLE')" />
             <el-table-column :label="$t('message.PAGE_STORE.CATEGORY')" prop="category" />
             <el-table-column prop="zip_code" :label="$t('message.global.POSTAL_CODE')" :width="160">
               <template slot-scope="scope"><span>{{ scope.row.zip_code || '' }}</span></template>
             </el-table-column>
-            <el-table-column prop="title" :label="$t('message.global.TITLE')" />
+            
             <el-table-column :label="$t('message.global.PRICE')" :width="160">
               <template slot-scope="scope"><span>{{ fmoney(scope.row.price) }}€</span></template>
             </el-table-column>
