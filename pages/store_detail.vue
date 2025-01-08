@@ -156,7 +156,7 @@ export default {
       if (!id || !link) return;
       this.postApplicationLoading = true;
       const lang = this._i18n.locale;
-      this.$api.article.postApplication({ mode: PostApplicationMode.STORE, lang, contact, id, link })
+      this.$api.article.postApplication({ mode: PostApplicationMode.STORE, lang, contact, id, link, selfLink: location.href })
         .then(() => {
           this.contactDialogVisible = false;
           this.$notify({ title: 'Success', message: this.$t('message.global.APPLICATION_POSTED_SUCCESS'), type: 'success' });

@@ -169,7 +169,7 @@ export default {
       if (!programeId || !propertyId) return;
       this.postApplicationLoading = true;
       const lang = this._i18n.locale;
-      this.$api.article.postApplication({ mode: PostApplicationMode.SECOND_HAND, lang, contact, programeId, propertyId })
+      this.$api.article.postApplication({ mode: PostApplicationMode.SECOND_HAND, lang, contact, programeId, propertyId, selfLink: location.href })
         .then(() => {
           this.contactDialogVisible = false;
           this.$notify({ title: 'Success', message: this.$t('message.global.APPLICATION_POSTED_SUCCESS'), type: 'success' });

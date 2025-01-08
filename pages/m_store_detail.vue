@@ -161,7 +161,7 @@ export default {
       if (!link || !id) return;
       const lang = this._i18n.locale;
       this.contactPopupBtnLoading = true;
-      this.$api.article.postApplication({ mode: PostApplicationMode.STORE, lang, contact, id, link })
+      this.$api.article.postApplication({ mode: PostApplicationMode.STORE, lang, contact, id, link, selfLink: location.href })
         .then(() => {
           this.contactPopupVis = false;
           Notify({ type: 'success', message: this.$t('message.global.APPLICATION_POSTED_SUCCESS') });

@@ -272,7 +272,7 @@ export default {
       if (!programeId || !propertyId) return;
       const lang = this._i18n.locale;
       this.contactPopupBtnLoading = true;
-      this.$api.article.postApplication({ mode: PostApplicationMode.PROGRAME_PROPERTY, lang, contact, programeId, propertyId })
+      this.$api.article.postApplication({ mode: PostApplicationMode.PROGRAME_PROPERTY, lang, contact, programeId, propertyId, selfLink: location.href })
         .then(() => {
           this.contactPopupVis = false;
           Notify({ type: 'success', message: this.$t('message.global.APPLICATION_POSTED_SUCCESS') });
