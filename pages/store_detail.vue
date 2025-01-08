@@ -71,7 +71,7 @@
           {{ $t("message.global.PROPERTY_DESCRIPTION") }}
         </p>
         <p class="description">
-          <div v-html="detail.description.replace(': www.georisques.gouv.fr.', '').replace(/\./g, '\n')"></div>
+          <div v-html="detail.description"></div>
         </p>
       </div>
     </template>
