@@ -1,11 +1,11 @@
 module.exports = {
   message: {
     global: {
-      NEW_PROGRAME: "New",
-      SECOND_HAND: "Old",
-      RENTING: "Renting",
+      NEW_PROGRAME: "New Program",
+      SECOND_HAND: "Second-Hand",
+      RENTING: "Rental",
       instrument: "Practical Tools",
-      STORE: "Store",
+      STORE: "Shops",
       French: "French",
       Chinese: "Chinese",
       English: "English",
