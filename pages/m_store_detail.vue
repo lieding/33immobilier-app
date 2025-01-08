@@ -53,7 +53,7 @@
       <div
         :class="displayMoreDesc ? 'synopsisno' : 'synopsis'"
         style="white-space:pre-line;"
-        v-html="detail.description.replace(": www.georisques.gouv.fr.", "").replace(/\./g, "\n")"
+        v-html="detail.description.replace(': www.georisques.gouv.fr.', '').replace(/\./g, '\n')"
       ></div>
       <div>
         <span class="pack-up" @click="toggleDisplayMore">
