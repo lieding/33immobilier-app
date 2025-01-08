@@ -5,7 +5,7 @@ module.exports = {
       SECOND_HAND: "Ancien",
       RENTING: "Location",
       instrument: "Outils pratiques",
-      STORE: "Magasin",
+      STORE: "Commerce",
       French: "Français",
       English: "English",
       Chinese: "中文",
