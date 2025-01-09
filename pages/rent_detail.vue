@@ -384,6 +384,7 @@ function exractRoomProps (room) {
   img {
     height: 2.14rem;
     width: 100%;
+    object-fit: cover;
   }
 }
 .top-section {
@@ -478,6 +479,7 @@ function exractRoomProps (room) {
       margin: 0.1rem 0;
       color: rgb(70, 70, 70);
       line-height: 0.18rem;
+      white-space: pre-line;
     }
   }
 }
