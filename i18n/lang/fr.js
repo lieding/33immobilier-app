@@ -41,6 +41,7 @@ module.exports = {
       NEW_PROGRAME_LIST: "Liste des logements neufs",
       HOME: "Accueil",
       PROGRAME_DETAIL: "Détail du programme",
+      Rental_list:"Détail de location",
       PRICE: "Prix",
       DELIVERY_DATE: "Livraison",
       SURFACE: "Surface",
