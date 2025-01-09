@@ -67,6 +67,7 @@ module.exports = {
       PROPERTY_DESCRIPTION: "Property Description",
       PROGRAM_POSITION: "Program Location",
       PROPERTY_DETAILS: "Property Details",
+      Rental_list:"Detail Rental",
       NEW_PROGRAME_ID: "Lot",
       PROPERTY_NUMBER: "Lot",
       APARTMENT_TYPE: "Type",
