@@ -41,6 +41,7 @@ module.exports = {
       NEW_PROGRAME_LIST: "新房列表",
       HOME: "主页",
       PROGRAME_DETAIL: "新房详情",
+      Rental_list:"租房详情",
       PRICE: "价格",
       DELIVERY_DATE: "交房时间",
       SURFACE: "面积",
