@@ -8,7 +8,7 @@
       <div class="breadcrumb">
         <el-breadcrumb separator="/">
           <el-breadcrumb-item :to="{ path: '/pc_index' }">{{ $t("message.global.HOME") }}</el-breadcrumb-item>
-          <el-breadcrumb-item>{{ $t("message.global.PROGRAME_DETAIL") }}</el-breadcrumb-item>
+          <el-breadcrumb-item>{{ $t("message.global.Rental_list") }}</el-breadcrumb-item>
         </el-breadcrumb>
       </div>
     </div>
