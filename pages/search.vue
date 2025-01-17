@@ -225,6 +225,7 @@ export default {
       allProgramList: [],
       filteredProgramList: [],
       allSecondhandList: [],
+      mapPoints: [],
       filteredSecondHandList : [],
       activePointId: '',
       page: 1,
@@ -234,12 +235,6 @@ export default {
   computed: {
     finished () {
       return this.page >= this.maxPage;
-    },
-    mapPoints () {
-      return this.filteredProgramList.map((it) => {
-        const { longitude, latitude, id } = it;
-        return { id, longitude, latitude };
-      });
     },
     locationSearchText () {
       const { department_city, postal_code } = this.placeInfo ?? {};
@@ -257,11 +252,13 @@ export default {
       this.activePointId = '';
       this.filteredProgramList =
         filterProgrammeListByConditions(this.allProgramList, this.priceRange, statusArr, this.selectedTypologies);
+      this.getMapPoints();
     },
     selectedTypologies (typologies) {
       this.activePointId = '';
       this.filteredProgramList =
         filterProgrammeListByConditions(this.allProgramList, this.priceRange, this.completionStatusArr, typologies);
+      this.getMapPoints();
     },
     selectedClassLevels (levels) {
       this.activePointId = '';
@@ -300,7 +297,7 @@ export default {
         surfaceSlideVis: false, minSurface: 0, maxSurface: 0, surfaceRange: [0, 0],
         allProgramList: [], filteredProgramList: [],
         allSecondhandList: [], filteredSecondHandList : [],
-        activePointId: '',
+        activePointId: '', mapPoints: [],
       });
     },
     setSearchModeConcerningConfig () {
@@ -327,7 +324,7 @@ export default {
       let { department_id, name, longitude, latitude, postal_code, isDepartment, isPostalCode } = item;
       latitude = Number(latitude) || null, longitude = Number(longitude) || null;
       if (isDepartment) {
-        this.placeInfo = { ...this.placeInfo, latitude, longitude, department_city: name, locationType: LocationType.L2_AREA };
+        this.placeInfo = { ...this.placeInfo, latitude, longitude, department_city: item.department_name, locationType: LocationType.L2_AREA };
         this.doSearch();
       } else {
         name = name || postal_code;
@@ -381,6 +378,7 @@ export default {
         } else {
           this.filteredProgramList =
             filterProgrammeListByConditions(this.allProgramList, this.priceRange, this.completionStatusArr, this.selectedTypologies);
+          this.getMapPoints();
         }
       }, 500);
     },
@@ -398,9 +396,16 @@ export default {
       if (!el) return;
       el.scrollIntoView({ behavior: "smooth", block: "center" });
     },
+    getMapPoints () {
+      this.mapPoints = this.filteredProgramList.map((it) => {
+        const { longitude, latitude, id } = it;
+        return { id, longitude, latitude };
+      });
+    },
     doSearch() {
       this.dataLoading = true;
-      this.activePointId = '';
+      this.allProgramList = [], this.filteredProgramList = [], this.allSecondhandList = [], this.filteredSecondHandList = [];
+      this.activePointId = '', this.mapPoints = [];
       const { place_id } = this.$route.query, { locationType, department_city, postal_code } = this.placeInfo;
       if (!place_id && !department_city && !postal_code) return;
       const lang = this._i18n.locale;
@@ -427,8 +432,10 @@ export default {
           const { placeInfo = null, programes } = res || {};
           if (place_id && placeInfo)
             this.placeInfo = { ...this.placeInfo, ...placeInfo };
-          if (Array.isArray(programes))
+          if (Array.isArray(programes)) {
             Object.assign(this, setProgrames(programes, this.TypologyOption));
+            this.getMapPoints();
+          }
         });
       }
       promise?.catch(console.error).finally(() => this.dataLoading = false);

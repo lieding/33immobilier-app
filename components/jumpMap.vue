@@ -100,7 +100,7 @@ export default {
     async refreshPoints() {
       const map = this.__mapInst;
       if (!map) return;
-      if (Array.isArray(this.__points)) {
+      if (this.__points) {
         for (const marker of this.__points)
           marker.map = null;
       }
@@ -116,9 +116,8 @@ export default {
           __points.push(...markers);
           if (points.length)
             requestAnimationFrame(addMarkers)
-          else
-            this.__points = __points;
         }
+        this.__points = __points;
         requestAnimationFrame(addMarkers);
       } else {
         this.__points = null;
