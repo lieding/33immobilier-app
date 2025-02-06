@@ -116,10 +116,9 @@ export default {
     this.categoryOptions = categoryOptions;
   },
   mounted () {
+    if (!process.client) return;
     rem();
-    if (process.client) {
-      this.loadConfig();
-    }
+    this.loadConfig();
   },
   computed: {
     resultList () {

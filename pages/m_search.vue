@@ -197,11 +197,10 @@ export default {
     this.setSearchModeConcerningConfig();
   },
   mounted() {
+    if (!process.client) return;
     rem();
-    if (process.client) {
-      this.setInitialPlaceinfo();
-      this.queryList();
-    }
+    this.setInitialPlaceinfo();
+    this.queryList();
   },
   methods: {
     resetAllData () {

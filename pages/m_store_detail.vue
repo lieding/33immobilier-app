@@ -128,9 +128,10 @@ export default {
   created () {
     this.fmoney = fmoney;
   },
-  mounted(){
+  mounted () {
+    if (!process.client) return;
     rem();
-    if (process.client) this.queryDetail();
+    this.queryDetail();
   },
   methods: {
     async queryDetail () {
