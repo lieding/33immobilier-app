@@ -1,5 +1,6 @@
 <template>
   <div>
+  <client-only>
     <div v-if="fromSearchPage" class="to-list flex align-center" @click="$router.go(-1)">
       <van-icon name="arrow-left" />
       <span>{{ $t('message.global.RETURN_TO_LIST') }}</span>
@@ -88,6 +89,7 @@
       />
       <loading-dialog :visible="loading" :loading-text="$t('message.global.LOADING')" />
     </client-only>
+  </client-only>
   </div>
 </template>
 

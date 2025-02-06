@@ -1,5 +1,6 @@
 <template>
   <div class="m-list-page-wrapper">
+  <client-only>
     <!-- 顶部筛选框 -->
     <div class="flex top-bar">
       <client-only>
@@ -66,6 +67,7 @@
       />
     </div>
     <hr class="hr" />
+  </client-only>
   </div>
 </template>
 
